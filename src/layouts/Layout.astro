@@ -1,0 +1,51 @@
+---
+import '@/styles/global.css'
+
+import { Font } from 'astro:assets'
+import Seo from '@/components/Seo.astro'
+
+interface Props {
+	title?: string
+	description?: string
+	image?: string
+	type?: string
+	noindex?: boolean
+}
+
+const { title, description, image, type, noindex } = Astro.props
+---
+
+<!doctype html>
+<html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, interactive-widget=resizes-content"
+		/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="author" content="YESS Eventos" />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<Seo {title} {description} {image} {type} {noindex} />
+		<Font cssVariable="--font-jakarta" preload />
+	</head>
+	<body class="bg-background font-sans text-foreground antialiased">
+		<a
+			href="#conteudo"
+			class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:bg-accent focus:px-5 focus:py-3 focus:font-bold focus:text-white"
+		>
+			Pular para o conteúdo
+		</a>
+		<slot />
+		<script>
+			import '@/scripts/smooth-scroll'
+		</script>
+	</body></html
+>
+
+<style is:global>
+	[x-cloak] {
+		display: none !important;
+	}
+</style>

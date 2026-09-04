@@ -1,0 +1,30 @@
+// @ts-check
+import { defineConfig, fontProviders } from 'astro/config'
+import alpinejs from '@astrojs/alpinejs'
+import sitemap from '@astrojs/sitemap'
+import tailwindcss from '@tailwindcss/vite'
+
+const site = process.env.SITE_URL ?? 'http://localhost:4321'
+
+export default defineConfig({
+	site,
+	trailingSlash: 'always',
+	image: {
+		layout: 'constrained',
+	},
+	fonts: [
+		{
+			name: 'Plus Jakarta Sans',
+			cssVariable: '--font-jakarta',
+			provider: fontProviders.google(),
+			weights: ['400 800'],
+			styles: ['normal'],
+			subsets: ['latin', 'latin-ext'],
+			fallbacks: ['Arial', 'sans-serif'],
+		},
+	],
+	vite: {
+		plugins: [tailwindcss()],
+	},
+	integrations: [alpinejs(), sitemap()],
+})
