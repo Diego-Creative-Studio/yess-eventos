@@ -22,6 +22,15 @@ export default defineConfig({
 			subsets: ['latin', 'latin-ext'],
 			fallbacks: ['Arial', 'sans-serif'],
 		},
+		{
+			name: 'Inter',
+			cssVariable: '--font-inter',
+			provider: fontProviders.google(),
+			weights: ['400 700'],
+			styles: ['normal'],
+			subsets: ['latin', 'latin-ext'],
+			fallbacks: ['Arial', 'sans-serif'],
+		},
 	],
 	vite: {
 		plugins: [tailwindcss()],

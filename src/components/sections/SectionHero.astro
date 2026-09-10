@@ -1,17 +1,100 @@
-<section
-	class="mx-auto grid min-h-[calc(100vh-96px)] w-full max-w-7xl content-center gap-8 px-6 py-20 lg:px-10"
->
-	<p data-animate class="text-sm font-bold tracking-[0.18em] text-accent uppercase">
-		Estrutura inicial pronta
-	</p>
-	<h1
-		data-animate
-		class="max-w-5xl text-5xl leading-[0.95] font-extrabold tracking-[-0.065em] text-balance sm:text-7xl lg:text-8xl"
+---
+import type { ImageMetadata } from 'astro'
+import { Image } from 'astro:assets'
+
+import heroHome from '@/assets/hero-home.png'
+import Button from '@/components/Button.astro'
+
+interface Cta {
+	label: string
+	href: string
+}
+
+interface Props {
+	eyebrow?: string
+	titleStrong?: string
+	title?: string
+	description?: string
+	image?: ImageMetadata
+	imageAlt?: string
+	primaryCta?: Cta
+	secondaryCta?: Cta
+	features?: string[]
+}
+
+const {
+	eyebrow = 'Painéis de LED P2 e P3 para eventos',
+	titleStrong = 'Painéis de LED para eventos corporativos.',
+	title = 'Que precisam impressionar.',
+	description = 'Locação de painéis P2 e P3, som, iluminação e TVs, com montagem e operação técnica.',
+	image = heroHome,
+	imageAlt = 'Evento corporativo com grandes painéis de LED azuis',
+	primaryCta = { label: 'Solicitar orçamento', href: '#contato' },
+	secondaryCta = { label: 'Conhecer soluções', href: '#servicos' },
+	features = ['Planejamento', 'Montagem', 'Operação técnica'],
+} = Astro.props
+---
+
+<section class="bg-stroke pt-4 pb-8 md:px-8 lg:px-16 lg:pt-5 lg:pb-16">
+	<div
+		class="relative container mx-auto flex w-full items-center overflow-hidden rounded-4xl border border-stroke bg-surface px-6 py-10 sm:px-10 md:max-w-7xl lg:max-w-340 lg:py-20 lg:pr-9 lg:pl-14"
 	>
-		Experiências que aproximam pessoas e marcas.
-	</h1>
-	<p data-animate class="max-w-2xl text-lg leading-relaxed text-muted sm:text-xl">
-		Astro, Tailwind, TypeScript, SEO e a base de deploy já estão configurados para começar o site da
-		YESS.
-	</p>
+		<Image
+			src={image}
+			alt={imageAlt}
+			fetchpriority="high"
+			class="absolute inset-0 size-full object-cover object-[58%_center] lg:object-center"
+		/>
+		<div
+			class="absolute inset-0 bg-linear-to-r from-background/95 via-background/65 to-background/5 lg:from-transparent lg:via-transparent lg:to-transparent"
+			aria-hidden="true"></div>
+
+		<div
+			class="relative z-10 flex w-full max-w-197.5 flex-col items-start gap-4.5 lg:h-146 lg:overflow-hidden"
+		>
+			<p
+				data-animate
+				class="inline-flex items-center gap-2 rounded-pill bg-violet-dark p-3.5 font-title text-sm leading-5 font-semibold text-foreground"
+			>
+				<span class="size-2 rounded-full bg-foreground" aria-hidden="true"></span>
+				<span class="uppercase" set:html={eyebrow} />
+			</p>
+
+			<h1
+				data-animate
+				class="max-w-5xl pt-2 font-title text-[2.35rem] leading-[1.08] uppercase sm:text-5xl sm:leading-[1.1] lg:text-[58px] lg:leading-[66px]"
+			>
+				<span class="font-extrabold" set:html={titleStrong} />{' '}
+				<span class="font-semibold" set:html={title} />
+			</h1>
+
+			<p
+				data-animate
+				class="w-full max-w-147.5 font-title text-base leading-7 text-muted sm:text-lg sm:leading-7.5"
+				set:html={description}
+			/>
+
+			<div data-animate class="flex flex-wrap items-center gap-3">
+				<Button label={primaryCta.label} href={primaryCta.href} variant="primary" arrow />
+				<Button label={secondaryCta.label} href={secondaryCta.href} variant="outline" />
+			</div>
+
+			<ul
+				data-animate
+				class="flex list-none flex-wrap items-center gap-x-5.5 gap-y-2 pt-3 font-title text-sm leading-6 text-muted sm:text-[15px]"
+			>
+				{
+					features.map((feature, index) => (
+						<li class="flex items-center gap-2">
+							<span
+								class:list={['size-1.5 rounded-full', index === 1 ? 'bg-primary' : 'bg-foreground']}
+								aria-hidden="true"
+							/>
+							<span set:html={feature} />
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</div>
 </section>

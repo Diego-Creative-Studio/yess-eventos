@@ -1,13 +1,36 @@
 @import 'tailwindcss';
 
 @theme {
-	--color-background: #f7f7f5;
-	--color-surface: #ffffff;
-	--color-foreground: #151515;
-	--color-muted: #666663;
-	--color-accent: #175cff;
-	--color-accent-dark: #0d3db8;
-	--font-sans: var(--font-jakarta);
+	/* Brand colors - Figma: Website / Home */
+	--color-background: #070a0f;
+	--color-surface: #0e141d;
+	--color-surface-alt: #121b27;
+	--color-stroke: #223044;
+
+	--color-primary: #2678ff;
+	--color-primary-dark: #0940bb;
+	--color-primary-soft: #0d2d5b;
+
+	--color-foreground: #f5f7fa;
+	--color-muted: #9da8b8;
+	--color-text-secondary: #b2bfd1;
+	--color-white: #ffffff;
+
+	--color-violet: #7c3aed;
+	--color-violet-dark: #291761;
+	--color-warm: #f58714;
+
+	/* Compatibility aliases for existing components */
+	--color-accent: var(--color-primary);
+	--color-accent-dark: var(--color-primary-dark);
+
+	/* Typography */
+	--font-title: var(--font-jakarta);
+	--font-sans: var(--font-inter);
+
+	/* Radius */
+	--radius-small: 14px;
+	--radius-pill: 999px;
 }
 
 @layer base {
@@ -22,6 +45,15 @@
 	body {
 		margin: 0;
 		min-height: 100vh;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-family: var(--font-title);
 	}
 
 	button,
