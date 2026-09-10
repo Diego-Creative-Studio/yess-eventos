@@ -1,0 +1,173 @@
+---
+import type { ImageMetadata } from 'astro'
+import { Image } from 'astro:assets'
+
+import iconControls from '@/assets/services/estrutura.svg'
+import iconTeam from '@/assets/services/equipe.svg'
+import iconLocation from '@/assets/services/localizacao.svg'
+import imageLed from '@/assets/services/painel-led.png'
+import imageSound from '@/assets/services/sonorizacao.png'
+import imageLighting from '@/assets/services/iluminacao.png'
+
+interface Benefit {
+	label: string
+	icon: ImageMetadata
+}
+
+interface Service {
+	title: string
+	description: string
+	href: string
+	image: ImageMetadata
+}
+
+const benefits: Benefit[] = [
+	{ label: 'Estrutura sob medida', icon: iconControls },
+	{ label: 'Equipe técnica', icon: iconTeam },
+	{ label: 'Atendimento em São Paulo', icon: iconLocation },
+]
+
+const services: Service[] = [
+	{
+		title: 'Sonorização',
+		description: 'Clareza e equilíbrio para todo o público.',
+		href: '#sonorizacao',
+		image: imageSound,
+	},
+	{
+		title: 'Iluminação',
+		description: 'Atmosfera e destaque para cada momento.',
+		href: '#iluminacao',
+		image: imageLighting,
+	},
+]
+---
+
+<section id="servicos" class="bg-background px-3 pt-8 pb-8 md:px-8 lg:px-16 lg:py-18 lg:pb-16">
+	<div class="mx-auto flex w-full flex-col gap-8 lg:max-w-345">
+		<div
+			data-animate
+			class="flex overflow-hidden rounded-3xl border border-stroke bg-linear-to-br from-surface to-primary-soft/60 lg:grid-cols-5"
+		>
+			<div class="flex-col p-8 lg:flex-row">
+				<h2 class="font-title text-2xl font-semibold text-foreground">
+					Estrutura para eventos corporativos
+				</h2>
+
+				<p class="mt-1.5 max-w-md font-title text-sm text-muted">
+					Painéis de LED, som, iluminação e TVs para empresas, feiras, congressos e apresentações.
+				</p>
+			</div>
+			<div class="my-4 hidden items-center border-r border-muted lg:block"></div>
+			<ul class="grid gap-6 border-t border-stroke p-7 lg:col-span-3 lg:grid-cols-3 lg:border-t-0">
+				{
+					benefits.map((benefit) => (
+						<li class="flex items-center gap-3">
+							<span class="flex size-15 shrink-0 items-center justify-center rounded-full bg-stroke">
+								<Image src={benefit.icon} alt="" class="max-h-7.5 max-w-7.5" />
+							</span>
+							<span class="font-title text-sm text-foreground">{benefit.label}</span>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+
+		<header
+			data-animate
+			class="flex flex-col gap-5 py-2 lg:min-h-43.25 lg:flex-row lg:items-end lg:justify-between"
+		>
+			<div class="max-w-190">
+				<p class="font-title text-sm font-semibold text-warm uppercase">Nossos serviços</p>
+				<h2 class="mt-2 font-title text-4xl font-semibold text-foreground">
+					Painéis de LED em primeiro plano. Tudo para seu evento.
+				</h2>
+			</div>
+			<p class="max-w-86 font-title text-sm text-muted">
+				Soluções completas para eventos corporativos, feiras e congressos.
+			</p>
+		</header>
+
+		<div class="grid gap-6 lg:grid-cols-12">
+			<a
+				data-animate
+				href="#paineis-led"
+				class="group relative min-h-96 overflow-hidden rounded-3xl border border-stroke lg:col-span-7 lg:min-h-130"
+			>
+				<Image
+					src={imageLed}
+					alt="Palco corporativo com painel de LED azul"
+					class="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
+				/>
+				<div
+					class="absolute inset-0 bg-linear-to-t from-background via-background/35 to-transparent"
+				></div>
+				<span class="absolute top-6 right-7 text-2xl text-foreground" aria-hidden="true">↗</span>
+				<div class="absolute right-7 bottom-7 left-7">
+					<h3 class="font-title text-2xl font-semibold text-foreground">Painéis de LED P2 e P3</h3>
+					<p class="mt-1.5 font-title text-sm text-muted">
+						Alta definição, montagem sob medida e operação técnica para eventos corporativos.
+					</p>
+				</div>
+			</a>
+
+			<div class="grid gap-6 lg:col-span-5">
+				{
+					services.map((service) => (
+						<a
+							data-animate
+							href={service.href}
+							class="group relative min-h-72 overflow-hidden rounded-3xl border border-stroke lg:min-h-62"
+						>
+							<Image
+								src={service.image}
+								alt=""
+								class="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
+							/>
+							<div class="absolute inset-0 bg-linear-to-t from-background via-background/25 to-transparent" />
+							<span class="absolute top-6 right-7 text-2xl text-foreground" aria-hidden="true">
+								↗
+							</span>
+							<div class="absolute right-7 bottom-7 left-7">
+								<h3 class="font-title text-2xl font-semibold text-foreground">{service.title}</h3>
+								<p class="mt-1.5 font-title text-sm text-muted">{service.description}</p>
+							</div>
+						</a>
+					))
+				}
+			</div>
+		</div>
+
+		<div class="grid gap-6 lg:grid-cols-12">
+			<a
+				data-animate
+				href="#tvs"
+				class="group relative flex min-h-65 flex-col justify-end overflow-hidden rounded-3xl border border-stroke bg-linear-to-r from-background via-primary-soft to-warm p-7 lg:col-span-4"
+			>
+				<span class="absolute top-6 right-7 text-2xl text-foreground" aria-hidden="true">↗</span>
+				<h3 class="font-title text-2xl font-semibold text-foreground">Locação de TVs</h3>
+				<p class="mt-1.5 max-w-72 font-title text-sm text-muted">
+					Monitores para feiras, congressos e apresentações.
+				</p>
+			</a>
+
+			<a
+				data-animate
+				href="#todos-os-servicos"
+				class="flex min-h-65 flex-col justify-center gap-8 rounded-3xl border border-primary bg-linear-to-r from-primary-soft to-primary p-7 lg:col-span-8 lg:flex-row lg:items-center lg:justify-between lg:px-9"
+			>
+				<div>
+					<h3 class="font-title text-2xl font-semibold text-foreground">
+						Soluções para cada necessidade
+					</h3>
+					<p class="mt-2 font-title text-sm text-muted">
+						Painéis, som, iluminação e TVs com planejamento e operação técnica.
+					</p>
+				</div>
+				<span class="shrink-0 font-title text-sm font-semibold text-foreground">
+					Ver todos os serviços →
+				</span>
+			</a>
+		</div>
+	</div>
+</section>

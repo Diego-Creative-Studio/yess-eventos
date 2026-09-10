@@ -47,21 +47,39 @@
 		min-height: 100vh;
 	}
 
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
+	h1 {
+		@apply leading-[1.14] tracking-[-0.01em];
+	}
+
+	h2 {
+		@apply leading-tight font-semibold tracking-[-0.005em];
+	}
+
+	h3 {
+		@apply leading-[1.33] font-semibold tracking-normal;
+	}
+
+	h4 {
+		@apply leading-[1.4] font-semibold tracking-normal;
+	}
+
+	h5 {
+		@apply leading-[1.67] font-semibold tracking-normal;
+	}
+
 	h6 {
-		font-family: var(--font-title);
+		@apply leading-[1.43] font-semibold tracking-normal;
 	}
 
 	p {
-		font-family: var(--font-sans);
+		@apply leading-[1.65] tracking-normal;
+		font-family: var(--font-title);
 	}
 
 	button,
 	a {
+		@apply leading-5;
+		font-family: var(--font-title);
 		-webkit-tap-highlight-color: transparent;
 	}
 }
