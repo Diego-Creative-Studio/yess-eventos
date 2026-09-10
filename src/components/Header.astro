@@ -1,18 +1,50 @@
-<header class="border-b border-foreground/10">
-	<div class="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-6 lg:px-10">
-		<a
-			href="/"
-			class="text-xl font-extrabold tracking-[-0.04em]"
-			aria-label="YESS Eventos — início"
-		>
-			YESS
+---
+import { Image } from 'astro:assets'
+
+import logoYess from '@/assets/logo-yess.svg'
+
+const navigation = [
+	{ label: 'Início', href: '/' },
+	{ label: 'Serviços', href: '#servicos' },
+	{ label: 'Portfólio', href: '#portfolio' },
+	{ label: 'Sobre', href: '#sobre' },
+	{ label: 'Contato', href: '#contato' },
+]
+---
+
+<header class="px-3 py-3 sm:px-6 lg:px-16 lg:pt-6 lg:pb-5">
+	<div
+		class="mx-auto flex h-18 w-full max-w-345 items-center justify-between gap-3 overflow-hidden rounded-pill border border-stroke bg-surface px-4 py-3 lg:h-20 lg:gap-6 lg:px-7.5"
+	>
+		<a href="/" class="shrink-0" aria-label="YESS Audiovisual e Eventos — início">
+			<Image src={logoYess} alt="YESS Audiovisual e Eventos" class="h-12 w-auto lg:h-15.5" />
 		</a>
+
+		<nav class="hidden items-center gap-7 lg:flex" aria-label="Navegação principal">
+			{
+				navigation.map((item) => (
+					<a
+						href={item.href}
+						class="font-title text-sm leading-5 font-semibold text-muted transition-colors duration-200 hover:text-foreground"
+					>
+						{item.label}
+					</a>
+				))
+			}
+
+			<a
+				href="#contato"
+				class="inline-flex h-12 items-center justify-center rounded-pill bg-primary px-5.5 font-title text-sm leading-5 font-semibold text-foreground transition-colors duration-200 hover:bg-primary-dark"
+			>
+				Solicitar orçamento
+			</a>
+		</nav>
 
 		<a
 			href="#contato"
-			class="rounded-full border border-foreground/15 px-5 py-2.5 text-sm font-bold transition hover:border-accent hover:text-accent"
+			class="inline-flex h-12 shrink-0 items-center justify-center rounded-pill bg-primary px-4 font-title text-sm leading-5 font-semibold text-foreground transition-colors duration-200 hover:bg-primary-dark lg:hidden"
 		>
-			Fale com a gente
+			Solicitar orçamento
 		</a>
 	</div>
 </header>
