@@ -35,7 +35,7 @@ const {
 } = Astro.props
 ---
 
-<section class="bg-stroke pt-4 pb-8 md:px-8 lg:px-16 lg:pt-5 lg:pb-16">
+<section class="bg-stroke px-3 pt-4 pb-8 md:px-8 lg:px-16 lg:pt-5 lg:pb-16">
 	<div
 		class="relative container mx-auto flex w-full items-center overflow-hidden rounded-[38px] border border-stroke bg-surface px-6 py-10 sm:px-10 md:max-w-7xl lg:max-w-345 lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
 	>
@@ -46,15 +46,15 @@ const {
 			class="absolute inset-0 size-full object-cover object-[58%_center] lg:object-center"
 		/>
 		<div
-			class="absolute inset-0 bg-linear-to-r from-background/95 via-background/65 to-background/5 lg:from-transparent lg:via-transparent lg:to-transparent"
+			class="absolute inset-0 bg-linear-to-t from-background/95 from-20% to-transparent to-80% lg:bg-linear-to-r lg:from-20% lg:to-60%"
 			aria-hidden="true"></div>
 
 		<div
-			class="relative z-10 flex w-full max-w-197.5 flex-col items-start gap-4.5 lg:h-146 lg:overflow-hidden"
+			class="relative z-10 flex w-full max-w-197.5 flex-col items-center gap-4.5 text-center lg:h-146 lg:items-start lg:overflow-hidden lg:text-left"
 		>
 			<p
 				data-animate
-				class="inline-flex items-center gap-2 rounded-pill bg-violet-dark p-3.5 font-title text-sm leading-5 font-semibold text-foreground"
+				class="inline-flex items-center justify-center gap-2 self-center rounded-pill bg-violet-dark p-3.5 text-center font-title text-xs leading-5 font-semibold text-foreground md:text-sm lg:self-start lg:text-left"
 			>
 				<span class="size-2 rounded-full bg-foreground" aria-hidden="true"></span>
 				<span class="uppercase" set:html={eyebrow} />
@@ -62,7 +62,7 @@ const {
 
 			<h1
 				data-animate
-				class="max-w-5xl pt-2 font-title text-[2.35rem] leading-[1.08] uppercase sm:text-5xl sm:leading-[1.1] lg:text-[58px] lg:leading-[66px]"
+				class="w-full pt-2 font-title text-[2.35rem] leading-[1.08] uppercase sm:text-5xl sm:leading-[1.1] md:max-w-5xl lg:text-[58px] lg:leading-[66px]"
 			>
 				<span class="font-extrabold" set:html={titleStrong} />{' '}
 				<span class="font-semibold" set:html={title} />
@@ -70,18 +70,32 @@ const {
 
 			<p
 				data-animate
-				class="w-full max-w-147.5 font-title text-base leading-7 text-muted sm:text-lg sm:leading-7.5"
+				class="w-full font-title text-base leading-7 text-foreground/80 sm:text-lg sm:leading-7.5 md:max-w-147.5"
 				set:html={description}
 			/>
 
-			<div data-animate class="flex flex-wrap items-center gap-3">
-				<Button label={primaryCta.label} href={primaryCta.href} variant="primary" arrow />
-				<Button label={secondaryCta.label} href={secondaryCta.href} variant="outline" />
+			<div
+				data-animate
+				class="flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row lg:justify-start"
+			>
+				<Button
+					label={primaryCta.label}
+					href={primaryCta.href}
+					variant="primary"
+					arrow
+					class="w-full sm:w-auto"
+				/>
+				<Button
+					label={secondaryCta.label}
+					href={secondaryCta.href}
+					variant="outline"
+					class="w-full sm:w-auto"
+				/>
 			</div>
 
 			<ul
 				data-animate
-				class="flex list-none flex-wrap items-center gap-x-5.5 gap-y-2 pt-5 font-title text-sm leading-6 text-muted sm:text-[15px]"
+				class="flex w-full list-none flex-wrap items-center justify-center gap-x-5.5 gap-y-2 pt-5 font-title text-sm leading-6 text-muted sm:text-[15px] lg:w-auto lg:justify-start"
 			>
 				{
 					features.map((feature, index) => (
