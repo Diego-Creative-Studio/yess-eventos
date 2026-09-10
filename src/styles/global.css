@@ -56,6 +56,10 @@
 		font-family: var(--font-title);
 	}
 
+	p {
+		font-family: var(--font-sans);
+	}
+
 	button,
 	a {
 		-webkit-tap-highlight-color: transparent;
