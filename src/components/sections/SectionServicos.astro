@@ -47,19 +47,21 @@ const services: Service[] = [
 	<div class="mx-auto flex w-full flex-col gap-8 lg:max-w-345">
 		<div
 			data-animate
-			class="flex overflow-hidden rounded-3xl border border-stroke bg-linear-to-br from-surface to-primary-soft/60 lg:grid-cols-5"
+			class="flex flex-col items-stretch overflow-hidden rounded-3xl border border-stroke bg-linear-to-br from-surface to-primary-soft/60 p-6 lg:flex-row lg:items-center"
 		>
-			<div class="flex-col p-8 lg:flex-row">
+			<div class="w-full lg:w-auto">
 				<h2 class="font-title text-2xl font-semibold text-foreground">
 					Estrutura para eventos corporativos
 				</h2>
 
-				<p class="mt-1.5 max-w-md font-title text-sm text-muted">
+				<p class="mt-1.5 font-title text-sm text-muted">
 					Painéis de LED, som, iluminação e TVs para empresas, feiras, congressos e apresentações.
 				</p>
 			</div>
-			<div class="my-4 hidden items-center border-r border-muted lg:block"></div>
-			<ul class="grid gap-6 border-t border-stroke p-7 lg:col-span-3 lg:grid-cols-3 lg:border-t-0">
+			<span class="hidden h-28 border-r text-muted lg:block"></span>
+			<ul
+				class="mt-6 grid w-full gap-4 border-t border-stroke pt-6 lg:mt-0 lg:w-auto lg:grid-cols-3 lg:gap-6 lg:border-t-0 lg:p-7"
+			>
 				{
 					benefits.map((benefit) => (
 						<li class="flex items-center gap-3">
@@ -73,7 +75,7 @@ const services: Service[] = [
 			</ul>
 		</div>
 
-		<header
+		<div
 			data-animate
 			class="flex flex-col gap-5 py-2 lg:min-h-43.25 lg:flex-row lg:items-end lg:justify-between"
 		>
@@ -86,7 +88,7 @@ const services: Service[] = [
 			<p class="max-w-86 font-title text-sm text-muted">
 				Soluções completas para eventos corporativos, feiras e congressos.
 			</p>
-		</header>
+		</div>
 
 		<div class="grid gap-6 lg:grid-cols-12">
 			<a
