@@ -1,0 +1,100 @@
+---
+import { Image } from 'astro:assets'
+
+import Button from '@/components/Button.astro'
+import Icon from '@/components/Icon.astro'
+import imageAbout from '@/assets/sobre/sobre-a-empresa.png'
+
+const highlights = [
+	{
+		icon: 'calendario',
+		iconClass: 'size-6.25',
+		title: 'Planejamento personalizado',
+		description:
+			'Entendemos o objetivo do evento e criamos a estrutura ideal para alcançar o resultado esperado.',
+	},
+	{
+		icon: 'ferramentas',
+		iconClass: 'size-7.5',
+		title: 'Equipamentos profissionais',
+		description:
+			'Tecnologia de ponta para garantir qualidade, segurança e desempenho em qualquer escala.',
+	},
+	{
+		icon: 'equipe',
+		iconClass: 'size-7.5',
+		title: 'Equipe técnica especializada',
+		description: 'Profissionais experientes que cuidam de cada etapa com foco total na excelência.',
+	},
+] as const
+---
+
+<section
+	id="sobre"
+	aria-labelledby="titulo-sobre"
+	class="relative overflow-hidden bg-background px-3 py-12 md:px-8 lg:px-16 lg:py-16"
+>
+	<span
+		aria-hidden="true"
+		class="pointer-events-none absolute -top-70 -right-98 size-170 rounded-full bg-primary/20 blur-3xl"
+	></span>
+
+	<div class="relative z-10 mx-auto flex w-full flex-col gap-10 lg:max-w-345 lg:flex-row lg:gap-15">
+		<div
+			data-animate
+			class="relative aspect-4/5 overflow-hidden rounded-3xl border-2 border-primary lg:aspect-6/7 lg:w-149 lg:shrink-0"
+		>
+			<div class="absolute inset-0 lg:inset-auto lg:top-0 lg:-left-71.25 lg:h-175 lg:w-311">
+				<Image
+					src={imageAbout}
+					alt="Público acompanhando uma apresentação corporativa em um palco com painéis de LED"
+					class="size-full object-cover"
+				/>
+			</div>
+		</div>
+
+		<div data-animate class="flex flex-1 flex-col lg:max-w-140 lg:pt-6">
+			<p class="font-title text-sm font-semibold text-warm uppercase">Sobre a empresa</p>
+
+			<h2 id="titulo-sobre" class="mt-2 font-title text-3xl text-foreground lg:text-5xl">
+				Estrutura, técnica <br class="hidden lg:block" />e cuidado em cada <br
+					class="hidden lg:block"
+				/>evento.
+			</h2>
+
+			<div class="mt-5 max-w-md space-y-2 text-muted">
+				<p>
+					A YESS ajuda empresas e produtores a transformar projetos em eventos corporativos com
+					estrutura audiovisual completa e operação integrada.
+				</p>
+				<p>
+					Mais do que equipamentos, entregamos tranquilidade, organização e impacto em cada detalhe.
+				</p>
+			</div>
+
+			<ul class="mt-6 flex flex-col gap-5">
+				{
+					highlights.map((highlight) => (
+						<li class="flex items-center gap-5">
+							<span class="flex size-15 shrink-0 items-center justify-center rounded-full bg-primary-soft text-white">
+								<Icon name={highlight.icon} class={highlight.iconClass} />
+							</span>
+							<div class="max-w-95 font-title text-sm">
+								<h3 class="font-normal text-foreground">{highlight.title}</h3>
+								<p class="text-muted">{highlight.description}</p>
+							</div>
+						</li>
+					))
+				}
+			</ul>
+
+			<Button
+				label="Conheça nossa história"
+				href="#nossa-historia"
+				variant="outline"
+				arrow
+				class="mt-6 self-start border-primary"
+			/>
+		</div>
+	</div>
+</section>
