@@ -1,4 +1,6 @@
 ---
+import Icon from '@/components/Icon.astro'
+
 interface Props {
 	label: string
 	href: string
@@ -25,5 +27,5 @@ const variants = {
 	]}
 >
 	<span set:html={label} />
-	{arrow && <span aria-hidden="true">→</span>}
+	{arrow && <Icon name="arrow" class="size-4" />}
 </a>
