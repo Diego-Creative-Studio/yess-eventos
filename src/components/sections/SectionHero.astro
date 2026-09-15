@@ -4,6 +4,7 @@ import { Image } from 'astro:assets'
 
 import heroHome from '@/assets/hero-home.png'
 import Button from '@/components/Button.astro'
+import Etiqueta from '@/components/Etiqueta.astro'
 
 interface Cta {
 	label: string
@@ -20,6 +21,9 @@ interface Props {
 	primaryCta?: Cta
 	secondaryCta?: Cta
 	features?: string[]
+	corFundoEtiqueta?: string
+	corTextoEtiqueta?: string
+	corBolinhaEtiqueta?: string
 }
 
 const {
@@ -32,6 +36,9 @@ const {
 	primaryCta = { label: 'Solicitar orçamento', href: '#contato' },
 	secondaryCta = { label: 'Conhecer soluções', href: '#servicos' },
 	features = ['Planejamento', 'Montagem', 'Operação técnica'],
+	corFundoEtiqueta = 'bg-violet-dark',
+	corTextoEtiqueta = 'text-foreground',
+	corBolinhaEtiqueta = 'bg-foreground',
 } = Astro.props
 ---
 
@@ -52,13 +59,14 @@ const {
 		<div
 			class="relative z-10 flex w-full max-w-197.5 flex-col items-center gap-4.5 text-center lg:h-146 lg:max-w-200 lg:items-start lg:overflow-hidden lg:text-left"
 		>
-			<p
-				data-animate
-				class="inline-flex items-center justify-center gap-2 self-center rounded-pill bg-violet-dark p-3.5 text-center font-title text-xs font-semibold text-foreground md:text-sm lg:self-start lg:text-left"
-			>
-				<span class="size-2 rounded-full bg-foreground" aria-hidden="true"></span>
-				<span class="uppercase" set:html={eyebrow} />
-			</p>
+			<Etiqueta
+				animar
+				texto={eyebrow}
+				corFundo={corFundoEtiqueta}
+				corTexto={corTextoEtiqueta}
+				corBolinha={corBolinhaEtiqueta}
+				class="self-center lg:self-start lg:text-left"
+			/>
 
 			<h1
 				data-animate

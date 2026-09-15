@@ -1,8 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro'
 
-import Rodape from '@/components/Footer.astro'
-import Cabecalho from '@/components/Header.astro'
 import SecaoChamadaServico from '@/components/sections/servicos/SecaoChamadaServico.astro'
 import SecaoComparacaoServico from '@/components/sections/servicos/SecaoComparacaoServico.astro'
 import SecaoCredibilidadeServico from '@/components/sections/servicos/SecaoCredibilidadeServico.astro'
@@ -26,8 +24,6 @@ import imagemProjetoPainel from '@/assets/painel-led/projeto-painel-corporativo.
 	title="Painéis de LED P2 e P3 para eventos | YESS"
 	description="Locação de painéis de LED P2 e P3 para eventos corporativos, com projeto, montagem e operação técnica."
 >
-	<Cabecalho />
-
 	<main id="conteudo">
 		<SecaoHeroServico
 			etiqueta="Locação de painel de LED P2 e P3"
@@ -38,6 +34,9 @@ import imagemProjetoPainel from '@/assets/painel-led/projeto-painel-corporativo.
 			textoAlternativoImagem="Evento corporativo com grande painel de LED no palco"
 			textoBotao="Solicitar orçamento"
 			linkBotao="#orcamento"
+			corFundoEtiqueta="bg-violet-dark"
+			corTextoEtiqueta="text-foreground"
+			corBolinhaEtiqueta="bg-warm"
 		/>
 
 		<SecaoCredibilidadeServico
@@ -238,8 +237,6 @@ import imagemProjetoPainel from '@/assets/painel-led/projeto-painel-corporativo.
 			linkBotao="#contato"
 		/>
 	</main>
-
-	<Rodape />
 
 	<script>
 		import { gsap } from 'gsap'
