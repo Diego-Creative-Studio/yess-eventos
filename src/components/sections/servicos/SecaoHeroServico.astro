@@ -36,14 +36,14 @@ const { tituloDestaque, titulo, descricao, imagem, textoAlternativoImagem, texto
 				<slot name="etiqueta" />
 
 				<h1
-					class="w-full pt-2 font-title text-[2.35rem] uppercase sm:text-5xl md:max-w-5xl lg:text-5xl 2xl:text-6xl"
+					class="w-full pt-2 text-[2.35rem] uppercase sm:text-5xl md:max-w-5xl lg:text-5xl 2xl:text-6xl"
 				>
 					<strong class="font-extrabold" set:html={tituloDestaque} />{' '}
 					<span class="font-semibold" set:html={titulo} />
 				</h1>
 
 				<p
-					class="w-full font-title text-base text-foreground/80 md:max-w-147.5 md:text-lg"
+					class="w-full text-base text-foreground/80 md:max-w-147.5 md:text-lg"
 					set:html={descricao}
 				/>
 
