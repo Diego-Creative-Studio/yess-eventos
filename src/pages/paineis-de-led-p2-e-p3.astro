@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro'
 
+import Etiqueta from '@/components/Etiqueta.astro'
 import SecaoChamadaServico from '@/components/sections/servicos/SecaoChamadaServico.astro'
 import SecaoComparacaoServico from '@/components/sections/servicos/SecaoComparacaoServico.astro'
 import SecaoCredibilidadeServico from '@/components/sections/servicos/SecaoCredibilidadeServico.astro'
@@ -26,18 +27,23 @@ import imagemProjetoPainel from '@/assets/painel-led/projeto-painel-corporativo.
 >
 	<main id="conteudo">
 		<SecaoHeroServico
-			etiqueta="Locação de painel de LED P2 e P3"
-			tituloDestaque="Painel de LED para eventos corporativos,"
-			titulo="do planejamento à operação."
+			tituloDestaque="Painel de LED  para eventos corporativos"
+			titulo="<br/> do planejamento à operação"
 			descricao="Projetos sob medida para feiras, congressos, convenções e apresentações, com montagem e suporte técnico especializado."
 			imagem={imagemHero}
 			textoAlternativoImagem="Evento corporativo com grande painel de LED no palco"
 			textoBotao="Solicitar orçamento"
 			linkBotao="#orcamento"
-			corFundoEtiqueta="bg-violet-dark"
-			corTextoEtiqueta="text-foreground"
-			corBolinhaEtiqueta="bg-warm"
-		/>
+		>
+			<Etiqueta
+				slot="etiqueta"
+				texto="Locação de painel de LED P2 e P3"
+				corFundo="bg-stroke"
+				corTexto="text-foreground"
+				corBolinha="bg-warm"
+				class="self-center lg:self-start lg:text-left"
+			/>
+		</SecaoHeroServico>
 
 		<SecaoCredibilidadeServico
 			etiqueta="Por que a YESS?"
