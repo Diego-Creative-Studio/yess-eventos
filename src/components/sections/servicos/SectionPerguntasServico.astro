@@ -26,7 +26,10 @@ const fundos = ['bg-primary', 'bg-primary-soft', 'bg-stroke', 'bg-surface']
 						<>
 							<h3 class="text-base text-foreground lg:text-xl" set:html={item.pergunta} />
 							<p
-								class:list={['mt-2', indice === 0 ? 'text-white' : 'text-foreground/75']}
+								class:list={[
+									'mt-2',
+									indice === 0 ? 'text-white text-shadow-sm' : 'text-foreground/75',
+								]}
 								set:html={item.resposta}
 							/>
 						</>
