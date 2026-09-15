@@ -49,32 +49,32 @@
 	}
 
 	h1 {
-		@apply leading-[1.14] tracking-[-0.01em];
+		@apply font-title leading-[1.14] tracking-[-0.01em];
 	}
 
 	h2 {
-		@apply leading-tight font-semibold tracking-[-0.005em];
+		@apply font-title leading-tight font-semibold tracking-[-0.005em];
 	}
 
 	h3 {
-		@apply leading-[1.33] font-semibold tracking-normal;
+		@apply font-title leading-[1.33] font-semibold tracking-normal;
 	}
 
 	h4 {
-		@apply leading-[1.4] font-semibold tracking-normal;
+		@apply font-title leading-[1.4] font-semibold tracking-normal;
 	}
 
 	h5 {
-		@apply leading-[1.67] font-semibold tracking-normal;
+		@apply font-title leading-[1.67] font-semibold tracking-normal;
 	}
 
 	h6 {
-		@apply leading-[1.43] font-semibold tracking-normal;
+		@apply font-title leading-[1.43] font-semibold tracking-normal;
 	}
 
 	p {
 		@apply leading-[1.65] tracking-normal;
-		font-family: var(--font-title);
+		font-family: var(--font-sans);
 	}
 
 	button,

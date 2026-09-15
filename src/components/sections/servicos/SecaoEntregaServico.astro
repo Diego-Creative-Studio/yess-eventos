@@ -4,7 +4,15 @@ import { Image } from 'astro:assets'
 
 import Icone from '@/components/Icon.astro'
 
-type NomeIcone = 'calendario' | 'estrutura' | 'ferramentas' | 'equipe'
+type NomeIcone =
+	| 'calendario'
+	| 'estrutura'
+	| 'ferramentas'
+	| 'equipe'
+	| 'medida'
+	| 'montagem'
+	| 'testes'
+	| 'operacao'
 
 interface ItemEntrega {
 	icone: NomeIcone
@@ -38,15 +46,15 @@ const { etiqueta, titulo, descricao, itens, nota, imagem, textoAlternativoImagem
 			<ul class="mt-7 grid gap-5"
 				>{
 					itens.map((item) => (
-						<li class="flex gap-5">
+						<li class="flex items-center gap-4">
 							<>
-								<span class="flex size-15 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary">
+								<span class="flex size-15 shrink-0 items-center justify-center rounded-full bg-primary-soft text-white">
 									<Icone name={item.icone} class="size-7" />
 								</span>
-								<div>
+								<div class="min-w-0 flex-1">
 									<>
 										<h3 class="font-title text-base text-foreground" set:html={item.titulo} />
-										<p class="mt-1 text-sm text-muted" set:html={item.descricao} />
+										<p class="text-sm text-muted" set:html={item.descricao} />
 									</>
 								</div>
 							</>
@@ -64,10 +72,8 @@ const { etiqueta, titulo, descricao, itens, nota, imagem, textoAlternativoImagem
 			><Image
 				src={imagem}
 				alt={textoAlternativoImagem}
-				class="absolute inset-0 size-full object-cover"
-			/><div
-				class="absolute inset-0 bg-linear-to-t from-background/70 to-transparent to-50% lg:bg-linear-to-r lg:from-primary-soft/70 lg:to-transparent lg:to-30%"
-				aria-hidden="true"></div></div
-		>
+				class="l absolute inset-0 size-full object-cover lg:rounded-tl-3xl lg:rounded-bl-3xl"
+			/>
+		</div>
 	</div>
 </section>

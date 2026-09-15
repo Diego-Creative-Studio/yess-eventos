@@ -10,6 +10,10 @@ type IconName =
 	| 'instagram'
 	| 'calendario'
 	| 'ferramentas'
+	| 'medida'
+	| 'montagem'
+	| 'testes'
+	| 'operacao'
 
 interface Props {
 	name: IconName
@@ -29,6 +33,10 @@ const sourceViewBoxes: Record<IconName, string> = {
 	instagram: '0 0 17 17',
 	calendario: '0 0 25 25',
 	ferramentas: '0 0 24 24',
+	medida: '0 0 20 20',
+	montagem: '0 0 20 20',
+	testes: '0 0 20 20',
+	operacao: '0 0 20 20',
 }
 ---
 
@@ -146,6 +154,88 @@ const sourceViewBoxes: Record<IconName, string> = {
 					stroke-linecap="round"
 					stroke-linejoin="round"
 				/>
+			)
+		}
+
+		{
+			name === 'medida' && (
+				<>
+					<path
+						d="M2.5 5.83333H17.5M5.83333 2.5V9.16667M14.1667 2.5V9.16667M4.16667 11.6667H15.8333V17.5H4.16667V11.6667Z"
+						stroke="currentColor"
+						stroke-width="1.5"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
+					<path
+						d="M7.5 14.1667H12.5"
+						stroke="currentColor"
+						stroke-width="1.5"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
+				</>
+			)
+		}
+
+		{
+			name === 'montagem' && (
+				<>
+					<path
+						d="M12.2498 5.25006C12.4281 4.6709 12.4452 4.05409 12.2992 3.46595C12.1532 2.87781 11.8496 2.3406 11.4211 1.9121C10.9926 1.4836 10.4554 1.18002 9.86726 1.034C9.27913 0.887986 8.66231 0.905063 8.08315 1.08339L9.83315 2.83339L7.83315 4.83339L6.08315 3.08339C5.90482 3.66255 5.88774 4.27937 6.03376 4.86751C6.17977 5.45565 6.48336 5.99285 6.91186 6.42135C7.34036 6.84986 7.87757 7.15344 8.4657 7.29945C9.05384 7.44547 9.67066 7.42839 10.2498 7.25006L16.6665 13.6667C16.8306 13.8309 16.9608 14.0258 17.0497 14.2402C17.1385 14.4547 17.1843 14.6846 17.1843 14.9167C17.1843 15.1489 17.1385 15.3787 17.0497 15.5932C16.9608 15.8077 16.8306 16.0026 16.6665 16.1667C16.5023 16.3309 16.3075 16.4611 16.093 16.5499C15.8785 16.6388 15.6486 16.6845 15.4165 16.6845C15.1843 16.6845 14.9545 16.6388 14.74 16.5499C14.5255 16.4611 14.3306 16.3309 14.1665 16.1667L7.74982 9.75006"
+						stroke="currentColor"
+						stroke-width="1.5"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
+					<path
+						d="M4.16667 11.6667L2.5 13.3334V17.5001H6.66667L8.33333 15.8334"
+						stroke="currentColor"
+						stroke-width="1.5"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
+				</>
+			)
+		}
+
+		{
+			name === 'testes' && (
+				<path
+					d="M3.3335 15V7.5M7.50016 15V4.16667M11.6668 15V9.16667M15.8335 15V2.5"
+					stroke="currentColor"
+					stroke-width="1.5"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				/>
+			)
+		}
+
+		{
+			name === 'operacao' && (
+				<>
+					<path
+						d="M3.3335 10.8333V9.16667C3.3335 7.39856 4.03588 5.70286 5.28612 4.45262C6.53636 3.20238 8.23205 2.5 10.0002 2.5C11.7683 2.5 13.464 3.20238 14.7142 4.45262C15.9645 5.70286 16.6668 7.39856 16.6668 9.16667V10.8333"
+						stroke="currentColor"
+						stroke-width="1.5"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
+					<path
+						d="M3.33314 10.8333H5.83314V15.8333H4.16647C3.72445 15.8333 3.30052 15.6577 2.98796 15.3451C2.6754 15.0325 2.49981 14.6086 2.49981 14.1666V12.4999C2.45692 12.1707 2.51332 11.8362 2.6618 11.5392C2.81027 11.2423 3.04404 10.9965 3.33314 10.8333ZM16.6665 10.8333H14.1665V15.8333H15.8331C16.2752 15.8333 16.6991 15.6577 17.0117 15.3451C17.3242 15.0325 17.4998 14.6086 17.4998 14.1666V12.4999C17.5427 12.1707 17.4863 11.8362 17.3378 11.5392C17.1893 11.2423 16.9556 10.9965 16.6665 10.8333Z"
+						stroke="currentColor"
+						stroke-width="1.5"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
+					<path
+						d="M14.1668 15.8333C14.1668 17.4999 12.5002 17.4999 10.8335 17.4999"
+						stroke="currentColor"
+						stroke-width="1.5"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
+				</>
 			)
 		}
 	</svg>
