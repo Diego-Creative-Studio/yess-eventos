@@ -1,4 +1,5 @@
 ---
+import linhasProcesso from '@/assets/processo/linhas-processo.svg'
 interface OpcaoComparacao {
 	codigo: string
 	etiqueta: string
@@ -39,7 +40,7 @@ const {
 			<div>
 				<p class="font-title text-sm font-semibold text-primary uppercase" set:html={etiqueta} />
 				<h2
-					class="mt-2 max-w-175 font-title text-3xl text-foreground lg:text-4xl"
+					class="mt-2 max-w-180 font-title text-3xl text-foreground lg:text-5xl"
 					set:html={titulo}
 				/>
 			</div>
@@ -53,22 +54,35 @@ const {
 		</header>
 
 		<div class="mt-8 grid gap-6 xl:grid-cols-[2fr_3fr]">
-			<article class="rounded-3xl bg-white p-6 text-background lg:p-8">
-				<div class="flex items-start justify-between gap-4"
-					><p class="font-title text-6xl font-semibold text-warm">{opcaoClara.codigo}</p><p
+			<article
+				class="relative isolate flex flex-col overflow-hidden rounded-3xl bg-white p-6 text-background lg:p-8"
+			>
+				<div class="relative z-10 flex items-start justify-between gap-4"
+					><p class="font-title text-6xl font-bold text-warm">{opcaoClara.codigo}</p><p
 						class="font-title text-xs font-semibold uppercase"
 						set:html={opcaoClara.etiqueta}
 					/></div
 				>
-				<h3 class="mt-6 font-title text-2xl" set:html={opcaoClara.titulo} />
-				<p class="mt-3 text-sm text-background/70" set:html={opcaoClara.descricao} />
-				<ol class="mt-7 border-t border-background/10 text-sm"
+				<span
+					aria-hidden="true"
+					class="pointer-events-none absolute -right-72 -bottom-72 aspect-square w-180 bg-primary-dark mask-contain mask-center mask-no-repeat opacity-50 lg:-bottom-80 lg:-left-12 lg:w-250"
+					style={`mask-image: url(${linhasProcesso.src}); -webkit-mask-image: url(${linhasProcesso.src});`}
+				></span>
+				<h3
+					class="relative z-10 font-title text-2xl font-semibold lg:text-3xl"
+					set:html={opcaoClara.titulo}
+				/>
+				<p class="relative z-10 mt-3 text-sm text-background/70" set:html={opcaoClara.descricao} />
+				<ol class="relative z-10 mt-7 text-sm font-semibold xl:mt-auto xl:pt-7"
 					>{
 						opcaoClara.itens.map((item, indice) => (
-							<li class="flex gap-4 border-b border-background/10 py-4 last:border-0">
+							<li class="flex items-baseline gap-2 border-b border-background/10 py-4">
 								<>
-									<strong>{String(indice + 1).padStart(2, '0')}</strong>
-									<span set:html={item} />
+									<strong class="w-8 shrink-0">{String(indice + 1).padStart(2, '0')}</strong>
+									<span class="w-3 shrink-0" aria-hidden="true">
+										-
+									</span>
+									<span class="min-w-0 flex-1" set:html={item} />
 								</>
 							</li>
 						))
@@ -76,22 +90,40 @@ const {
 				>
 			</article>
 
-			<article class="rounded-3xl bg-primary p-6 text-foreground lg:p-8">
-				<div class="flex items-start justify-between gap-4"
-					><p class="font-title text-6xl font-semibold">{opcaoDestaque.codigo}</p><p
+			<article
+				class="relative isolate flex flex-col overflow-hidden rounded-3xl bg-primary p-6 text-foreground lg:p-8"
+			>
+				<div class="relative z-10 flex items-start justify-between gap-4"
+					><p class="font-title text-6xl font-bold">{opcaoDestaque.codigo}</p><p
 						class="font-title text-xs font-semibold uppercase"
 						set:html={opcaoDestaque.etiqueta}
 					/></div
 				>
-				<h3 class="mt-6 font-title text-2xl" set:html={opcaoDestaque.titulo} />
-				<p class="mt-3 text-sm text-foreground/75" set:html={opcaoDestaque.descricao} />
-				<ol class="mt-7 border-t border-white/20 text-sm"
+
+				<span
+					aria-hidden="true"
+					class="pointer-events-none absolute -right-72 -bottom-72 aspect-square w-180 bg-white mask-contain mask-center mask-no-repeat opacity-80 lg:-right-90 lg:-bottom-90 lg:w-260"
+					style={`mask-image: url(${linhasProcesso.src}); -webkit-mask-image: url(${linhasProcesso.src});`}
+				></span>
+
+				<h3
+					class="relative z-10 font-title text-2xl font-semibold lg:text-3xl"
+					set:html={opcaoDestaque.titulo}
+				/>
+				<p
+					class="relative z-10 mt-3 text-sm text-foreground/75"
+					set:html={opcaoDestaque.descricao}
+				/>
+				<ol class="relative z-10 mt-7 text-sm font-semibold xl:mt-auto xl:pt-7"
 					>{
 						opcaoDestaque.itens.map((item, indice) => (
-							<li class="flex gap-4 border-b border-white/20 py-4 last:border-0">
+							<li class="flex items-baseline gap-2 border-b border-white/20 py-4">
 								<>
-									<strong>{String(indice + 1).padStart(2, '0')}</strong>
-									<span set:html={item} />
+									<strong class="w-8 shrink-0">{String(indice + 1).padStart(2, '0')}</strong>
+									<span class="w-3 shrink-0" aria-hidden="true">
+										-
+									</span>
+									<span class="min-w-0 flex-1" set:html={item} />
 								</>
 							</li>
 						))
@@ -101,8 +133,8 @@ const {
 		</div>
 
 		<div
-			class="mt-6 flex flex-col gap-2 text-xs text-muted md:flex-row md:items-center md:justify-between"
-			><p set:html={nota} /><p class="font-semibold text-text-secondary" set:html={resumo} /></div
+			class="mt-6 flex flex-col gap-2 text-sm text-muted md:flex-row md:items-center md:justify-between"
+			><p set:html={nota} /><p class="font-semibold text-primary" set:html={resumo} /></div
 		>
 	</div>
 </section>

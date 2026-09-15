@@ -12,10 +12,10 @@ interface Props {
 const { id = 'orcamento', titulo, descricao, textoBotao, linkBotao } = Astro.props
 ---
 
-<section {id} class="px-3 py-8 md:px-8 lg:px-16 lg:py-7.5">
+<section {id} class="px-3 py-8 md:px-8 lg:px-16 lg:pt-8 lg:pb-24">
 	<div
 		data-animate
-		class="mx-auto flex w-full flex-col gap-8 rounded-3xl border-2 border-primary bg-linear-to-r from-primary-soft to-primary p-7 lg:min-h-65 lg:max-w-345 lg:flex-row lg:items-center lg:justify-between lg:px-9"
+		class="mx-auto flex w-full flex-col gap-8 rounded-3xl border-2 border-primary bg-linear-to-r from-primary-soft to-primary p-7 lg:min-h-48 lg:max-w-345 lg:flex-row lg:items-center lg:justify-between lg:px-8"
 	>
 		<div
 			><h2 class="font-title text-3xl text-foreground lg:text-4xl" set:html={titulo} /><p
@@ -25,7 +25,7 @@ const { id = 'orcamento', titulo, descricao, textoBotao, linkBotao } = Astro.pro
 		>
 		<a
 			href={linkBotao}
-			class="inline-flex min-h-13.5 w-full items-center justify-center gap-3 rounded-pill bg-white px-6 py-4 font-title text-sm font-semibold text-background transition-colors hover:bg-background hover:text-foreground md:w-auto lg:mr-16 lg:min-w-64"
+			class="inline-flex min-h-13.5 w-full items-center justify-center gap-3 rounded-pill bg-white px-8 py-6 font-title text-sm font-semibold text-background transition-colors hover:bg-background hover:text-foreground md:w-auto lg:min-w-64"
 			><span set:html={textoBotao} /><Icone name="arrow" class="size-4" /></a
 		>
 	</div>

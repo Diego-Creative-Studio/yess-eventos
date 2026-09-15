@@ -21,8 +21,12 @@ const { tituloDestaque, titulo, descricao, imagem, textoAlternativoImagem, texto
 <section class="bg-stroke px-3 pt-4 pb-8 md:px-8 lg:px-16 lg:pt-5 lg:pb-16">
 	<div
 		data-animate
-		class="mx-auto grid w-full grid-cols-1 overflow-hidden rounded-hero border-2 border-stroke bg-linear-to-b from-background via-primary-soft to-violet lg:min-h-184 lg:max-w-345 lg:grid-cols-[1.1fr_1fr] lg:bg-linear-to-r"
+		class="relative mx-auto grid w-full grid-cols-1 overflow-hidden rounded-hero border-2 border-stroke bg-linear-to-b from-background via-primary-soft to-violet lg:min-h-184 lg:max-w-345 lg:grid-cols-[1.1fr_1fr] lg:bg-linear-to-r"
 	>
+		<span
+			aria-hidden="true"
+			class="pointer-events-none absolute -bottom-3 -left-22 size-60 rounded-full bg-primary/50 blur-3xl"
+		></span>
 		<div
 			class="flex min-w-0 items-center px-6 py-10 sm:px-10 lg:items-start lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
 		>
