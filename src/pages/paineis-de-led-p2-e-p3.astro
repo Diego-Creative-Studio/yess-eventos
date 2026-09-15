@@ -1,0 +1,263 @@
+---
+import Layout from '@/layouts/Layout.astro'
+
+import Rodape from '@/components/Footer.astro'
+import Cabecalho from '@/components/Header.astro'
+import SecaoChamadaServico from '@/components/sections/servicos/SecaoChamadaServico.astro'
+import SecaoComparacaoServico from '@/components/sections/servicos/SecaoComparacaoServico.astro'
+import SecaoCredibilidadeServico from '@/components/sections/servicos/SecaoCredibilidadeServico.astro'
+import SecaoEntregaServico from '@/components/sections/servicos/SecaoEntregaServico.astro'
+import SecaoGaleriaServico from '@/components/sections/servicos/SecaoGaleriaServico.astro'
+import SecaoHeroServico from '@/components/sections/servicos/SecaoHeroServico.astro'
+import SecaoPerguntasServico from '@/components/sections/servicos/SecaoPerguntasServico.astro'
+import SecaoProcessoServico from '@/components/sections/servicos/SecaoProcessoServico.astro'
+
+import imagemAplicacaoCongressos from '@/assets/painel-led/aplicacao-congressos.jpg'
+import imagemAplicacaoFeiras from '@/assets/painel-led/aplicacao-feiras.jpg'
+import imagemAplicacaoPlenarias from '@/assets/painel-led/aplicacao-plenarias.jpg'
+import imagemEntrega from '@/assets/painel-led/entrega-completa.jpg'
+import imagemHero from '@/assets/painel-led/hero-painel-led.jpg'
+import imagemProjetoEstrutura from '@/assets/painel-led/projeto-estrutura-integrada.jpg'
+import imagemProjetoOperacao from '@/assets/painel-led/projeto-operacao-tecnica.jpg'
+import imagemProjetoPainel from '@/assets/painel-led/projeto-painel-corporativo.jpg'
+---
+
+<Layout
+	title="Painéis de LED P2 e P3 para eventos | YESS"
+	description="Locação de painéis de LED P2 e P3 para eventos corporativos, com projeto, montagem e operação técnica."
+>
+	<Cabecalho />
+
+	<main id="conteudo">
+		<SecaoHeroServico
+			etiqueta="Locação de painel de LED P2 e P3"
+			tituloDestaque="Painel de LED para eventos corporativos,"
+			titulo="do planejamento à operação."
+			descricao="Projetos sob medida para feiras, congressos, convenções e apresentações, com montagem e suporte técnico especializado."
+			imagem={imagemHero}
+			textoAlternativoImagem="Evento corporativo com grande painel de LED no palco"
+			textoBotao="Solicitar orçamento"
+			linkBotao="#orcamento"
+		/>
+
+		<SecaoCredibilidadeServico
+			etiqueta="Por que a YESS?"
+			titulo="Segurança em cada etapa"
+			itens={[
+				{
+					numero: '01',
+					titulo: 'Projeto sob medida',
+					descricao: 'P2 ou P3 conforme distância, espaço e conteúdo.',
+				},
+				{
+					numero: '02',
+					titulo: 'Montagem técnica',
+					descricao: 'Estrutura, fixação e acabamento organizados.',
+				},
+				{
+					numero: '03',
+					titulo: 'Conteúdo testado',
+					descricao: 'Sinal, proporção e reprodução validados.',
+				},
+				{
+					numero: '04',
+					titulo: 'Operação no evento',
+					descricao: 'Acompanhamento técnico até a desmontagem.',
+				},
+			]}
+		/>
+
+		<SecaoComparacaoServico
+			etiqueta="Comparação / P2 × P3"
+			titulo="P2 ou P3: a definição certa para cada projeto"
+			etiquetaOrientacao="Como escolher"
+			descricaoOrientacao="A escolha considera distância de visualização, dimensões do espaço, conteúdo e formato do evento."
+			opcaoClara={{
+				codigo: 'P2',
+				etiqueta: 'Curta distância',
+				titulo: 'Mais definição para curta distância',
+				descricao: 'Indicado quando o público está próximo e o conteúdo exige leitura precisa.',
+				itens: [
+					'Conteúdo com detalhes finos',
+					'Plateias próximas ao painel',
+					'Apresentações e plenárias',
+				],
+			}}
+			opcaoDestaque={{
+				codigo: 'P3',
+				etiqueta: 'Grandes ambientes',
+				titulo: 'Escala e excelente leitura para grandes ambientes',
+				descricao: 'Uma solução versátil para grandes formatos, com excelente presença visual.',
+				itens: ['Grandes formatos e palcos', 'Feiras e exposições', 'Congressos e convenções'],
+			}}
+			nota="A escolha final considera distância, conteúdo e público."
+			resumo="P2 — definição  /  P3 — escala"
+		/>
+
+		<SecaoEntregaServico
+			etiqueta="Entrega completa"
+			titulo="Muito além da locação do equipamento"
+			descricao="A YESS acompanha o projeto técnico desde o briefing até o encerramento do evento."
+			itens={[
+				{
+					icone: 'calendario',
+					titulo: 'Dimensionamento do painel',
+					descricao: 'P2 ou P3 definidos pela distância e pelo conteúdo.',
+				},
+				{
+					icone: 'estrutura',
+					titulo: 'Planejamento de montagem',
+					descricao: 'Estrutura e cronograma alinhados ao local.',
+				},
+				{
+					icone: 'ferramentas',
+					titulo: 'Processamento e testes',
+					descricao: 'Sinal, proporção e reprodução validados.',
+				},
+				{
+					icone: 'equipe',
+					titulo: 'Operação até o encerramento',
+					descricao: 'Acompanhamento técnico, desmontagem e conferência.',
+				},
+			]}
+			nota="Um único parceiro para coordenar imagem, estrutura e operação."
+			imagem={imagemEntrega}
+			textoAlternativoImagem="Painel de LED instalado em evento corporativo"
+		/>
+
+		<SecaoGaleriaServico
+			titulo="Painéis de LED para diferentes formatos corporativos"
+			descricao="Aplicações dimensionadas de acordo com o espaço, o público e o conteúdo."
+			itens={[
+				{
+					titulo: 'Feiras e exposições',
+					descricao: 'Mais visibilidade para estandes, marcas e demonstrações.',
+					imagem: imagemAplicacaoFeiras,
+					textoAlternativoImagem: 'Painel de LED em feira corporativa',
+				},
+				{
+					titulo: 'Congressos e convenções',
+					descricao: 'Conteúdo de palco com leitura clara para toda a plateia.',
+					imagem: imagemAplicacaoCongressos,
+					textoAlternativoImagem: 'Painel de LED em congresso',
+				},
+				{
+					titulo: 'Plenárias e apresentações',
+					descricao: 'Slides, vídeos e informações apresentados com impacto.',
+					imagem: imagemAplicacaoPlenarias,
+					textoAlternativoImagem: 'Painel de LED em plenária corporativa',
+				},
+			]}
+		/>
+
+		<SecaoGaleriaServico
+			id="trabalhos"
+			variante="surface"
+			titulo="Projetos realizados pela YESS"
+			descricao="Estruturas reais em eventos corporativos, com montagem e operação da equipe."
+			itens={[
+				{
+					titulo: 'Estrutura audiovisual integrada',
+					descricao: 'Painel, luz e operação em evento de grande porte.',
+					imagem: imagemProjetoEstrutura,
+					textoAlternativoImagem: 'Estrutura audiovisual integrada em evento',
+				},
+				{
+					titulo: 'Painel de LED em palco corporativo',
+					descricao: 'Conteúdo visual como protagonista da apresentação.',
+					imagem: imagemProjetoPainel,
+					textoAlternativoImagem: 'Painel de LED em palco corporativo',
+				},
+				{
+					titulo: 'Operação técnica e controle',
+					descricao: 'Acompanhamento de sinal e conteúdo durante o evento.',
+					imagem: imagemProjetoOperacao,
+					textoAlternativoImagem: 'Operação técnica e controle de conteúdo',
+				},
+			]}
+		/>
+
+		<SecaoProcessoServico
+			etiqueta="Processo técnico"
+			titulo="Do briefing à operação"
+			descricao="Definimos o painel, preparamos o conteúdo e acompanhamos cada etapa até a desmontagem."
+			etapas={[
+				{
+					numero: '01',
+					titulo: 'Briefing',
+					descricao: 'Formato, espaço, público e conteúdo orientam a solução.',
+				},
+				{
+					numero: '02',
+					titulo: 'Projeto técnico',
+					descricao: 'Definimos P2 ou P3, dimensões, estrutura e sinal.',
+				},
+				{
+					numero: '03',
+					titulo: 'Montagem e testes',
+					descricao: 'Instalamos, configuramos e validamos a exibição.',
+				},
+				{
+					numero: '04',
+					titulo: 'Operação',
+					descricao: 'Acompanhamos o evento e organizamos a desmontagem.',
+				},
+			]}
+		/>
+
+		<SecaoPerguntasServico
+			titulo="Perguntas frequentes"
+			perguntas={[
+				{
+					pergunta: 'P2 ou P3: qual painel escolher?',
+					resposta:
+						'A escolha depende da distância do público, do tamanho da tela e do nível de detalhe do conteúdo.',
+				},
+				{
+					pergunta: 'A YESS monta e opera o painel?',
+					resposta:
+						'Sim. Cuidamos do planejamento, montagem, configuração, testes, operação e desmontagem.',
+				},
+				{
+					pergunta: 'O que entra no orçamento?',
+					resposta:
+						'Consideramos tamanho e resolução do painel, período, local, estrutura e equipe técnica.',
+				},
+				{
+					pergunta: 'Posso enviar meu próprio conteúdo?',
+					resposta:
+						'Sim. Orientamos os formatos e testamos apresentações, vídeos e artes antes do evento.',
+				},
+			]}
+		/>
+
+		<SecaoChamadaServico
+			titulo="Seu evento precisa de um painel de LED?"
+			descricao="Envie data, cidade, público estimado e medidas do espaço."
+			textoBotao="Solicitar projeto e orçamento"
+			linkBotao="#contato"
+		/>
+	</main>
+
+	<Rodape />
+
+	<script>
+		import { gsap } from 'gsap'
+		import { ScrollTrigger } from 'gsap/ScrollTrigger'
+		gsap.registerPlugin(ScrollTrigger)
+		if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			gsap.utils.toArray<HTMLElement>('[data-animate]').forEach((element) => {
+				gsap.fromTo(
+					element,
+					{ opacity: 0 },
+					{
+						opacity: 1,
+						duration: 1,
+						ease: 'power2.out',
+						scrollTrigger: { trigger: element, start: 'top 80%', once: true },
+					},
+				)
+			})
+		}
+	</script>
+</Layout>
