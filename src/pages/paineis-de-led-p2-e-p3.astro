@@ -2,14 +2,14 @@
 import Layout from '@/layouts/Layout.astro'
 
 import Etiqueta from '@/components/Etiqueta.astro'
-import SecaoChamadaServico from '@/components/sections/servicos/SecaoChamadaServico.astro'
-import SecaoComparacaoServico from '@/components/sections/servicos/SecaoComparacaoServico.astro'
-import SecaoCredibilidadeServico from '@/components/sections/servicos/SecaoCredibilidadeServico.astro'
-import SecaoEntregaServico from '@/components/sections/servicos/SecaoEntregaServico.astro'
-import SecaoGaleriaServico from '@/components/sections/servicos/SecaoGaleriaServico.astro'
-import SecaoHeroServico from '@/components/sections/servicos/SecaoHeroServico.astro'
-import SecaoPerguntasServico from '@/components/sections/servicos/SecaoPerguntasServico.astro'
-import SecaoProcessoServico from '@/components/sections/servicos/SecaoProcessoServico.astro'
+import SectionChamadaServico from '@/components/sections/servicos/SectionChamadaServico.astro'
+import SectionComparacaoServico from '@/components/sections/servicos/SectionComparacaoServico.astro'
+import SectionCredibilidadeServico from '@/components/sections/servicos/SectionCredibilidadeServico.astro'
+import SectionEntregaServico from '@/components/sections/servicos/SectionEntregaServico.astro'
+import SectionGaleriaServico from '@/components/sections/servicos/SectionGaleriaServico.astro'
+import SectionHeroServico from '@/components/sections/servicos/SectionHeroServico.astro'
+import SectionPerguntasServico from '@/components/sections/servicos/SectionPerguntasServico.astro'
+import SectionProcessoServico from '@/components/sections/servicos/SectionProcessoServico.astro'
 
 import imagemAplicacaoCongressos from '@/assets/painel-led/aplicacao-congressos.jpg'
 import imagemAplicacaoFeiras from '@/assets/painel-led/aplicacao-feiras.jpg'
@@ -26,7 +26,7 @@ import imagemProjetoPainel from '@/assets/painel-led/projeto-painel-corporativo.
 	description="Locação de painéis de LED P2 e P3 para eventos corporativos, com projeto, montagem e operação técnica."
 >
 	<main id="conteudo">
-		<SecaoHeroServico
+		<SectionHeroServico
 			tituloDestaque=`Painel de LED <br class="hidden lg:block"/> para eventos corporativos`
 			titulo=" <br/> do planejamento à operação"
 			descricao="Projetos sob medida para feiras, congressos, convenções e apresentações, com montagem e suporte técnico especializado."
@@ -43,9 +43,9 @@ import imagemProjetoPainel from '@/assets/painel-led/projeto-painel-corporativo.
 				corBolinha="bg-warm"
 				class="self-center lg:self-start lg:text-left"
 			/>
-		</SecaoHeroServico>
+		</SectionHeroServico>
 
-		<SecaoCredibilidadeServico
+		<SectionCredibilidadeServico
 			etiqueta="Por que a YESS?"
 			titulo=`Segurança em cada<br class="hidden lg:block"/> etapa`
 			itens={[
@@ -72,7 +72,7 @@ import imagemProjetoPainel from '@/assets/painel-led/projeto-painel-corporativo.
 			]}
 		/>
 
-		<SecaoComparacaoServico
+		<SectionComparacaoServico
 			etiqueta="Comparação / P2 x P3"
 			titulo="P2 ou P3: a definição certa para cada projeto"
 			etiquetaOrientacao="Como escolher"
@@ -101,7 +101,7 @@ import imagemProjetoPainel from '@/assets/painel-led/projeto-painel-corporativo.
 			resumo="P2 — definição / P3 — escala"
 		/>
 
-		<SecaoEntregaServico
+		<SectionEntregaServico
 			etiqueta="Entrega completa"
 			titulo="Muito além da locação do equipamento"
 			descricao="A YESS acompanha o projeto técnico desde o briefing até o encerramento do evento."
@@ -132,7 +132,7 @@ import imagemProjetoPainel from '@/assets/painel-led/projeto-painel-corporativo.
 			textoAlternativoImagem="Painel de LED instalado em evento corporativo"
 		/>
 
-		<SecaoGaleriaServico
+		<SectionGaleriaServico
 			titulo="Painéis de LED para diferentes formatos corporativos"
 			descricao="Aplicações dimensionadas de acordo com o espaço, o público e o conteúdo."
 			itens={[
@@ -157,7 +157,7 @@ import imagemProjetoPainel from '@/assets/painel-led/projeto-painel-corporativo.
 			]}
 		/>
 
-		<SecaoGaleriaServico
+		<SectionGaleriaServico
 			id="trabalhos"
 			variante="surface"
 			titulo="Projetos realizados pela YESS"
@@ -184,7 +184,7 @@ import imagemProjetoPainel from '@/assets/painel-led/projeto-painel-corporativo.
 			]}
 		/>
 
-		<SecaoProcessoServico
+		<SectionProcessoServico
 			etiqueta="Processo técnico"
 			titulo="Do briefing à operação"
 			descricao="Definimos o painel, preparamos o conteúdo e acompanhamos cada etapa até a desmontagem."
@@ -212,7 +212,7 @@ import imagemProjetoPainel from '@/assets/painel-led/projeto-painel-corporativo.
 			]}
 		/>
 
-		<SecaoPerguntasServico
+		<SectionPerguntasServico
 			titulo="Perguntas frequentes"
 			perguntas={[
 				{
@@ -238,7 +238,7 @@ import imagemProjetoPainel from '@/assets/painel-led/projeto-painel-corporativo.
 			]}
 		/>
 
-		<SecaoChamadaServico
+		<SectionChamadaServico
 			titulo="Seu evento precisa de um painel de LED?"
 			descricao="Envie data, cidade, público estimado e medidas do espaço."
 			textoBotao="Solicitar projeto e orçamento"
