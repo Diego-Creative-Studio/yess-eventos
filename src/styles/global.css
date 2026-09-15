@@ -31,7 +31,6 @@
 	/* Radius */
 	--radius-small: 14px;
 	--radius-hero: 42px;
-	--radius-pill: 999px;
 }
 
 @layer base {

@@ -23,15 +23,15 @@ const { tituloDestaque, titulo, descricao, imagem, textoAlternativoImagem, texto
 		data-animate
 		class="relative mx-auto grid w-full grid-cols-1 overflow-hidden rounded-hero border-2 border-stroke bg-linear-to-b from-background via-primary-soft to-violet lg:min-h-184 lg:max-w-345 lg:grid-cols-[1.1fr_1fr] lg:bg-linear-to-r"
 	>
-		<span
-			aria-hidden="true"
-			class="pointer-events-none absolute -bottom-3 -left-22 size-60 rounded-full bg-primary/50 blur-3xl"
-		></span>
 		<div
-			class="flex min-w-0 items-center px-6 py-10 sm:px-10 lg:items-start lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
+			class="relative isolate flex min-w-0 items-center overflow-hidden px-6 py-10 sm:px-10 lg:items-start lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
 		>
+			<span
+				aria-hidden="true"
+				class="pointer-events-none absolute -bottom-32 -left-40 h-80 w-md rounded-full bg-primary/40 blur-3xl lg:-bottom-60 lg:-left-40 lg:h-100 lg:w-80"
+			></span>
 			<div
-				class="flex w-full max-w-197.5 flex-col items-center gap-4.5 text-center lg:h-146 lg:max-w-200 lg:items-start lg:overflow-hidden lg:text-left"
+				class="relative z-10 flex w-full max-w-197.5 flex-col items-center gap-4.5 text-center lg:h-146 lg:max-w-200 lg:items-start lg:overflow-hidden lg:text-left"
 			>
 				<slot name="etiqueta" />
 
@@ -50,7 +50,7 @@ const { tituloDestaque, titulo, descricao, imagem, textoAlternativoImagem, texto
 				<div
 					class="flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row lg:justify-start"
 				>
-					<Botao label={textoBotao} href={linkBotao} arrow class="w-full sm:w-auto" />
+					<Botao label={textoBotao} href={linkBotao} arrow class="z-10 w-full sm:w-auto" />
 				</div>
 			</div>
 		</div>
