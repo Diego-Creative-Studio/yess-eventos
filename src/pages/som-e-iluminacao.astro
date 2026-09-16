@@ -1,0 +1,242 @@
+---
+import Layout from '@/layouts/Layout.astro'
+
+import Etiqueta from '@/components/Etiqueta.astro'
+import SectionChamadaServico from '@/components/sections/servicos/SectionChamadaServico.astro'
+import SectionComparacaoServico from '@/components/sections/servicos/SectionComparacaoServico.astro'
+import SectionCredibilidadeServico from '@/components/sections/servicos/SectionCredibilidadeServico.astro'
+import SectionEntregaServico from '@/components/sections/servicos/SectionEntregaServico.astro'
+import SectionGaleriaServico from '@/components/sections/servicos/SectionGaleriaServico.astro'
+import SectionHeroServico from '@/components/sections/servicos/SectionHeroServico.astro'
+import SectionPerguntasServico from '@/components/sections/servicos/SectionPerguntasServico.astro'
+import SectionProcessoServico from '@/components/sections/servicos/SectionProcessoServico.astro'
+
+import imagemAplicacaoFeiras from '@/assets/som-iluminacao/aplicacao-feiras.jpg'
+import imagemAplicacaoPlenarias from '@/assets/som-iluminacao/aplicacao-plenarias.jpg'
+import imagemEntrega from '@/assets/som-iluminacao/entrega-completa.jpg'
+import imagemHero from '@/assets/som-iluminacao/hero-som-iluminacao.jpg'
+---
+
+<Layout
+	title="Som e iluminação para eventos | YESS"
+	description="Sonorização e iluminação para eventos corporativos, com projeto, montagem, testes e operação técnica integrada."
+>
+	<main id="conteudo">
+		<SectionHeroServico
+			tituloDestaque="Som claro para comunicar."
+			titulo="<br/>Luz planejada para envolver."
+			varianteTitulo="som-iluminacao"
+			descricao="Sistemas dimensionados para o espaço, o público e o roteiro, com montagem, operação e acompanhamento técnico."
+			imagem={imagemHero}
+			textoAlternativoImagem="Plenária corporativa com iluminação cênica verde"
+			textoBotao="Solicitar orçamento"
+			linkBotao="#orcamento"
+		>
+			<Etiqueta
+				slot="etiqueta"
+				texto="Sonorização e iluminação para eventos"
+				corFundo="bg-stroke"
+				corTexto="text-foreground"
+				corBolinha="bg-warm"
+				class="self-center lg:self-start lg:text-left"
+			/>
+		</SectionHeroServico>
+
+		<SectionCredibilidadeServico
+			etiqueta="Por que a YESS?"
+			titulo="Áudio e luz sob controle"
+			itens={[
+				{
+					numero: '01',
+					titulo: 'Cobertura planejada',
+					descricao: 'Som distribuído conforme público, espaço e formato.',
+				},
+				{
+					numero: '02',
+					titulo: 'Sinais organizados',
+					descricao: 'Microfones, conexões e passagem conferidos.',
+				},
+				{
+					numero: '03',
+					titulo: 'Cenas programadas',
+					descricao: 'Luz alinhada ao roteiro, palco e ambiente.',
+				},
+				{
+					numero: '04',
+					titulo: 'Operação técnica',
+					descricao: 'Ajustes de áudio e iluminação durante o evento.',
+				},
+			]}
+		/>
+
+		<SectionComparacaoServico
+			etiqueta="Comparação / Som × Luz"
+			titulo="Sonorização e iluminação em uma única operação"
+			etiquetaOrientacao="Como escolher"
+			descricaoOrientacao="Cada sistema é planejado de acordo com ambiente, público, programação e necessidades técnicas."
+			opcaoClara={{
+				codigo: 'SOM',
+				etiqueta: 'Clareza e cobertura',
+				titulo: 'Clareza e cobertura para toda a audiência',
+				descricao:
+					'Microfones, caixas e processamento dimensionados para que apresentações e falas sejam ouvidas com clareza.',
+				itens: [
+					'Microfones e sistemas de PA',
+					'Distribuição uniforme',
+					'Operação e controle técnico',
+				],
+			}}
+			opcaoDestaque={{
+				codigo: 'LUZ',
+				etiqueta: 'Cena e atmosfera',
+				titulo: 'Iluminação cênica, ambiental e técnica',
+				descricao:
+					'Cenas programadas para valorizar palco, marca, apresentadores e momentos importantes da programação.',
+				itens: [
+					'Destaque de palco e palestrantes',
+					'Ambientação do espaço',
+					'Programação de cenas',
+				],
+			}}
+			nota="Som e luz são planejados conforme ambiente, público e programação."
+			resumo="Som — clareza / Luz — atmosfera"
+		/>
+
+		<SectionEntregaServico
+			etiqueta="Som + luz em uma entrega"
+			titulo="Projeto integrado de som e iluminação"
+			descricao="A equipe coordena equipamentos, montagem, testes e operação para que áudio e luz trabalhem em conjunto."
+			itens={[
+				{
+					icone: 'medida',
+					titulo: 'Leitura técnica do espaço',
+					descricao: 'Cobertura sonora e pontos de luz definidos no projeto.',
+				},
+				{
+					icone: 'montagem',
+					titulo: 'Montagem coordenada',
+					descricao: 'Estruturas, cabeamento e cenas preparados em conjunto.',
+				},
+				{
+					icone: 'testes',
+					titulo: 'Passagem e testes',
+					descricao: 'Microfones, níveis e programação de luz validados.',
+				},
+				{
+					icone: 'operacao',
+					titulo: 'Operação durante o evento',
+					descricao: 'Ajustes ao vivo e desmontagem organizada.',
+				},
+			]}
+			nota="Um único time para coordenar áudio, luz e operação."
+			imagem={imagemEntrega}
+			textoAlternativoImagem="Mesa de som durante a operação técnica de um evento"
+		/>
+
+		<SectionGaleriaServico
+			titulo="Som e iluminação para diferentes formatos de evento"
+			descricao="A solução é dimensionada de acordo com o espaço, o público e o objetivo da comunicação."
+			itens={[
+				{
+					titulo: 'Feiras e exposições',
+					descricao: 'Mais visibilidade para estandes, marcas e demonstrações.',
+					imagem: imagemAplicacaoFeiras,
+					textoAlternativoImagem: 'Estrutura audiovisual em feira corporativa',
+				},
+				{
+					titulo: 'Congressos e convenções',
+					descricao: 'Conteúdo de palco com leitura clara para toda a plateia.',
+					imagem: imagemHero,
+					textoAlternativoImagem: 'Congresso com sonorização e iluminação cênica',
+				},
+				{
+					titulo: 'Plenárias e apresentações',
+					descricao: 'Slides, vídeos e informações apresentados com impacto.',
+					imagem: imagemAplicacaoPlenarias,
+					textoAlternativoImagem: 'Plenária corporativa com recursos audiovisuais',
+				},
+			]}
+		/>
+
+		<SectionProcessoServico
+			etiqueta="Processo técnico"
+			titulo="Do espaço à operação"
+			descricao="Som e luz são planejados juntos para garantir clareza, atmosfera e segurança durante o evento."
+			etapas={[
+				{
+					numero: '01',
+					titulo: 'Leitura do espaço',
+					descricao: 'Público, programação e ambiente orientam cobertura e cenas.',
+				},
+				{
+					numero: '02',
+					titulo: 'Projeto integrado',
+					descricao: 'Definimos áudio, pontos de luz, estrutura e energia.',
+				},
+				{
+					numero: '03',
+					titulo: 'Montagem e passagem',
+					descricao: 'Instalamos, alinhamos o som e programamos as cenas.',
+				},
+				{
+					numero: '04',
+					titulo: 'Operação ao vivo',
+					descricao: 'Monitoramos áudio e iluminação durante a programação.',
+				},
+			]}
+		/>
+
+		<SectionPerguntasServico
+			titulo="Perguntas frequentes"
+			perguntas={[
+				{
+					pergunta: 'Como som e iluminação trabalham juntos?',
+					resposta:
+						'A sonorização prioriza clareza e cobertura do público; a iluminação organiza cenas, destaque de palco e ambientação.',
+				},
+				{
+					pergunta: 'A YESS realiza a montagem e a operação?',
+					resposta:
+						'Sim. O escopo pode incluir planejamento, montagem, configuração, testes, operação técnica e desmontagem.',
+				},
+				{
+					pergunta: 'Como é calculado o orçamento?',
+					resposta:
+						'O orçamento considera local, público, duração, necessidades de cobertura sonora, pontos de luz, montagem, testes e operação técnica.',
+				},
+				{
+					pergunta: 'A equipe acompanha o evento durante a programação?',
+					resposta:
+						'Sim. O escopo pode incluir acompanhamento técnico, ajustes de áudio e execução das cenas de iluminação durante o evento.',
+				},
+			]}
+		/>
+
+		<SectionChamadaServico
+			titulo="Seu evento precisa de som e iluminação profissional?"
+			descricao="Envie data, cidade, público estimado e medidas do espaço."
+			textoBotao="Solicitar projeto e orçamento"
+			linkBotao="#contato"
+		/>
+	</main>
+
+	<script>
+		import { gsap } from 'gsap'
+		import { ScrollTrigger } from 'gsap/ScrollTrigger'
+		gsap.registerPlugin(ScrollTrigger)
+		if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			gsap.utils.toArray<HTMLElement>('[data-animate]').forEach((element) => {
+				gsap.fromTo(
+					element,
+					{ opacity: 0 },
+					{
+						opacity: 1,
+						duration: 1,
+						ease: 'power2.out',
+						scrollTrigger: { trigger: element, start: 'top 80%', once: true },
+					},
+				)
+			})
+		}
+	</script>
+</Layout>
