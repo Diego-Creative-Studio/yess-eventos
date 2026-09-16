@@ -7,7 +7,7 @@ import Botao from '@/components/Button.astro'
 interface Props {
 	tituloDestaque: string
 	titulo: string
-	varianteTitulo?: 'padrao' | 'som-iluminacao'
+	varianteTitulo?: 'padrao' | 'som-iluminacao' | 'tvs-monitores'
 	descricao: string
 	imagem: ImageMetadata
 	textoAlternativoImagem: string
@@ -30,7 +30,10 @@ const {
 <section class="bg-stroke px-3 pt-4 pb-8 md:px-8 lg:px-16 lg:pt-5 lg:pb-16">
 	<div
 		data-animate
-		class="relative mx-auto grid w-full grid-cols-1 overflow-hidden rounded-hero border-2 border-stroke bg-linear-to-b from-background via-primary-soft to-violet lg:min-h-184 lg:max-w-345 lg:grid-cols-[1.1fr_1fr] lg:bg-linear-to-r"
+		class:list={[
+			'relative mx-auto grid w-full grid-cols-1 overflow-hidden rounded-hero border-2 border-stroke bg-linear-to-b from-background via-primary-soft to-violet lg:max-w-345 lg:grid-cols-[1.1fr_1fr] lg:bg-linear-to-r',
+			varianteTitulo === 'tvs-monitores' ? 'lg:min-h-170' : 'lg:min-h-184',
+		]}
 	>
 		<div
 			class="relative isolate flex min-w-0 items-center overflow-hidden px-6 py-10 max-[359px]:px-4 md:px-10 lg:items-start lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
@@ -40,14 +43,19 @@ const {
 				class="pointer-events-none absolute -bottom-32 -left-40 h-80 w-md rounded-full bg-primary/40 blur-3xl lg:-bottom-60 lg:-left-40 lg:h-100 lg:w-80"
 			></span>
 			<div
-				class="relative z-10 flex w-full max-w-197.5 flex-col items-center gap-4.5 text-center min-[1100px]:h-146! lg:h-151 lg:max-w-200 lg:items-start lg:overflow-hidden lg:text-left"
+				class:list={[
+					'relative z-10 flex w-full max-w-197.5 flex-col items-center gap-4.5 text-center lg:max-w-200 lg:items-start lg:overflow-hidden lg:text-left',
+					varianteTitulo === 'tvs-monitores'
+						? 'min-[1100px]:h-auto! lg:h-auto!'
+						: 'min-[1100px]:h-146! lg:h-151',
+				]}
 			>
 				<slot name="etiqueta" />
 
 				<h1
 					class:list={[
 						'w-full pt-2 uppercase md:max-w-5xl',
-						varianteTitulo === 'som-iluminacao'
+						varianteTitulo === 'som-iluminacao' || varianteTitulo === 'tvs-monitores'
 							? 'text-[2rem] max-[359px]:text-3xl min-[1420px]:text-[3.25rem]! md:text-5xl'
 							: 'text-[2rem] max-[360px]:text-3xl min-[1420px]:text-6xl! md:text-5xl',
 					]}

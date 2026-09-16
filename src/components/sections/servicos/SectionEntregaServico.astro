@@ -14,11 +14,13 @@ type NomeIcone =
 	| 'testes'
 	| 'operacao'
 
-interface ItemEntrega {
-	icone: NomeIcone
+interface ItemEntregaBase {
 	titulo: string
 	descricao: string
 }
+
+type ItemEntrega = ItemEntregaBase &
+	({ icone: NomeIcone; iconeImagem?: never } | { icone?: never; iconeImagem: ImageMetadata })
 
 interface Props {
 	etiqueta: string
@@ -48,8 +50,17 @@ const { etiqueta, titulo, descricao, itens, nota, imagem, textoAlternativoImagem
 					itens.map((item) => (
 						<li class="flex items-center gap-4">
 							<>
-								<span class="flex size-15 shrink-0 items-center justify-center rounded-full bg-primary-soft text-white">
-									<Icone name={item.icone} class="size-7" />
+								<span
+									class:list={[
+										'flex shrink-0 items-center justify-center text-white',
+										item.iconeImagem ? 'size-11' : 'size-15 rounded-full bg-primary-soft',
+									]}
+								>
+									{item.iconeImagem ? (
+										<Image src={item.iconeImagem} alt="" class="size-11" />
+									) : (
+										<Icone name={item.icone} class="size-7" />
+									)}
 								</span>
 								<div class="min-w-0 flex-1">
 									<>

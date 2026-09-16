@@ -16,9 +16,18 @@ interface Props {
 	descricao: string
 	itens: [ItemGaleria, ItemGaleria, ItemGaleria]
 	variante?: 'background' | 'surface'
+	layout?: 'equilibrado' | 'destaque'
 }
 
-const { id, etiqueta, titulo, descricao, itens, variante = 'background' } = Astro.props
+const {
+	id,
+	etiqueta,
+	titulo,
+	descricao,
+	itens,
+	variante = 'background',
+	layout = 'equilibrado',
+} = Astro.props
 const fundo = variante === 'surface' ? 'bg-surface' : 'bg-background'
 ---
 
@@ -37,7 +46,14 @@ const fundo = variante === 'surface' ? 'bg-surface' : 'bg-background'
 		/>
 		<p class="mt-3 max-w-210 text-base text-muted lg:text-lg" set:html={descricao} />
 
-		<div class="mt-8 grid gap-6 lg:h-130 lg:grid-cols-[minmax(0,650fr)_minmax(0,638fr)]">
+		<div
+			class:list={[
+				'mt-8 grid gap-6 lg:h-130',
+				layout === 'destaque'
+					? 'lg:grid-cols-[minmax(0,760fr)_minmax(0,448fr)]'
+					: 'lg:grid-cols-[minmax(0,650fr)_minmax(0,638fr)]',
+			]}
+		>
 			<article
 				class="group relative min-h-96 overflow-hidden rounded-3xl border-2 border-stroke lg:h-130"
 			>
