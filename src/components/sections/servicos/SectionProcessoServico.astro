@@ -20,13 +20,10 @@ const { etiqueta, titulo, descricao, etapas } = Astro.props
 		data-animate
 		class="mx-auto grid w-full gap-8 rounded-3xl border-2 border-stroke bg-background p-6 lg:max-w-345 lg:grid-cols-[22.5rem_1fr] lg:p-10"
 	>
-		<div class="flex flex-col justify-between gap-10">
+		<div class="flex min-w-0 flex-col justify-between gap-10">
 			<div>
 				<p class="text-sm font-semibold text-primary uppercase" set:html={etiqueta} />
-				<h2
-					class="mt-2 text-3xl text-foreground lg:text-4xl"
-					set:html={titulo}
-				/>
+				<h2 class="mt-2 text-3xl text-foreground lg:text-4xl" set:html={titulo} />
 				<p class="mt-4 text-base text-muted lg:text-lg" set:html={descricao} />
 			</div>
 
@@ -47,14 +44,8 @@ const { etiqueta, titulo, descricao, etapas } = Astro.props
 						etapas.map((_, indice) => (
 							<span
 								class:list={[
-									'h-1 shrink-0 rounded-full',
-									indice === 0
-										? 'w-10'
-										: indice === 1
-											? 'w-14'
-											: indice === 2
-												? 'w-17'
-												: 'w-20',
+									'h-1 rounded-full',
+									indice === 0 ? 'w-10' : indice === 1 ? 'w-14' : indice === 2 ? 'w-17' : 'w-20',
 									indice % 2 === 0 ? 'bg-primary' : 'bg-primary-soft',
 								]}
 							/>

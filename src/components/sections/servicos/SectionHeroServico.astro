@@ -7,6 +7,7 @@ import Botao from '@/components/Button.astro'
 interface Props {
 	tituloDestaque: string
 	titulo: string
+	varianteTitulo?: 'padrao' | 'som-iluminacao'
 	descricao: string
 	imagem: ImageMetadata
 	textoAlternativoImagem: string
@@ -14,8 +15,16 @@ interface Props {
 	linkBotao: string
 }
 
-const { tituloDestaque, titulo, descricao, imagem, textoAlternativoImagem, textoBotao, linkBotao } =
-	Astro.props
+const {
+	tituloDestaque,
+	titulo,
+	varianteTitulo = 'padrao',
+	descricao,
+	imagem,
+	textoAlternativoImagem,
+	textoBotao,
+	linkBotao,
+} = Astro.props
 ---
 
 <section class="bg-stroke px-3 pt-4 pb-8 md:px-8 lg:px-16 lg:pt-5 lg:pb-16">
@@ -31,12 +40,17 @@ const { tituloDestaque, titulo, descricao, imagem, textoAlternativoImagem, texto
 				class="pointer-events-none absolute -bottom-32 -left-40 h-80 w-md rounded-full bg-primary/40 blur-3xl lg:-bottom-60 lg:-left-40 lg:h-100 lg:w-80"
 			></span>
 			<div
-				class="relative z-10 flex w-full max-w-197.5 flex-col items-center gap-4.5 text-center lg:h-146 lg:max-w-200 lg:items-start lg:overflow-hidden lg:text-left"
+				class="relative z-10 flex w-full max-w-197.5 flex-col items-center gap-4.5 text-center min-[1100px]:h-146! lg:h-151 lg:max-w-200 lg:items-start lg:overflow-hidden lg:text-left"
 			>
 				<slot name="etiqueta" />
 
 				<h1
-					class="w-full pt-2 text-[2rem] uppercase max-[359px]:text-3xl md:max-w-5xl md:text-5xl lg:text-6xl"
+					class:list={[
+						'w-full pt-2 uppercase md:max-w-5xl',
+						varianteTitulo === 'som-iluminacao'
+							? 'text-[2rem] max-[359px]:text-3xl min-[1420px]:text-[3.25rem]! md:text-5xl'
+							: 'text-[2rem] max-[360px]:text-3xl min-[1420px]:text-6xl! md:text-5xl',
+					]}
 				>
 					<strong class="font-extrabold" set:html={tituloDestaque} />{' '}
 					<span class="font-semibold" set:html={titulo} />
