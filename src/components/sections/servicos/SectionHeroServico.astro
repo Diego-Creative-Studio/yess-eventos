@@ -24,7 +24,7 @@ const { tituloDestaque, titulo, descricao, imagem, textoAlternativoImagem, texto
 		class="relative mx-auto grid w-full grid-cols-1 overflow-hidden rounded-hero border-2 border-stroke bg-linear-to-b from-background via-primary-soft to-violet lg:min-h-184 lg:max-w-345 lg:grid-cols-[1.1fr_1fr] lg:bg-linear-to-r"
 	>
 		<div
-			class="relative isolate flex min-w-0 items-center overflow-hidden px-6 py-10 md:px-10 lg:items-start lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
+			class="relative isolate flex min-w-0 items-center overflow-hidden px-6 py-10 max-[359px]:px-4 md:px-10 lg:items-start lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
 		>
 			<span
 				aria-hidden="true"
@@ -35,7 +35,9 @@ const { tituloDestaque, titulo, descricao, imagem, textoAlternativoImagem, texto
 			>
 				<slot name="etiqueta" />
 
-				<h1 class="w-full pt-2 text-4xl uppercase md:max-w-5xl md:text-5xl lg:text-6xl">
+				<h1
+					class="w-full pt-2 text-[2rem] uppercase max-[359px]:text-3xl md:max-w-5xl md:text-5xl lg:text-6xl"
+				>
 					<strong class="font-extrabold" set:html={tituloDestaque} />{' '}
 					<span class="font-semibold" set:html={titulo} />
 				</h1>
