@@ -15,6 +15,10 @@ import imagemAplicacaoFeiras from '@/assets/som-iluminacao/aplicacao-feiras.jpg'
 import imagemAplicacaoPlenarias from '@/assets/som-iluminacao/aplicacao-plenarias.jpg'
 import imagemEntrega from '@/assets/som-iluminacao/entrega-completa.jpg'
 import imagemHero from '@/assets/som-iluminacao/hero-som-iluminacao.jpg'
+import iconeAcustica from '@/assets/som-iluminacao/icones-figma/92-2566.svg'
+import iconeMicrofone from '@/assets/som-iluminacao/icones-figma/92-2574.svg'
+import iconeIluminacao from '@/assets/som-iluminacao/icones-figma/92-2582.svg'
+import iconeMesaOperacao from '@/assets/som-iluminacao/icones-figma/92-2590.svg'
 ---
 
 <Layout
@@ -43,7 +47,7 @@ import imagemHero from '@/assets/som-iluminacao/hero-som-iluminacao.jpg'
 		</SectionHeroServico>
 
 		<SectionCredibilidadeServico
-			etiqueta="Por que a YESS?"
+			etiqueta="Por que  a YESS ?"
 			titulo="Áudio e luz sob controle"
 			itens={[
 				{
@@ -74,6 +78,7 @@ import imagemHero from '@/assets/som-iluminacao/hero-som-iluminacao.jpg'
 			titulo="Sonorização e iluminação em uma única operação"
 			etiquetaOrientacao="Como escolher"
 			descricaoOrientacao="Cada sistema é planejado de acordo com ambiente, público, programação e necessidades técnicas."
+			marcadorItem="•"
 			opcaoClara={{
 				codigo: 'SOM',
 				etiqueta: 'Clareza e cobertura',
@@ -108,22 +113,22 @@ import imagemHero from '@/assets/som-iluminacao/hero-som-iluminacao.jpg'
 			descricao="A equipe coordena equipamentos, montagem, testes e operação para que áudio e luz trabalhem em conjunto."
 			itens={[
 				{
-					icone: 'medida',
+					iconeImagem: iconeAcustica,
 					titulo: 'Leitura técnica do espaço',
 					descricao: 'Cobertura sonora e pontos de luz definidos no projeto.',
 				},
 				{
-					icone: 'montagem',
+					iconeImagem: iconeMicrofone,
 					titulo: 'Montagem coordenada',
 					descricao: 'Estruturas, cabeamento e cenas preparados em conjunto.',
 				},
 				{
-					icone: 'testes',
+					iconeImagem: iconeIluminacao,
 					titulo: 'Passagem e testes',
 					descricao: 'Microfones, níveis e programação de luz validados.',
 				},
 				{
-					icone: 'operacao',
+					iconeImagem: iconeMesaOperacao,
 					titulo: 'Operação durante o evento',
 					descricao: 'Ajustes ao vivo e desmontagem organizada.',
 				},

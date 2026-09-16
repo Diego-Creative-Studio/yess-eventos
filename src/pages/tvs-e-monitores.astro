@@ -1,0 +1,241 @@
+---
+import Layout from '@/layouts/Layout.astro'
+
+import Etiqueta from '@/components/Etiqueta.astro'
+import SectionChamadaServico from '@/components/sections/servicos/SectionChamadaServico.astro'
+import SectionComparacaoServico from '@/components/sections/servicos/SectionComparacaoServico.astro'
+import SectionCredibilidadeServico from '@/components/sections/servicos/SectionCredibilidadeServico.astro'
+import SectionEntregaTelasServico from '@/components/sections/servicos/SectionEntregaTelasServico.astro'
+import SectionGaleriaServico from '@/components/sections/servicos/SectionGaleriaServico.astro'
+import SectionHeroServico from '@/components/sections/servicos/SectionHeroServico.astro'
+import SectionPerguntasServico from '@/components/sections/servicos/SectionPerguntasServico.astro'
+import SectionProcessoServico from '@/components/sections/servicos/SectionProcessoServico.astro'
+
+import imagemAplicacaoEvento from '@/assets/tvs-monitores/5daa29c13578ac190493e20c5815c5919cee69dc.jpg'
+import imagemAplicacaoOperacao from '@/assets/tvs-monitores/18dfdcbdc1879c47f944b229de7688a493cd7837.jpg'
+import imagemAplicacaoPlenaria from '@/assets/tvs-monitores/a91f414e960accfefab8182ffc9c063981ad37d5.jpg'
+import imagemEntrega from '@/assets/tvs-monitores/c50bdbf544f1e24b84ab715a974c5f10d424fc0e.jpg'
+import iconeMapeamento from '@/assets/tvs-monitores/icones/92-2606.svg'
+import iconeSuportes from '@/assets/tvs-monitores/icones/92-2614.svg'
+import iconeSinal from '@/assets/tvs-monitores/icones/98-2790.svg'
+import iconeTestes from '@/assets/tvs-monitores/icones/92-2630.svg'
+---
+
+<Layout
+	title="TVs e monitores para eventos | YESS"
+	description="Locação de TVs e monitores para eventos corporativos, com instalação, distribuição de sinal, testes e suporte técnico."
+>
+	<main id="conteudo">
+		<SectionHeroServico
+			tituloDestaque="Telas no ponto certo."
+			titulo="<br/>Conteúdo sempre visível."
+			varianteTitulo="tvs-monitores"
+			descricao="TVs e monitores para recepção, salas, estandes e áreas de apoio com instalação, sinal e conteúdo testados."
+			imagem={imagemAplicacaoEvento}
+			textoAlternativoImagem="Tela instalada em evento corporativo"
+			textoBotao="Solicitar orçamento"
+			linkBotao="#orcamento"
+		>
+			<Etiqueta
+				slot="etiqueta"
+				texto="Locação de TVs e monitores para eventos"
+				corFundo="bg-stroke"
+				corTexto="text-foreground"
+				corBolinha="bg-warm"
+				class="self-center lg:self-start lg:text-left"
+			/>
+		</SectionHeroServico>
+
+		<SectionCredibilidadeServico
+			etiqueta="Por que  a YESS ?"
+			titulo="Segurança em cada etapa"
+			itens={[
+				{
+					numero: '01',
+					titulo: 'Projeto sob medida',
+					descricao: 'P2 ou P3 conforme distância, espaço e conteúdo.',
+				},
+				{
+					numero: '02',
+					titulo: 'Montagem técnica',
+					descricao: 'Estrutura, fixação e acabamento organizados.',
+				},
+				{
+					numero: '03',
+					titulo: 'Conteúdo testado',
+					descricao: 'Sinal, proporção e reprodução validados.',
+				},
+				{
+					numero: '04',
+					titulo: 'Operação no evento',
+					descricao: 'Acompanhamento técnico até a desmontagem.',
+				},
+			]}
+		/>
+
+		<SectionComparacaoServico
+			etiqueta="Comparação / TVs × Monitores"
+			titulo="TV ou monitor? A escolha começa pela função"
+			compactarCodigoDestaqueNoMobile
+			etiquetaOrientacao="Como escolher"
+			descricaoOrientacao="A indicação considera quantidade de pessoas, distância de leitura, mobilidade e conteúdo exibido."
+			marcadorItem="•"
+			opcaoClara={{
+				codigo: 'TVs',
+				etiqueta: 'Grupos e ambientes',
+				titulo: 'Conteúdo para grupos e ambientes',
+				descricao:
+					'Indicadas para salas, recepções e espaços onde várias pessoas acompanham a mesma informação.',
+				itens: ['Apresentações e vídeos', 'Salas e plenárias', 'Conteúdo institucional'],
+			}}
+			opcaoDestaque={{
+				codigo: 'MONITORES',
+				etiqueta: 'Uso direcionado',
+				titulo: 'Informação próxima e direcionada',
+				descricao:
+					'Ideais para credenciamento, demonstrações, retorno e pontos específicos da operação.',
+				itens: ['Recepção e apoio', 'Demonstrações em estandes', 'Retorno e sinalização'],
+			}}
+			nota="A escolha considera público, distância, mobilidade e conteúdo."
+			resumo="TVs — grupos / Monitores — pontos específicos"
+		/>
+
+		<SectionEntregaTelasServico
+			etiqueta="Locação com entrega técnica"
+			titulo="Cada tela instalada com uma função clara"
+			descricao="A YESS define os pontos de exibição, seleciona suportes, organiza o sinal e valida o conteúdo antes da abertura."
+			itens={[
+				{
+					icone: iconeMapeamento,
+					titulo: 'Mapeamento',
+					descricao: 'Pontos definidos por leitura e circulação.',
+				},
+				{
+					icone: iconeSuportes,
+					titulo: 'Suportes',
+					descricao: 'Tamanhos e fixações adequados ao ambiente.',
+				},
+				{
+					icone: iconeSinal,
+					titulo: 'Sinal',
+					descricao: 'Conexões e conteúdo verificados.',
+				},
+				{
+					icone: iconeTestes,
+					titulo: 'Testes',
+					descricao: 'Funcionamento e retirada organizados.',
+				},
+			]}
+			nota="Imagem pronta, cabos organizados e circulação preservada."
+			imagem={imagemEntrega}
+			textoAlternativoImagem="Tela instalada em palco corporativo"
+		/>
+
+		<SectionGaleriaServico
+			layout="destaque"
+			titulo="Uma tela para cada momento do evento"
+			descricao="O tamanho, o suporte e a posição são definidos pela distância, circulação e função do conteúdo."
+			itens={[
+				{
+					titulo: 'ESTANDES E ATIVAÇÕES',
+					descricao: 'Conteúdo institucional e demonstrações próximos do público.',
+					imagem: imagemAplicacaoEvento,
+					textoAlternativoImagem: 'Tela com conteúdo institucional em evento',
+				},
+				{
+					titulo: 'SALAS E PLENÁRIAS',
+					descricao: 'Apresentações e vídeos com leitura clara para todos.',
+					imagem: imagemAplicacaoPlenaria,
+					textoAlternativoImagem: 'Tela em sala de plenária',
+				},
+				{
+					titulo: 'APOIO E OPERAÇÃO',
+					descricao: 'Retorno, sinalização e acompanhamento técnico da programação.',
+					imagem: imagemAplicacaoOperacao,
+					textoAlternativoImagem: 'Tela de apoio durante operação técnica',
+				},
+			]}
+		/>
+
+		<SectionProcessoServico
+			etiqueta="Processo técnico"
+			titulo="Da definição dos pontos à retirada"
+			descricao="Planejamento claro, instalação organizada e acompanhamento até a retirada."
+			etapas={[
+				{
+					numero: '01',
+					titulo: 'Mapeamento',
+					descricao: 'Locais escolhidos conforme circulação e leitura.',
+				},
+				{
+					numero: '02',
+					titulo: 'Instalação',
+					descricao: 'Telas posicionadas com segurança e acabamento.',
+				},
+				{
+					numero: '03',
+					titulo: 'Sinal e testes',
+					descricao: 'Conexões, proporção e reprodução verificadas.',
+				},
+				{
+					numero: '04',
+					titulo: 'Retirada',
+					descricao: 'Funcionamento validado e desmontagem organizada.',
+				},
+			]}
+		/>
+
+		<SectionPerguntasServico
+			titulo="Perguntas frequentes"
+			perguntas={[
+				{
+					pergunta: 'Quando utilizar TVs ou monitores em um evento?',
+					resposta:
+						'São indicados para conteúdos vistos a curta distância, como apresentações, demonstrações, sinalização, credenciamento e apoio em estandes.',
+				},
+				{
+					pergunta: 'A YESS realiza a montagem e a operação?',
+					resposta:
+						'Sim. O escopo pode incluir planejamento, montagem, configuração, testes, operação técnica e desmontagem.',
+				},
+				{
+					pergunta: 'Como é calculado o orçamento?',
+					resposta:
+						'O orçamento considera quantidade e tamanho das telas, suportes, período de locação, local, instalação, distribuição de sinal e operação necessária.',
+				},
+				{
+					pergunta: 'Posso usar meus próprios conteúdos?',
+					resposta:
+						'Sim. A equipe orienta os formatos e testa apresentações e vídeos antes do evento.',
+				},
+			]}
+		/>
+
+		<SectionChamadaServico
+			titulo="Seu evento precisa de TVs ou monitores?"
+			descricao="Envie data, cidade, público estimado e medidas do espaço."
+			textoBotao="Solicitar projeto e orçamento"
+			linkBotao="#contato"
+		/>
+	</main>
+
+	<script>
+		import { gsap } from 'gsap'
+		import { ScrollTrigger } from 'gsap/ScrollTrigger'
+		gsap.registerPlugin(ScrollTrigger)
+		if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			gsap.utils.toArray<HTMLElement>('[data-animate]').forEach((element) => {
+				gsap.fromTo(
+					element,
+					{ opacity: 0 },
+					{
+						opacity: 1,
+						duration: 1,
+						ease: 'power2.out',
+						scrollTrigger: { trigger: element, start: 'top 80%', once: true },
+					},
+				)
+			})
+		}
+	</script>
+</Layout>

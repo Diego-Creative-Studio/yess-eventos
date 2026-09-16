@@ -1,0 +1,214 @@
+---
+import Layout from '@/layouts/Layout.astro'
+
+import Etiqueta from '@/components/Etiqueta.astro'
+import SectionChamadaServico from '@/components/sections/servicos/SectionChamadaServico.astro'
+import SectionComparacaoServico from '@/components/sections/servicos/SectionComparacaoServico.astro'
+import SectionCredibilidadeServico from '@/components/sections/servicos/SectionCredibilidadeServico.astro'
+import SectionEntregaServico from '@/components/sections/servicos/SectionEntregaServico.astro'
+import SectionGaleriaServico from '@/components/sections/servicos/SectionGaleriaServico.astro'
+import SectionHeroServico from '@/components/sections/servicos/SectionHeroServico.astro'
+import SectionPerguntasServico from '@/components/sections/servicos/SectionPerguntasServico.astro'
+
+import imagemAplicacaoImagem from '@/assets/solucoes-corporativas/5e7463ed385bc2de8595cabbaa67cf1d04f4728e.jpg'
+import imagemAplicacaoLuz from '@/assets/solucoes-corporativas/973c8a9a34b34b3bd0b1bba733c6870a9733fe2e.jpg'
+import imagemAplicacaoSom from '@/assets/solucoes-corporativas/fb4d9546670036b58db77f67f6c4bbdd0a950872.jpg'
+import imagemEntrega from '@/assets/solucoes-corporativas/2d7fb7401b64eafac3b60c81b5b8ebb57d1b1e1d.jpg'
+import imagemHero from '@/assets/solucoes-corporativas/0953bf2596c50852367141ba5b4941f62013cdd6.jpg'
+import iconeBriefing from '@/assets/solucoes-corporativas/icones/92-2646.svg'
+import iconeSistemas from '@/assets/solucoes-corporativas/icones/92-2654.svg'
+import iconeCronograma from '@/assets/solucoes-corporativas/icones/92-2662.svg'
+import iconeOperacao from '@/assets/solucoes-corporativas/icones/92-2670.svg'
+---
+
+<Layout
+	title="Soluções corporativas para eventos | YESS"
+	description="Soluções audiovisuais integradas para eventos corporativos, com painel de LED, som, iluminação, TVs e operação técnica coordenada."
+>
+	<main id="conteudo">
+		<SectionHeroServico
+			tituloDestaque="Tudo conectado."
+			titulo="<br/>Conteúdo sempre<br/>visível."
+			varianteTitulo="tvs-monitores"
+			descricao="TVs e monitores para recepção, salas, estandes e áreas de apoio com instalação, sinal e conteúdo testados."
+			imagem={imagemHero}
+			textoAlternativoImagem="Soluções audiovisuais integradas em evento corporativo"
+			textoBotao="Solicitar orçamento"
+			linkBotao="#orcamento"
+		>
+			<Etiqueta
+				slot="etiqueta"
+				texto="Soluções audiovisuais para eventos corporativos"
+				corFundo="bg-stroke"
+				corTexto="text-foreground"
+				corBolinha="bg-warm"
+				class="self-center lg:self-start lg:text-left"
+			/>
+		</SectionHeroServico>
+
+		<SectionCredibilidadeServico
+			etiqueta="Uma só equipe"
+			titulo="Soluções integradas, uma entrega coordenada"
+			itens={[
+				{
+					numero: '01',
+					titulo: 'Diagnóstico integrado',
+					descricao: 'Briefing, espaço e programação definem a solução completa.',
+				},
+				{
+					numero: '02',
+					titulo: 'Sistemas coordenados',
+					descricao: 'LED, som, luz e TVs planejados para trabalhar juntos.',
+				},
+				{
+					numero: '03',
+					titulo: 'Sinal e conteúdo validados',
+					descricao: 'Testes de vídeo, áudio e distribuição antes da abertura.',
+				},
+				{
+					numero: '04',
+					titulo: 'Operação centralizada',
+					descricao: 'Uma equipe acompanha todas as frentes até o encerramento.',
+				},
+			]}
+		/>
+
+		<SectionGaleriaServico
+			layout="destaque"
+			titulo="Uma solução, três frentes coordenadas"
+			descricao="Cada sistema cumpre uma função - e todos trabalham no mesmo projeto."
+			itens={[
+				{
+					titulo: 'IMAGEM QUE CONDUZ',
+					descricao: 'Painéis de LED e telas para conteúdo, apresentações e identidade visual.',
+					imagem: imagemAplicacaoImagem,
+					textoAlternativoImagem: 'Painel de LED em evento corporativo',
+				},
+				{
+					titulo: 'SOM QUE ALCANÇA',
+					descricao: 'Microfones, caixas e processamento dimensionados para cada ambiente.',
+					imagem: imagemAplicacaoSom,
+					textoAlternativoImagem: 'Sonorização em evento corporativo',
+				},
+				{
+					titulo: 'LUZ QUE ORGANIZA',
+					descricao: 'Cenas e pontos de luz que valorizam palco, marca e momentos importantes.',
+					imagem: imagemAplicacaoLuz,
+					textoAlternativoImagem: 'Iluminação em sala de evento corporativo',
+				},
+			]}
+		/>
+
+		<SectionComparacaoServico
+			etiqueta="Comparação / Antes × Durante"
+			titulo="O que muda quando tudo é integrado"
+			etiquetaOrientacao="Visão do processo"
+			descricaoOrientacao="Menos decisões isoladas. Mais clareza do planejamento à operação."
+			marcadorItem="•"
+			opcaoClara={{
+				codigo: 'ANTES DO EVENTO',
+				etiqueta: 'Planejamento',
+				titulo: 'Um único planejamento técnico',
+				descricao: 'Espaço, programação e conteúdo orientam o projeto audiovisual completo.',
+				itens: ['Dimensionamento conjunto', 'Cronograma de montagem', 'Testes com conteúdo real'],
+			}}
+			opcaoDestaque={{
+				codigo: 'DURANTE O EVENTO',
+				etiqueta: 'Operação',
+				titulo: 'Uma operação que responde em conjunto',
+				descricao: 'A equipe coordena imagem, áudio e luz com leitura única da programação.',
+				itens: [
+					'Comunicação centralizada',
+					'Ajustes durante a agenda',
+					'Responsabilidade técnica clara',
+				],
+			}}
+			nota="Menos decisões isoladas. Mais clareza do planejamento à operação."
+			resumo="Antes — planejamento / Durante — operação"
+		/>
+
+		<SectionEntregaServico
+			etiqueta="Operação integrada"
+			titulo="Seu evento, uma única responsabilidade técnica"
+			descricao="A YESS centraliza o diálogo com produção, conteúdo e local para que todos os sistemas cheguem prontos ao evento."
+			itens={[
+				{
+					iconeImagem: iconeBriefing,
+					titulo: 'Briefing unificado',
+					descricao: 'Produção, conteúdo e local alinhados desde o início.',
+				},
+				{
+					iconeImagem: iconeSistemas,
+					titulo: 'Sistemas dimensionados',
+					descricao: 'LED, som, luz e TVs planejados como uma estrutura.',
+				},
+				{
+					iconeImagem: iconeCronograma,
+					titulo: 'Montagem coordenada',
+					descricao: 'Cronograma, acessos e testes sob uma equipe.',
+				},
+				{
+					iconeImagem: iconeOperacao,
+					titulo: 'Operação completa',
+					descricao: 'Acompanhamento técnico até a desmontagem.',
+				},
+			]}
+			nota="Menos fornecedores dispersos. Mais clareza para quem produz."
+			imagem={imagemEntrega}
+			textoAlternativoImagem="Operação audiovisual integrada em evento corporativo"
+		/>
+
+		<SectionPerguntasServico
+			titulo="Perguntas frequentes"
+			perguntas={[
+				{
+					pergunta: 'Quando utilizar TVs ou monitores em um evento?',
+					resposta:
+						'São indicados para conteúdos vistos a curta distância, como apresentações, demonstrações, sinalização, credenciamento e apoio em estandes.',
+				},
+				{
+					pergunta: 'A YESS realiza a montagem e a operação?',
+					resposta:
+						'Sim. O escopo pode incluir planejamento, montagem, configuração, testes, operação técnica e desmontagem.',
+				},
+				{
+					pergunta: 'Como é calculado o orçamento?',
+					resposta:
+						'O orçamento considera quantidade e tamanho das telas, suportes, período de locação, local, instalação, distribuição de sinal e operação necessária.',
+				},
+				{
+					pergunta: 'Posso usar meus próprios conteúdos?',
+					resposta:
+						'Sim. A equipe orienta os formatos e testa apresentações e vídeos antes do evento.',
+				},
+			]}
+		/>
+
+		<SectionChamadaServico
+			titulo="Seu evento precisa de uma operação audiovisual integrada?"
+			descricao="Conte o formato do evento. A YESS organiza a solução técnica completa."
+			textoBotao="Solicitar projeto e orçamento"
+			linkBotao="#contato"
+		/>
+	</main>
+
+	<script>
+		import { gsap } from 'gsap'
+		import { ScrollTrigger } from 'gsap/ScrollTrigger'
+		gsap.registerPlugin(ScrollTrigger)
+		if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			gsap.utils.toArray<HTMLElement>('[data-animate]').forEach((element) => {
+				gsap.fromTo(
+					element,
+					{ opacity: 0 },
+					{
+						opacity: 1,
+						duration: 1,
+						ease: 'power2.out',
+						scrollTrigger: { trigger: element, start: 'top 80%', once: true },
+					},
+				)
+			})
+		}
+	</script>
+</Layout>
