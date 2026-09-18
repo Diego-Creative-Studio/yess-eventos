@@ -1,0 +1,132 @@
+---
+import { Image } from 'astro:assets'
+
+import Icon from '@/components/Icon.astro'
+
+import fundoInstagram from '@/assets/contato/0f90664882c6e14dacf411bd15b8f1d473d2e49a.jpg'
+
+const canais = [
+	{
+		numero: '01',
+		titulo: 'E-mail',
+		acao: 'Enviar briefing',
+		rotuloMensagem: 'Mensagem sugerida',
+		mensagem: 'Assunto: Orçamento para evento.<br />Inclua data, cidade e local.',
+		icone: 'email' as const,
+		fundo: 'email',
+	},
+	{
+		numero: '02',
+		titulo: 'WhatsApp',
+		acao: 'Iniciar conversa',
+		rotuloMensagem: 'Mensagem sugerida',
+		mensagem: 'Olá! Quero falar sobre um evento.<br />Podemos alinhar os primeiros passos?',
+		icone: 'whatsapp' as const,
+		fundo: 'whatsapp',
+	},
+	{
+		numero: '03',
+		titulo: 'Instagram',
+		acao: 'Abrir perfil',
+		rotuloMensagem: 'Ao abrir o perfil',
+		mensagem: 'Veja projetos e bastidores.<br />Depois, envie uma mensagem.',
+		icone: 'instagram' as const,
+		fundo: 'instagram',
+	},
+]
+---
+
+<section id="canais" class="px-3 py-8 md:px-8 lg:px-16 lg:py-7.5">
+	<div
+		data-contato-reveal
+		class="relative mx-auto w-full max-w-345 overflow-hidden rounded-[28px] bg-background p-7 md:p-10 xl:min-h-179 xl:px-10 xl:py-15"
+	>
+		<span
+			aria-hidden="true"
+			class="pointer-events-none absolute -top-50 right-0 size-150 rounded-full bg-[#6e8db8]/40 blur-[190px]"
+		></span>
+
+		<div class="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+			<div>
+				<p class="font-title text-sm leading-5 font-semibold text-primary uppercase"
+					>Contato direto</p
+				>
+				<h2 class="mt-2 text-3xl text-foreground md:text-[38px] md:leading-[1.22]">
+					Escolha o melhor canal.
+				</h2>
+			</div>
+			<p class="max-w-84 text-[15px] leading-6 text-foreground">
+				WhatsApp para respostas rápidas, e-mail para briefings e Instagram para acompanhar a YESS.
+			</p>
+		</div>
+
+		<div
+			class="relative z-10 mt-5 inline-flex max-w-full rounded-full bg-linear-to-r from-primary via-[#22c55e] to-[#f43f8c] p-0.5 shadow-lg"
+		>
+			<p
+				class="rounded-full bg-background px-5 py-2.5 font-title text-[11px] leading-5 font-semibold text-foreground uppercase sm:text-xs"
+			>
+				Escolha um canal — a mensagem pode ser editada
+			</p>
+		</div>
+
+		<div class="relative z-10 mt-5 grid gap-6 md:grid-cols-2 xl:grid-cols-3 xl:gap-[46px]">
+			{
+				canais.map((canal) => (
+					<article
+						class:list={[
+							'relative flex min-h-105 overflow-hidden rounded-[28px] border border-white/15 p-7 text-white md:p-9 xl:p-11',
+							canal.fundo === 'email' && 'bg-[linear-gradient(143deg,#3c75c6_0%,#144589_100%)]',
+							canal.fundo === 'whatsapp' && 'bg-[linear-gradient(180deg,#00aa45_0%,#005e28_100%)]',
+							canal.fundo === 'instagram' && 'bg-[#c000c8]',
+						]}
+					>
+						{canal.fundo === 'instagram' && (
+							<Image
+								src={fundoInstagram}
+								alt=""
+								class="absolute inset-0 size-full object-cover"
+								aria-hidden="true"
+							/>
+						)}
+						{canal.fundo === 'email' && (
+							<span
+								aria-hidden="true"
+								class="absolute -bottom-24 -left-24 size-70 rounded-full bg-[#488cfc]/70 blur-[80px]"
+							/>
+						)}
+						{canal.fundo === 'whatsapp' && (
+							<span
+								aria-hidden="true"
+								class="absolute -right-20 -bottom-24 size-70 rounded-full bg-[#1cff78]/55 blur-[100px]"
+							/>
+						)}
+
+						<div class="relative z-10 flex w-full flex-col">
+							<div class="flex items-start justify-between">
+								<Icon name={canal.icone} class="size-15 drop-shadow-lg" />
+								<span class="inline-flex size-10 items-center justify-center rounded-full bg-white/10 font-title text-sm font-semibold">
+									{canal.numero}
+								</span>
+							</div>
+
+							<div class="mt-10">
+								<h3 class="text-[32px] leading-10 font-semibold">{canal.titulo}</h3>
+								<p class="mt-1 font-title text-base leading-6 font-semibold uppercase">
+									{canal.acao}
+								</p>
+							</div>
+
+							<div class="mt-auto rounded-xl border border-white/15 bg-white/8 p-3">
+								<p class="font-title text-[11px] leading-4 font-semibold uppercase">
+									{canal.rotuloMensagem}
+								</p>
+								<p class="mt-1 text-sm leading-5 text-white" set:html={canal.mensagem} />
+							</div>
+						</div>
+					</article>
+				))
+			}
+		</div>
+	</div>
+</section>
