@@ -1,6 +1,8 @@
 ---
 import { Image } from 'astro:assets'
+
 import Button from '@/components/Button.astro'
+import Icon from '@/components/Icon.astro'
 
 import logoYess from '@/assets/logo-yess.svg'
 
@@ -8,55 +10,530 @@ interface Props {
 	class?: string
 }
 
+interface NavigationItem {
+	label: string
+	href: string
+}
+
+interface ServiceItem extends NavigationItem {
+	description: string
+}
+
 const { class: className } = Astro.props
 
-const navigation = [
-	{ label: 'Início', href: '/' },
-	{ label: 'Serviços', href: '/#servicos' },
+const navigationBeforeServices: NavigationItem[] = [{ label: 'Início', href: '/' }]
+
+const navigationAfterServices: NavigationItem[] = [
 	{ label: 'Portfólio', href: '/portfolio/' },
 	{ label: 'Sobre', href: '/sobre/' },
 	{ label: 'Contato', href: '/contato/' },
 ]
+
+const services: ServiceItem[] = [
+	{
+		label: 'Painéis de LED P2 e P3',
+		href: '/paineis-de-led-p2-e-p3/',
+		description: 'Alta definição, montagem e operação para eventos.',
+	},
+	{
+		label: 'Som e iluminação',
+		href: '/som-e-iluminacao/',
+		description: 'Áudio claro e luz planejados como uma única entrega.',
+	},
+	{
+		label: 'TVs e monitores',
+		href: '/tvs-e-monitores/',
+		description: 'Telas para feiras, congressos e apresentações.',
+	},
+	{
+		label: 'Soluções corporativas',
+		href: '/solucoes-corporativas/',
+		description: 'Planejamento audiovisual integrado para cada formato.',
+	},
+]
+
+const normalizePath = (path: string) => path.replace(/\/+$/, '') || '/'
+const currentPath = normalizePath(Astro.url.pathname)
+const isCurrent = (href: string) => currentPath === normalizePath(href)
+const isServicePage = services.some((service) => isCurrent(service.href))
 ---
 
-<header class:list={['px-3 py-3 md:px-8 lg:px-16 lg:pt-6 lg:pb-5', className]}>
-	<div
-		class="mx-auto flex h-18 w-full max-w-345 items-center justify-between gap-3 overflow-hidden rounded-full border-2 border-stroke bg-surface px-4 py-3 max-[359px]:gap-2 max-[359px]:px-3 lg:h-20 lg:gap-6 lg:px-7.5"
-	>
-		<a href="/" class="shrink-0" aria-label="YESS Audiovisual e Eventos — início">
-			<Image
-				src={logoYess}
-				alt="YESS Audiovisual e Eventos"
-				class="h-12 w-auto max-[359px]:h-10 lg:h-15.5"
-			/>
-		</a>
+<header
+	data-site-header
+	class:list={['relative z-50 px-3 py-3 md:px-8 lg:px-16 lg:pt-6 lg:pb-5', className]}
+>
+	<div class="mx-auto w-full max-w-345">
+		<div data-mobile-brand class="flex h-18 items-center justify-center lg:hidden">
+			<a href="/" aria-label="YESS Audiovisual e Eventos — início">
+				<Image src={logoYess} alt="YESS Audiovisual e Eventos" class="h-12 w-auto" />
+			</a>
+		</div>
 
-		<nav class="hidden items-center gap-7 lg:flex" aria-label="Navegação principal">
-			{
-				navigation.map((item) => (
-					<a
-						href={item.href}
-						class="font-title text-sm leading-5 font-semibold text-muted transition-colors duration-200 hover:text-foreground"
+		<div
+			class="relative hidden h-20 w-full items-center justify-between gap-6 overflow-visible rounded-full border-2 border-stroke bg-surface px-7.5 lg:flex"
+		>
+			<a href="/" class="shrink-0" aria-label="YESS Audiovisual e Eventos — início">
+				<Image src={logoYess} alt="YESS Audiovisual e Eventos" class="h-15.5 w-auto" />
+			</a>
+
+			<nav class="flex items-center gap-7" aria-label="Navegação principal">
+				{
+					navigationBeforeServices.map((item) => (
+						<a
+							href={item.href}
+							aria-current={isCurrent(item.href) ? 'page' : undefined}
+							class:list={[
+								'font-title text-sm leading-5 font-semibold transition-colors duration-200 hover:text-foreground',
+								isCurrent(item.href) ? 'text-foreground' : 'text-muted',
+							]}
+						>
+							{item.label}
+						</a>
+					))
+				}
+
+				<div data-services-root class="relative">
+					<button
+						data-services-trigger
+						type="button"
+						aria-expanded="false"
+						aria-controls="menu-servicos-desktop"
+						class:list={[
+							'flex items-center gap-2 font-title text-sm leading-5 font-semibold transition-colors duration-200 hover:text-foreground',
+							isServicePage ? 'text-foreground' : 'text-muted',
+						]}
 					>
-						{item.label}
-					</a>
-				))
-			}
+						Serviços
+						<span data-services-chevron class="flex rotate-90">
+							<Icon name="chevron" class="size-2.5" />
+						</span>
+					</button>
+
+					<div
+						id="menu-servicos-desktop"
+						data-services-menu
+						class="pointer-events-none invisible absolute top-full left-1/2 w-[min(720px,calc(100vw-8rem))] -translate-x-1/2 pt-4"
+					>
+						<div
+							data-services-panel
+							class="origin-top rounded-3xl border-2 border-stroke bg-surface p-5 opacity-0 shadow-2xl/40"
+						>
+							<div class="flex items-center justify-between border-b border-stroke pb-4">
+								<div>
+									<p class="text-xs font-semibold tracking-wide text-primary uppercase">
+										Soluções audiovisuais
+									</p>
+									<p class="mt-1 text-sm text-muted">Escolha o serviço ideal para seu evento.</p>
+								</div>
+								<a
+									data-menu-item
+									href="/#servicos"
+									class="text-xs font-semibold text-primary transition-colors hover:text-foreground"
+								>
+									Visão geral ↗
+								</a>
+							</div>
+
+							<div class="mt-4 grid grid-cols-2 gap-2">
+								{
+									services.map((service, index) => (
+										<a
+											data-menu-item
+											href={service.href}
+											aria-current={isCurrent(service.href) ? 'page' : undefined}
+											class:list={[
+												'group grid grid-cols-[32px_1fr] gap-3 rounded-2xl border p-3 transition-[color,background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-primary hover:bg-primary-soft/45',
+												isCurrent(service.href)
+													? 'border-primary bg-primary-soft/45'
+													: 'border-transparent bg-surface-alt/65',
+											]}
+										>
+											<span class="flex size-8 items-center justify-center rounded-full bg-primary-soft font-title text-xs font-bold text-primary">
+												{String(index + 1).padStart(2, '0')}
+											</span>
+											<span>
+												<span class="block font-title text-sm font-semibold text-foreground">
+													{service.label}
+												</span>
+												<span class="mt-1 block text-xs leading-5 text-muted">
+													{service.description}
+												</span>
+											</span>
+										</a>
+									))
+								}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				{
+					navigationAfterServices.map((item) => (
+						<a
+							href={item.href}
+							aria-current={isCurrent(item.href) ? 'page' : undefined}
+							class:list={[
+								'font-title text-sm leading-5 font-semibold transition-colors duration-200 hover:text-foreground',
+								isCurrent(item.href) ? 'text-foreground' : 'text-muted',
+							]}
+						>
+							{item.label}
+						</a>
+					))
+				}
+
+				<Button
+					label="Solicitar orçamento"
+					href="#orcamento"
+					variant="primary"
+					class="w-full md:w-auto"
+					animation="shine"
+				/>
+			</nav>
+		</div>
+	</div>
+
+	<button
+		data-mobile-menu-trigger
+		type="button"
+		aria-expanded="false"
+		aria-controls="menu-mobile"
+		class="pointer-events-none fixed top-3 right-3 z-70 flex h-12 items-center gap-2 rounded-full border-2 border-stroke bg-surface px-4 font-title text-sm font-semibold text-foreground opacity-0 shadow-xl/30 lg:hidden"
+	>
+		<span>Menu</span>
+		<span aria-hidden="true" class="flex w-4 flex-col gap-1">
+			<span class="h-0.5 w-full rounded-full bg-current"></span>
+			<span class="h-0.5 w-full rounded-full bg-current"></span>
+		</span>
+	</button>
+
+	<div
+		id="menu-mobile"
+		data-mobile-menu
+		aria-hidden="true"
+		class="pointer-events-none invisible fixed inset-0 z-60 bg-background/75 p-3 opacity-0 backdrop-blur-md lg:hidden"
+	>
+		<button
+			data-mobile-menu-backdrop
+			type="button"
+			class="absolute inset-0"
+			aria-label="Fechar menu"></button>
+
+		<div
+			data-mobile-menu-panel
+			class="relative z-10 mx-auto flex max-h-[calc(100dvh-24px)] w-full max-w-md origin-top flex-col overflow-y-auto rounded-3xl border-2 border-stroke bg-surface p-5 opacity-0 shadow-2xl/60"
+		>
+			<div class="flex items-center justify-between border-b border-stroke pb-4">
+				<a href="/" aria-label="YESS Audiovisual e Eventos — início">
+					<Image src={logoYess} alt="YESS Audiovisual e Eventos" class="h-11 w-auto" />
+				</a>
+				<button
+					data-mobile-menu-close
+					type="button"
+					class="flex size-11 items-center justify-center rounded-full border-2 border-stroke bg-surface-alt text-xl text-foreground transition-colors hover:border-primary"
+					aria-label="Fechar menu"
+				>
+					×
+				</button>
+			</div>
+
+			<nav class="mt-5" aria-label="Navegação mobile">
+				<p class="text-xs font-semibold tracking-wide text-primary uppercase">Navegação</p>
+				<div class="mt-2 grid grid-cols-2 gap-2">
+					{
+						[...navigationBeforeServices, ...navigationAfterServices].map((item) => (
+							<a
+								data-mobile-menu-item
+								href={item.href}
+								aria-current={isCurrent(item.href) ? 'page' : undefined}
+								class:list={[
+									'rounded-2xl border px-4 py-3 font-title text-sm font-semibold transition-colors',
+									isCurrent(item.href)
+										? 'border-primary bg-primary-soft text-foreground'
+										: 'border-stroke bg-surface-alt text-muted hover:border-primary hover:text-foreground',
+								]}
+							>
+								{item.label}
+							</a>
+						))
+					}
+				</div>
+
+				<p class="mt-6 text-xs font-semibold tracking-wide text-primary uppercase">Serviços</p>
+				<div class="mt-2 grid gap-2">
+					{
+						services.map((service) => (
+							<a
+								data-mobile-menu-item
+								href={service.href}
+								aria-current={isCurrent(service.href) ? 'page' : undefined}
+								class:list={[
+									'flex items-center justify-between gap-4 rounded-2xl border px-4 py-3 font-title text-sm font-semibold transition-colors',
+									isCurrent(service.href)
+										? 'border-primary bg-primary-soft text-foreground'
+										: 'border-stroke bg-surface-alt text-foreground hover:border-primary',
+								]}
+							>
+								<>
+									<span>{service.label}</span>
+									<Icon name="arrow" class="size-3" />
+								</>
+							</a>
+						))
+					}
+				</div>
+			</nav>
 
 			<Button
 				label="Solicitar orçamento"
-				href="#orcamento"
+				href="/contato/#canais"
 				variant="primary"
-				class="w-full md:w-auto"
-				animation="pulse"
+				class="mt-5 w-full"
+				animation="shine"
+				arrow
 			/>
-		</nav>
-
-		<a
-			href="#orcamento"
-			class="inline-flex h-12 shrink-0 items-center justify-center rounded-full bg-primary px-4 font-title text-sm leading-5 font-semibold text-foreground transition-colors duration-200 hover:bg-primary-dark max-[359px]:px-3 max-[359px]:text-xs lg:hidden"
-		>
-			Solicitar orçamento
-		</a>
+		</div>
 	</div>
 </header>
+
+<script>
+	import gsap from 'gsap'
+
+	const header = document.querySelector<HTMLElement>('[data-site-header]')
+
+	if (header && header.dataset.initialized !== 'true') {
+		header.dataset.initialized = 'true'
+
+		const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+		const servicesRoot = header.querySelector<HTMLElement>('[data-services-root]')
+		const servicesTrigger = header.querySelector<HTMLButtonElement>('[data-services-trigger]')
+		const servicesMenu = header.querySelector<HTMLElement>('[data-services-menu]')
+		const servicesPanel = header.querySelector<HTMLElement>('[data-services-panel]')
+		const servicesChevron = header.querySelector<HTMLElement>('[data-services-chevron]')
+		const servicesItems = header.querySelectorAll<HTMLElement>('[data-menu-item]')
+
+		let servicesOpen = false
+		let closeServicesTimer = 0
+
+		const openServices = () => {
+			if (!servicesMenu || !servicesPanel || !servicesTrigger || servicesOpen) return
+
+			window.clearTimeout(closeServicesTimer)
+			servicesOpen = true
+			servicesTrigger.setAttribute('aria-expanded', 'true')
+			servicesMenu.style.visibility = 'visible'
+			servicesMenu.style.pointerEvents = 'auto'
+			gsap.killTweensOf([servicesPanel, servicesChevron, ...servicesItems])
+
+			if (prefersReducedMotion) {
+				gsap.set(servicesPanel, { autoAlpha: 1, y: 0, scale: 1 })
+				gsap.set(servicesItems, { autoAlpha: 1, y: 0 })
+				gsap.set(servicesChevron, { rotate: 270 })
+				return
+			}
+
+			gsap.fromTo(
+				servicesPanel,
+				{ autoAlpha: 0, y: -12, scale: 0.98 },
+				{ autoAlpha: 1, y: 0, scale: 1, duration: 0.32, ease: 'power3.out' },
+			)
+			gsap.fromTo(
+				servicesItems,
+				{ autoAlpha: 0, y: 8 },
+				{ autoAlpha: 1, y: 0, duration: 0.28, stagger: 0.035, delay: 0.04, ease: 'power2.out' },
+			)
+			gsap.to(servicesChevron, { rotate: 270, duration: 0.25, ease: 'power2.out' })
+		}
+
+		const closeServices = (immediate = false) => {
+			if (!servicesMenu || !servicesPanel || !servicesTrigger || !servicesOpen) return
+
+			servicesOpen = false
+			servicesTrigger.setAttribute('aria-expanded', 'false')
+			gsap.killTweensOf([servicesPanel, servicesChevron])
+
+			const finish = () => {
+				servicesMenu.style.visibility = 'hidden'
+				servicesMenu.style.pointerEvents = 'none'
+			}
+
+			if (prefersReducedMotion || immediate) {
+				gsap.set(servicesPanel, { autoAlpha: 0, y: -8, scale: 0.98 })
+				gsap.set(servicesChevron, { rotate: 90 })
+				finish()
+				return
+			}
+
+			gsap.to(servicesPanel, {
+				autoAlpha: 0,
+				y: -8,
+				scale: 0.98,
+				duration: 0.18,
+				ease: 'power2.in',
+				onComplete: finish,
+			})
+			gsap.to(servicesChevron, { rotate: 90, duration: 0.18, ease: 'power2.in' })
+		}
+
+		const scheduleServicesClose = () => {
+			window.clearTimeout(closeServicesTimer)
+			closeServicesTimer = window.setTimeout(() => closeServices(), 160)
+		}
+
+		servicesRoot?.addEventListener('pointerenter', openServices)
+		servicesRoot?.addEventListener('pointerleave', scheduleServicesClose)
+		servicesRoot?.addEventListener('focusin', openServices)
+		servicesRoot?.addEventListener('focusout', (event) => {
+			if (!servicesRoot.contains(event.relatedTarget as Node | null)) scheduleServicesClose()
+		})
+		servicesTrigger?.addEventListener('click', openServices)
+
+		const mobileTrigger = header.querySelector<HTMLButtonElement>('[data-mobile-menu-trigger]')
+		const mobileMenu = header.querySelector<HTMLElement>('[data-mobile-menu]')
+		const mobilePanel = header.querySelector<HTMLElement>('[data-mobile-menu-panel]')
+		const mobileClose = header.querySelector<HTMLButtonElement>('[data-mobile-menu-close]')
+		const mobileBackdrop = header.querySelector<HTMLButtonElement>('[data-mobile-menu-backdrop]')
+		const mobileItems = header.querySelectorAll<HTMLElement>('[data-mobile-menu-item]')
+		const mobileLinks = header.querySelectorAll<HTMLAnchorElement>('[data-mobile-menu] a')
+
+		let mobileOpen = false
+		let compactMenuVisible = false
+
+		const setCompactMenu = (visible: boolean) => {
+			if (!mobileTrigger || visible === compactMenuVisible) return
+			compactMenuVisible = visible
+			mobileTrigger.style.pointerEvents = visible ? 'auto' : 'none'
+
+			if (prefersReducedMotion) {
+				gsap.set(mobileTrigger, { autoAlpha: visible ? 1 : 0, y: visible ? 0 : -12, scale: 1 })
+				return
+			}
+
+			gsap.to(mobileTrigger, {
+				autoAlpha: visible ? 1 : 0,
+				y: visible ? 0 : -12,
+				scale: visible ? 1 : 0.94,
+				duration: visible ? 0.28 : 0.2,
+				ease: visible ? 'power3.out' : 'power2.in',
+			})
+		}
+
+		const updateCompactMenu = () => setCompactMenu(window.scrollY > 80 && !mobileOpen)
+
+		const openMobileMenu = () => {
+			if (!mobileMenu || !mobilePanel || !mobileTrigger || mobileOpen) return
+
+			mobileOpen = true
+			mobileTrigger.setAttribute('aria-expanded', 'true')
+			mobileMenu.setAttribute('aria-hidden', 'false')
+			mobileMenu.style.visibility = 'visible'
+			mobileMenu.style.pointerEvents = 'auto'
+			document.documentElement.style.overflow = 'hidden'
+			setCompactMenu(false)
+			gsap.killTweensOf([mobileMenu, mobilePanel, ...mobileItems])
+
+			if (prefersReducedMotion) {
+				gsap.set(mobileMenu, { autoAlpha: 1 })
+				gsap.set(mobilePanel, { autoAlpha: 1, y: 0, scale: 1 })
+				gsap.set(mobileItems, { autoAlpha: 1, y: 0 })
+				mobileClose?.focus()
+				return
+			}
+
+			gsap
+				.timeline({ onComplete: () => mobileClose?.focus() })
+				.to(mobileMenu, { autoAlpha: 1, duration: 0.2, ease: 'power2.out' })
+				.fromTo(
+					mobilePanel,
+					{ autoAlpha: 0, y: -20, scale: 0.98 },
+					{ autoAlpha: 1, y: 0, scale: 1, duration: 0.32, ease: 'power3.out' },
+					0,
+				)
+				.fromTo(
+					mobileItems,
+					{ autoAlpha: 0, y: 10 },
+					{ autoAlpha: 1, y: 0, duration: 0.25, stagger: 0.035, ease: 'power2.out' },
+					0.08,
+				)
+		}
+
+		const closeMobileMenu = (restoreFocus = true) => {
+			if (!mobileMenu || !mobilePanel || !mobileTrigger || !mobileOpen) return
+
+			mobileOpen = false
+			mobileTrigger.setAttribute('aria-expanded', 'false')
+			mobileMenu.setAttribute('aria-hidden', 'true')
+			document.documentElement.style.overflow = ''
+
+			const finish = () => {
+				mobileMenu.style.visibility = 'hidden'
+				mobileMenu.style.pointerEvents = 'none'
+				updateCompactMenu()
+				if (restoreFocus && compactMenuVisible) mobileTrigger.focus()
+			}
+
+			if (prefersReducedMotion) {
+				gsap.set(mobileMenu, { autoAlpha: 0 })
+				gsap.set(mobilePanel, { autoAlpha: 0, y: -12, scale: 0.98 })
+				finish()
+				return
+			}
+
+			gsap.to(mobilePanel, {
+				autoAlpha: 0,
+				y: -12,
+				scale: 0.98,
+				duration: 0.2,
+				ease: 'power2.in',
+			})
+			gsap.to(mobileMenu, {
+				autoAlpha: 0,
+				duration: 0.22,
+				delay: 0.04,
+				ease: 'power2.in',
+				onComplete: finish,
+			})
+		}
+
+		mobileTrigger?.addEventListener('click', openMobileMenu)
+		mobileClose?.addEventListener('click', () => closeMobileMenu())
+		mobileBackdrop?.addEventListener('click', () => closeMobileMenu())
+		mobileLinks.forEach((link) => link.addEventListener('click', () => closeMobileMenu(false)))
+		window.addEventListener('scroll', updateCompactMenu, { passive: true })
+
+		document.addEventListener('pointerdown', (event) => {
+			if (servicesOpen && servicesRoot && !servicesRoot.contains(event.target as Node))
+				closeServices()
+		})
+
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape') {
+				if (mobileOpen) closeMobileMenu()
+				else if (servicesOpen) {
+					closeServices()
+					servicesTrigger?.focus()
+				}
+			}
+
+			if (event.key === 'Tab' && mobileOpen && mobileMenu) {
+				const focusable = Array.from(
+					mobileMenu.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
+				).filter((element) => element.offsetParent !== null)
+
+				if (focusable.length === 0) return
+				const first = focusable[0]
+				const last = focusable[focusable.length - 1]
+
+				if (event.shiftKey && document.activeElement === first) {
+					event.preventDefault()
+					last.focus()
+				} else if (!event.shiftKey && document.activeElement === last) {
+					event.preventDefault()
+					first.focus()
+				}
+			}
+		})
+
+		updateCompactMenu()
+	}
+</script>
