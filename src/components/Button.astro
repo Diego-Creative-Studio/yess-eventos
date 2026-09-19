@@ -4,7 +4,7 @@ import Icon from '@/components/Icon.astro'
 interface Props {
 	label: string
 	href: string
-	variant?: 'primary' | 'outline'
+	variant?: 'primary' | 'outline' | 'tertiary'
 	arrow?: boolean
 	class?: string
 }
@@ -13,8 +13,11 @@ const { label, href, variant = 'primary', arrow = false, class: className } = As
 
 const variants = {
 	primary:
-		'border-primary bg-primary text-foreground hover:border-primary-dark hover:bg-primary-dark',
-	outline: 'border-stroke bg-transparent text-foreground hover:border-primary hover:text-primary',
+		'border-primary bg-primary text-foreground hover:border-primary-dark hover:bg-violet hover:text-background hover:border-3 hover:font-bold hover:border-violet-dark',
+	outline:
+		'border-2 border-stroke bg-transparent text-foreground hover:border-primary  hover:bg-primary-dark  hover:font-bold',
+	tertiary:
+		' bg-white border-0 text-sm font-semibold text-primary  hover:bg-background hover:text-foreground',
 }
 ---
 
