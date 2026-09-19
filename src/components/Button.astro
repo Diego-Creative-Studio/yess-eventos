@@ -5,11 +5,19 @@ interface Props {
 	label: string
 	href: string
 	variant?: 'primary' | 'outline' | 'tertiary'
+	animation?: 'none' | 'pulse' | 'lift' | 'glow' | 'shine' | 'scale'
 	arrow?: boolean
 	class?: string
 }
 
-const { label, href, variant = 'primary', arrow = false, class: className } = Astro.props
+const {
+	label,
+	href,
+	variant = 'primary',
+	animation = 'none',
+	arrow = false,
+	class: className,
+} = Astro.props
 
 const variants = {
 	primary:
@@ -19,16 +27,42 @@ const variants = {
 	tertiary:
 		' bg-white border-0 text-sm font-semibold text-primary  hover:bg-background hover:text-foreground',
 }
+
+const animations = {
+	none: '',
+	pulse: 'motion-safe:animate-[button-pulse_1.8s_ease-in-out_infinite] motion-reduce:animate-none',
+	lift: 'motion-safe:hover:-translate-y-1 motion-safe:hover:scale-[1.02] motion-safe:active:translate-y-0 motion-safe:active:scale-[0.98] hover:shadow-xl',
+	glow: 'motion-safe:hover:scale-[1.02] motion-safe:active:scale-[0.98] hover:shadow-[0_0_32px_rgba(38,120,255,0.55)]',
+	shine:
+		"relative isolate overflow-hidden before:pointer-events-none before:absolute before:inset-y-[-50%] before:left-[-35%] before:w-[22%] before:-skew-x-12 before:bg-white/35 before:blur-sm before:transition-transform before:duration-700 before:content-[''] motion-safe:hover:before:translate-x-[650%]",
+	scale: 'motion-safe:hover:scale-105 motion-safe:active:scale-95 motion-safe:active:duration-100',
+}
 ---
 
 <a
 	{href}
 	class:list={[
-		'inline-flex min-h-13 items-center justify-center gap-2 rounded-full border px-6 py-4 font-title text-sm leading-5 font-semibold transition-colors duration-200',
+		'inline-flex min-h-13 items-center justify-center gap-2 rounded-full border px-6 py-4 font-title text-sm leading-5 font-semibold transition-[color,background-color,border-color,transform,box-shadow] duration-200',
 		variants[variant],
+		animations[animation],
 		className,
 	]}
 >
-	<span set:html={label} />
-	{arrow && <Icon name="arrow" class="size-4" />}
+	<span class="relative z-10" set:html={label} />
+	{arrow && <Icon name="arrow" class="relative z-10 size-4" />}
 </a>
+
+<style>
+	@keyframes button-pulse {
+		0%,
+		100% {
+			transform: scale(1);
+			box-shadow: 0 0 0 0 rgb(38 120 255 / 35%);
+		}
+
+		50% {
+			transform: scale(1.035);
+			box-shadow: 0 0 0 10px rgb(38 120 255 / 0%);
+		}
+	}
+</style>
