@@ -6,6 +6,7 @@ import Icon from '@/components/Icon.astro'
 import imageLed from '@/assets/services/painel-led.png'
 import imageSound from '@/assets/services/sonorizacao.png'
 import imageLighting from '@/assets/services/iluminacao.png'
+import Button from '@/components/Button.astro'
 
 type IconName = 'estrutura' | 'equipe' | 'localizacao'
 
@@ -171,12 +172,21 @@ const services: Service[] = [
 						Painéis, som, iluminação e TVs com planejamento e operação técnica.
 					</p>
 				</div>
+				<!-- 
 				<a
 					href="#todos-os-servicos"
 					class="flex w-full shrink-0 items-center justify-center gap-2 rounded-full bg-white p-4 font-title text-sm font-semibold text-primary transition-colors duration-300 hover:bg-background hover:text-foreground md:w-auto"
 				>
 					Ver todos os serviços <Icon name="arrow" class="size-4" />
 				</a>
+				-->
+				<Button
+					label="Ver todos os serviços"
+					href="#todos-os-servicos"
+					variant="tertiary"
+					class="flex w-full shrink-0 shadow-[1000px] transition-colors duration-300 md:w-auto"
+					arrow
+				/>
 			</div>
 		</div>
 	</div>

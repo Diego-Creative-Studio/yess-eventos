@@ -56,10 +56,9 @@ const {
 				class="relative isolate flex flex-col overflow-hidden rounded-3xl bg-white p-6 text-background lg:p-8"
 			>
 				<div class="relative z-10 flex items-start justify-between gap-4"
-					><p class="text-6xl font-extrabold text-warm">{opcaoClara.codigo}</p><p
-						class="text-xs font-semibold uppercase"
-						set:html={opcaoClara.etiqueta}
-					/></div
+					><p class="text-6xl leading-[1.05] font-extrabold text-warm uppercase"
+						>{opcaoClara.codigo}</p
+					><p class="text-xs font-semibold uppercase" set:html={opcaoClara.etiqueta} /></div
 				>
 				<span
 					aria-hidden="true"
@@ -91,7 +90,7 @@ const {
 				<div class="relative z-10 flex items-start justify-between gap-4"
 					><p
 						class:list={[
-							'font-extrabold',
+							'leading-[1.05] font-extrabold uppercase',
 							compactarCodigoDestaqueNoMobile
 								? 'text-3xl min-[360px]:text-[2.5rem] lg:text-6xl'
 								: 'text-6xl',
