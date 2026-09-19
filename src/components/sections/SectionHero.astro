@@ -24,6 +24,8 @@ interface Props {
 	corFundoEtiqueta?: string
 	corTextoEtiqueta?: string
 	corBolinhaEtiqueta?: string
+	videoMp4?: string
+	videoWebm?: string
 }
 
 const {
@@ -39,24 +41,43 @@ const {
 	corFundoEtiqueta = 'bg-violet-dark',
 	corTextoEtiqueta = 'text-foreground',
 	corBolinhaEtiqueta = 'bg-foreground',
+	videoMp4 = '/videos/hero-home.mp4',
+	videoWebm = '/videos/hero-home.webm',
 } = Astro.props
 ---
 
-<section class="px-3 pt-4 pb-8 md:px-8 lg:px-16 lg:pt-5 lg:pb-16">
+<section data-hero-stage class="px-3 pt-4 pb-8 md:px-8 lg:px-16 lg:pt-5 lg:pb-16">
 	<div
-		class="relative container mx-auto flex w-full items-center overflow-hidden rounded-hero bg-surface px-6 py-10 max-[359px]:px-4 md:max-w-7xl md:px-10 lg:max-w-345 lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
+		data-hero-shell
+		class="relative container mx-auto flex w-full origin-center items-center overflow-hidden rounded-hero bg-surface px-6 py-10 will-change-transform max-[359px]:px-4 md:max-w-7xl md:px-10 lg:max-w-345 lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
 	>
+		<video
+			data-hero-video
+			muted
+			playsinline
+			preload="none"
+			poster={image.src}
+			aria-hidden="true"
+			class="pointer-events-none absolute inset-0 size-full scale-[1.025] object-cover object-[58%_center] opacity-0 will-change-[transform,opacity] lg:object-center"
+		>
+			<source data-hero-video-source data-src={videoWebm} type="video/webm" />
+			<source data-hero-video-source data-src={videoMp4} type="video/mp4" />
+		</video>
+
 		<Image
+			data-hero-poster
 			src={image}
 			alt={imageAlt}
 			fetchpriority="high"
-			class="absolute inset-0 size-full object-cover object-[58%_center] lg:object-center"
+			class="will-change-opacity absolute inset-0 size-full object-cover object-[58%_center] lg:object-center"
 		/>
 		<div
+			data-hero-overlay
 			class="absolute inset-0 bg-linear-to-t from-background/95 from-20% to-transparent to-80% lg:bg-linear-to-r lg:from-20% lg:to-60%"
 			aria-hidden="true"></div>
 
 		<div
+			data-hero-content
 			class="relative z-10 flex w-full max-w-197.5 flex-col items-center gap-4.5 text-center lg:h-146 lg:max-w-200 lg:items-start lg:overflow-hidden lg:text-left"
 		>
 			<Etiqueta
@@ -119,6 +140,247 @@ const {
 					))
 				}
 			</ul>
+
+			<button
+				data-hero-mobile-play
+				type="button"
+				class="group mt-1 inline-flex min-h-12 cursor-pointer items-center gap-4 rounded-full border border-primary/40 bg-background/80 py-1.5 pr-1.5 pl-5 font-title text-sm font-semibold text-foreground shadow-[0_14px_35px_rgb(0_0_0/0.32)] backdrop-blur-xl transition-[border-color,background-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:border-primary/75 hover:bg-background/95 hover:shadow-[0_16px_40px_rgb(0_83_255/0.18)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary lg:hidden"
+			>
+				<span data-hero-mobile-play-label>Assistir vídeo</span>
+				<span
+					class="flex size-9 items-center justify-center rounded-full bg-primary text-white shadow-[0_6px_18px_rgb(0_83_255/0.35)] transition-transform duration-300 group-hover:scale-105"
+				>
+					<svg viewBox="0 0 20 20" class="size-4 translate-x-px" fill="none" aria-hidden="true">
+						<path d="M7 5.8v8.4l7-4.2-7-4.2Z" fill="currentColor"></path>
+					</svg>
+				</span>
+			</button>
 		</div>
+
+		<button
+			data-hero-replay
+			type="button"
+			class="group pointer-events-none absolute right-[clamp(32px,4vw,72px)] bottom-8 z-20 hidden translate-y-2 items-center gap-4 rounded-full border border-primary/40 bg-background/80 py-1.5 pr-1.5 pl-5 font-title text-sm font-semibold text-foreground opacity-0 shadow-[0_14px_35px_rgb(0_0_0/0.32)] backdrop-blur-xl transition-[border-color,background-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:border-primary/75 hover:bg-background/95 hover:shadow-[0_16px_40px_rgb(0_83_255/0.18)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary lg:inline-flex"
+		>
+			<span>Rever vídeo</span>
+			<span
+				class="flex size-9 items-center justify-center rounded-full bg-primary text-white shadow-[0_6px_18px_rgb(0_83_255/0.35)] transition-transform duration-300 group-hover:scale-105"
+			>
+				<svg viewBox="0 0 20 20" class="size-4 translate-x-px" fill="none" aria-hidden="true">
+					<path d="M7 5.8v8.4l7-4.2-7-4.2Z" fill="currentColor"></path>
+				</svg>
+			</span>
+		</button>
 	</div>
 </section>
+
+<script>
+	import { gsap } from 'gsap'
+
+	const heroShell = document.querySelector<HTMLElement>('[data-hero-shell]')
+	const heroStage = document.querySelector<HTMLElement>('[data-hero-stage]')
+	const homeHeader = document.querySelector<HTMLElement>('.home-header')
+	const headerContainer = homeHeader?.querySelector<HTMLElement>('[data-header-container]')
+	const headerSurface = homeHeader?.querySelector<HTMLElement>('[data-header-surface]')
+
+	if (heroShell && heroStage && heroShell.dataset.videoInitialized !== 'true') {
+		heroShell.dataset.videoInitialized = 'true'
+
+		const video = heroShell.querySelector<HTMLVideoElement>('[data-hero-video]')
+		const poster = heroShell.querySelector<HTMLElement>('[data-hero-poster]')
+		const overlay = heroShell.querySelector<HTMLElement>('[data-hero-overlay]')
+		const heroContent = heroShell.querySelector<HTMLElement>('[data-hero-content]')
+		const replayButton = heroShell.querySelector<HTMLButtonElement>('[data-hero-replay]')
+		const mobilePlayButton = heroShell.querySelector<HTMLButtonElement>('[data-hero-mobile-play]')
+		const mobilePlayLabel = heroShell.querySelector<HTMLElement>('[data-hero-mobile-play-label]')
+		const videoSources = heroShell.querySelectorAll<HTMLSourceElement>('[data-hero-video-source]')
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+		const desktop = window.matchMedia('(min-width: 1024px)').matches
+		const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
+		const saveData = connection?.saveData === true
+		let sourcesAttached = false
+
+		const attachVideoSources = () => {
+			if (!video || sourcesAttached) return
+
+			videoSources.forEach((source) => {
+				const sourceUrl = source.dataset.src
+				if (sourceUrl) source.src = sourceUrl
+			})
+			video.load()
+			sourcesAttached = true
+		}
+
+		if (
+			video &&
+			poster &&
+			overlay &&
+			heroContent &&
+			replayButton &&
+			headerContainer &&
+			headerSurface &&
+			desktop &&
+			!reduceMotion &&
+			!saveData
+		) {
+			attachVideoSources()
+
+			let revealed = false
+			let sequenceComplete = false
+			let videoEnded = false
+			let transitionTimeline: gsap.core.Timeline | undefined
+			const revealAt = Date.now() + 3000
+
+			const collapseHero = () => {
+				if (!transitionTimeline || sequenceComplete) return
+
+				sequenceComplete = true
+				window.setTimeout(() => {
+					transitionTimeline?.eventCallback('onReverseComplete', () => {
+						video.pause()
+						video.currentTime = 0
+						revealed = false
+						replayButton.style.pointerEvents = 'auto'
+						gsap.fromTo(
+							replayButton,
+							{ autoAlpha: 0, y: 8 },
+							{ autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out' },
+						)
+					})
+					transitionTimeline?.reverse()
+				}, 700)
+			}
+
+			const revealVideo = async () => {
+				if (revealed) return
+				sequenceComplete = false
+				videoEnded = false
+				replayButton.style.pointerEvents = 'none'
+				gsap.to(replayButton, { autoAlpha: 0, y: 8, duration: 0.2, ease: 'power2.in' })
+
+				try {
+					await video.play()
+				} catch {
+					return
+				}
+
+				revealed = true
+				const headerHeight = homeHeader?.offsetHeight ?? 0
+				transitionTimeline = gsap
+					.timeline({
+						defaults: { ease: 'power3.inOut' },
+						onComplete: () => {
+							if (videoEnded) collapseHero()
+						},
+					})
+					.to(
+						heroStage,
+						{
+							marginTop: -headerHeight,
+							paddingTop: 0,
+							paddingRight: 0,
+							paddingBottom: 0,
+							paddingLeft: 0,
+							duration: 2.6,
+						},
+						0,
+					)
+					.to(
+						heroShell,
+						{
+							maxWidth: '100%',
+							minHeight: '100svh',
+							paddingLeft: 'clamp(72px, 7vw, 144px)',
+							borderRadius: 0,
+							duration: 2.6,
+						},
+						0,
+					)
+					.to(homeHeader, { paddingRight: 0, paddingLeft: 0, duration: 2.6 }, 0)
+					.to(headerContainer, { maxWidth: '100%', duration: 2.6 }, 0)
+					.to(video, { autoAlpha: 1, scale: 1, duration: 1.8 }, 0.05)
+					.to(poster, { autoAlpha: 0, duration: 1.4 }, 0.35)
+					.to(overlay, { opacity: 0.88, duration: 1.6 }, 0.25)
+					.to(
+						headerSurface,
+						{
+							paddingRight: 'clamp(72px, 7vw, 144px)',
+							paddingLeft: 'clamp(72px, 7vw, 144px)',
+							backgroundColor: 'transparent',
+							borderColor: 'transparent',
+							boxShadow: 'none',
+							backdropFilter: 'blur(0px)',
+							duration: 1.8,
+						},
+						0.35,
+					)
+			}
+
+			video.addEventListener('ended', () => {
+				videoEnded = true
+				if ((transitionTimeline?.progress() ?? 0) >= 0.999) collapseHero()
+			})
+
+			replayButton.addEventListener('click', () => {
+				transitionTimeline?.kill()
+				video.currentTime = 0
+				revealVideo()
+			})
+
+			const scheduleReveal = () => {
+				const remainingDelay = Math.max(0, revealAt - Date.now())
+				window.setTimeout(revealVideo, remainingDelay)
+			}
+
+			if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) scheduleReveal()
+			else video.addEventListener('canplay', scheduleReveal, { once: true })
+
+			document.addEventListener('visibilitychange', () => {
+				if (!revealed || sequenceComplete) return
+				if (document.hidden) video.pause()
+				else video.play().catch(() => undefined)
+			})
+		}
+
+		if (video && poster && mobilePlayButton && mobilePlayLabel && !desktop) {
+			let mobilePlaying = false
+
+			const playOnMobile = async () => {
+				if (mobilePlaying) return
+				attachVideoSources()
+				mobilePlayButton.disabled = true
+
+				try {
+					video.currentTime = 0
+					await video.play()
+				} catch {
+					mobilePlayButton.disabled = false
+					return
+				}
+
+				mobilePlaying = true
+				gsap.to(mobilePlayButton, { autoAlpha: 0, duration: 0.2 })
+				gsap.to(video, { autoAlpha: 1, scale: 1, duration: 0.8, ease: 'power2.out' })
+				gsap.to(poster, { autoAlpha: 0, duration: 0.65, ease: 'power2.out' })
+			}
+
+			mobilePlayButton.addEventListener('click', playOnMobile)
+			video.addEventListener('ended', () => {
+				if (!mobilePlaying) return
+
+				gsap
+					.timeline({
+						onComplete: () => {
+							mobilePlaying = false
+							mobilePlayButton.disabled = false
+							mobilePlayLabel.textContent = 'Rever vídeo'
+							video.currentTime = 0
+						},
+					})
+					.to(video, { autoAlpha: 0, duration: 0.5, ease: 'power2.inOut' })
+					.to(poster, { autoAlpha: 1, duration: 0.5, ease: 'power2.inOut' }, 0)
+					.to(mobilePlayButton, { autoAlpha: 1, duration: 0.25 }, 0.3)
+			})
+		}
+	}
+</script>

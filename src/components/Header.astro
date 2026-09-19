@@ -62,7 +62,7 @@ const isServicePage = services.some((service) => isCurrent(service.href))
 	data-site-header
 	class:list={['relative z-50 px-3 py-3 md:px-8 lg:px-16 lg:pt-6 lg:pb-5', className]}
 >
-	<div class="mx-auto w-full max-w-345">
+	<div data-header-container class="mx-auto w-full max-w-345">
 		<div data-mobile-brand class="flex h-18 items-center justify-center lg:hidden">
 			<a href="/" aria-label="YESS Audiovisual e Eventos — início">
 				<Image src={logoYess} alt="YESS Audiovisual e Eventos" class="h-12 w-auto" />
@@ -70,6 +70,7 @@ const isServicePage = services.some((service) => isCurrent(service.href))
 		</div>
 
 		<div
+			data-header-surface
 			class="relative hidden h-18 w-full items-center justify-between gap-5 overflow-visible rounded-full border border-stroke bg-surface/90 px-5 shadow-[0_16px_50px_rgb(0_0_0/0.28)] backdrop-blur-xl lg:flex"
 		>
 			<a href="/" class="shrink-0" aria-label="YESS Audiovisual e Eventos — início">
