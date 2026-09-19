@@ -12,9 +12,10 @@ interface Props {
 	image?: string
 	type?: string
 	noindex?: boolean
+	headerClass?: string
 }
 
-const { title, description, image, type, noindex } = Astro.props
+const { title, description, image, type, noindex, headerClass } = Astro.props
 ---
 
 <!doctype html>
@@ -33,14 +34,14 @@ const { title, description, image, type, noindex } = Astro.props
 		<Font cssVariable="--font-jakarta" preload />
 		<Font cssVariable="--font-inter" />
 	</head>
-	<body class="bg-stroke font-sans text-white antialiased">
+	<body class="bg-primary-soft font-sans text-white antialiased">
 		<a
 			href="#conteudo"
 			class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:bg-accent focus:px-5 focus:py-3 focus:font-bold focus:text-white"
 		>
 			Pular para o conteúdo
 		</a>
-		<Header />
+		<Header class={headerClass} />
 		<slot />
 		<Footer />
 		<script>
