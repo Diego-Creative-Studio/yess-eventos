@@ -12,8 +12,11 @@ import imagemOperacao from '@/assets/sobre/8c28f5efd02aeca6f7b107c079f1d473ec365
 
 const capacidades = [
 	'Projeto sob medida',
+	'•',
 	'Montagem técnica',
+	'•',
 	'Processamento de vídeo',
+	'•',
 	'Operação no evento',
 ]
 
@@ -43,7 +46,7 @@ const bastidores = [
 	title="Sobre a YESS Audiovisual e Eventos"
 	description="Conheça a trajetória, o método e a equipe da YESS, especialista em soluções audiovisuais coordenadas para eventos corporativos."
 >
-	<main id="conteudo" class="overflow-hidden bg-stroke">
+	<main id="conteudo" class="overflow-hidden">
 		<section class="px-3 py-7.5 md:px-8 lg:h-140 lg:px-16 lg:py-7.5">
 			<div
 				data-sobre-reveal
@@ -72,7 +75,9 @@ const bastidores = [
 					</div>
 				</div>
 
-				<div class="flex flex-wrap items-center gap-x-8 gap-y-3 rounded-[20px] bg-primary p-6">
+				<div
+					class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 rounded-[20px] bg-primary p-6 text-center"
+				>
 					{
 						capacidades.map((capacidade) => (
 							<p class="font-title text-xs leading-5 font-semibold text-white uppercase sm:text-sm">
@@ -143,7 +148,7 @@ const bastidores = [
 					<Image
 						src={imagemTrajetoria}
 						alt="Evento produzido pela YESS com estrutura audiovisual completa"
-						class="absolute inset-0 size-full object-cover"
+						class="absolute inset-0 size-full object-cover lg:rounded-l-3xl"
 					/>
 				</div>
 			</div>
