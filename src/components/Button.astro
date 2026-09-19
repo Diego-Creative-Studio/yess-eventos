@@ -4,7 +4,7 @@ import Icon from '@/components/Icon.astro'
 interface Props {
 	label: string
 	href: string
-	variant?: 'primary' | 'outline' | 'tertiary'
+	variant?: 'primary' | 'outline' | 'tertiary' | 'alternative'
 	animation?: 'none' | 'pulse' | 'lift' | 'glow' | 'shine' | 'scale'
 	arrow?: boolean
 	class?: string
@@ -21,11 +21,13 @@ const {
 
 const variants = {
 	primary:
-		'border-primary bg-primary text-foreground hover:border-primary-dark hover:bg-violet hover:text-background hover:border-3 hover:font-bold hover:border-violet-dark',
+		'border-primary bg-primary text-foreground  hover:bg-violet hover:text-background hover:border-2 hover:border-violet-dark',
 	outline:
-		'border-2 border-stroke bg-transparent text-foreground hover:border-primary  hover:bg-primary-dark  hover:font-bold',
+		'border-2 border-stroke bg-transparent text-foreground hover:border-primary  hover:bg-primary-dark ',
 	tertiary:
 		' bg-white border-0 text-sm font-semibold text-primary  hover:bg-background hover:text-foreground',
+	alternative:
+		'w-full !border-0 bg-white !p-6 text-center text-sm text-background shadow-xl/20 hover:bg-background hover:text-foreground md:w-fit md:shrink-0 md:!p-7 md:text-lg md:whitespace-nowrap',
 }
 
 const animations = {
@@ -37,6 +39,9 @@ const animations = {
 		"relative isolate overflow-hidden before:pointer-events-none before:absolute before:inset-y-[-50%] before:left-[-35%] before:w-[22%] before:-skew-x-12 before:bg-white/35 before:blur-sm before:transition-transform before:duration-700 before:content-[''] motion-safe:hover:before:translate-x-[650%]",
 	scale: 'motion-safe:hover:scale-105 motion-safe:active:scale-95 motion-safe:active:duration-100',
 }
+
+const arrowClass =
+	variant === 'alternative' ? 'relative z-10 block size-3 translate-y-px' : 'relative z-10 size-4'
 ---
 
 <a
@@ -49,7 +54,7 @@ const animations = {
 	]}
 >
 	<span class="relative z-10" set:html={label} />
-	{arrow && <Icon name="arrow" class="relative z-10 size-4" />}
+	{arrow && <Icon name="arrow" class={arrowClass} />}
 </a>
 
 <style>
