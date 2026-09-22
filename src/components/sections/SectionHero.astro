@@ -195,7 +195,7 @@ const {
 		const mobilePlayLabel = heroShell.querySelector<HTMLElement>('[data-hero-mobile-play-label]')
 		const videoSources = heroShell.querySelectorAll<HTMLSourceElement>('[data-hero-video-source]')
 		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-		const desktop = window.matchMedia('(min-width: 1024px)').matches
+		const desktopQuery = window.matchMedia('(min-width: 1024px)')
 		const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
 		const saveData = connection?.saveData === true
 		let sourcesAttached = false
@@ -219,7 +219,7 @@ const {
 			replayButton &&
 			headerContainer &&
 			headerSurface &&
-			desktop &&
+			desktopQuery.matches &&
 			!reduceMotion &&
 			!saveData
 		) {
@@ -229,13 +229,15 @@ const {
 			let sequenceComplete = false
 			let videoEnded = false
 			let transitionTimeline: gsap.core.Timeline | undefined
+			let revealTimer = 0
+			let collapseTimer = 0
 			const revealAt = Date.now() + 3000
 
 			const collapseHero = () => {
 				if (!transitionTimeline || sequenceComplete) return
 
 				sequenceComplete = true
-				window.setTimeout(() => {
+				collapseTimer = window.setTimeout(() => {
 					transitionTimeline?.eventCallback('onReverseComplete', () => {
 						video.pause()
 						video.currentTime = 0
@@ -252,7 +254,7 @@ const {
 			}
 
 			const revealVideo = async () => {
-				if (revealed) return
+				if (revealed || !desktopQuery.matches) return
 				sequenceComplete = false
 				videoEnded = false
 				replayButton.style.pointerEvents = 'none'
@@ -328,8 +330,9 @@ const {
 			})
 
 			const scheduleReveal = () => {
+				if (!desktopQuery.matches) return
 				const remainingDelay = Math.max(0, revealAt - Date.now())
-				window.setTimeout(revealVideo, remainingDelay)
+				revealTimer = window.setTimeout(revealVideo, remainingDelay)
 			}
 
 			if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) scheduleReveal()
@@ -340,13 +343,57 @@ const {
 				if (document.hidden) video.pause()
 				else video.play().catch(() => undefined)
 			})
+
+			desktopQuery.addEventListener('change', (event) => {
+				if (event.matches) return
+
+				window.clearTimeout(revealTimer)
+				window.clearTimeout(collapseTimer)
+				transitionTimeline?.kill()
+				gsap.killTweensOf([
+					heroStage,
+					heroShell,
+					homeHeader,
+					headerContainer,
+					headerSurface,
+					video,
+					poster,
+					overlay,
+					replayButton,
+				])
+				video.pause()
+				video.currentTime = 0
+				revealed = false
+				sequenceComplete = false
+				videoEnded = false
+				transitionTimeline = undefined
+
+				gsap.set(heroStage, {
+					clearProps: 'marginTop,paddingTop,paddingRight,paddingBottom,paddingLeft',
+				})
+				gsap.set(heroShell, {
+					clearProps: 'maxWidth,minHeight,paddingLeft,borderRadius',
+				})
+				gsap.set(homeHeader, { clearProps: 'paddingRight,paddingLeft' })
+				gsap.set(headerContainer, { clearProps: 'maxWidth' })
+				gsap.set(headerSurface, {
+					clearProps:
+						'paddingRight,paddingLeft,backgroundColor,borderColor,boxShadow,backdropFilter',
+				})
+				gsap.set(video, { clearProps: 'opacity,visibility,transform' })
+				gsap.set(poster, { clearProps: 'opacity,visibility' })
+				gsap.set(overlay, { clearProps: 'opacity' })
+				gsap.set(replayButton, {
+					clearProps: 'opacity,visibility,transform,pointerEvents',
+				})
+			})
 		}
 
-		if (video && poster && mobilePlayButton && mobilePlayLabel && !desktop) {
+		if (video && poster && mobilePlayButton && mobilePlayLabel) {
 			let mobilePlaying = false
 
 			const playOnMobile = async () => {
-				if (mobilePlaying) return
+				if (desktopQuery.matches || mobilePlaying) return
 				attachVideoSources()
 				mobilePlayButton.disabled = true
 
