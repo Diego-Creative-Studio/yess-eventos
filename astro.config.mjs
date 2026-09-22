@@ -4,7 +4,7 @@ import alpinejs from '@astrojs/alpinejs'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 
-const site = process.env.SITE_URL ?? 'http://localhost:4321'
+const site = process.env.SITE_URL ?? ''
 
 export default defineConfig({
 	site,
