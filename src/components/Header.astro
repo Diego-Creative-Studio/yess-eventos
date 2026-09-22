@@ -102,7 +102,7 @@ const isServicePage = services.some((service) => isCurrent(service.href))
 						aria-expanded="false"
 						aria-controls="menu-servicos-desktop"
 						class:list={[
-							'flex items-center gap-2 rounded-full px-3 py-2 font-title text-sm leading-5 font-semibold transition-colors duration-200 aria-expanded:bg-primary-soft/70 aria-expanded:text-foreground',
+							'flex cursor-pointer items-center gap-2 rounded-full px-3 py-2 font-title text-sm leading-5 font-semibold transition-colors duration-200 aria-expanded:bg-primary-soft/70 aria-expanded:text-foreground',
 							isServicePage
 								? 'bg-primary-soft/70 text-foreground'
 								: 'text-muted hover:bg-surface-alt hover:text-foreground',
