@@ -198,7 +198,7 @@ const isServicePage = services.some((service) => isCurrent(service.href))
 					href="#orcamento"
 					variant="primary"
 					class="ml-2 w-full shadow-lg/20 md:w-auto lg:!min-h-12 lg:!px-5 lg:!py-3"
-					animation="shine"
+					animation="pulse"
 				/>
 			</nav>
 		</div>
@@ -209,7 +209,7 @@ const isServicePage = services.some((service) => isCurrent(service.href))
 		type="button"
 		aria-expanded="false"
 		aria-controls="menu-mobile"
-		class="pointer-events-none fixed bottom-5 left-1/2 z-70 flex h-12 -translate-x-1/2 items-center gap-3 rounded-full border border-stroke bg-surface/95 py-1.5 pr-1.5 pl-4 font-title text-sm font-semibold text-foreground opacity-0 shadow-2xl/50 backdrop-blur-md lg:hidden"
+		class="pointer-events-none fixed inset-x-0 bottom-[max(1.25rem,env(safe-area-inset-bottom))] z-70 mx-auto flex h-12 w-fit items-center gap-3 rounded-full border border-stroke bg-surface/95 py-1.5 pr-1.5 pl-4 font-title text-sm font-semibold text-foreground opacity-0 shadow-2xl/50 backdrop-blur-md lg:hidden"
 	>
 		<span
 			aria-hidden="true"
