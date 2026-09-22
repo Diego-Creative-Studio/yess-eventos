@@ -3,19 +3,25 @@ import Icon from '@/components/Icon.astro'
 
 interface Props {
 	label: string
-	href: string
+	href?: string
+	type?: 'button' | 'submit' | 'reset'
+	id?: string
 	variant?: 'primary' | 'outline' | 'tertiary' | 'alternative'
 	animation?: 'none' | 'pulse' | 'lift' | 'glow' | 'shine' | 'scale'
 	arrow?: boolean
+	icon?: 'arrow' | 'play'
 	class?: string
 }
 
 const {
 	label,
 	href,
+	type = 'button',
+	id,
 	variant = 'primary',
 	animation = 'none',
 	arrow = false,
+	icon,
 	class: className,
 } = Astro.props
 
@@ -40,12 +46,16 @@ const animations = {
 	scale: 'motion-safe:hover:scale-105 motion-safe:active:scale-95 motion-safe:active:duration-100',
 }
 
-const arrowClass =
+const iconName = icon ?? (arrow ? 'arrow' : undefined)
+const iconClass =
 	variant === 'alternative' ? 'relative z-10 block size-3 translate-y-px' : 'relative z-10 size-4'
+const Tag = href ? 'a' : 'button'
 ---
 
-<a
+<Tag
+	{id}
 	{href}
+	type={href ? undefined : type}
 	class:list={[
 		'inline-flex min-h-13 items-center justify-center gap-2 rounded-full border px-6 py-4 font-title text-sm leading-5 font-semibold transition-[color,background-color,border-color,transform,box-shadow] duration-200',
 		variants[variant],
@@ -54,8 +64,8 @@ const arrowClass =
 	]}
 >
 	<span class="relative z-10" set:html={label} />
-	{arrow && <Icon name="arrow" class={arrowClass} />}
-</a>
+	{iconName && <Icon name={iconName} class={iconClass} />}
+</Tag>
 
 <style>
 	@keyframes button-pulse {

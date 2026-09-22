@@ -141,36 +141,26 @@ const {
 				}
 			</ul>
 
-			<button
-				data-hero-mobile-play
+			<Button
+				id="hero-mobile-play"
+				label="Assistir vídeo"
 				type="button"
-				class="group mt-1 inline-flex min-h-12 cursor-pointer items-center gap-4 rounded-full border border-primary/40 bg-background/80 py-1.5 pr-1.5 pl-5 font-title text-sm font-semibold text-foreground shadow-[0_14px_35px_rgb(0_0_0/0.32)] backdrop-blur-xl transition-[border-color,background-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:border-primary/75 hover:bg-background/95 hover:shadow-[0_16px_40px_rgb(0_83_255/0.18)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary lg:hidden"
-			>
-				<span data-hero-mobile-play-label>Assistir vídeo</span>
-				<span
-					class="flex size-9 items-center justify-center rounded-full bg-primary text-white shadow-[0_6px_18px_rgb(0_83_255/0.35)] transition-transform duration-300 group-hover:scale-105"
-				>
-					<svg viewBox="0 0 20 20" class="size-4 translate-x-px" fill="none" aria-hidden="true">
-						<path d="M7 5.8v8.4l7-4.2-7-4.2Z" fill="currentColor"></path>
-					</svg>
-				</span>
-			</button>
+				variant="outline"
+				icon="play"
+				animation="lift"
+				class="mt-1 cursor-pointer bg-background/70 backdrop-blur-md lg:hidden"
+			/>
 		</div>
 
-		<button
-			data-hero-replay
+		<Button
+			id="hero-replay"
+			label="Rever vídeo"
 			type="button"
-			class="group pointer-events-none absolute right-[clamp(32px,4vw,72px)] bottom-8 z-20 hidden translate-y-2 items-center gap-4 rounded-full border border-primary/40 bg-background/80 py-1.5 pr-1.5 pl-5 font-title text-sm font-semibold text-foreground opacity-0 shadow-[0_14px_35px_rgb(0_0_0/0.32)] backdrop-blur-xl transition-[border-color,background-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:border-primary/75 hover:bg-background/95 hover:shadow-[0_16px_40px_rgb(0_83_255/0.18)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary lg:inline-flex"
-		>
-			<span>Rever vídeo</span>
-			<span
-				class="flex size-9 items-center justify-center rounded-full bg-primary text-white shadow-[0_6px_18px_rgb(0_83_255/0.35)] transition-transform duration-300 group-hover:scale-105"
-			>
-				<svg viewBox="0 0 20 20" class="size-4 translate-x-px" fill="none" aria-hidden="true">
-					<path d="M7 5.8v8.4l7-4.2-7-4.2Z" fill="currentColor"></path>
-				</svg>
-			</span>
-		</button>
+			variant="outline"
+			icon="play"
+			animation="lift"
+			class="pointer-events-none absolute right-[clamp(32px,4vw,72px)] bottom-8 z-20 hidden translate-y-2 cursor-pointer bg-background/70 opacity-0 backdrop-blur-md lg:inline-flex"
+		/>
 	</div>
 </section>
 
@@ -190,9 +180,9 @@ const {
 		const poster = heroShell.querySelector<HTMLElement>('[data-hero-poster]')
 		const overlay = heroShell.querySelector<HTMLElement>('[data-hero-overlay]')
 		const heroContent = heroShell.querySelector<HTMLElement>('[data-hero-content]')
-		const replayButton = heroShell.querySelector<HTMLButtonElement>('[data-hero-replay]')
-		const mobilePlayButton = heroShell.querySelector<HTMLButtonElement>('[data-hero-mobile-play]')
-		const mobilePlayLabel = heroShell.querySelector<HTMLElement>('[data-hero-mobile-play-label]')
+		const replayButton = heroShell.querySelector<HTMLButtonElement>('#hero-replay')
+		const mobilePlayButton = heroShell.querySelector<HTMLButtonElement>('#hero-mobile-play')
+		const mobilePlayLabel = mobilePlayButton?.querySelector<HTMLElement>('span')
 		const videoSources = heroShell.querySelectorAll<HTMLSourceElement>('[data-hero-video-source]')
 		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 		const desktopQuery = window.matchMedia('(min-width: 1024px)')
