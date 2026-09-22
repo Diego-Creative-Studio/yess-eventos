@@ -4,7 +4,7 @@ import alpinejs from '@astrojs/alpinejs'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 
-const site = process.env.SITE_URL ?? 'https://yess-eventos.vercel.app'
+const site = 'https://yess-eventos.vercel.app'
 
 export default defineConfig({
 	site,
