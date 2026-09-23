@@ -10,6 +10,10 @@ import imagemHero from '@/assets/contato/0953bf2596c50852367141ba5b4941f62013cdd
 ---
 
 <Layout
+	animationDefault="fade-up"
+	animationDuration={0.8}
+	animationDistance={28}
+	animationStart="top 90%"
 	title="Contato | YESS Audiovisual e Eventos"
 	description="Fale com a equipe da YESS para planejar a solução audiovisual do seu evento corporativo."
 >
@@ -81,21 +85,19 @@ import imagemHero from '@/assets/contato/0953bf2596c50852367141ba5b4941f62013cdd
 		gsap.registerPlugin(ScrollTrigger)
 
 		if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-			gsap.utils
-				.toArray<HTMLElement>('[data-contato-reveal], [data-animate]')
-				.forEach((element) => {
-					gsap.fromTo(
-						element,
-						{ opacity: 0, y: 28 },
-						{
-							opacity: 1,
-							y: 0,
-							duration: 0.8,
-							ease: 'power2.out',
-							scrollTrigger: { trigger: element, start: 'top 90%', once: true },
-						},
-					)
-				})
+			gsap.utils.toArray<HTMLElement>('[data-contato-reveal]').forEach((element) => {
+				gsap.fromTo(
+					element,
+					{ opacity: 0, y: 28 },
+					{
+						opacity: 1,
+						y: 0,
+						duration: 0.8,
+						ease: 'power2.out',
+						scrollTrigger: { trigger: element, start: 'top 90%', once: true },
+					},
+				)
+			})
 		}
 	</script>
 </Layout>

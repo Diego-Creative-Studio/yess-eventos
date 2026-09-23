@@ -16,32 +16,4 @@ import SectionProcesso from '@/components/sections/SectionProcesso.astro'
 		<SectionTrabalhos />
 		<SectionProcesso />
 	</main>
-
-	<script>
-		import { gsap } from 'gsap'
-		import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-		gsap.registerPlugin(ScrollTrigger)
-
-		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-		if (!reduceMotion) {
-			gsap.utils.toArray<HTMLElement>('[data-animate]').forEach((element) => {
-				gsap.fromTo(
-					element,
-					{ opacity: 0 },
-					{
-						opacity: 1,
-						duration: 1,
-						ease: 'power2.out',
-						scrollTrigger: {
-							trigger: element,
-							start: 'top 80%',
-							once: true,
-						},
-					},
-				)
-			})
-		}
-	</script>
 </Layout>

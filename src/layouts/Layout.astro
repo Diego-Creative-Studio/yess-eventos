@@ -6,6 +6,8 @@ import Seo from '@/components/Seo.astro'
 import Header from '@/components/Header.astro'
 import Footer from '@/components/Footer.astro'
 
+type AnimationName = 'fade' | 'fade-up' | 'fade-down' | 'fade-left' | 'fade-right' | 'scale'
+
 interface Props {
 	title?: string
 	description?: string
@@ -13,9 +15,24 @@ interface Props {
 	type?: string
 	noindex?: boolean
 	headerClass?: string
+	animationDefault?: AnimationName
+	animationDuration?: number
+	animationDistance?: number
+	animationStart?: string
 }
 
-const { title, description, image, type, noindex, headerClass } = Astro.props
+const {
+	title,
+	description,
+	image,
+	type,
+	noindex,
+	headerClass,
+	animationDefault = 'fade',
+	animationDuration = 1,
+	animationDistance = 32,
+	animationStart = 'top 80%',
+} = Astro.props
 ---
 
 <!doctype html>
@@ -34,7 +51,13 @@ const { title, description, image, type, noindex, headerClass } = Astro.props
 		<Font cssVariable="--font-jakarta" preload />
 		<Font cssVariable="--font-inter" />
 	</head>
-	<body class="bg-primary-soft font-sans text-white antialiased">
+	<body
+		class="bg-primary-soft font-sans text-white antialiased"
+		data-animate-default={animationDefault}
+		data-animate-duration={animationDuration}
+		data-animate-distance={animationDistance}
+		data-animate-start={animationStart}
+	>
 		<a
 			href="#conteudo"
 			class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:bg-accent focus:px-5 focus:py-3 focus:font-bold focus:text-white"
@@ -46,6 +69,7 @@ const { title, description, image, type, noindex, headerClass } = Astro.props
 		<Footer />
 		<script>
 			import '@/scripts/smooth-scroll'
+			import '@/scripts/reveal-animations'
 		</script>
 	</body></html
 >

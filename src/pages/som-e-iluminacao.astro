@@ -224,24 +224,4 @@ import iconeMesaOperacao from '@/assets/som-iluminacao/icones-figma/92-2590.svg'
 			linkBotao="#contato"
 		/>
 	</main>
-
-	<script>
-		import { gsap } from 'gsap'
-		import { ScrollTrigger } from 'gsap/ScrollTrigger'
-		gsap.registerPlugin(ScrollTrigger)
-		if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-			gsap.utils.toArray<HTMLElement>('[data-animate]').forEach((element) => {
-				gsap.fromTo(
-					element,
-					{ opacity: 0 },
-					{
-						opacity: 1,
-						duration: 1,
-						ease: 'power2.out',
-						scrollTrigger: { trigger: element, start: 'top 80%', once: true },
-					},
-				)
-			})
-		}
-	</script>
 </Layout>
