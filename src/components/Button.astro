@@ -9,7 +9,10 @@ interface Props {
 	variant?: 'primary' | 'outline' | 'tertiary' | 'alternative'
 	animation?: 'none' | 'pulse' | 'lift' | 'glow' | 'shine' | 'scale'
 	arrow?: boolean
-	icon?: 'arrow' | 'play'
+	whatsapp?: boolean
+	icon?: 'arrow' | 'play' | 'whatsapp'
+	iconPosition?: 'left' | 'right'
+	iconClass?: string
 	class?: string
 }
 
@@ -22,24 +25,25 @@ const {
 	animation = 'none',
 	arrow = false,
 	icon,
+	iconPosition = 'right',
+	iconClass: customIconClass,
 	class: className,
 } = Astro.props
 
 const variants = {
-	primary:
-		'border-primary bg-primary text-foreground  hover:bg-violet hover:text-background hover:border-2 hover:border-violet-dark',
+	primary: 'border-transparent bg-primary text-foreground hover:bg-primary-dark',
 	outline:
-		'border-2 border-stroke bg-transparent text-foreground hover:border-primary  hover:bg-primary-dark ',
+		'border-2 border-stroke bg-transparent text-foreground hover:border-primary hover:bg-primary-dark',
 	tertiary:
 		' bg-white border-0 text-sm font-semibold text-primary  hover:bg-background hover:text-foreground',
 	alternative:
-		'w-full !border-0 bg-white !p-6 text-center text-sm text-background shadow-xl/20 hover:bg-background hover:text-foreground md:w-fit md:shrink-0 md:!p-7 md:text-lg md:whitespace-nowrap',
+		'w-full !border-0 bg-white !p-6 text-center text-sm text-background hover:bg-background hover:text-foreground md:w-fit md:shrink-0 md:!p-7 md:text-lg md:whitespace-nowrap',
 }
 
 const animations = {
 	none: '',
 	pulse: 'motion-safe:animate-[button-pulse_1.8s_ease-in-out_infinite] motion-reduce:animate-none',
-	lift: 'motion-safe:hover:-translate-y-1 motion-safe:hover:scale-[1.02] motion-safe:active:translate-y-0 motion-safe:active:scale-[0.98] hover:shadow-xl',
+	lift: 'motion-safe:hover:-translate-y-1 motion-safe:hover:scale-[1.02] motion-safe:active:translate-y-0 motion-safe:active:scale-[0.98]',
 	glow: 'motion-safe:hover:scale-[1.02] motion-safe:active:scale-[0.98] hover:shadow-[0_0_32px_rgba(38,120,255,0.55)]',
 	shine:
 		"relative isolate overflow-hidden before:pointer-events-none before:absolute before:inset-y-[-50%] before:left-[-35%] before:w-[22%] before:-skew-x-12 before:bg-white/35 before:blur-sm before:transition-transform before:duration-700 before:content-[''] motion-safe:hover:before:translate-x-[650%]",
@@ -48,7 +52,8 @@ const animations = {
 
 const iconName = icon ?? (arrow ? 'arrow' : undefined)
 const iconClass =
-	variant === 'alternative' ? 'relative z-10 block size-3 translate-y-px' : 'relative z-10 size-4'
+	customIconClass ??
+	(variant === 'alternative' ? 'relative z-10 block size-3 translate-y-px' : 'relative z-10 size-4')
 const Tag = href ? 'a' : 'button'
 ---
 
@@ -63,8 +68,9 @@ const Tag = href ? 'a' : 'button'
 		className,
 	]}
 >
+	{iconName && iconPosition === 'left' && <Icon name={iconName} class={iconClass} />}
 	<span class="relative z-10" set:html={label} />
-	{iconName && <Icon name={iconName} class={iconClass} />}
+	{iconName && iconPosition === 'right' && <Icon name={iconName} class={iconClass} />}
 </Tag>
 
 <style>
