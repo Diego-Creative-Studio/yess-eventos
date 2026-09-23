@@ -49,7 +49,7 @@ const {
 <section data-hero-stage class="px-3 pt-4 pb-8 md:px-8 lg:px-16 lg:pt-5 lg:pb-16">
 	<div
 		data-hero-shell
-		class="relative container mx-auto flex w-full origin-center items-center overflow-hidden rounded-hero bg-surface px-6 py-10 will-change-transform max-[359px]:px-4 md:max-w-7xl md:px-10 lg:max-w-345 lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
+		class="relative container mx-auto flex w-full origin-center items-center overflow-hidden rounded-hero bg-surface px-6 py-10 max-[359px]:px-4 md:max-w-7xl md:px-10 lg:max-w-345 lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
 	>
 		<video
 			data-hero-video
@@ -58,7 +58,7 @@ const {
 			preload="none"
 			poster={image.src}
 			aria-hidden="true"
-			class="pointer-events-none absolute inset-0 size-full scale-[1.025] object-cover object-[58%_center] opacity-0 will-change-[transform,opacity] lg:object-center"
+			class="will-change-opacity pointer-events-none absolute inset-0 size-full object-cover object-[58%_center] opacity-0 lg:object-center"
 		>
 			<source data-hero-video-source data-src={videoWebm} type="video/webm" />
 			<source data-hero-video-source data-src={videoMp4} type="video/mp4" />
@@ -290,9 +290,17 @@ const {
 					)
 					.to(homeHeader, { paddingRight: 0, paddingLeft: 0, duration: 2.6 }, 0)
 					.to(headerContainer, { maxWidth: '100%', duration: 2.6 }, 0)
-					.to(video, { autoAlpha: 1, scale: 1, duration: 1.8 }, 0.05)
+					.to(video, { autoAlpha: 1, duration: 1.8 }, 0.05)
 					.to(poster, { autoAlpha: 0, duration: 1.4 }, 0.35)
 					.to(overlay, { opacity: 0.88, duration: 1.6 }, 0.25)
+					.set(
+						headerSurface,
+						{
+							boxShadow: 'none',
+							backdropFilter: 'none',
+						},
+						0.35,
+					)
 					.to(
 						headerSurface,
 						{
@@ -300,8 +308,6 @@ const {
 							paddingLeft: 'clamp(72px, 7vw, 144px)',
 							backgroundColor: 'transparent',
 							borderColor: 'transparent',
-							boxShadow: 'none',
-							backdropFilter: 'blur(0px)',
 							duration: 1.8,
 						},
 						0.35,
@@ -397,7 +403,7 @@ const {
 
 				mobilePlaying = true
 				gsap.to(mobilePlayButton, { autoAlpha: 0, duration: 0.2 })
-				gsap.to(video, { autoAlpha: 1, scale: 1, duration: 0.8, ease: 'power2.out' })
+				gsap.to(video, { autoAlpha: 1, duration: 0.8, ease: 'power2.out' })
 				gsap.to(poster, { autoAlpha: 0, duration: 0.65, ease: 'power2.out' })
 			}
 
