@@ -1,0 +1,153 @@
+---
+type AnimationName = 'fade' | 'fade-up' | 'fade-down' | 'fade-left' | 'fade-right' | 'scale'
+
+interface Props {
+	class?: string
+	'data-animate'?: AnimationName | boolean
+	'data-animate-delay'?: number
+	'data-animate-distance'?: number
+	'data-animate-duration'?: number
+	'data-animate-ease'?: string
+	'data-animate-once'?: boolean
+	'data-animate-start'?: string
+	color?:
+		| 'background'
+		| 'surface'
+		| 'surface-alt'
+		| 'stroke'
+		| 'primary'
+		| 'primary-dark'
+		| 'primary-soft'
+		| 'foreground'
+		| 'muted'
+		| 'text-secondary'
+		| 'white'
+		| 'violet'
+		| 'violet-dark'
+		| 'warm'
+		| 'accent'
+		| 'accent-dark'
+	size?: 'sm' | 'md' | 'lg'
+	intensity?: 'subtle' | 'medium' | 'strong'
+}
+
+const {
+	class: className,
+	'data-animate': animation = true,
+	'data-animate-delay': animationDelay,
+	'data-animate-distance': animationDistance,
+	'data-animate-duration': animationDuration,
+	'data-animate-ease': animationEase,
+	'data-animate-once': animationOnce,
+	'data-animate-start': animationStart,
+	color = 'primary',
+	size = 'md',
+	intensity = 'medium',
+} = Astro.props
+
+const colors = {
+	background: 'var(--color-background)',
+	surface: 'var(--color-surface)',
+	'surface-alt': 'var(--color-surface-alt)',
+	stroke: 'var(--color-stroke)',
+	primary: 'var(--color-primary)',
+	'primary-dark': 'var(--color-primary-dark)',
+	'primary-soft': 'var(--color-primary-soft)',
+	foreground: 'var(--color-foreground)',
+	muted: 'var(--color-muted)',
+	'text-secondary': 'var(--color-text-secondary)',
+	violet: 'var(--color-violet)',
+	'violet-dark': 'var(--color-violet-dark)',
+	white: 'var(--color-white)',
+	warm: 'var(--color-warm)',
+	accent: 'var(--color-accent)',
+	'accent-dark': 'var(--color-accent-dark)',
+}
+
+const sizes = {
+	sm: {
+		outer: 'h-[240px] w-[320px] blur-[60px] md:h-[300px] md:w-[400px] md:blur-[70px]',
+		middle: 'h-[190px] w-[240px] blur-[38px] md:h-[240px] md:w-[300px] md:blur-[44px]',
+		core: 'size-16 blur-[20px] md:size-20 md:blur-[24px]',
+	},
+	md: {
+		outer:
+			'h-[320px] w-[420px] blur-[70px] md:h-[420px] md:w-[540px] md:blur-[82px] lg:h-[560px] lg:w-[720px] lg:blur-[95px]',
+		middle:
+			'h-[250px] w-[320px] blur-[44px] md:h-[320px] md:w-[410px] md:blur-[52px] lg:h-[420px] lg:w-[540px] lg:blur-[62px]',
+		core: 'size-18 blur-[22px] md:size-22 md:blur-[27px] lg:size-[105px] lg:blur-[32px]',
+	},
+	lg: {
+		outer:
+			'h-[420px] w-[540px] blur-[80px] md:h-[560px] md:w-[720px] md:blur-[95px] lg:h-[700px] lg:w-[900px] lg:blur-[110px]',
+		middle:
+			'h-[340px] w-[420px] blur-[54px] md:h-[420px] md:w-[540px] md:blur-[62px] lg:h-[480px] lg:w-[620px] lg:blur-[70px]',
+		core: 'size-[90px] blur-[28px] md:size-[105px] md:blur-[32px] lg:size-[120px] lg:blur-[36px]',
+	},
+}
+
+const intensities = {
+	subtle: {
+		outer: '0.03',
+		middle: '0.06',
+		core: '0.14',
+	},
+	medium: {
+		outer: '0.05',
+		middle: '0.10',
+		core: '0.25',
+	},
+	strong: {
+		outer: '0.08',
+		middle: '0.16',
+		core: '0.36',
+	},
+}
+
+const haloStyle = [
+	`--halo-color: ${colors[color]}`,
+	`--halo-outer-opacity: ${intensities[intensity].outer}`,
+	`--halo-middle-opacity: ${intensities[intensity].middle}`,
+	`--halo-core-opacity: ${intensities[intensity].core}`,
+].join('; ')
+---
+
+<span
+	data-animate={animation}
+	data-animate-delay={animationDelay}
+	data-animate-distance={animationDistance}
+	data-animate-duration={animationDuration}
+	data-animate-ease={animationEase}
+	data-animate-once={animationOnce}
+	data-animate-start={animationStart}
+	aria-hidden="true"
+	class:list={['pointer-events-none absolute block', className]}
+	style={haloStyle}
+>
+	<span class:list={['halo-layer halo-layer-outer', sizes[size].outer]}></span>
+	<span class:list={['halo-layer halo-layer-middle', sizes[size].middle]}></span>
+	<span class:list={['halo-layer halo-layer-core', sizes[size].core]}></span>
+</span>
+
+<style>
+	.halo-layer {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		border-radius: 9999px;
+		background-color: var(--halo-color);
+		transform: translate(-50%, -50%);
+	}
+
+	.halo-layer-outer {
+		opacity: var(--halo-outer-opacity);
+	}
+
+	.halo-layer-middle {
+		opacity: var(--halo-middle-opacity);
+	}
+
+	.halo-layer-core {
+		opacity: var(--halo-core-opacity);
+	}
+</style>

@@ -4,6 +4,7 @@ import { Image } from 'astro:assets'
 import Icon from '@/components/Icon.astro'
 import linhasProcesso from '@/assets/processo/linhas-processo.png'
 import Button from '@/components/Button.astro'
+import LightHalo from '@/components/LightHalo.astro'
 ---
 
 <section
@@ -23,10 +24,13 @@ import Button from '@/components/Button.astro'
 			data-animate
 			class="relative mt-8 overflow-hidden rounded-3xl border-2 border-stroke bg-linear-to-r from-surface to-primary-soft/70 lg:mt-0 lg:min-h-56.5"
 		>
+			<!-- Light Halo 
 			<span
 				aria-hidden="true"
 				class="pointer-events-none absolute -top-24 -right-20 size-50 rounded-full bg-primary/20 blur-3xl"
 			></span>
+			-->
+			<LightHalo class="top-0 right-0" color="primary" size="sm" intensity="medium" />
 
 			<div class="relative grid lg:grid-cols-4">
 				<article class="relative flex min-h-48 flex-col px-6 py-5 lg:min-h-56.5 lg:px-5.5">
@@ -106,10 +110,7 @@ import Button from '@/components/Button.astro'
 			data-animate
 			class="relative mt-8 flex min-h-65 flex-col justify-center gap-8 overflow-hidden rounded-3xl border-2 border-primary bg-primary-dark px-6 py-8 lg:flex-row lg:items-center lg:justify-between lg:px-9"
 		>
-			<span
-				aria-hidden="true"
-				class="pointer-events-none absolute -top-36 -left-32 size-104 rounded-full bg-white/20 blur-3xl"
-			></span>
+			<LightHalo class="top-0 left-0" color="white" size="sm" intensity="medium" />
 			<Image
 				src={linhasProcesso}
 				alt=""

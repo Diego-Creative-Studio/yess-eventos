@@ -7,6 +7,7 @@ import imageLed from '@/assets/services/painel-led.png'
 import imageSound from '@/assets/services/sonorizacao.png'
 import imageLighting from '@/assets/services/iluminacao.png'
 import Button from '@/components/Button.astro'
+import LightHalo from '@/components/LightHalo.astro'
 
 type IconName = 'estrutura' | 'equipe' | 'localizacao'
 
@@ -44,17 +45,30 @@ const services: Service[] = [
 ]
 ---
 
-<section id="servicos" class="bg-background px-3 pt-8 pb-8 md:px-8 lg:px-16 lg:py-18 lg:pb-16">
-	<div class="mx-auto flex w-full flex-col gap-8 lg:max-w-345">
+<section
+	id="servicos"
+	class="relative isolate overflow-hidden bg-background px-3 pt-8 pb-8 md:px-8 lg:px-16 lg:py-18 lg:pb-16"
+>
+	<LightHalo
+		data-animate="scale"
+		data-animate-duration={1.4}
+		data-animate-delay={0.2}
+		class="top-0 left-0"
+		color="primary"
+		size="lg"
+		intensity="strong"
+	/>
+	<div class="relative z-10 mx-auto flex w-full flex-col gap-8 lg:max-w-345">
 		<div
 			data-animate
 			class="relative isolate flex flex-col items-stretch overflow-hidden rounded-3xl border-2 border-stroke bg-linear-to-br from-surface to-primary-soft/60 p-6 lg:flex-row lg:items-center"
 		>
+			<!-- Light Halo
 			<span
 				aria-hidden="true"
 				class="pointer-events-none absolute -top-23 -left-22 size-50 rounded-full bg-primary/50 blur-3xl"
 			></span>
-
+			-->
 			<div class="relative z-10 w-full lg:w-auto">
 				<h2 class="text-2xl font-semibold text-foreground">
 					Estrutura para eventos corporativos

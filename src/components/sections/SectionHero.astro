@@ -186,6 +186,9 @@ const {
 		const videoSources = heroShell.querySelectorAll<HTMLSourceElement>('[data-hero-video-source]')
 		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 		const desktopQuery = window.matchMedia('(min-width: 1024px)')
+		const disableDesktopSequence = ['localhost', '127.0.0.1', '::1'].includes(
+			window.location.hostname,
+		)
 		const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
 		const saveData = connection?.saveData === true
 		let sourcesAttached = false
@@ -210,6 +213,7 @@ const {
 			headerContainer &&
 			headerSurface &&
 			desktopQuery.matches &&
+			!disableDesktopSequence &&
 			!reduceMotion &&
 			!saveData
 		) {

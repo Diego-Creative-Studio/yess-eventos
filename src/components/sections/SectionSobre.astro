@@ -4,6 +4,7 @@ import { Image } from 'astro:assets'
 import Button from '@/components/Button.astro'
 import Icon from '@/components/Icon.astro'
 import imageAbout from '@/assets/sobre/sobre-a-empresa.png'
+import LightHalo from '@/components/LightHalo.astro'
 
 const highlights = [
 	{
@@ -34,10 +35,13 @@ const highlights = [
 	aria-labelledby="titulo-sobre"
 	class="relative overflow-hidden bg-background px-3 py-12 md:px-8 lg:px-16 lg:py-16"
 >
+	<!-- Light Halo 
 	<span
 		aria-hidden="true"
 		class="pointer-events-none absolute -top-70 -right-98 size-170 rounded-full bg-primary/20 blur-3xl"
 	></span>
+	-->
+	<LightHalo class="top-0 right-0" color="primary" size="lg" intensity="strong" />
 
 	<div class="relative z-10 mx-auto flex w-full flex-col gap-10 lg:max-w-345 xl:flex-row xl:gap-15">
 		<div
