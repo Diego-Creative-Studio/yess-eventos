@@ -13,6 +13,8 @@ interface Props {
 	icon?: 'arrow' | 'play' | 'whatsapp'
 	iconPosition?: 'left' | 'right'
 	iconClass?: string
+	'data-animate'?: 'fade' | 'fade-up' | 'fade-down' | 'fade-left' | 'fade-right' | 'scale'
+	'data-animate-delay'?: number
 	class?: string
 }
 
@@ -27,6 +29,8 @@ const {
 	icon,
 	iconPosition = 'right',
 	iconClass: customIconClass,
+	'data-animate': dataAnimate,
+	'data-animate-delay': dataAnimateDelay,
 	class: className,
 } = Astro.props
 
@@ -61,6 +65,8 @@ const Tag = href ? 'a' : 'button'
 	{id}
 	{href}
 	type={href ? undefined : type}
+	data-animate={dataAnimate}
+	data-animate-delay={dataAnimateDelay}
 	class:list={[
 		'inline-flex min-h-13 items-center justify-center gap-2 rounded-full border px-6 py-4 font-title text-sm leading-5 font-semibold transition-[color,background-color,border-color,transform,box-shadow] duration-200',
 		variants[variant],

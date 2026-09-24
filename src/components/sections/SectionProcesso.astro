@@ -13,7 +13,7 @@ import LightHalo from '@/components/LightHalo.astro'
 	class="overflow-hidden px-3 py-12 md:px-8 lg:px-16 lg:pt-16 lg:pb-24"
 >
 	<div class="mx-auto flex w-full flex-col lg:max-w-345">
-		<div data-animate class="flex flex-col gap-2 lg:min-h-27.5">
+		<div data-animate="fade-up" class="flex flex-col gap-2 lg:min-h-27.5">
 			<p class="text-sm font-semibold text-warm uppercase">Nosso processo</p>
 			<h2 id="titulo-processo" class="text-3xl text-foreground lg:text-4xl">
 				Do briefing à operação técnica.
@@ -21,7 +21,8 @@ import LightHalo from '@/components/LightHalo.astro'
 		</div>
 
 		<div
-			data-animate
+			data-animate="scale"
+			data-animate-duration={0.7}
 			class="relative mt-8 overflow-hidden rounded-3xl border-2 border-stroke bg-linear-to-r from-surface to-primary-soft/70 lg:mt-0 lg:min-h-56.5"
 		>
 			<!-- Light Halo 
@@ -30,10 +31,22 @@ import LightHalo from '@/components/LightHalo.astro'
 				class="pointer-events-none absolute -top-24 -right-20 size-50 rounded-full bg-primary/20 blur-3xl"
 			></span>
 			-->
-			<LightHalo class="top-0 right-0" color="primary" size="sm" intensity="medium" />
+			<LightHalo
+				data-animate="scale"
+				data-animate-duration={1.4}
+				data-animate-delay={0.8}
+				class="top-0 right-0"
+				color="primary"
+				size="sm"
+				intensity="medium"
+			/>
 
 			<div class="relative grid lg:grid-cols-4">
-				<article class="relative flex min-h-48 flex-col px-6 py-5 lg:min-h-56.5 lg:px-5.5">
+				<article
+					data-animate="fade-left"
+					data-animate-delay={0.15}
+					class="relative flex min-h-48 flex-col px-6 py-5 lg:min-h-56.5 lg:px-5.5"
+				>
 					<span class="font-title text-3xl leading-tight font-medium text-primary lg:text-4xl"
 						>01</span
 					>
@@ -53,7 +66,11 @@ import LightHalo from '@/components/LightHalo.astro'
 					</span>
 				</article>
 
-				<article class="relative flex min-h-48 flex-col px-6 py-5 lg:min-h-56.5 lg:px-5.5">
+				<article
+					data-animate="fade-left"
+					data-animate-delay={0.3}
+					class="relative flex min-h-48 flex-col px-6 py-5 lg:min-h-56.5 lg:px-5.5"
+				>
 					<span class="font-title text-3xl leading-tight font-medium text-primary lg:text-4xl"
 						>02</span
 					>
@@ -73,7 +90,11 @@ import LightHalo from '@/components/LightHalo.astro'
 					</span>
 				</article>
 
-				<article class="relative flex min-h-48 flex-col px-6 py-5 lg:min-h-56.5 lg:px-5.5">
+				<article
+					data-animate="fade-left"
+					data-animate-delay={0.45}
+					class="relative flex min-h-48 flex-col px-6 py-5 lg:min-h-56.5 lg:px-5.5"
+				>
 					<span class="font-title text-3xl leading-tight font-medium text-primary lg:text-4xl"
 						>03</span
 					>
@@ -93,7 +114,11 @@ import LightHalo from '@/components/LightHalo.astro'
 					</span>
 				</article>
 
-				<article class="relative flex min-h-48 flex-col px-6 py-5 lg:min-h-56.5 lg:px-5.5">
+				<article
+					data-animate="fade-left"
+					data-animate-delay={0.6}
+					class="relative flex min-h-48 flex-col px-6 py-5 lg:min-h-56.5 lg:px-5.5"
+				>
 					<span class="font-title text-3xl leading-tight font-medium text-primary lg:text-4xl"
 						>04</span
 					>
@@ -107,10 +132,18 @@ import LightHalo from '@/components/LightHalo.astro'
 
 		<div
 			id="orcamento"
-			data-animate
+			data-animate="fade-up"
 			class="relative mt-8 flex min-h-65 flex-col justify-center gap-8 overflow-hidden rounded-3xl border-2 border-primary bg-primary-dark px-6 py-8 lg:flex-row lg:items-center lg:justify-between lg:px-9"
 		>
-			<LightHalo class="top-0 left-0" color="white" size="sm" intensity="medium" />
+			<LightHalo
+				data-animate="scale"
+				data-animate-duration={1.4}
+				data-animate-delay={0.2}
+				class="top-0 left-0"
+				color="white"
+				size="sm"
+				intensity="medium"
+			/>
 			<Image
 				src={linhasProcesso}
 				alt=""
@@ -137,6 +170,7 @@ import LightHalo from '@/components/LightHalo.astro'
 			</a>
 			-->
 			<Button
+				data-animate="fade-left"
 				href="#contato"
 				label="Conversar pelo WhatsApp"
 				variant="tertiary"
