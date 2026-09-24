@@ -140,7 +140,10 @@ const {
 							class="flex items-center gap-2"
 						>
 							<span
-								class:list={['size-1.5 rounded-full', index === 1 ? 'bg-primary' : 'bg-foreground']}
+								class:list={[
+									'size-1.5 rounded-full motion-safe:animate-pulse',
+									index === 1 ? 'bg-primary' : 'bg-foreground',
+								]}
 								aria-hidden="true"
 							/>
 							<span set:html={feature} />

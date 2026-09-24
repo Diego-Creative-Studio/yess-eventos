@@ -29,6 +29,8 @@ const {
 		className,
 	]}
 >
-	<span class:list={['size-2 shrink-0 rounded-full', corBolinha]} aria-hidden="true"></span>
+	<span
+		class:list={['size-2 shrink-0 rounded-full motion-safe:animate-pulse', corBolinha]}
+		aria-hidden="true"></span>
 	<span class="uppercase" set:html={texto} />
 </p>
