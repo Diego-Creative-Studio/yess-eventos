@@ -3,6 +3,7 @@ import type { ImageMetadata } from 'astro'
 import { Image } from 'astro:assets'
 
 import Botao from '@/components/Button.astro'
+import Icon from '@/components/Icon.astro'
 
 interface Props {
 	tituloDestaque: string
@@ -13,6 +14,8 @@ interface Props {
 	textoAlternativoImagem: string
 	textoBotao: string
 	linkBotao: string
+	videoMp4?: string
+	videoWebm?: string
 }
 
 const {
@@ -24,19 +27,25 @@ const {
 	textoAlternativoImagem,
 	textoBotao,
 	linkBotao,
+	videoMp4,
+	videoWebm,
 } = Astro.props
+
+const temVideo = Boolean(videoMp4 || videoWebm)
 ---
 
 <section class="px-3 pt-4 pb-8 md:px-8 lg:px-16 lg:pt-5 lg:pb-16">
 	<div
 		data-animate
+		data-service-hero={temVideo || undefined}
 		class:list={[
 			'relative mx-auto grid w-full grid-cols-1 overflow-hidden rounded-hero bg-linear-to-b from-background via-primary-soft to-violet lg:max-w-345 lg:grid-cols-[1.1fr_1fr] lg:bg-linear-to-r',
 			varianteTitulo === 'tvs-monitores' ? 'lg:min-h-170' : 'lg:min-h-184',
 		]}
 	>
 		<div
-			class="relative isolate flex min-w-0 items-center overflow-hidden px-6 py-10 max-[359px]:px-4 md:px-10 lg:items-start lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
+			data-service-content={temVideo || undefined}
+			class="relative isolate z-30 flex min-w-0 items-center overflow-hidden px-6 py-10 max-[359px]:px-4 md:px-10 lg:items-start lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
 		>
 			<span
 				aria-hidden="true"
@@ -83,13 +92,161 @@ const {
 			</div>
 		</div>
 
-		<div class="relative min-h-96 overflow-hidden lg:min-h-full">
+		<div
+			data-service-media={temVideo || undefined}
+			class:list={[
+				'relative min-h-96 overflow-hidden lg:min-h-full',
+				temVideo &&
+					'group cursor-pointer lg:absolute lg:inset-y-0 lg:right-0 lg:z-20 lg:w-[47.62%]',
+			]}
+		>
+			{
+				temVideo && (
+					<video
+						data-service-video
+						muted
+						playsinline
+						loop
+						preload="metadata"
+						poster={imagem.src}
+						class="pointer-events-none absolute inset-0 size-full object-cover lg:rounded-l-3xl"
+					>
+						{videoWebm && <source src={videoWebm} type="video/webm" />}
+						{videoMp4 && <source src={videoMp4} type="video/mp4" />}
+					</video>
+				)
+			}
 			<Image
+				data-service-poster={temVideo || undefined}
 				src={imagem}
 				alt={textoAlternativoImagem}
-				class="absolute inset-0 size-full object-cover lg:rounded-l-3xl"
+				class="pointer-events-none absolute inset-0 size-full object-cover lg:rounded-l-3xl"
 				loading="eager"
 			/>
+			{
+				temVideo && (
+					<button
+						data-service-video-control
+						type="button"
+						aria-label="Reproduzir vídeo"
+						class="absolute right-5 bottom-5 z-10 inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/30 bg-background/75 px-4 py-3 font-title text-sm font-semibold text-white shadow-lg backdrop-blur-md transition-colors hover:border-primary hover:bg-background"
+					>
+						<span data-service-video-label>Ver vídeo</span>
+						<span data-service-play-icon class="flex items-center">
+							<Icon name="play" class="size-4" />
+						</span>
+						<span data-service-pause-icon class="hidden items-center gap-1" aria-hidden="true">
+							<span class="h-4 w-1 rounded-full bg-current" />
+							<span class="h-4 w-1 rounded-full bg-current" />
+						</span>
+					</button>
+				)
+			}
 		</div>
 	</div>
 </section>
+
+<script>
+	import { gsap } from 'gsap'
+
+	document.querySelectorAll<HTMLElement>('[data-service-hero]').forEach((hero) => {
+		const media = hero.querySelector<HTMLElement>('[data-service-media]')
+		const content = hero.querySelector<HTMLElement>('[data-service-content]')
+		const video = hero.querySelector<HTMLVideoElement>('[data-service-video]')
+		const poster = hero.querySelector<HTMLElement>('[data-service-poster]')
+		const control = hero.querySelector<HTMLButtonElement>('[data-service-video-control]')
+		const label = hero.querySelector<HTMLElement>('[data-service-video-label]')
+		const playIcon = hero.querySelector<HTMLElement>('[data-service-play-icon]')
+		const pauseIcon = hero.querySelector<HTMLElement>('[data-service-pause-icon]')
+		const desktopHover = window.matchMedia('(min-width: 1024px) and (hover: hover)')
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+		if (!media || !content || !video || !poster || !control || !label || !playIcon || !pauseIcon)
+			return
+
+		let playing = false
+
+		const updateControl = (state: 'play' | 'pause' | 'continue') => {
+			const showPause = state === 'pause'
+			label.textContent =
+				state === 'pause' ? 'Pausar vídeo' : state === 'continue' ? 'Continuar vídeo' : 'Ver vídeo'
+			control.setAttribute(
+				'aria-label',
+				state === 'pause'
+					? 'Pausar vídeo'
+					: state === 'continue'
+						? 'Continuar vídeo'
+						: 'Reproduzir vídeo',
+			)
+			playIcon.classList.toggle('hidden', showPause)
+			playIcon.classList.toggle('flex', !showPause)
+			pauseIcon.classList.toggle('hidden', !showPause)
+			pauseIcon.classList.toggle('flex', showPause)
+		}
+
+		const showVideo = async () => {
+			try {
+				await video.play()
+			} catch {
+				return
+			}
+
+			playing = true
+			updateControl('pause')
+			gsap.killTweensOf([media, content, poster, control])
+			gsap.to(poster, {
+				autoAlpha: 0,
+				duration: reduceMotion.matches ? 0 : 0.45,
+				ease: 'power2.out',
+			})
+
+			if (desktopHover.matches) {
+				gsap
+					.timeline({ defaults: { ease: 'power3.inOut' } })
+					.to(media, { width: '100%', duration: reduceMotion.matches ? 0 : 1 }, 0)
+					.to(content, { opacity: 0, x: -20, duration: reduceMotion.matches ? 0 : 0.55 }, 0.15)
+			}
+		}
+
+		const pauseVideo = () => {
+			video.pause()
+			playing = false
+			updateControl('continue')
+		}
+
+		const hideVideo = () => {
+			video.pause()
+			playing = false
+			updateControl('play')
+			gsap.killTweensOf([media, content, poster, control])
+			gsap.to(poster, {
+				autoAlpha: 1,
+				duration: reduceMotion.matches ? 0 : 0.4,
+				ease: 'power2.out',
+			})
+
+			if (desktopHover.matches) {
+				gsap
+					.timeline({
+						defaults: { ease: 'power3.inOut' },
+						onComplete: () => {
+							gsap.set([media, content], { clearProps: 'width,opacity,transform' })
+						},
+					})
+					.to(content, { opacity: 1, x: 0, duration: reduceMotion.matches ? 0 : 0.45 }, 0)
+					.to(media, { width: '47.62%', duration: reduceMotion.matches ? 0 : 0.85 }, 0)
+			}
+		}
+
+		media.addEventListener('pointerenter', () => {
+			if (desktopHover.matches) void showVideo()
+		})
+		hero.addEventListener('pointerleave', () => {
+			if (desktopHover.matches) hideVideo()
+		})
+		control.addEventListener('click', () => {
+			if (playing) pauseVideo()
+			else void showVideo()
+		})
+	})
+</script>
