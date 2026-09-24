@@ -22,21 +22,22 @@ const {
 	rotuloFluxo = 'Fluxo completo',
 	layout = 'equilibrado',
 } = Astro.props
+
+const animacoesEtapas = ['fade-down', 'fade-right', 'fade-up', 'fade-right'] as const
 ---
 
 <section class="px-3 py-8 md:px-8 lg:px-16 lg:py-7.5">
 	<div
-		data-animate
-		class="mx-auto grid w-full gap-8 rounded-3xl border-2 border-stroke bg-background p-6 lg:max-w-345 lg:grid-cols-[22.5rem_1fr] lg:p-10"
+		class="mx-auto grid w-full gap-8 overflow-hidden rounded-3xl bg-background p-6 lg:max-w-345 lg:grid-cols-[22.5rem_1fr] lg:p-10"
 	>
 		<div class="flex min-w-0 flex-col justify-between gap-10">
-			<div>
+			<div data-animate="fade-left">
 				<p class="text-sm font-semibold text-primary uppercase" set:html={etiqueta} />
 				<h2 class="mt-2 text-3xl text-foreground lg:text-4xl" set:html={titulo} />
 				<p class="mt-4 text-base text-muted lg:text-lg" set:html={descricao} />
 			</div>
 
-			<div class="max-w-70">
+			<div data-animate="fade-up" data-animate-delay={0.2} class="max-w-70">
 				<p class="text-xs font-semibold text-muted uppercase" set:html={rotuloFluxo} />
 				<div class="mt-2 flex items-center gap-1 text-xl font-medium text-primary">
 					{
@@ -72,6 +73,8 @@ const {
 			>{
 				etapas.map((etapa, indice) => (
 					<li
+						data-animate={animacoesEtapas[indice]}
+						data-animate-delay={indice * 0.1}
 						class:list={[
 							'rounded-3xl p-6',
 							layout === 'assimetrico' && 'min-[1420px]:min-h-59',

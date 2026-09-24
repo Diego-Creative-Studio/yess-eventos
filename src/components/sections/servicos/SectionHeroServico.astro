@@ -36,7 +36,6 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 
 <section class="px-3 pt-4 pb-8 md:px-8 lg:px-16 lg:pt-5 lg:pb-16">
 	<div
-		data-animate
 		data-service-hero={temVideo || undefined}
 		class:list={[
 			'relative mx-auto grid w-full grid-cols-1 overflow-hidden rounded-hero bg-linear-to-b from-background via-primary-soft to-violet lg:max-w-345 lg:grid-cols-[1.1fr_1fr] lg:bg-linear-to-r',
@@ -59,9 +58,13 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 						: 'min-[1100px]:h-146! lg:h-151',
 				]}
 			>
-				<slot name="etiqueta" />
+				<div data-animate="fade-up">
+					<slot name="etiqueta" />
+				</div>
 
 				<h1
+					data-animate="fade-up"
+					data-animate-delay={0.1}
 					class:list={[
 						'w-full pt-2 uppercase md:max-w-5xl',
 						varianteTitulo === 'som-iluminacao' || varianteTitulo === 'tvs-monitores'
@@ -74,6 +77,8 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 				</h1>
 
 				<p
+					data-animate="fade-up"
+					data-animate-delay={0.2}
 					class="w-full text-base text-foreground/80 md:max-w-147.5 md:text-lg"
 					set:html={descricao}
 				/>
@@ -82,6 +87,8 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 					class="flex w-full flex-col items-center justify-center gap-3 md:w-auto md:flex-row lg:justify-start"
 				>
 					<Botao
+						data-animate="fade-right"
+						data-animate-delay={0.3}
 						label={textoBotao}
 						href={linkBotao}
 						arrow
@@ -165,6 +172,7 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 			return
 
 		let playing = false
+		let interactionVersion = 0
 
 		const updateControl = (state: 'play' | 'pause' | 'continue') => {
 			const showPause = state === 'pause'
@@ -185,9 +193,16 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 		}
 
 		const showVideo = async () => {
+			const currentInteraction = ++interactionVersion
+
 			try {
 				await video.play()
 			} catch {
+				return
+			}
+
+			if (currentInteraction !== interactionVersion) {
+				video.pause()
 				return
 			}
 
@@ -209,12 +224,14 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 		}
 
 		const pauseVideo = () => {
+			interactionVersion += 1
 			video.pause()
 			playing = false
 			updateControl('continue')
 		}
 
 		const hideVideo = () => {
+			interactionVersion += 1
 			video.pause()
 			playing = false
 			updateControl('play')
@@ -230,7 +247,8 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 					.timeline({
 						defaults: { ease: 'power3.inOut' },
 						onComplete: () => {
-							gsap.set([media, content], { clearProps: 'width,opacity,transform' })
+							gsap.set(media, { clearProps: 'width,transform' })
+							gsap.set(content, { clearProps: 'opacity,transform' })
 						},
 					})
 					.to(content, { opacity: 1, x: 0, duration: reduceMotion.matches ? 0 : 0.45 }, 0)

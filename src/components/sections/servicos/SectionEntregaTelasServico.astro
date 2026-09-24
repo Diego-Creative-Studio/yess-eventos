@@ -24,18 +24,23 @@ const fundos = ['bg-surface-alt', 'bg-primary', 'bg-primary-soft', 'bg-surface-a
 
 <section class="px-3 py-8 md:px-8 lg:px-16 lg:py-7.5">
 	<div
-		data-animate
 		class="mx-auto grid w-full overflow-hidden rounded-3xl border-2 border-stroke bg-linear-to-br from-background to-primary-soft lg:min-h-162.5 lg:max-w-345 lg:grid-cols-[700fr_612fr]"
 	>
 		<div class="p-6 lg:p-12">
-			<p class="text-sm font-semibold text-primary uppercase" set:html={etiqueta} />
-			<h2 class="mt-2 text-3xl text-foreground lg:text-4xl" set:html={titulo} />
-			<p class="mt-4 max-w-160 text-base text-muted lg:text-lg" set:html={descricao} />
+			<div data-animate="fade-left">
+				<p class="text-sm font-semibold text-primary uppercase" set:html={etiqueta} />
+				<h2 class="mt-2 text-3xl text-foreground lg:text-4xl" set:html={titulo} />
+				<p class="mt-4 max-w-160 text-base text-muted lg:text-lg" set:html={descricao} />
+			</div>
 
 			<ul class="mt-7 grid gap-1.5 min-[360px]:grid-cols-2 lg:grid-cols-4">
 				{
 					itens.map((item, indice) => (
-						<li class:list={['min-h-45 rounded-small p-3.5', fundos[indice]]}>
+						<li
+							data-animate="scale"
+							data-animate-delay={0.12 + indice * 0.08}
+							class:list={['min-h-45 rounded-small p-3.5', fundos[indice]]}
+						>
 							<Image src={item.icone} alt="" class="size-11" />
 							<h3 class="mt-2.5 text-[0.9375rem] text-foreground" set:html={item.titulo} />
 							<p
@@ -50,10 +55,15 @@ const fundos = ['bg-surface-alt', 'bg-primary', 'bg-primary-soft', 'bg-surface-a
 				}
 			</ul>
 
-			<p class="mt-5 text-base text-text-secondary lg:mt-0 lg:pt-5 lg:text-lg" set:html={nota} />
+			<p
+				data-animate="fade"
+				data-animate-delay={0.4}
+				class="mt-5 text-base text-text-secondary lg:mt-0 lg:pt-5 lg:text-lg"
+				set:html={nota}
+			/>
 		</div>
 
-		<div class="relative min-h-96 lg:min-h-full">
+		<div data-animate="fade-right" data-animate-delay={0.1} class="relative min-h-96 lg:min-h-full">
 			<Image
 				src={imagem}
 				alt={textoAlternativoImagem}
