@@ -81,6 +81,8 @@ const {
 			class="relative z-10 flex w-full max-w-197.5 flex-col items-center gap-4.5 text-center lg:h-146 lg:max-w-200 lg:items-start lg:overflow-hidden lg:text-left"
 		>
 			<Etiqueta
+				data-animate="fade-right"
+				data-animate-delay={0.1}
 				animar
 				texto={eyebrow}
 				corFundo={corFundoEtiqueta}
@@ -90,7 +92,8 @@ const {
 			/>
 
 			<h1
-				data-animate
+				data-animate="fade-up"
+				data-animate-delay={0.3}
 				class="w-full pt-2 text-4xl uppercase max-[359px]:text-3xl md:max-w-5xl md:text-5xl lg:text-6xl"
 			>
 				<span class="font-extrabold" set:html={titleStrong} />{' '}
@@ -98,13 +101,15 @@ const {
 			</h1>
 
 			<p
-				data-animate
+				data-animate="fade-up"
+				data-animate-delay={0.5}
 				class="w-full text-base text-foreground/80 md:max-w-147.5 md:text-lg"
 				set:html={description}
 			/>
 
 			<div
-				data-animate
+				data-animate="fade-right"
+				data-animate-delay={0.6}
 				class="flex w-full flex-col items-center justify-center gap-3 md:w-auto md:flex-row lg:justify-start"
 			>
 				<Button
@@ -125,12 +130,15 @@ const {
 			</div>
 
 			<ul
-				data-animate
 				class="flex w-full list-none flex-wrap items-center justify-center gap-x-5.5 gap-y-2 pt-5 font-title text-sm text-muted md:text-base lg:w-auto lg:justify-start"
 			>
 				{
 					features.map((feature, index) => (
-						<li class="flex items-center gap-2">
+						<li
+							data-animate="fade-up"
+							data-animate-delay={1.4 + index * 0.2}
+							class="flex items-center gap-2"
+						>
 							<span
 								class:list={['size-1.5 rounded-full', index === 1 ? 'bg-primary' : 'bg-foreground']}
 								aria-hidden="true"

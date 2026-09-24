@@ -68,6 +68,16 @@
 		min-height: 100vh;
 	}
 
+	.js [data-animate] {
+		opacity: 0;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.js [data-animate] {
+			opacity: 1;
+		}
+	}
+
 	h1 {
 		@apply font-title leading-[1.14] tracking-[-0.01em];
 	}

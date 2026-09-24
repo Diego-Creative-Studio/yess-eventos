@@ -5,6 +5,7 @@ interface Props {
 	corTexto?: string
 	corBolinha?: string
 	animar?: boolean
+	'data-animate'?: string
 	class?: string
 }
 
@@ -14,12 +15,13 @@ const {
 	corTexto = 'text-foreground',
 	corBolinha = 'bg-foreground',
 	animar = false,
+	'data-animate': dataAnimate,
 	class: className,
 } = Astro.props
 ---
 
 <p
-	data-animate={animar || undefined}
+	data-animate={dataAnimate ?? (animar || undefined)}
 	class:list={[
 		'inline-flex items-center justify-center gap-2 rounded-full px-3 py-2 text-center text-xs font-semibold md:text-sm',
 		corFundo,
