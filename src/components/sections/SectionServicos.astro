@@ -69,7 +69,7 @@ const services: Service[] = [
 				class="pointer-events-none absolute -top-23 -left-22 size-50 rounded-full bg-primary/50 blur-3xl"
 			></span>
 			-->
-			<div class="relative z-10 w-full lg:w-auto">
+			<div data-animate="fade-up" data-animate-delay={0.1} class="relative z-10 w-full lg:w-auto">
 				<h2 class="text-2xl font-semibold text-foreground">
 					Estrutura para eventos corporativos
 				</h2>
@@ -78,13 +78,20 @@ const services: Service[] = [
 					Painéis de LED, som, iluminação e TVs para empresas, feiras, congressos e apresentações.
 				</p>
 			</div>
-			<span class="relative z-10 hidden h-28 border-r text-muted lg:block"></span>
+			<span
+				data-animate="fade-down"
+				data-animate-delay={0.2}
+				class="relative z-10 hidden h-28 border-r text-muted lg:block"></span>
 			<ul
 				class="relative z-10 mt-6 grid w-full gap-4 border-t border-stroke pt-6 lg:mt-0 lg:w-auto lg:grid-cols-3 lg:gap-6 lg:border-t-0 lg:p-7"
 			>
 				{
-					benefits.map((benefit) => (
-						<li class="flex items-center gap-3">
+					benefits.map((benefit, index) => (
+						<li
+							data-animate="fade-up"
+							data-animate-delay={index * 0.4}
+							class="flex items-center gap-3"
+						>
 							<span class="flex size-15 shrink-0 items-center justify-center rounded-full bg-violet-dark text-foreground">
 								<Icon name={benefit.icon} class="size-7.5" />
 							</span>
@@ -96,7 +103,7 @@ const services: Service[] = [
 		</div>
 
 		<div
-			data-animate
+			data-animate="fade-up"
 			class="flex flex-col gap-5 py-2 lg:min-h-43.25 lg:flex-row lg:items-end lg:justify-between"
 		>
 			<div class="max-w-190">
@@ -112,7 +119,8 @@ const services: Service[] = [
 
 		<div class="grid gap-6 lg:grid-cols-12">
 			<a
-				data-animate
+				data-animate="fade-left"
+				data-animate-delay={0.1}
 				href="/paineis-de-led-p2-e-p3/"
 				class="group relative min-h-96 overflow-hidden rounded-3xl border-2 border-stroke lg:col-span-7 lg:min-h-130"
 			>
@@ -135,9 +143,10 @@ const services: Service[] = [
 
 			<div class="grid gap-6 lg:col-span-5">
 				{
-					services.map((service) => (
+					services.map((service, index) => (
 						<a
-							data-animate
+							data-animate="fade-right"
+							data-animate-delay={0.2 + index * 0.2}
 							href={service.href}
 							class="group relative min-h-72 overflow-hidden rounded-3xl border-2 border-stroke lg:min-h-62"
 						>
@@ -165,19 +174,22 @@ const services: Service[] = [
 
 		<div class="grid gap-6 text-shadow-lg lg:grid-cols-12">
 			<a
-				data-animate
+				data-animate="fade-down"
 				href="/tvs-e-monitores/"
-				class="group relative flex min-h-65 flex-col justify-end overflow-hidden rounded-3xl border-2 border-stroke bg-linear-to-r from-background via-primary-soft to-violet p-7 lg:col-span-4"
+				class="group relative isolate flex min-h-65 flex-col justify-end overflow-hidden rounded-3xl border-2 border-stroke bg-linear-to-r from-background via-primary-soft to-violet p-7 before:pointer-events-none before:absolute before:inset-y-[-50%] before:left-[-35%] before:w-[22%] before:-skew-x-12 before:bg-white/35 before:blur-sm before:transition-transform before:duration-700 before:content-[''] motion-safe:hover:before:translate-x-[650%] lg:col-span-4"
 			>
-				<span class="absolute top-6 right-7 text-2xl text-foreground" aria-hidden="true">🡥</span>
-				<h3 class="text-2xl font-semibold text-foreground">Locação de TVs</h3>
-				<p class="mt-1.5 max-w-72 text-sm text-muted">
+				<span class="absolute top-6 right-7 z-10 text-2xl text-foreground" aria-hidden="true"
+					>🡥</span
+				>
+				<h3 class="relative z-10 text-2xl font-semibold text-foreground">Locação de TVs</h3>
+				<p class="relative z-10 mt-1.5 max-w-72 text-sm text-muted">
 					Monitores para feiras, congressos e apresentações.
 				</p>
 			</a>
 
 			<div
-				data-animate
+				data-animate="fade-down"
+				data-animate-delay={0.2}
 				class="flex min-h-65 flex-col items-center gap-8 rounded-3xl border-2 border-primary bg-linear-to-r from-primary-soft to-primary p-7 lg:col-span-8 lg:flex-row lg:items-center lg:justify-between lg:px-9"
 			>
 				<div class="w-full">
