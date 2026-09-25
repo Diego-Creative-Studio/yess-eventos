@@ -1,5 +1,5 @@
 ---
-import linhasProcesso from '@/assets/processo/linhas-processo.svg'
+import AnimatedWaves from '@/components/AnimatedWaves.astro'
 interface OpcaoComparacao {
 	codigo: string
 	etiqueta: string
@@ -61,11 +61,12 @@ const {
 						>{opcaoClara.codigo}</p
 					><p class="text-xs font-semibold uppercase" set:html={opcaoClara.etiqueta} /></div
 				>
-				<span
-					aria-hidden="true"
-					class="pointer-events-none absolute -right-72 -bottom-72 aspect-square w-180 bg-primary-dark mask-contain mask-center mask-no-repeat opacity-50 lg:-bottom-80 lg:-left-12 lg:w-250"
-					style={`mask-image: url(${linhasProcesso.src}); -webkit-mask-image: url(${linhasProcesso.src});`}
-				></span>
+				<AnimatedWaves
+					class="-right-72 -bottom-72 w-180 lg:-bottom-80 lg:-left-12 lg:w-250"
+					color="bg-primary-dark"
+					opacity="opacity-50"
+					echoOpacity="opacity-20"
+				/>
 				<h3 class="relative z-10 text-2xl font-semibold lg:text-3xl" set:html={opcaoClara.titulo} />
 				<p class="relative z-10 mt-3 text-sm text-background/70" set:html={opcaoClara.descricao} />
 				<ol class="relative z-10 mt-7 text-sm font-semibold xl:mt-auto xl:pt-7"
@@ -103,11 +104,12 @@ const {
 					</p><p class="text-xs font-semibold uppercase" set:html={opcaoDestaque.etiqueta} /></div
 				>
 
-				<span
-					aria-hidden="true"
-					class="pointer-events-none absolute -right-72 -bottom-72 aspect-square w-180 bg-white mask-contain mask-center mask-no-repeat opacity-80 lg:-right-90 lg:-bottom-90 lg:w-260"
-					style={`mask-image: url(${linhasProcesso.src}); -webkit-mask-image: url(${linhasProcesso.src});`}
-				></span>
+				<AnimatedWaves
+					class="-right-72 -bottom-72 w-180 lg:-right-90 lg:-bottom-90 lg:w-260"
+					color="bg-white"
+					opacity="opacity-80"
+					echoOpacity="opacity-30"
+				/>
 
 				<h3
 					class="relative z-10 text-2xl font-semibold lg:text-3xl"

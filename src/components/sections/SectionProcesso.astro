@@ -1,10 +1,8 @@
 ---
-import { Image } from 'astro:assets'
-
 import Icon from '@/components/Icon.astro'
-import linhasProcesso from '@/assets/processo/linhas-processo.png'
 import Button from '@/components/Button.astro'
 import LightHalo from '@/components/LightHalo.astro'
+import AnimatedWaves from '@/components/AnimatedWaves.astro'
 ---
 
 <section
@@ -144,10 +142,11 @@ import LightHalo from '@/components/LightHalo.astro'
 				size="sm"
 				intensity="medium"
 			/>
-			<Image
-				src={linhasProcesso}
-				alt=""
-				class="pointer-events-none absolute -right-94 -bottom-90 w-225 max-w-none -rotate-10"
+			<AnimatedWaves
+				class="-right-94 -bottom-90 w-225 max-w-none -rotate-10"
+				color="bg-primary"
+				opacity="opacity-80"
+				echoOpacity="opacity-30"
 			/>
 
 			<div class="relative z-10 max-w-153 text-shadow-lg">
