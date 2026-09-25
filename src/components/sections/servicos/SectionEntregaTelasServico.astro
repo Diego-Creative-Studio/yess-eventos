@@ -29,7 +29,7 @@ const fundos = ['bg-surface-alt', 'bg-primary', 'bg-primary-soft', 'bg-surface-a
 		<div class="p-6 lg:p-12">
 			<div data-animate="fade-left">
 				<p class="text-sm font-semibold text-primary uppercase" set:html={etiqueta} />
-				<h2 class="mt-2 text-3xl text-foreground lg:text-4xl" set:html={titulo} />
+				<h2 data-motion-title class="mt-2 text-3xl text-foreground lg:text-4xl" set:html={titulo} />
 				<p class="mt-4 max-w-160 text-base text-muted lg:text-lg" set:html={descricao} />
 			</div>
 
@@ -63,7 +63,11 @@ const fundos = ['bg-surface-alt', 'bg-primary', 'bg-primary-soft', 'bg-surface-a
 			/>
 		</div>
 
-		<div data-animate="fade-right" data-animate-delay={0.1} class="relative min-h-96 lg:min-h-full">
+		<div
+			data-motion-image
+			data-motion-parallax
+			class="relative min-h-96 overflow-hidden lg:min-h-full"
+		>
 			<Image
 				src={imagem}
 				alt={textoAlternativoImagem}

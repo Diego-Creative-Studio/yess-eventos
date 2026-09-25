@@ -17,7 +17,7 @@ const fundos = ['bg-primary', 'bg-primary-soft', 'bg-stroke', 'bg-surface']
 	<div
 		class="mx-auto w-full rounded-3xl bg-linear-to-br from-background to-primary-soft p-6 lg:max-w-345 lg:p-10"
 	>
-		<h2 data-animate="fade-up" class="text-3xl text-foreground lg:text-4xl" set:html={titulo} />
+		<h2 data-motion-title class="text-3xl text-foreground lg:text-4xl" set:html={titulo} />
 		<div class="mt-8 grid gap-4 md:grid-cols-2"
 			>{
 				perguntas.map((item, indice) => (

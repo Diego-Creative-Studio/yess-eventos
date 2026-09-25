@@ -51,6 +51,7 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 				class="pointer-events-none absolute -bottom-32 -left-40 h-80 w-md rounded-full bg-primary/40 blur-3xl lg:-bottom-60 lg:-left-40 lg:h-100 lg:w-80"
 			></span>
 			<div
+				data-service-copy
 				class:list={[
 					'relative z-10 flex w-full max-w-197.5 flex-col items-center gap-4.5 text-center lg:max-w-200 lg:items-start lg:overflow-hidden lg:text-left',
 					varianteTitulo === 'tvs-monitores'
@@ -58,13 +59,13 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 						: 'min-[1100px]:h-146! lg:h-151',
 				]}
 			>
-				<div data-animate="fade-up">
+				<div>
 					<slot name="etiqueta" />
 				</div>
 
 				<h1
-					data-animate="fade-up"
-					data-animate-delay={0.1}
+					data-motion-title
+					data-motion-immediate
 					class:list={[
 						'w-full pt-2 uppercase md:max-w-5xl',
 						varianteTitulo === 'som-iluminacao' || varianteTitulo === 'tvs-monitores'
@@ -77,8 +78,6 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 				</h1>
 
 				<p
-					data-animate="fade-up"
-					data-animate-delay={0.2}
 					class="w-full text-base text-foreground/80 md:max-w-147.5 md:text-lg"
 					set:html={descricao}
 				/>
@@ -87,8 +86,6 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 					class="flex w-full flex-col items-center justify-center gap-3 md:w-auto md:flex-row lg:justify-start"
 				>
 					<Botao
-						data-animate="fade-right"
-						data-animate-delay={0.3}
 						label={textoBotao}
 						href={linkBotao}
 						arrow
@@ -159,6 +156,7 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 	document.querySelectorAll<HTMLElement>('[data-service-hero]').forEach((hero) => {
 		const media = hero.querySelector<HTMLElement>('[data-service-media]')
 		const content = hero.querySelector<HTMLElement>('[data-service-content]')
+		const copy = hero.querySelector<HTMLElement>('[data-service-copy]')
 		const video = hero.querySelector<HTMLVideoElement>('[data-service-video]')
 		const poster = hero.querySelector<HTMLElement>('[data-service-poster]')
 		const control = hero.querySelector<HTMLButtonElement>('[data-service-video-control]')
@@ -168,11 +166,34 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 		const desktopHover = window.matchMedia('(min-width: 1024px) and (hover: hover)')
 		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
 
-		if (!media || !content || !video || !poster || !control || !label || !playIcon || !pauseIcon)
+		if (
+			!media ||
+			!content ||
+			!copy ||
+			!video ||
+			!poster ||
+			!control ||
+			!label ||
+			!playIcon ||
+			!pauseIcon
+		)
 			return
 
 		let playing = false
 		let interactionVersion = 0
+		let expansionTween: gsap.core.Tween | undefined
+		const expansionTimeline = gsap
+			.timeline({ paused: true, defaults: { ease: 'power3.inOut' } })
+			.to(media, { width: '100%', duration: reduceMotion.matches ? 0 : 0.85 }, 0)
+			.to(
+				copy,
+				{
+					opacity: 0,
+					x: -12,
+					duration: reduceMotion.matches ? 0 : 0.35,
+				},
+				0.1,
+			)
 
 		const updateControl = (state: 'play' | 'pause' | 'continue') => {
 			const showPause = state === 'pause'
@@ -208,7 +229,7 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 
 			playing = true
 			updateControl('pause')
-			gsap.killTweensOf([media, content, poster, control])
+			gsap.killTweensOf([poster, control])
 			gsap.to(poster, {
 				autoAlpha: 0,
 				duration: reduceMotion.matches ? 0 : 0.45,
@@ -216,10 +237,11 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 			})
 
 			if (desktopHover.matches) {
-				gsap
-					.timeline({ defaults: { ease: 'power3.inOut' } })
-					.to(media, { width: '100%', duration: reduceMotion.matches ? 0 : 1 }, 0)
-					.to(content, { opacity: 0, x: -20, duration: reduceMotion.matches ? 0 : 0.55 }, 0.15)
+				expansionTween?.kill()
+				expansionTween = expansionTimeline.tweenTo(expansionTimeline.duration(), {
+					duration: reduceMotion.matches ? 0 : 0.85,
+					ease: 'power3.inOut',
+				})
 			}
 		}
 
@@ -235,7 +257,7 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 			video.pause()
 			playing = false
 			updateControl('play')
-			gsap.killTweensOf([media, content, poster, control])
+			gsap.killTweensOf([poster, control])
 			gsap.to(poster, {
 				autoAlpha: 1,
 				duration: reduceMotion.matches ? 0 : 0.4,
@@ -243,16 +265,11 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 			})
 
 			if (desktopHover.matches) {
-				gsap
-					.timeline({
-						defaults: { ease: 'power3.inOut' },
-						onComplete: () => {
-							gsap.set(media, { clearProps: 'width,transform' })
-							gsap.set(content, { clearProps: 'opacity,transform' })
-						},
-					})
-					.to(content, { opacity: 1, x: 0, duration: reduceMotion.matches ? 0 : 0.45 }, 0)
-					.to(media, { width: '47.62%', duration: reduceMotion.matches ? 0 : 0.85 }, 0)
+				expansionTween?.kill()
+				expansionTween = expansionTimeline.tweenTo(0, {
+					duration: reduceMotion.matches ? 0 : 0.65,
+					ease: 'power3.inOut',
+				})
 			}
 		}
 
@@ -265,6 +282,23 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 		control.addEventListener('click', () => {
 			if (playing) pauseVideo()
 			else void showVideo()
+		})
+
+		desktopHover.addEventListener('change', (event) => {
+			if (event.matches) return
+
+			interactionVersion += 1
+			video.pause()
+			playing = false
+			expansionTween?.kill()
+			expansionTimeline.pause(0)
+			gsap.set([media, copy], { clearProps: 'width,opacity,transform' })
+			gsap.set(poster, { clearProps: 'opacity,visibility' })
+			updateControl('play')
+		})
+
+		document.addEventListener('visibilitychange', () => {
+			if (document.hidden && playing) hideVideo()
 		})
 	})
 </script>

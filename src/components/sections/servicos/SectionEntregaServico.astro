@@ -42,7 +42,7 @@ const { etiqueta, titulo, descricao, itens, nota, imagem, textoAlternativoImagem
 		<div class="p-6 lg:p-12">
 			<div data-animate="fade-left">
 				<p class="text-sm font-semibold text-primary uppercase" set:html={etiqueta} />
-				<h2 class="mt-2 text-3xl text-foreground lg:text-4xl" set:html={titulo} />
+				<h2 data-motion-title class="mt-2 text-3xl text-foreground lg:text-4xl" set:html={titulo} />
 				<p class="mt-4 max-w-160 text-base text-muted lg:text-lg" set:html={descricao} />
 			</div>
 
@@ -56,6 +56,7 @@ const { etiqueta, titulo, descricao, itens, nota, imagem, textoAlternativoImagem
 						>
 							<>
 								<span
+									data-motion-icon={!item.iconeImagem || undefined}
 									class:list={[
 										'flex shrink-0 items-center justify-center text-white',
 										item.iconeImagem ? 'size-11' : 'size-15 rounded-full bg-primary-soft',
@@ -86,7 +87,10 @@ const { etiqueta, titulo, descricao, itens, nota, imagem, textoAlternativoImagem
 			/>
 		</div>
 
-		<div data-animate="fade-right" data-animate-delay={0.1} class="relative min-h-96 lg:min-h-full"
+		<div
+			data-motion-image
+			data-motion-parallax
+			class="relative min-h-96 overflow-hidden lg:min-h-full"
 			><Image
 				src={imagem}
 				alt={textoAlternativoImagem}

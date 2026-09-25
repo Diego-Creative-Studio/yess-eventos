@@ -20,7 +20,7 @@ const { etiqueta, titulo, itens } = Astro.props
 	>
 		<div data-animate="fade-left">
 			<p class="text-sm font-semibold text-warm uppercase" set:html={etiqueta} />
-			<h2 class="mt-2 text-2xl text-foreground" set:html={titulo} />
+			<h2 data-motion-title class="mt-2 text-2xl text-foreground" set:html={titulo} />
 		</div>
 
 		<ol
