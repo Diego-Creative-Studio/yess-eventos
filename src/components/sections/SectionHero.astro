@@ -30,14 +30,14 @@ interface Props {
 
 const {
 	eyebrow = 'Painéis de LED P2 e P3 para eventos',
-	titleStrong = 'Painéis de LED para eventos corporativos.',
-	title = 'Que precisam impressionar.',
-	description = 'Locação de painéis P2 e P3, som, iluminação e TVs, com montagem e operação técnica.',
+	titleStrong = 'Locação de painéis de LED para eventos.',
+	title = '<br/>Do projeto à operação técnica.',
+	description = 'Painéis P2 e P3, som, iluminação e TVs para eventos corporativos, feiras e congressos, do projeto à desmontagem.',
 	image = heroHome,
-	imageAlt = 'Evento corporativo com grandes painéis de LED azuis',
+	imageAlt = 'Evento com palco, público e grandes painéis de LED azuis',
 	primaryCta = { label: 'Solicitar orçamento', href: '#contato' },
 	secondaryCta = { label: 'Conhecer soluções', href: '#servicos' },
-	features = ['Planejamento', 'Montagem', 'Operação técnica'],
+	features = ['Projeto técnico', 'Montagem', 'Operação e desmontagem'],
 	corFundoEtiqueta = 'bg-violet-dark',
 	corTextoEtiqueta = 'text-foreground',
 	corBolinhaEtiqueta = 'bg-foreground',
@@ -94,7 +94,7 @@ const {
 			<h1
 				data-animate="fade-up"
 				data-animate-delay={0.3}
-				class="w-full pt-2 text-4xl uppercase max-[359px]:text-3xl md:max-w-5xl md:text-5xl lg:text-6xl"
+				class="w-full pt-2 text-[2rem] leading-[1.08] uppercase max-[359px]:text-[1.75rem] min-[400px]:text-4xl md:max-w-5xl md:text-5xl lg:text-6xl"
 			>
 				<span class="font-extrabold" set:html={titleStrong} />{' '}
 				<span class="font-semibold" set:html={title} />

@@ -4,6 +4,7 @@ import '@/styles/global.css'
 import { Font } from 'astro:assets'
 import Seo from '@/components/Seo.astro'
 import Header from '@/components/Header.astro'
+import SiteSchema from '@/components/SiteSchema.astro'
 import Footer from '@/components/Footer.astro'
 
 type AnimationName = 'fade' | 'fade-up' | 'fade-down' | 'fade-left' | 'fade-right' | 'scale'
@@ -48,9 +49,10 @@ const {
 		/>
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<meta name="author" content="YESS Eventos" />
+		<meta name="author" content="YESS Audiovisual & Eventos" />
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<Seo {title} {description} {image} {type} {noindex} />
+		<SiteSchema />
 		<Font cssVariable="--font-jakarta" preload />
 		<Font cssVariable="--font-inter" />
 	</head>

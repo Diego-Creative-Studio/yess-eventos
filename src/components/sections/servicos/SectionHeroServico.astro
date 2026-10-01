@@ -53,7 +53,7 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 			<div
 				data-service-copy
 				class:list={[
-					'relative z-10 flex w-full max-w-197.5 flex-col items-center gap-4.5 text-center lg:max-w-200 lg:items-start lg:overflow-hidden lg:text-left',
+					'relative z-10 flex w-full max-w-197.5 flex-col items-start gap-4.5 text-left md:items-center md:text-center lg:max-w-200 lg:items-start lg:overflow-hidden lg:text-left',
 					varianteTitulo === 'tvs-monitores'
 						? 'min-[1100px]:h-auto! lg:h-auto!'
 						: 'min-[1100px]:h-146! lg:h-151',
@@ -69,8 +69,8 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 					class:list={[
 						'w-full pt-2 uppercase md:max-w-5xl',
 						varianteTitulo === 'som-iluminacao' || varianteTitulo === 'tvs-monitores'
-							? 'text-[2rem] max-[359px]:text-3xl min-[1420px]:text-[3.25rem]! md:text-5xl'
-							: 'text-[2rem] max-[360px]:text-3xl min-[1420px]:text-6xl! md:text-5xl',
+							? 'text-[1.75rem] min-[400px]:text-[2rem] min-[1420px]:text-[3.25rem]! md:text-5xl'
+							: 'text-[1.75rem] min-[400px]:text-[2rem] min-[1420px]:text-6xl! md:text-5xl',
 					]}
 				>
 					<strong class="font-extrabold" set:html={tituloDestaque} />{' '}
@@ -83,7 +83,7 @@ const temVideo = Boolean(videoMp4 || videoWebm)
 				/>
 
 				<div
-					class="flex w-full flex-col items-center justify-center gap-3 md:w-auto md:flex-row lg:justify-start"
+					class="flex w-full flex-col items-stretch justify-start gap-3 md:w-auto md:flex-row md:items-center md:justify-center lg:justify-start"
 				>
 					<Botao
 						label={textoBotao}
