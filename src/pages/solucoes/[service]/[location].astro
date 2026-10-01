@@ -1,0 +1,87 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import Button from '@/components/Button.astro'
+import ServiceAreas from '@/components/ServiceAreas.astro'
+import { quoteAreaURL } from '@/data/service-areas'
+import ServiceSchema from '@/components/ServiceSchema.astro'
+import { localSeoPages, localServices, serviceLocations, type LocalSeoPage } from '@/data/local-seo'
+
+export function getStaticPaths() {
+	return localSeoPages
+		.filter((page) => page.seoEligible)
+		.map((page) => ({
+			params: { service: page.service, location: page.location },
+			props: { page },
+		}))
+}
+
+interface Props {
+	page: LocalSeoPage
+}
+const { page } = Astro.props
+const service = localServices[page.service]
+const location = serviceLocations[page.location]
+const title = `${service.name} ${page.location === 'zona-sul' ? 'na' : 'em'} ${location.name}`
+const localContent = {
+	'sao-paulo': {
+		title: 'Planejamento para eventos na capital',
+		text: 'O briefing deve identificar o endereço e a região do evento. A YESS tem ênfase nas zonas Sul, Oeste e Norte; a montagem precisa ser alinhada ao espaço contratado, ao horário de acesso e à programação. Se o projeto envolve mais de uma sala, informe os pontos de exibição e a necessidade de áudio e iluminação.',
+	},
+	guarulhos: {
+		title: 'Uma entrega audiovisual no espaço do seu evento',
+		text: 'Para o atendimento em Guarulhos, envie o endereço do espaço e as janelas disponíveis para entrega, montagem e desmontagem. A equipe organiza o painel dentro do projeto do evento, considerando apresentação, palco, sinal de vídeo e acompanhamento técnico. Informe também se a programação utiliza apresentações, vídeos ou conteúdo simultâneo em outras telas.',
+	},
+	'zona-sul': {
+		title: 'Defina o distrito e o espaço na Zona Sul',
+		text: 'A Zona Sul reúne diferentes distritos e espaços de eventos. Informe o distrito, o endereço e as condições de acesso ao local para dimensionar a entrega. O bloco de regiões abaixo permite iniciar o orçamento com o local selecionado, sem presumir que todos os espaços têm as mesmas condições para instalação.',
+	},
+}[page.location]
+const quoteHref = quoteAreaURL(
+	page.service,
+	page.location === 'zona-sul' ? 'São Paulo' : location.name,
+	page.location === 'zona-sul' ? location.name : '',
+)
+---
+
+<Layout title={`${title} | YESS`} description={page.description}>
+	<ServiceSchema
+		name={title}
+		description={page.description}
+		areaServed={[location.name]}
+		areaType={page.location === 'zona-sul' ? 'AdministrativeArea' : 'City'}
+	/>
+	<main id="conteudo">
+		<section class="px-3 pt-12 md:px-8 lg:px-16">
+			<div
+				class="mx-auto max-w-345 rounded-3xl border border-stroke bg-surface p-6 text-center md:p-12 lg:text-left"
+			>
+				<p class="text-primary">PAINÉIS P2 E P3 PARA EVENTOS</p>
+				<h1 class="mt-5 text-3xl font-semibold md:text-5xl">{title}</h1>
+				<p class="mt-6 text-text-secondary">{page.description}</p>
+				<p class="mt-4 text-text-secondary">{location.coverage}</p>
+				<div class="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
+					<Button href={quoteHref} label="Solicitar projeto e orçamento" />
+					<Button href={service.hub} label="Conhecer o serviço" variant="outline" />
+				</div>
+				<h2 class="mt-10 text-2xl">{localContent.title}</h2>
+				<p class="mt-4 max-w-3xl leading-7 text-text-secondary">{localContent.text}</p>
+				<h2 class="mt-8 text-2xl">Painel P2 ou P3 dentro de uma solução completa</h2>
+				<p class="mt-4 max-w-3xl leading-7 text-text-secondary"
+					>A escolha considera dimensões, distância do público e conteúdo. A YESS planeja a
+					montagem, configura o sinal e acompanha a operação. Som, iluminação, TVs e projeção podem
+					compor o mesmo projeto, conforme o orçamento. Não trabalhamos com retirada de equipamentos
+					pelo cliente.</p
+				>
+				<h2 class="mt-8 text-2xl">O que informar para receber uma proposta?</h2>
+				<ul class="mt-4 list-inside list-disc space-y-3 text-text-secondary"
+					><li>Data, endereço e horário de acesso para montagem.</li><li
+						>Público estimado e dimensões do palco ou área de exibição.</li
+					><li>Apresentações, vídeos e programação do evento.</li><li
+						>Outras necessidades de áudio, luz e telas.</li
+					></ul
+				>
+			</div>
+		</section>
+		<ServiceAreas service={page.service} label={service.name} />
+	</main>
+</Layout>

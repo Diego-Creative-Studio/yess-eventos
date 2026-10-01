@@ -1,0 +1,284 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import ServiceAreas from '@/components/ServiceAreas.astro'
+import Etiqueta from '@/components/Etiqueta.astro'
+import Button from '@/components/Button.astro'
+import { eventEquipment } from '@/data/event-equipment'
+import SectionHeroServico from '@/components/sections/servicos/SectionHeroServico.astro'
+import SectionProcessoServico from '@/components/sections/servicos/SectionProcessoServico.astro'
+import SectionPerguntasServico from '@/components/sections/servicos/SectionPerguntasServico.astro'
+import SectionChamadaServico from '@/components/sections/servicos/SectionChamadaServico.astro'
+import imagemHero from '@/assets/painel-led/hero-painel-led.jpg'
+
+const categorias = [
+	{
+		titulo: 'Painéis de LED P2 e P3',
+		descricao:
+			'Painéis de LED e processadoras de vídeo para palcos, estandes e apresentações. Definimos o painel conforme distância do público, dimensões e conteúdo.',
+		itens: ['Painéis de LED P2 e P3', 'Processadoras de vídeo', 'Montagem e operação técnica'],
+		href: '/paineis-de-led-p2-e-p3/',
+	},
+	{
+		titulo: 'Sonorização para eventos',
+		descricao:
+			'Sistemas de áudio para reuniões, plenárias, congressos e eventos com público de até 1.000 pessoas, conforme o espaço e as necessidades de cobertura.',
+		itens: [
+			'Caixas de som QSC e EV e sistemas de P.A.',
+			'Mesas de som digitais',
+			'Microfones Shure e Sennheiser',
+		],
+		href: '/som-e-iluminacao/',
+	},
+	{
+		titulo: 'Iluminação para eventos',
+		descricao:
+			'Equipamentos de iluminação com montagem e operação para valorizar o palco, os apresentadores e os diferentes momentos da programação.',
+		itens: ['Moving heads 7R, 9R e 14R', 'Par LEDs e ribaltas', 'Mesas de luz digitais'],
+		href: '/som-e-iluminacao/',
+	},
+	{
+		titulo: 'TVs, monitores e projetores',
+		descricao:
+			'Telas para estandes, salas e apresentações. A escolha considera iluminação do ambiente, distância de visualização e conteúdo.',
+		itens: ['TVs de 42, 55 e 65 polegadas', 'Projetores Epson', 'Instalação e testes de sinal'],
+		href: '/tvs-e-monitores/',
+	},
+	{
+		titulo: 'Estruturas e cenografia',
+		descricao:
+			'Estruturas e elementos de apoio dimensionados para o projeto, com montagem e desmontagem coordenadas com a programação do local.',
+		itens: ['Box Truss Q15, Q25 e Q30', 'Praticáveis para palcos', 'Backdrops'],
+		href: '/estruturas-e-cenografia-para-eventos/',
+	},
+	{
+		titulo: 'Projetos técnicos e 3D',
+		descricao:
+			'Elaboramos projetos novos e executamos projetos previamente desenvolvidos, acompanhando a entrega do planejamento à desmontagem.',
+		itens: [
+			'Projetos técnicos, 3D e AutoCAD',
+			'Montagem e operação audiovisual',
+			'Sonoplastia de plenárias, convenções e congressos',
+		],
+		href: '/projetos-tecnicos-para-eventos/',
+	},
+]
+
+const baseURL = new URL('/', Astro.site ?? Astro.url.origin)
+const pageURL = new URL('/estrutura-audiovisual-para-eventos/', baseURL)
+const schema = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Service',
+			'@id': `${pageURL.href}#service`,
+			name: 'Produção e montagem audiovisual para eventos',
+			serviceType: 'Planejamento, montagem e operação audiovisual para eventos',
+			url: pageURL.href,
+			provider: { '@id': `${baseURL.href}#organization` },
+			areaServed: [
+				{ '@type': 'State', name: 'São Paulo' },
+				{ '@type': 'City', name: 'São Paulo' },
+				{ '@type': 'City', name: 'Guarulhos' },
+			],
+		},
+		{
+			'@type': 'BreadcrumbList',
+			itemListElement: [
+				{ '@type': 'ListItem', position: 1, name: 'Início', item: baseURL.href },
+				{
+					'@type': 'ListItem',
+					position: 2,
+					name: 'Estrutura audiovisual para eventos',
+					item: pageURL.href,
+				},
+			],
+		},
+	],
+}
+---
+
+<Layout
+	title="Estrutura Audiovisual para Eventos | YESS"
+	description="Painel de LED, som, iluminação, TVs, projetores e estruturas em São Paulo capital e interior, com entrega, instalação e acompanhamento técnico."
+>
+	<main id="conteudo" class="overflow-hidden">
+		<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+		<SectionHeroServico
+			tituloDestaque="Estrutura audiovisual para eventos."
+			titulo="Do projeto à desmontagem."
+			descricao="Painéis de LED, som, iluminação, TVs, projetores e estruturas em São Paulo capital e interior. Produção e montagem audiovisual com entrega, instalação e acompanhamento técnico, sem retirada pelo cliente."
+			imagem={imagemHero}
+			textoAlternativoImagem="Palco de evento com painel de LED e estrutura audiovisual"
+			textoBotao="Solicitar orçamento"
+			linkBotao="/contato/#canais"
+		>
+			<Etiqueta
+				slot="etiqueta"
+				texto="Produção audiovisual para eventos"
+				corFundo="bg-stroke"
+				corTexto="text-foreground"
+				corBolinha="bg-warm"
+				class="self-center lg:self-start"
+			/>
+		</SectionHeroServico>
+		<section aria-labelledby="catalogo" class="px-3 py-10 md:px-8 lg:px-16">
+			<div class="mx-auto max-w-345">
+				<h2 id="catalogo" data-motion-title class="text-center text-3xl lg:text-left lg:text-4xl"
+					>Equipamentos e serviços para cada etapa</h2
+				>
+				<p class="mt-4 max-w-3xl text-center leading-7 text-muted lg:text-left"
+					>O painel de LED é uma das principais frentes da YESS. Combinamos imagem, som, luz e
+					estrutura conforme o formato do evento, o público e as condições do espaço. Consulte a
+					disponibilidade dos equipamentos para sua data.</p
+				>
+				<div class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+					{
+						categorias.map((categoria) => (
+							<article
+								data-animate="fade-up"
+								class="flex flex-col rounded-3xl border border-stroke bg-surface p-6 lg:p-8"
+							>
+								<h3 class="text-xl text-foreground">{categoria.titulo}</h3>
+								<p class="mt-3 leading-7 text-muted">{categoria.descricao}</p>
+								<ul class="mt-5 space-y-3 text-sm text-foreground">
+									{categoria.itens.map((item) => (
+										<li class="flex gap-3">
+											<span
+												aria-hidden="true"
+												class="mt-2 size-1.5 shrink-0 rounded-full bg-primary"
+											/>
+											{item}
+										</li>
+									))}
+								</ul>
+								<a
+									href={categoria.href}
+									class="mt-auto pt-6 font-semibold text-primary hover:text-foreground"
+								>
+									{categoria.href.startsWith('/contato/')
+										? 'Conversar sobre o projeto'
+										: 'Conhecer o serviço'}{' '}
+									↗
+								</a>
+							</article>
+						))
+					}
+				</div>
+			</div>
+		</section>
+		<section aria-labelledby="equipamentos-evento" class="px-3 py-10 md:px-8 lg:px-16">
+			<div class="mx-auto max-w-345">
+				<h2 id="equipamentos-evento" class="text-center text-3xl lg:text-left"
+					>Equipamentos que compõem seu evento</h2
+				>
+				<p class="mt-4 text-text-secondary"
+					>Os equipamentos fazem parte da produção e montagem do seu evento. A equipe entrega,
+					instala e acompanha a operação técnica; não oferecemos aluguel para retirada.</p
+				>
+				<div class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+					<a
+						href="/paineis-de-led-p2-e-p3/"
+						class="rounded-3xl bg-surface p-6 hover:ring-2 hover:ring-primary"
+						><h3 class="text-xl">Painel de LED P2 e P3 ↗</h3><p class="mt-3 text-text-secondary"
+							>Imagem para palcos, estandes e apresentações.</p
+						></a
+					>
+					{
+						eventEquipment.map((equipment) => (
+							<a
+								href={`/equipamentos/${equipment.slug}/`}
+								class="rounded-3xl bg-surface p-6 hover:ring-2 hover:ring-primary"
+							>
+								<>
+									<h3 class="text-xl">{equipment.name} para eventos ↗</h3>
+									<p class="mt-3 text-text-secondary">{equipment.summary}</p>
+								</>
+							</a>
+						))
+					}
+				</div>
+			</div>
+		</section>
+		<section aria-labelledby="atendimento" class="px-3 py-8 md:px-8 lg:px-16">
+			<div class="mx-auto max-w-345 rounded-3xl bg-surface p-6 text-center lg:p-10 lg:text-left">
+				<h2 id="atendimento" data-motion-title class="text-3xl lg:text-4xl"
+					>Atendimento em São Paulo: capital e interior</h2
+				>
+				<p class="mt-4 max-w-3xl leading-7 text-muted"
+					>Atendemos a capital e o interior de São Paulo, incluindo Guarulhos, com ênfase nas zonas
+					Sul, Oeste e Norte da capital. O orçamento considera os equipamentos, o local, os acessos
+					para montagem, a programação e a equipe técnica necessária.</p
+				>
+				<p class="mt-4 max-w-3xl leading-7 text-muted"
+					>Para eventos corporativos, a YESS também coordena os sistemas em uma entrega integrada,
+					do briefing à desmontagem.</p
+				>
+				<Button
+					href="/solucoes-corporativas/"
+					label="Soluções para eventos corporativos"
+					variant="outline"
+					class="mt-6 w-full md:w-auto"
+				/>
+			</div>
+		</section>
+		<SectionProcessoServico
+			etiqueta="Entrega completa"
+			titulo="Planejamento, montagem e operação"
+			descricao="A YESS coordena o atendimento desde a produção do projeto até a desmontagem."
+			etapas={[
+				{
+					numero: '01',
+					titulo: 'Briefing',
+					descricao: 'Data, local, público e programação orientam o escopo.',
+				},
+				{
+					numero: '02',
+					titulo: 'Projeto',
+					descricao: 'Selecionamos equipamentos e planejamos a estrutura técnica.',
+				},
+				{
+					numero: '03',
+					titulo: 'Montagem e testes',
+					descricao: 'Entregamos, instalamos e verificamos áudio, imagem e iluminação.',
+				},
+				{
+					numero: '04',
+					titulo: 'Operação e desmontagem',
+					descricao: 'Acompanhamos o evento e organizamos a retirada dos equipamentos.',
+				},
+			]}
+		/>
+		<SectionPerguntasServico
+			titulo="Perguntas frequentes sobre a estrutura audiovisual"
+			perguntas={[
+				{
+					pergunta: 'Quais equipamentos podem compor meu evento?',
+					resposta:
+						'A YESS oferece painéis de LED P2 e P3, caixas e mesas de som, microfones, iluminação, TVs, projetores, processadoras, Box Truss, praticáveis e backdrops. Consulte disponibilidade e dimensionamento para sua data.',
+				},
+				{
+					pergunta: 'Posso retirar o equipamento e instalar por conta própria?',
+					resposta:
+						'Não. A YESS trabalha somente com equipamentos instalados ou pacotes para eventos. A entrega inclui instalação e acompanhamento de um técnico, com o escopo definido no orçamento.',
+				},
+				{
+					pergunta: 'Quais informações preciso enviar para o orçamento?',
+					resposta:
+						'Informe a data, a cidade, o local, o formato do evento, o público estimado e os equipamentos desejados. Se já houver projeto, medidas ou programação, envie também.',
+				},
+				{
+					pergunta: 'Como funciona o pagamento?',
+					resposta:
+						'É cobrada uma entrada, e o restante é pago no dia do evento. As condições são apresentadas no orçamento.',
+				},
+			]}
+		/>
+		<SectionChamadaServico
+			titulo="Vamos dimensionar os equipamentos do seu evento?"
+			descricao="Envie data, cidade, público estimado e o que você precisa apresentar. A equipe orienta o projeto e prepara o orçamento."
+			textoBotao="Solicitar projeto e orçamento"
+			linkBotao="/contato/#canais"
+		/>
+		<ServiceAreas service="orientacao" label="Estrutura audiovisual para eventos" />
+	</main>
+</Layout>

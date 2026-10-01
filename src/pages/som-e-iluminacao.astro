@@ -1,7 +1,10 @@
 ---
 import Layout from '@/layouts/Layout.astro'
+import ServiceAreas from '@/components/ServiceAreas.astro'
 
 import Etiqueta from '@/components/Etiqueta.astro'
+import ServiceSchema from '@/components/ServiceSchema.astro'
+import Button from '@/components/Button.astro'
 import SectionChamadaServico from '@/components/sections/servicos/SectionChamadaServico.astro'
 import SectionComparacaoServico from '@/components/sections/servicos/SectionComparacaoServico.astro'
 import SectionCredibilidadeServico from '@/components/sections/servicos/SectionCredibilidadeServico.astro'
@@ -22,19 +25,23 @@ import iconeMesaOperacao from '@/assets/som-iluminacao/icones-figma/92-2590.svg'
 ---
 
 <Layout
-	title="Som e iluminação para eventos | YESS"
-	description="Sonorização e iluminação para eventos corporativos, com projeto, montagem, testes e operação técnica integrada."
+	title="Som e Iluminação para Eventos | YESS"
+	description="Sonorização e iluminação para eventos em São Paulo e Guarulhos, com caixas QSC e EV, microfones Shure e Sennheiser, montagem e operação técnica."
 >
 	<main id="conteudo">
+		<ServiceSchema
+			name="Sonorização e iluminação para eventos"
+			description="Sonorização e iluminação para reuniões, feiras, congressos e plenárias em São Paulo e Guarulhos, com planejamento, montagem, operação e desmontagem."
+		/>
 		<SectionHeroServico
 			tituloDestaque="Som claro para comunicar."
 			titulo="<br/>Luz planejada para envolver."
 			varianteTitulo="som-iluminacao"
-			descricao="Sistemas dimensionados para o espaço, o público e o roteiro, com montagem, operação e acompanhamento técnico."
+			descricao="Sonorização e iluminação para reuniões, feiras, congressos e plenárias em São Paulo e Guarulhos. Do planejamento à desmontagem, com equipamentos e operação técnica dimensionados para o seu evento."
 			imagem={imagemHero}
 			textoAlternativoImagem="Plenária corporativa com iluminação cênica verde"
 			textoBotao="Solicitar orçamento"
-			linkBotao="#orcamento"
+			linkBotao="/contato/#canais"
 			videoMp4="/videos/hero-home.mp4"
 			videoWebm="/videos/hero-home.webm"
 		>
@@ -49,7 +56,7 @@ import iconeMesaOperacao from '@/assets/som-iluminacao/icones-figma/92-2590.svg'
 		</SectionHeroServico>
 
 		<SectionCredibilidadeServico
-			etiqueta="Por que  a YESS ?"
+			etiqueta="Por que a YESS?"
 			titulo="Áudio e luz sob controle"
 			itens={[
 				{
@@ -76,33 +83,35 @@ import iconeMesaOperacao from '@/assets/som-iluminacao/icones-figma/92-2590.svg'
 		/>
 
 		<SectionComparacaoServico
-			etiqueta="Comparação / Som × Luz"
+			etiqueta="Equipamentos / Som + Luz"
 			titulo="Sonorização e iluminação em uma única operação"
 			etiquetaOrientacao="Como escolher"
-			descricaoOrientacao="Cada sistema é planejado de acordo com ambiente, público, programação e necessidades técnicas."
+			descricaoOrientacao="A seleção considera o espaço, o público e a programação. Equipamentos, quantidades e disponibilidade são definidos no orçamento."
 			marcadorItem="•"
 			opcaoClara={{
 				codigo: 'SOM',
 				etiqueta: 'Clareza e cobertura',
-				titulo: 'Clareza e cobertura para toda a audiência',
+				titulo: 'Sonorização para falas e apresentações',
 				descricao:
-					'Microfones, caixas e processamento dimensionados para que apresentações e falas sejam ouvidas com clareza.',
+					'Sonorização com montagem e operação para que palestras, apresentações e a programação sejam ouvidas com clareza. A estrutura atende públicos de até 1.000 pessoas, conforme o ambiente e a cobertura necessária.',
 				itens: [
-					'Microfones e sistemas de PA',
-					'Distribuição uniforme',
-					'Operação e controle técnico',
+					'Caixas de som QSC e EV e sistemas de P.A.',
+					'Mesas de som digitais para controle de áudio',
+					'Microfones sem fio Shure e Sennheiser',
+					'Passagem de som, testes e operação técnica',
 				],
 			}}
 			opcaoDestaque={{
 				codigo: 'LUZ',
 				etiqueta: 'Cena e atmosfera',
-				titulo: 'Iluminação cênica, ambiental e técnica',
+				titulo: 'Iluminação de palco e ambientação',
 				descricao:
-					'Cenas programadas para valorizar palco, marca, apresentadores e momentos importantes da programação.',
+					'Iluminação planejada para destacar apresentadores, compor a ambientação e acompanhar os momentos da programação. Os pontos e as cenas de luz são planejados conforme o espaço e a proposta do evento.',
 				itens: [
-					'Destaque de palco e palestrantes',
-					'Ambientação do espaço',
-					'Programação de cenas',
+					'Moving heads 7R, 9R e 14R',
+					'Par LEDs para pontos de luz e ambientação',
+					'Ribaltas para a composição da iluminação',
+					'Mesas de luz digitais e operação das cenas',
 				],
 			}}
 			nota="Som e luz são planejados conforme ambiente, público e programação."
@@ -146,19 +155,22 @@ import iconeMesaOperacao from '@/assets/som-iluminacao/icones-figma/92-2590.svg'
 			itens={[
 				{
 					titulo: 'Feiras e exposições',
-					descricao: 'Mais visibilidade para estandes, marcas e demonstrações.',
+					descricao:
+						'Microfones para demonstrações e iluminação alinhada aos pontos de apresentação do estande.',
 					imagem: imagemAplicacaoFeiras,
 					textoAlternativoImagem: 'Estrutura audiovisual em feira corporativa',
 				},
 				{
 					titulo: 'Congressos e convenções',
-					descricao: 'Conteúdo de palco com leitura clara para toda a plateia.',
+					descricao:
+						'Cobertura sonora para a plateia e luz de palco coordenadas com a programação.',
 					imagem: imagemHero,
 					textoAlternativoImagem: 'Congresso com sonorização e iluminação cênica',
 				},
 				{
 					titulo: 'Plenárias e apresentações',
-					descricao: 'Slides, vídeos e informações apresentados com impacto.',
+					descricao:
+						'Microfones e reprodução de áudio preparados para falas, com iluminação dos apresentadores.',
 					imagem: imagemAplicacaoPlenarias,
 					textoAlternativoImagem: 'Plenária corporativa com recursos audiovisuais',
 				},
@@ -193,13 +205,76 @@ import iconeMesaOperacao from '@/assets/som-iluminacao/icones-figma/92-2590.svg'
 			]}
 		/>
 
+		<section aria-labelledby="atendimento-som-luz" class="px-3 py-8 md:px-8 lg:px-16">
+			<div
+				class="mx-auto grid max-w-345 gap-6 rounded-3xl border border-stroke bg-surface p-6 lg:grid-cols-2 lg:p-10"
+			>
+				<div data-animate="fade-up" class="text-center lg:text-left">
+					<p class="text-sm font-semibold text-warm uppercase">Cobertura e planejamento</p>
+					<h2 id="atendimento-som-luz" data-motion-title class="mt-2 text-3xl lg:text-4xl"
+						>Som e iluminação em São Paulo e Guarulhos</h2
+					>
+					<p class="mt-4 text-muted"
+						>Atendemos São Paulo, com ênfase nas zonas Sul, Oeste e Norte, e Guarulhos. O local, os
+						acessos e os horários disponíveis orientam a entrega, a montagem e a retirada.</p
+					>
+					<p class="mt-3 text-muted"
+						>Para reuniões e plenárias, o planejamento considera falas e apresentações. Em feiras e
+						convenções, alinhamos a cobertura sonora e a iluminação à programação e à configuração
+						do espaço.</p
+					>
+				</div>
+				<div
+					data-animate="fade-up"
+					data-animate-delay={0.12}
+					class="rounded-3xl bg-primary-soft p-6"
+				>
+					<h3 class="text-center text-2xl lg:text-left">O que define o orçamento?</h3>
+					<p class="mt-3 text-muted"
+						>O investimento em sonorização e iluminação depende da combinação de equipamentos e das
+						etapas técnicas do evento.</p
+					>
+					<ul class="mt-5 space-y-3 text-sm text-foreground">
+						{
+							[
+								'Data e duração da programação',
+								'Local, dimensões e público estimado',
+								'Quantidade de microfones e necessidades de áudio',
+								'Pontos de luz e proposta de ambientação',
+								'Horários de montagem e equipe de operação',
+							].map((item) => (
+								<li class="flex gap-3">
+									<span
+										aria-hidden="true"
+										class="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary"
+									/>
+									{item}
+								</li>
+							))
+						}
+					</ul>
+					<p class="mt-5 text-sm text-muted"
+						>Se já houver planta ou roteiro, envie junto ao briefing. A equipe orienta a
+						configuração e apresenta o escopo no orçamento.</p
+					>
+					<Button
+						href="/contato/#canais"
+						label="Enviar informações do evento"
+						variant="primary"
+						animation="shine"
+						class="mt-6 w-full md:w-auto"
+					/>
+				</div>
+			</div>
+		</section>
+
 		<SectionPerguntasServico
 			titulo="Perguntas frequentes"
 			perguntas={[
 				{
-					pergunta: 'Como som e iluminação trabalham juntos?',
+					pergunta: 'Quais equipamentos de som e iluminação estão disponíveis?',
 					resposta:
-						'A sonorização prioriza clareza e cobertura do público; a iluminação organiza cenas, destaque de palco e ambientação.',
+						'Trabalhamos com caixas QSC e EV, mesas de som digitais e microfones Shure e Sennheiser. Para iluminação, oferecemos moving heads 7R, 9R e 14R, Par LEDs, ribaltas e mesas de luz digitais. A disponibilidade e as quantidades são confirmadas no orçamento.',
 				},
 				{
 					pergunta: 'A YESS realiza a montagem e a operação?',
@@ -212,9 +287,9 @@ import iconeMesaOperacao from '@/assets/som-iluminacao/icones-figma/92-2590.svg'
 						'A estrutura pode atender eventos com público de até 1.000 pessoas, conforme o espaço, o formato e as necessidades de cobertura sonora.',
 				},
 				{
-					pergunta: 'A equipe acompanha o evento durante a programação?',
+					pergunta: 'Como funciona o pagamento?',
 					resposta:
-						'Sim. O escopo pode incluir acompanhamento técnico, ajustes de áudio e execução das cenas de iluminação durante o evento.',
+						'É cobrada uma entrada, e o restante é pago no dia do evento. As condições e os equipamentos incluídos são apresentados no orçamento.',
 				},
 			]}
 		/>
@@ -223,7 +298,8 @@ import iconeMesaOperacao from '@/assets/som-iluminacao/icones-figma/92-2590.svg'
 			titulo="Seu evento precisa de som e iluminação profissional?"
 			descricao="Envie data, cidade, público estimado e medidas do espaço."
 			textoBotao="Solicitar projeto e orçamento"
-			linkBotao="#contato"
+			linkBotao="/contato/#canais"
 		/>
+		<ServiceAreas service="sonorizacao" label="Som e iluminação para eventos" />
 	</main>
 </Layout>

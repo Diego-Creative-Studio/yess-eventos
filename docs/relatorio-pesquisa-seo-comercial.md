@@ -3,9 +3,17 @@
 > Data da pesquisa: 1º de outubro de 2026  
 > Domínio definitivo: `https://yessproducoes.com.br/`  
 > Fonte principal: HYPD AI, com SERPs móveis em português para o Brasil  
-> Status: relatório de pesquisa e arquitetura; nenhuma alteração de conteúdo ou rota foi aplicada ao site.
+> Status: revisão inicial das páginas existentes e hub `/locacao-de-equipamentos-para-eventos/` implementados. As demais rotas continuam propostas. O domínio definitivo já está configurado no Astro; referências à Vercel abaixo descrevem o diagnóstico original.
 
 ## Limitação dos dados quantitativos
+
+### Decisão editorial atualizada — 1º de outubro de 2026
+
+Manter `/som-e-iluminacao/` como página principal dos dois serviços, com equipamentos, aplicações, cobertura, processo e FAQs específicos. A proposta de páginas separadas nas tabelas e listas abaixo é uma possibilidade futura, não uma etapa obrigatória. Não criar agora `/sonorizacao-para-eventos/` ou `/iluminacao-para-eventos/`.
+
+Locação e aluguel são aliases da mesma intenção e usam uma URL canônica. Usar `locacao` nas rotas, nunca `alocacao`. Não duplicar as combinações serviço/localidade apenas para alternar o verbo.
+
+Começar a expansão local com São Paulo e Guarulhos somente quando houver conteúdo específico. Zonas e bairros são candidatos sujeitos à validação de atendimento, demanda e valor editorial; não gerar automaticamente toda a matriz. As listas de piloto abaixo representam possibilidades, não um lote aprovado para publicação.
 
 Volume, dificuldade e CPC não puderam ser consultados porque o HYPD exige uma conta Google Ads conectada e selecionada para essas métricas. Esses campos são identificados como **indisponíveis**; nenhum número foi estimado ou inventado.
 
@@ -16,7 +24,7 @@ A conexão pode ser feita em: <https://app.hypd.ai/sources?manage=google-ads>
 - Painel de LED é a oportunidade mais clara e deve ser a primeira frente.
 - “Locação” e “aluguel” retornam concorrentes e intenções fortemente sobrepostos. Devem ficar na mesma página canônica.
 - “Audiovisual” isoladamente é ambíguo: a SERP mistura infraestrutura para eventos com câmeras, filmagem e produtoras de vídeo. Titles e H1 precisam sempre qualificar “equipamentos” ou “soluções audiovisuais para eventos”.
-- Sonorização e iluminação justificam páginas separadas. A busca e os concorrentes de cada serviço são suficientemente distintos.
+- A pesquisa qualitativa encontrou resultados especializados de sonorização e iluminação. A decisão atual é aprofundar a página conjunta; a separação fica condicionada a conteúdo próprio e evidências adicionais.
 - São Paulo sustenta hubs comerciais. Guarulhos mostra oportunidade, mas exige termos muito qualificados para não atrair buscas por painéis publicitários, iluminação residencial ou venda de equipamentos.
 - Não há evidência suficiente para publicar páginas de bairros em escala antes de obter os volumes e validar demanda real.
 
@@ -24,38 +32,38 @@ A conexão pode ser feita em: <https://app.hypd.ai/sources?manage=google-ads>
 
 “Concorrência SERP” é uma leitura qualitativa dos resultados atuais do HYPD, não a métrica numérica de dificuldade.
 
-| Palavra-chave | Intenção | Volume | Dificuldade | CPC | Concorrência SERP | Localidade | Página recomendada | URL sugerida | Prioridade | Observações |
-|---|---|---:|---:|---:|---|---|---|---|---|---|
-| locação de painel de LED | Comercial | Indisp. | Indisp. | Indisp. | Alta | Geral | Painel de LED | `/paineis-de-led-p2-e-p3/` | Máxima | Termo principal da página canônica |
-| aluguel de painel de LED | Comercial | Indisp. | Indisp. | Indisp. | Alta | Geral | Mesma página de painel | `/paineis-de-led-p2-e-p3/` | Máxima | Alias; não criar `/aluguel/` equivalente |
-| painel de LED para eventos | Comercial | Indisp. | Indisp. | Indisp. | Alta | Geral | Painel de LED | `/paineis-de-led-p2-e-p3/` | Máxima | Ajuda a excluir intenção de venda e painel residencial |
-| painel de LED P2 | Comercial/técnica | Indisp. | Indisp. | Indisp. | Média | Geral | Painel de LED | `/paineis-de-led-p2-e-p3/` | Alta | Subtópico da página principal |
-| painel de LED P3 | Comercial/técnica | Indisp. | Indisp. | Indisp. | Média | Geral | Painel de LED | `/paineis-de-led-p2-e-p3/` | Alta | Trabalhar comparação P2 × P3 |
-| locação de painel de LED São Paulo | Comercial local | Indisp. | Indisp. | Indisp. | Alta | São Paulo | Landing local prioritária | `/locacao/painel-de-led/sao-paulo/` | Máxima | SERP comercial clara, com Local Pack |
-| aluguel de painel de LED São Paulo | Comercial local | Indisp. | Indisp. | Indisp. | Alta | São Paulo | Mesma landing local | `/locacao/painel-de-led/sao-paulo/` | Máxima | Alias da variante “locação” |
-| preço de aluguel de painel de LED | Comercial/transacional | Indisp. | Indisp. | Indisp. | Alta | Geral | FAQ da página de painel | `/paineis-de-led-p2-e-p3/` | Alta | Explicar fatores sem inventar tabela de preços |
-| painel de LED Guarulhos | Ambígua | Indisp. | Indisp. | Indisp. | Média | Guarulhos | Não usar isoladamente como foco | — | Baixa | SERP contaminada por outdoor, venda e iluminação residencial |
-| locação de painel de LED em Guarulhos | Comercial local | Indisp. | Indisp. | Indisp. | Média | Guarulhos | Landing local piloto | `/locacao/painel-de-led/guarulhos/` | Alta | Mais precisa que “painel de LED Guarulhos” |
-| locação de equipamentos audiovisuais | Comercial | Indisp. | Indisp. | Indisp. | Média/alta | Geral | Hub de locação | `/locacao-de-equipamentos-para-eventos/` | Máxima | Qualificar sempre com “para eventos” |
-| locação de equipamentos audiovisuais São Paulo | Comercial local | Indisp. | Indisp. | Indisp. | Alta e ambígua | São Paulo | Hub geográfico | `/audiovisual-para-eventos-em-sao-paulo/` | Alta | SERP mistura eventos, cinema, câmeras e broadcast |
-| audiovisual para eventos São Paulo | Comercial local | Indisp. | Indisp. | Indisp. | Média | São Paulo | Hub geográfico | `/audiovisual-para-eventos-em-sao-paulo/` | Alta | Melhor alinhamento com a oferta completa |
-| sonorização para eventos | Comercial | Indisp. | Indisp. | Indisp. | Alta | Geral | Sonorização | `/sonorizacao-para-eventos/` | Alta | Deve absorver “som”, P.A., caixas e operação |
-| aluguel de som para eventos | Comercial | Indisp. | Indisp. | Indisp. | Alta | Geral | Mesma página de sonorização | `/sonorizacao-para-eventos/` | Alta | Alias comercial |
-| sonorização para eventos São Paulo | Comercial local | Indisp. | Indisp. | Indisp. | Alta | São Paulo | Página local posterior | `/locacao/sonorizacao/sao-paulo/` | Alta | SERP separada e especializada |
-| locação de som para eventos Guarulhos | Comercial local | Indisp. | Indisp. | Indisp. | Média | Guarulhos | Página local posterior | `/locacao/sonorizacao/guarulhos/` | Média | Local Pack relevante; orgânicos ainda pouco precisos |
-| iluminação para eventos | Comercial | Indisp. | Indisp. | Indisp. | Alta | Geral | Iluminação | `/iluminacao-para-eventos/` | Alta | Justifica página separada de som |
-| iluminação cênica para eventos | Comercial | Indisp. | Indisp. | Indisp. | Média/alta | Geral | Mesma página de iluminação | `/iluminacao-para-eventos/` | Alta | Trabalhar moving heads, Par LEDs e ribaltas |
-| iluminação para eventos São Paulo | Comercial local | Indisp. | Indisp. | Indisp. | Alta | São Paulo | Página local posterior | `/locacao/iluminacao/sao-paulo/` | Média/alta | Concorrência oferece páginas dedicadas |
-| aluguel de TV para eventos | Comercial | Indisp. | Indisp. | Indisp. | Alta | Geral | TVs e projetores | `/locacao-de-tvs-e-projetores/` | Alta | Decidir migração da URL atual |
-| aluguel de TV para eventos São Paulo | Comercial local | Indisp. | Indisp. | Indisp. | Alta | São Paulo | Página local posterior | `/locacao/tvs-e-projetores/sao-paulo/` | Média/alta | Tamanhos e instalação aparecem como diferenciais |
-| aluguel de projetor para eventos | Comercial | Indisp. | Indisp. | Indisp. | A validar | Geral | TVs e projetores | `/locacao-de-tvs-e-projetores/` | Média/alta | Manter junto até haver evidência para separar |
-| aluguel de microfone sem fio | Comercial | Indisp. | Indisp. | Indisp. | A validar | Geral | Sonorização | `/sonorizacao-para-eventos/` | Média | Shure/Sennheiser como suporte, sem páginas por marca inicialmente |
-| locação de Box Truss | Comercial | Indisp. | Indisp. | Indisp. | A validar | Geral | Estruturas e cenografia | `/estruturas-e-cenografia-para-eventos/` | Média | Incluir Q15, Q25 e Q30 |
-| aluguel de backdrop | Comercial | Indisp. | Indisp. | Indisp. | A validar | Geral | Estruturas e cenografia | `/estruturas-e-cenografia-para-eventos/` | Média | Evitar página isolada sem demanda confirmada |
-| projeto técnico para eventos | Comercial especializada | Indisp. | Indisp. | Indisp. | A validar | Geral | Projetos técnicos | `/projetos-tecnicos-para-eventos/` | Média/alta | Não pertence à família “locação” |
-| projeto 3D para eventos | Comercial especializada | Indisp. | Indisp. | Indisp. | A validar | Geral | Projetos técnicos | `/projetos-tecnicos-para-eventos/` | Média | Trabalhar junto com AutoCAD e planejamento |
-| ART para eventos | Comercial especializada | Indisp. | Indisp. | Indisp. | A validar | Geral | Projetos técnicos | `/projetos-tecnicos-para-eventos/` | Média | Publicar somente com responsável e condições confirmadas |
-| sonoplastia para plenárias | Comercial especializada | Indisp. | Indisp. | Indisp. | A validar | Geral | Sonoplastia | `/sonoplastia-para-eventos/` | Média | Intenção diferente de simples locação de caixas |
+| Palavra-chave                                  | Intenção                |  Volume | Dificuldade |     CPC | Concorrência SERP | Localidade | Página recomendada              | URL sugerida                              | Prioridade | Observações                                                       |
+| ---------------------------------------------- | ----------------------- | ------: | ----------: | ------: | ----------------- | ---------- | ------------------------------- | ----------------------------------------- | ---------- | ----------------------------------------------------------------- |
+| locação de painel de LED                       | Comercial               | Indisp. |     Indisp. | Indisp. | Alta              | Geral      | Painel de LED                   | `/paineis-de-led-p2-e-p3/`                | Máxima     | Termo principal da página canônica                                |
+| aluguel de painel de LED                       | Comercial               | Indisp. |     Indisp. | Indisp. | Alta              | Geral      | Mesma página de painel          | `/paineis-de-led-p2-e-p3/`                | Máxima     | Alias; não criar `/aluguel/` equivalente                          |
+| painel de LED para eventos                     | Comercial               | Indisp. |     Indisp. | Indisp. | Alta              | Geral      | Painel de LED                   | `/paineis-de-led-p2-e-p3/`                | Máxima     | Ajuda a excluir intenção de venda e painel residencial            |
+| painel de LED P2                               | Comercial/técnica       | Indisp. |     Indisp. | Indisp. | Média             | Geral      | Painel de LED                   | `/paineis-de-led-p2-e-p3/`                | Alta       | Subtópico da página principal                                     |
+| painel de LED P3                               | Comercial/técnica       | Indisp. |     Indisp. | Indisp. | Média             | Geral      | Painel de LED                   | `/paineis-de-led-p2-e-p3/`                | Alta       | Trabalhar comparação P2 × P3                                      |
+| locação de painel de LED São Paulo             | Comercial local         | Indisp. |     Indisp. | Indisp. | Alta              | São Paulo  | Landing local prioritária       | `/locacao/painel-de-led/sao-paulo/`       | Máxima     | SERP comercial clara, com Local Pack                              |
+| aluguel de painel de LED São Paulo             | Comercial local         | Indisp. |     Indisp. | Indisp. | Alta              | São Paulo  | Mesma landing local             | `/locacao/painel-de-led/sao-paulo/`       | Máxima     | Alias da variante “locação”                                       |
+| preço de aluguel de painel de LED              | Comercial/transacional  | Indisp. |     Indisp. | Indisp. | Alta              | Geral      | FAQ da página de painel         | `/paineis-de-led-p2-e-p3/`                | Alta       | Explicar fatores sem inventar tabela de preços                    |
+| painel de LED Guarulhos                        | Ambígua                 | Indisp. |     Indisp. | Indisp. | Média             | Guarulhos  | Não usar isoladamente como foco | —                                         | Baixa      | SERP contaminada por outdoor, venda e iluminação residencial      |
+| locação de painel de LED em Guarulhos          | Comercial local         | Indisp. |     Indisp. | Indisp. | Média             | Guarulhos  | Landing local piloto            | `/locacao/painel-de-led/guarulhos/`       | Alta       | Mais precisa que “painel de LED Guarulhos”                        |
+| locação de equipamentos audiovisuais           | Comercial               | Indisp. |     Indisp. | Indisp. | Média/alta        | Geral      | Hub de locação                  | `/locacao-de-equipamentos-para-eventos/`  | Máxima     | Qualificar sempre com “para eventos”                              |
+| locação de equipamentos audiovisuais São Paulo | Comercial local         | Indisp. |     Indisp. | Indisp. | Alta e ambígua    | São Paulo  | Hub geográfico                  | `/audiovisual-para-eventos-em-sao-paulo/` | Alta       | SERP mistura eventos, cinema, câmeras e broadcast                 |
+| audiovisual para eventos São Paulo             | Comercial local         | Indisp. |     Indisp. | Indisp. | Média             | São Paulo  | Hub geográfico                  | `/audiovisual-para-eventos-em-sao-paulo/` | Alta       | Melhor alinhamento com a oferta completa                          |
+| sonorização para eventos                       | Comercial               | Indisp. |     Indisp. | Indisp. | Alta              | Geral      | Sonorização                     | `/sonorizacao-para-eventos/`              | Alta       | Deve absorver “som”, P.A., caixas e operação                      |
+| aluguel de som para eventos                    | Comercial               | Indisp. |     Indisp. | Indisp. | Alta              | Geral      | Mesma página de sonorização     | `/sonorizacao-para-eventos/`              | Alta       | Alias comercial                                                   |
+| sonorização para eventos São Paulo             | Comercial local         | Indisp. |     Indisp. | Indisp. | Alta              | São Paulo  | Página local posterior          | `/locacao/sonorizacao/sao-paulo/`         | Alta       | SERP separada e especializada                                     |
+| locação de som para eventos Guarulhos          | Comercial local         | Indisp. |     Indisp. | Indisp. | Média             | Guarulhos  | Página local posterior          | `/locacao/sonorizacao/guarulhos/`         | Média      | Local Pack relevante; orgânicos ainda pouco precisos              |
+| iluminação para eventos                        | Comercial               | Indisp. |     Indisp. | Indisp. | Alta              | Geral      | Iluminação                      | `/iluminacao-para-eventos/`               | Alta       | Justifica página separada de som                                  |
+| iluminação cênica para eventos                 | Comercial               | Indisp. |     Indisp. | Indisp. | Média/alta        | Geral      | Mesma página de iluminação      | `/iluminacao-para-eventos/`               | Alta       | Trabalhar moving heads, Par LEDs e ribaltas                       |
+| iluminação para eventos São Paulo              | Comercial local         | Indisp. |     Indisp. | Indisp. | Alta              | São Paulo  | Página local posterior          | `/locacao/iluminacao/sao-paulo/`          | Média/alta | Concorrência oferece páginas dedicadas                            |
+| aluguel de TV para eventos                     | Comercial               | Indisp. |     Indisp. | Indisp. | Alta              | Geral      | TVs e projetores                | `/locacao-de-tvs-e-projetores/`           | Alta       | Decidir migração da URL atual                                     |
+| aluguel de TV para eventos São Paulo           | Comercial local         | Indisp. |     Indisp. | Indisp. | Alta              | São Paulo  | Página local posterior          | `/locacao/tvs-e-projetores/sao-paulo/`    | Média/alta | Tamanhos e instalação aparecem como diferenciais                  |
+| aluguel de projetor para eventos               | Comercial               | Indisp. |     Indisp. | Indisp. | A validar         | Geral      | TVs e projetores                | `/locacao-de-tvs-e-projetores/`           | Média/alta | Manter junto até haver evidência para separar                     |
+| aluguel de microfone sem fio                   | Comercial               | Indisp. |     Indisp. | Indisp. | A validar         | Geral      | Sonorização                     | `/sonorizacao-para-eventos/`              | Média      | Shure/Sennheiser como suporte, sem páginas por marca inicialmente |
+| locação de Box Truss                           | Comercial               | Indisp. |     Indisp. | Indisp. | A validar         | Geral      | Estruturas e cenografia         | `/estruturas-e-cenografia-para-eventos/`  | Média      | Incluir Q15, Q25 e Q30                                            |
+| aluguel de backdrop                            | Comercial               | Indisp. |     Indisp. | Indisp. | A validar         | Geral      | Estruturas e cenografia         | `/estruturas-e-cenografia-para-eventos/`  | Média      | Evitar página isolada sem demanda confirmada                      |
+| projeto técnico para eventos                   | Comercial especializada | Indisp. |     Indisp. | Indisp. | A validar         | Geral      | Projetos técnicos               | `/projetos-tecnicos-para-eventos/`        | Média/alta | Não pertence à família “locação”                                  |
+| projeto 3D para eventos                        | Comercial especializada | Indisp. |     Indisp. | Indisp. | A validar         | Geral      | Projetos técnicos               | `/projetos-tecnicos-para-eventos/`        | Média      | Trabalhar junto com AutoCAD e planejamento                        |
+| ART para eventos                               | Comercial especializada | Indisp. |     Indisp. | Indisp. | A validar         | Geral      | Projetos técnicos               | `/projetos-tecnicos-para-eventos/`        | Média      | Publicar somente com responsável e condições confirmadas          |
+| sonoplastia para plenárias                     | Comercial especializada | Indisp. |     Indisp. | Indisp. | A validar         | Geral      | Sonoplastia                     | `/sonoplastia-para-eventos/`              | Média      | Intenção diferente de simples locação de caixas                   |
 
 ## Concorrentes encontrados pelo HYPD
 

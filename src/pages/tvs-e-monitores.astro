@@ -1,7 +1,9 @@
 ---
 import Layout from '@/layouts/Layout.astro'
+import ServiceAreas from '@/components/ServiceAreas.astro'
 
 import Etiqueta from '@/components/Etiqueta.astro'
+import ServiceSchema from '@/components/ServiceSchema.astro'
 import SectionChamadaServico from '@/components/sections/servicos/SectionChamadaServico.astro'
 import SectionComparacaoServico from '@/components/sections/servicos/SectionComparacaoServico.astro'
 import SectionCredibilidadeServico from '@/components/sections/servicos/SectionCredibilidadeServico.astro'
@@ -22,25 +24,29 @@ import iconeTestes from '@/assets/tvs-monitores/icones/92-2630.svg'
 ---
 
 <Layout
-	title="TVs e monitores para eventos | YESS"
-	description="Locação de TVs e monitores para eventos corporativos, com instalação, distribuição de sinal, testes e suporte técnico."
+	title="TVs e Projetores para Eventos em SP | YESS"
+	description="TVs de 42, 55 e 65 polegadas, monitores e projetores Epson para eventos em São Paulo e Guarulhos, com montagem e operação técnica."
 >
+	<ServiceSchema
+		name="TVs, monitores e projetores para eventos"
+		description="TVs de 42, 55 e 65 polegadas e projetores Epson para eventos, com planejamento, montagem, testes e operação técnica em São Paulo e Guarulhos."
+	/>
 	<main id="conteudo">
 		<SectionHeroServico
-			tituloDestaque="Telas no ponto certo."
-			titulo="<br/>Conteúdo sempre visível."
+			tituloDestaque="TVs e projetores para eventos."
+			titulo="<br/>Conteúdo no ponto certo."
 			varianteTitulo="tvs-monitores"
-			descricao="TVs e monitores para recepção, salas, estandes e áreas de apoio com instalação, sinal e conteúdo testados."
+			descricao="TVs de 42, 55 e 65 polegadas, monitores e projetores Epson para reuniões, feiras, congressos e plenárias. Do planejamento à desmontagem."
 			imagem={imagemAplicacaoEvento}
 			textoAlternativoImagem="Tela instalada em evento corporativo"
 			textoBotao="Solicitar orçamento"
-			linkBotao="#orcamento"
+			linkBotao="/contato/#canais"
 			videoMp4="/videos/hero-home.mp4"
 			videoWebm="/videos/hero-home.webm"
 		>
 			<Etiqueta
 				slot="etiqueta"
-				texto="Locação de TVs e monitores para eventos"
+				texto="TVs e projetores para eventos"
 				corFundo="bg-stroke"
 				corTexto="text-foreground"
 				corBolinha="bg-warm"
@@ -49,13 +55,13 @@ import iconeTestes from '@/assets/tvs-monitores/icones/92-2630.svg'
 		</SectionHeroServico>
 
 		<SectionCredibilidadeServico
-			etiqueta="Por que  a YESS ?"
+			etiqueta="Por que a YESS?"
 			titulo="Segurança em cada etapa"
 			itens={[
 				{
 					numero: '01',
 					titulo: 'Projeto sob medida',
-					descricao: 'P2 ou P3 conforme distância, espaço e conteúdo.',
+					descricao: 'TVs de 42, 55 ou 65 polegadas conforme distância, espaço e conteúdo.',
 				},
 				{
 					numero: '02',
@@ -76,8 +82,8 @@ import iconeTestes from '@/assets/tvs-monitores/icones/92-2630.svg'
 		/>
 
 		<SectionComparacaoServico
-			etiqueta="Comparação / TVs × Monitores"
-			titulo="TV ou monitor? A escolha começa pela função"
+			etiqueta="TVs e monitores × Projetores"
+			titulo="Tela ou projeção? A escolha começa pelo espaço"
 			compactarCodigoDestaqueNoMobile
 			etiquetaOrientacao="Como escolher"
 			descricaoOrientacao="A indicação considera quantidade de pessoas, distância de leitura, mobilidade e conteúdo exibido."
@@ -91,19 +97,23 @@ import iconeTestes from '@/assets/tvs-monitores/icones/92-2630.svg'
 				itens: ['Apresentações e vídeos', 'Salas e plenárias', 'Conteúdo institucional'],
 			}}
 			opcaoDestaque={{
-				codigo: 'MONITORES',
-				etiqueta: 'Uso direcionado',
-				titulo: 'Informação próxima e direcionada',
+				codigo: 'PROJETORES',
+				etiqueta: 'Projetores Epson',
+				titulo: 'Projeção planejada para o ambiente',
 				descricao:
-					'Ideais para credenciamento, demonstrações, retorno e pontos específicos da operação.',
-				itens: ['Recepção e apoio', 'Demonstrações em estandes', 'Retorno e sinalização'],
+					'A YESS trabalha com projetores Epson. A indicação considera a iluminação do ambiente, a distância de projeção e o conteúdo da apresentação.',
+				itens: [
+					'Reuniões e apresentações',
+					'Congressos e plenárias',
+					'Configuração e testes de conteúdo',
+				],
 			}}
 			nota="A escolha considera público, distância, mobilidade e conteúdo."
-			resumo="TVs — grupos / Monitores — pontos específicos"
+			resumo="TVs e monitores ou projetores: dimensionamento conforme o evento."
 		/>
 
 		<SectionEntregaTelasServico
-			etiqueta="Locação com entrega técnica"
+			etiqueta="Instalação e acompanhamento técnico"
 			titulo="Cada tela instalada com uma função clara"
 			descricao="A YESS define os pontos de exibição, seleciona suportes, organiza o sinal e valida o conteúdo antes da abertura."
 			itens={[
@@ -201,7 +211,7 @@ import iconeTestes from '@/assets/tvs-monitores/icones/92-2630.svg'
 						'A YESS trabalha com TVs de 42, 55 e 65 polegadas. A escolha depende da distância de visualização, da circulação e da função do conteúdo.',
 				},
 				{
-					pergunta: 'A locação inclui instalação e retirada?',
+					pergunta: 'O serviço inclui instalação e desmontagem?',
 					resposta:
 						'Sim. Cuidamos do planejamento, entrega, instalação, configuração, testes, operação técnica necessária e retirada dos equipamentos.',
 				},
@@ -214,10 +224,11 @@ import iconeTestes from '@/assets/tvs-monitores/icones/92-2630.svg'
 		/>
 
 		<SectionChamadaServico
-			titulo="Seu evento precisa de TVs ou monitores?"
+			titulo="Seu evento precisa de TVs ou projetores?"
 			descricao="Envie data, cidade, público estimado e medidas do espaço."
 			textoBotao="Solicitar projeto e orçamento"
-			linkBotao="#contato"
+			linkBotao="/contato/#canais"
 		/>
+		<ServiceAreas service="tvs" label="TVs e projeção para eventos" />
 	</main>
 </Layout>

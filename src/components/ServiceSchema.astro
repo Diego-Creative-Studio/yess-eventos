@@ -1,0 +1,51 @@
+---
+interface Props {
+	name: string
+	description: string
+	areaServed?: string[]
+	stateServed?: string
+	areaType?: 'City' | 'AdministrativeArea'
+}
+
+const {
+	name,
+	description,
+	areaServed = ['São Paulo', 'Guarulhos'],
+	stateServed,
+	areaType = 'City',
+} = Astro.props
+const baseURL = new URL('/', Astro.site ?? Astro.url.origin)
+const pageURL = new URL(Astro.url.pathname, baseURL)
+const schema = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Service',
+			'@id': `${pageURL.href}#service`,
+			name,
+			description,
+			url: pageURL.href,
+			provider: { '@id': `${baseURL.href}#organization` },
+			areaServed: [
+				...areaServed.map((city) => ({ '@type': areaType, name: city })),
+				...(stateServed ? [{ '@type': 'State', name: stateServed }] : []),
+			],
+		},
+		{
+			'@type': 'BreadcrumbList',
+			itemListElement: [
+				{ '@type': 'ListItem', position: 1, name: 'Início', item: baseURL.href },
+				{
+					'@type': 'ListItem',
+					position: 2,
+					name: 'Equipamentos e serviços',
+					item: new URL('/estrutura-audiovisual-para-eventos/', baseURL).href,
+				},
+				{ '@type': 'ListItem', position: 3, name, item: pageURL.href },
+			],
+		},
+	],
+}
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />

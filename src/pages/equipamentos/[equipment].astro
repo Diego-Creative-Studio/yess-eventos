@@ -1,0 +1,54 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import ServiceAreas from '@/components/ServiceAreas.astro'
+import ServiceSchema from '@/components/ServiceSchema.astro'
+import QuoteForm from '@/components/QuoteForm.astro'
+import { eventEquipment } from '@/data/event-equipment'
+export function getStaticPaths() {
+	return eventEquipment.map((equipment) => ({
+		params: { equipment: equipment.slug },
+		props: { equipment },
+	}))
+}
+interface Props {
+	equipment: (typeof eventEquipment)[number]
+}
+const { equipment } = Astro.props
+const title = `${equipment.name} para eventos`
+const description = `${equipment.summary} Com entrega, instalação e acompanhamento técnico em São Paulo capital e interior. Consulte a disponibilidade.`
+---
+
+<Layout title={`${title} | YESS`} description={description}>
+	<ServiceSchema name={title} description={description} stateServed="São Paulo" />
+	<main id="conteudo">
+		<section class="px-3 py-12 md:px-8 lg:px-16">
+			<div
+				class="mx-auto max-w-345 rounded-3xl border border-stroke bg-surface p-6 text-center md:p-12 lg:text-left"
+			>
+				<a href="/estrutura-audiovisual-para-eventos/" class="text-primary"
+					>Equipamentos para eventos</a
+				>
+				<h1 class="mt-6 text-3xl md:text-5xl">{title}</h1>
+				<p class="mt-6 max-w-3xl text-lg text-text-secondary">{equipment.summary}</p>
+				<p class="mt-4 max-w-3xl leading-7 text-text-secondary">{equipment.details}</p>
+				<h2 class="mt-8 text-2xl">Uma solução montada para seu evento</h2>
+				<p class="mt-4 max-w-3xl leading-7 text-text-secondary"
+					>A YESS não é uma locadora para retirada de equipamentos. Planejamos a entrega, instalamos
+					os equipamentos no espaço e mantemos acompanhamento técnico durante o evento. Mesmo para
+					uma necessidade pontual, como uma ou mais TVs, a contratação é uma solução instalada.</p
+				>
+				<h2 class="mt-8 text-2xl">Atendimento na capital e no interior de São Paulo</h2>
+				<p class="mt-4 max-w-3xl leading-7 text-text-secondary"
+					>Informe a cidade e o local para planejarmos a entrega e a montagem. Atendemos também
+					Guarulhos; na capital, as zonas Sul, Oeste e Norte estão entre as regiões de maior
+					atuação.</p
+				>
+				<a href={equipment.hub} class="mt-6 inline-block text-primary underline"
+					>Conheça a solução completa para seu evento</a
+				>
+			</div>
+		</section>
+		<QuoteForm service={equipment.slug} />
+		<ServiceAreas service={equipment.slug} label={equipment.name} />
+	</main>
+</Layout>

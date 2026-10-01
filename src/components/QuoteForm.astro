@@ -1,0 +1,170 @@
+---
+import { quoteServices } from '@/data/event-equipment'
+interface Props {
+	service?: string
+	city?: string
+	district?: string
+}
+const { service = '', city = '', district = '' } = Astro.props
+// Configure a validated form receiver and the confirmed business phone before launch.
+const endpoint = import.meta.env.PUBLIC_QUOTE_ENDPOINT ?? ''
+const whatsapp = (import.meta.env.PUBLIC_WHATSAPP_NUMBER ?? '').replace(/\D/g, '')
+const fieldClass =
+	'mt-2 w-full rounded-xl border border-stroke/20 bg-foreground p-3 text-surface placeholder:text-stroke/75 focus:border-primary focus:outline-2 focus:outline-primary'
+---
+
+<section id="canais" class="px-3 py-12 md:px-8 lg:px-16" aria-labelledby="quote-title">
+	<div
+		class="mx-auto max-w-345 rounded-3xl border border-stroke/20 bg-muted p-6 text-surface md:p-10"
+	>
+		<h2 id="quote-title" class="text-center text-3xl lg:text-left"
+			>Solicite um orçamento para seu evento</h2
+		>
+		<p class="mt-4 text-white"
+			>Produção e montagem audiovisual com entrega, instalação e acompanhamento técnico. Não
+			trabalhamos com retirada pelo cliente.</p
+		>
+		<form
+			action={endpoint || undefined}
+			method="post"
+			data-quote-form
+			data-ready={Boolean(endpoint)}
+			class="mt-8 space-y-6"
+		>
+			<div class="grid gap-5 md:grid-cols-2">
+				<label
+					>Nome (obrigatório)<input
+						class={fieldClass}
+						name="name"
+						autocomplete="name"
+						required
+						maxlength="120"
+					/></label
+				>
+				<label
+					>WhatsApp (obrigatório)<input
+						class={fieldClass}
+						name="phone"
+						type="tel"
+						autocomplete="tel"
+						required
+						maxlength="30"
+					/></label
+				>
+				<label
+					>E-mail (obrigatório)<input
+						class={fieldClass}
+						name="email"
+						type="email"
+						autocomplete="email"
+						required
+						maxlength="200"
+					/></label
+				>
+				<label
+					>Empresa (opcional)<input
+						class={fieldClass}
+						name="company"
+						autocomplete="organization"
+						maxlength="160"
+					/></label
+				>
+				<label
+					>Cidade do evento (obrigatório)<input
+						class={fieldClass}
+						name="city"
+						value={city}
+						required
+						maxlength="120"
+					/></label
+				>
+				<label
+					>Bairro ou distrito (opcional)<input
+						class={fieldClass}
+						name="district"
+						value={district}
+						maxlength="120"
+					/></label
+				>
+				<label
+					>Data ou período (opcional)<input
+						class={fieldClass}
+						name="period"
+						placeholder="Ex.: 15 e 16 de novembro"
+						maxlength="120"
+					/></label
+				>
+			</div>
+			<fieldset
+				><legend>Quais soluções seu evento precisa? Selecione uma ou mais opções.</legend>
+				<div class="mt-4 grid gap-3 md:grid-cols-2 lg:grid-cols-3"
+					>{
+						quoteServices.map((item) => (
+							<label class="flex cursor-pointer items-start gap-3 rounded-xl border border-stroke/20 bg-foreground p-3 transition-colors hover:border-primary has-checked:border-primary has-checked:bg-primary/10">
+								<>
+									<input
+										type="checkbox"
+										name="services"
+										value={item.value}
+										checked={item.value === service}
+										class="mt-1 size-4 accent-primary"
+									/>
+									<span>{item.name}</span>
+								</>
+							</label>
+						))
+					}</div
+				>
+			</fieldset>
+			<label class="block"
+				>Detalhes do evento (opcional)<textarea
+					class={fieldClass}
+					name="message"
+					rows={4}
+					maxlength="3000"
+					placeholder="Tipo de evento, público estimado, espaço e outras necessidades."
+				></textarea></label
+			>
+			<p class="text-sm text-stroke/85"
+				>Os dados serão utilizados para responder ao seu pedido de orçamento.</p
+			>
+			{
+				!endpoint && (
+					<p role="status" class="rounded-xl border border-primary/25 bg-primary/5 p-4 text-stroke">
+						O envio do formulário ainda está em configuração. Nenhum pedido será enviado nesta
+						prévia.
+					</p>
+				)
+			}
+			<button
+				type="submit"
+				disabled={!endpoint}
+				class="rounded-full bg-primary px-8 py-4 font-semibold text-white hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-50"
+				>Solicitar orçamento</button
+			>
+		</form>
+		{
+			whatsapp && (
+				<a href={`https://wa.me/${whatsapp}`} class="mt-6 inline-block text-primary underline">
+					Prefere conversar? Fale diretamente pelo WhatsApp.
+				</a>
+			)
+		}
+	</div>
+</section>
+<script>
+	document.querySelectorAll<HTMLFormElement>('[data-quote-form]').forEach((form) => {
+		const params = new URLSearchParams(window.location.search)
+		for (const name of ['city', 'district']) {
+			const input = form.querySelector<HTMLInputElement>(`input[name="${name}"]`)
+			if (input && params.has(name)) input.value = params.get(name)!.slice(0, 120)
+		}
+		const service = params.get('service')
+		if (service)
+			form.querySelectorAll<HTMLInputElement>('input[name="services"]').forEach((input) => {
+				input.checked = input.value === service
+			})
+		if (form.dataset.ready !== 'true')
+			form.addEventListener('submit', (event) => event.preventDefault())
+	})
+</script>

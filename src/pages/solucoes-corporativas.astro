@@ -1,5 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro'
+import ServiceAreas from '@/components/ServiceAreas.astro'
 
 import Etiqueta from '@/components/Etiqueta.astro'
 import SectionChamadaServico from '@/components/sections/servicos/SectionChamadaServico.astro'
@@ -28,13 +29,13 @@ import iconeOperacao from '@/assets/solucoes-corporativas/icones/92-2670.svg'
 	<main id="conteudo">
 		<SectionHeroServico
 			tituloDestaque="Tudo conectado."
-			titulo="<br/>Conteúdo sempre<br/>visível."
+			titulo="Uma operação audiovisual coordenada."
 			varianteTitulo="tvs-monitores"
-			descricao="TVs e monitores para recepção, salas, estandes e áreas de apoio com instalação, sinal e conteúdo testados."
+			descricao="Painéis de LED, som, iluminação e telas para reuniões, feiras, congressos e convenções, com projeto, montagem e operação técnica integrados."
 			imagem={imagemHero}
 			textoAlternativoImagem="Soluções audiovisuais integradas em evento corporativo"
 			textoBotao="Solicitar orçamento"
-			linkBotao="#orcamento"
+			linkBotao="/contato/#canais"
 			videoMp4="/videos/hero-home.mp4"
 			videoWebm="/videos/hero-home.webm"
 		>
@@ -190,7 +191,8 @@ import iconeOperacao from '@/assets/solucoes-corporativas/icones/92-2670.svg'
 			titulo="Seu evento precisa de uma operação audiovisual integrada?"
 			descricao="Conte o formato do evento. A YESS organiza a solução técnica completa."
 			textoBotao="Solicitar projeto e orçamento"
-			linkBotao="#contato"
+			linkBotao="/contato/#canais"
 		/>
+		<ServiceAreas service="orientacao" label="Soluções audiovisuais corporativas" />
 	</main>
 </Layout>

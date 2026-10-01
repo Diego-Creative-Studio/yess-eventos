@@ -31,6 +31,11 @@ import Button from '@/components/Button.astro'
 			>
 				<h2 class="text-xl leading-7 font-semibold text-foreground">Serviços</h2>
 				<a
+					href="/estrutura-audiovisual-para-eventos/"
+					class="text-sm leading-6 text-muted transition-colors hover:text-foreground"
+					>Todos os equipamentos ↗</a
+				>
+				<a
 					href="/paineis-de-led-p2-e-p3/"
 					class="flex items-center gap-2 text-sm leading-6 text-muted transition-colors hover:text-foreground"
 				>
@@ -52,13 +57,25 @@ import Button from '@/components/Button.astro'
 					href="/tvs-e-monitores/"
 					class="flex items-center gap-2 text-sm leading-6 text-muted transition-colors hover:text-foreground"
 				>
-					<span class="size-1.5 shrink-0 rounded-full bg-primary"></span>Locação de TVs
+					<span class="size-1.5 shrink-0 rounded-full bg-primary"></span>TVs para eventos
 				</a>
 				<a
 					href="/solucoes-corporativas/"
 					class="flex items-center gap-2 text-sm leading-6 text-muted transition-colors hover:text-foreground"
 				>
 					<span class="size-1.5 shrink-0 rounded-full bg-primary"></span>Soluções corporativas
+				</a>
+				<a
+					href="/estruturas-e-cenografia-para-eventos/"
+					class="flex items-center gap-2 text-sm leading-6 text-muted transition-colors hover:text-foreground"
+				>
+					<span class="size-1.5 shrink-0 rounded-full bg-primary"></span>Estruturas e cenografia
+				</a>
+				<a
+					href="/projetos-tecnicos-para-eventos/"
+					class="flex items-center gap-2 text-sm leading-6 text-muted transition-colors hover:text-foreground"
+				>
+					<span class="size-1.5 shrink-0 rounded-full bg-primary"></span>Projetos técnicos e 3D
 				</a>
 			</nav>
 
@@ -84,19 +101,19 @@ import Button from '@/components/Button.astro'
 			<div class="flex flex-col items-center gap-2.5 min-[420px]:items-start xl:w-62.5">
 				<h2 class="text-xl leading-7 font-semibold text-foreground">Contato</h2>
 				<a
-					href="#contato"
+					href="/contato/#canais"
 					class="inline-flex min-h-10.5 items-center gap-2.5 rounded-small border-2 border-stroke bg-surface-alt px-3 py-2.5 font-title text-sm font-semibold text-foreground transition-colors hover:border-primary"
 				>
 					<Icon name="whatsapp" class="size-5" /> WhatsApp ↗
 				</a>
 				<a
-					href="#contato"
+					href="/contato/#canais"
 					class="inline-flex min-h-10.5 items-center gap-2.5 rounded-small border-2 border-stroke bg-surface-alt px-3 py-2.5 font-title text-sm font-semibold text-foreground transition-colors hover:border-primary"
 				>
 					<Icon name="email" class="size-5" /> E-mail ↗
 				</a>
 				<a
-					href="#contato"
+					href="/contato/#canais"
 					class="inline-flex min-h-10.5 items-center gap-2.5 rounded-small border-2 border-stroke bg-surface-alt px-3 py-2.5 font-title text-sm font-semibold text-foreground transition-colors hover:border-primary"
 				>
 					<Icon name="instagram" class="size-5" /> Instagram ↗
@@ -123,7 +140,7 @@ import Button from '@/components/Button.astro'
 
 			<Button
 				label="Solicitar orçamento"
-				href="#orcamento"
+				href="/contato/#canais"
 				variant="primary"
 				class="w-full uppercase md:w-auto"
 				animation="shine"

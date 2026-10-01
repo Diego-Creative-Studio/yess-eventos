@@ -3,9 +3,64 @@
 Registro das informações fornecidas pelo cliente para orientar os textos, a estrutura de serviços e o planejamento de SEO do site.
 
 > Data do registro: 1º de outubro de 2026  
-> Status: informações recebidas do cliente e estratégia inicial documentada; conteúdo ainda não aplicado ao site.
+> Status atual: produção e montagem audiovisual para eventos. A estratégia anterior de locação foi substituída pela confirmação final abaixo. Os registros anteriores ficam preservados como histórico, não como orientação vigente.
+
+## Diretriz vigente — confirmação final do cliente em 1º de outubro de 2026
+
+Esta seção substitui as recomendações anteriores de aluguel/locação e expansão de equipamentos por bairro.
+
+- A YESS se apresenta como empresa de produção e montagem audiovisual de eventos, não como locadora.
+- Equipamentos demonstram capacidade de entrega: painel de LED, projeção, sonorização, iluminação e TVs compõem soluções instaladas e acompanhadas por um técnico.
+- Mesmo uma contratação pontual de uma ou mais TVs inclui entrega, instalação e acompanhamento do evento. Não há retirada pelo cliente.
+- Painel de LED é a prioridade comercial e de rentabilidade; som e iluminação vêm depois.
+- Hub atual: `/estrutura-audiovisual-para-eventos/`. Páginas específicas em `/equipamentos/` apresentam aplicações no evento, não aluguel avulso.
+- URLs antigas de locação têm redirecionamentos no Astro. Em hospedagem estática sem adaptador, são páginas de redirecionamento; configurar redirects HTTP na hospedagem quando ela for definida. URLs antigas não entram no sitemap.
+- `src/data/event-equipment.ts` centraliza os equipamentos. Formulário pede soluções para o evento, não retirada ou aluguel.
+- Primeira etapa local em `/solucoes/[service]/[location]/`: três páginas de LED em São Paulo, Guarulhos e Zona Sul, com orientação própria de briefing e links para o serviço. Não gerar equipamento × bairro automaticamente.
+- O cliente separará fotos e vídeos próprios. Antes do portfólio, identificar o papel real da YESS em cada trabalho: produção, equipamentos/montagem, operação ou somente sonoplastia. Não atribuir o evento inteiro a uma participação parcial.
+- Não publicar logos, cases ou mídia não autorizada. Não informar experiência, equipe ou responsabilidade técnica sem confirmação.
+- O envio real do formulário e WhatsApp direto continuam pendentes da configuração e dos contatos comerciais confirmados.
+
+### Navegação local — 1º de outubro de 2026
+
+- `ServiceAreas.astro` é reutilizado nas páginas de serviços, equipamentos e estrutura audiovisual, mantendo os serviços existentes.
+- Base geográfica em `src/data/service-areas.ts`: 22 distritos agrupados pelas nove subprefeituras de Sul 1 e Sul 2. Distritos não são uma lista exaustiva de bairros; não confundir a classificação oficial com nomes informais de bairros.
+- Fontes: https://gestaourbana.prefeitura.sp.gov.br/arquivos-planos-regionais/ e https://prefeitura.sp.gov.br/licenciamento/w/servicos/312207.
+- A fonte municipal confirma a geografia, não atendimento anterior, cases ou uma filial da YESS em cada região.
+- Links para páginas locais aparecem somente quando a combinação está publicada. Nas demais regiões, o link abre contato e preenche serviço, cidade e distrito via query string. Não apresentar links de orçamento como páginas locais.
+- Canonical de contato não inclui query string; nomes externos são inseridos como valores de campos, nunca como HTML.
+- Não há páginas individuais de distrito nesta etapa. Só expandir com conteúdo próprio, demanda e revisão; número de páginas não garante indexação, tráfego ou leads.
+
+## Avanço da implementação — 1º de outubro de 2026
+
+- Domínio definitivo configurado no Astro e identidade registrada no schema global.
+- Revisados metadados e textos reaproveitados indevidamente em TVs e soluções corporativas.
+- Equipamentos confirmados acrescentados à página de som e iluminação.
+- Criada `/locacao-de-equipamentos-para-eventos/`, com catálogo, cobertura, processo, FAQs, schema de serviço e breadcrumbs.
+- Hub ligado ao menu, à Home e ao rodapé; CTAs de orçamento encaminhados para `/contato/#canais`.
+- Criadas `/estruturas-e-cenografia-para-eventos/` e `/projetos-tecnicos-para-eventos/`, reutilizando o design e as seções existentes, com conteúdo próprio e dados estruturados de serviço e breadcrumbs.
+- Som e iluminação permanecem juntos. A separação em páginas específicas foi adiada para priorizar serviços ainda sem conteúdo próprio.
+- Fortalecida `/som-e-iluminacao/` com inventário por serviço, aplicações específicas de áudio e luz, cobertura, fatores de orçamento, pagamento e dados estruturados.
+- Locação e aluguel compartilham URLs canônicas. São Paulo e Guarulhos são as primeiras localidades candidatas; zonas e bairros só avançam com atendimento confirmado e conteúdo específico. Não publicar automaticamente todas as combinações.
+- Próximas frentes: ampliar telas/projetores e avaliar sonoplastia; depois iniciar os hubs geográficos.
+- Rotas locais permanecem para a etapa posterior, com seleção editorial e conteúdo específico.
+
+O detalhamento de ART depende da confirmação do responsável técnico e das condições de prestação. Não foram publicados novos logotipos ou cases dos clientes citados no briefing.
 
 ## Perguntas e respostas do cliente
+
+### Confirmação da modalidade de locação — 1º de outubro de 2026
+
+- Não há locação para retirada pelo cliente: somente equipamento instalado ou pacote.
+- A locação inclui entrega e acompanhamento de um técnico.
+- Atendimento em São Paulo capital e interior; Guarulhos já havia sido confirmado. Isso não autoriza gerar todas as cidades e bairros automaticamente.
+- Prioridades comerciais: painel de LED, seguido por som e iluminação.
+- Catálogo técnico inicial em `src/data/rental-catalog.ts`; páginas de microfones, caixas de som, moving heads, projetores Epson e TVs usam um template compartilhado com conteúdo específico.
+- Painel de LED permanece na URL existente, sem criar um equivalente duplicado em `/locacao/`.
+- Formulário reutilizável somente em contato e nas páginas específicas de equipamentos, com equipamento pré-selecionado. Páginas de serviços e catálogo geral mantêm os botões para `/contato/#canais`, sem repetir o formulário. Cards antigos de canais removidos da página de contato.
+- `PUBLIC_QUOTE_ENDPOINT` e `PUBLIC_WHATSAPP_NUMBER` estão documentados em `.env.example`. Sem endpoint, o envio permanece desativado e sinalizado. Sem número confirmado, não exibir link fictício de WhatsApp.
+- Antes de ativar: validar integração real, proteção antispam, entrega do pedido, confirmação e erros. Não considerar o formulário visual como integração concluída.
+- Logos/clientes continuam pendentes de autorização de publicação; páginas locais permanecem desativadas até revisão editorial.
 
 ### 1. Quais equipamentos e serviços vocês oferecem?
 
@@ -408,6 +463,15 @@ Esses itens não impedem o início da revisão do site, mas poderão fortalecer 
 - Percentual da entrada e meios de pagamento aceitos.
 
 ## Cuidados para a implementação
+
+### Atualização — 01/10/2026
+
+- `/tvs-e-monitores/` permanece como URL canônica única para TVs, monitores e projetores. Conteúdo atualizado com TVs de 42, 55 e 65 polegadas e projetores Epson; sem especificações não confirmadas.
+- Referência técnica da AS Locação inspecionada: dados separados e `getStaticPaths`. Na YESS não será usado o produto cartesiano de verbos, serviços e cidades.
+- Base editorial em `src/data/local-seo.ts` e rota `/locacao/[service]/[location]/`. Primeiro serviço: painel de LED; primeiras cidades: São Paulo e Guarulhos.
+- Os dois pilotos estão com `seoEligible: false`: não geram páginas nem entradas no sitemap. A rota atual é somente uma base, não uma landing page local concluída. Antes de ativar, completar conteúdo útil específico, revisar schema por cidade, links internos e conversão.
+- Não criar URLs paralelas para aluguel/locação nem bairros sem validação de atendimento e conteúdo.
+- Pendência de conversão: os cards da página de contato não possuem destinos reais. Precisamos do WhatsApp com DDD, e-mail comercial e perfil do Instagram; não usar contatos da AS Locação nem inventar dados.
 
 - Não prometer posicionamento em primeiro lugar no Google.
 - Não publicar automaticamente o produto cartesiano completo de equipamentos, serviços, eventos e localidades.

@@ -1,5 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro'
+import ServiceAreas from '@/components/ServiceAreas.astro'
 
 import Etiqueta from '@/components/Etiqueta.astro'
 import SectionChamadaServico from '@/components/sections/servicos/SectionChamadaServico.astro'
@@ -22,24 +23,24 @@ import imagemProjetoPainel from '@/assets/painel-led/projeto-painel-corporativo.
 ---
 
 <Layout
-	title="Painéis de LED P2 e P3 para eventos | YESS"
-	description="Locação de painéis de LED P2 e P3 para eventos corporativos, com projeto, montagem e operação técnica."
+	title="Painel de LED P2 e P3 para Eventos | YESS"
+	description="Painéis de LED P2 e P3 em São Paulo e Guarulhos para feiras, congressos e eventos, com projeto, montagem, operação e desmontagem."
 >
 	<main id="conteudo">
 		<SectionHeroServico
-			tituloDestaque=`Painel de LED <br class="hidden lg:block"/> para eventos corporativos`
+			tituloDestaque=`Painel de LED <br class="hidden lg:block"/> para eventos`
 			titulo=" <br/> do planejamento à operação"
 			descricao="Projetos sob medida para feiras, congressos, convenções e apresentações, com montagem e suporte técnico especializado."
 			imagem={imagemHero}
 			textoAlternativoImagem="Evento corporativo com grande painel de LED no palco"
 			textoBotao="Solicitar orçamento"
-			linkBotao="#orcamento"
+			linkBotao="/contato/#canais"
 			videoMp4="/videos/hero-home.mp4"
 			videoWebm="/videos/hero-home.webm"
 		>
 			<Etiqueta
 				slot="etiqueta"
-				texto="Locação de painel de LED P2 e P3"
+				texto="Painel de LED P2 e P3"
 				corFundo="bg-stroke"
 				corTexto="text-foreground"
 				corBolinha="bg-warm"
@@ -105,7 +106,7 @@ import imagemProjetoPainel from '@/assets/painel-led/projeto-painel-corporativo.
 
 		<SectionEntregaServico
 			etiqueta="Entrega completa"
-			titulo="Muito além da locação do equipamento"
+			titulo="Painel integrado à estrutura do evento"
 			descricao="A YESS acompanha o projeto técnico desde o briefing até o encerramento do evento."
 			itens={[
 				{
@@ -135,7 +136,7 @@ import imagemProjetoPainel from '@/assets/painel-led/projeto-painel-corporativo.
 		/>
 
 		<SectionGaleriaServico
-			titulo="Painéis de LED para diferentes formatos corporativos"
+			titulo="Painéis de LED para feiras, congressos e apresentações"
 			descricao="Aplicações dimensionadas de acordo com o espaço, o público e o conteúdo."
 			itens={[
 				{
@@ -223,7 +224,7 @@ import imagemProjetoPainel from '@/assets/painel-led/projeto-painel-corporativo.
 						'A escolha depende da distância do público, do tamanho da tela e do nível de detalhe do conteúdo.',
 				},
 				{
-					pergunta: 'O aluguel do painel de LED inclui montagem e operação?',
+					pergunta: 'A solução de painel de LED inclui montagem e operação?',
 					resposta:
 						'Sim. Cuidamos do planejamento, montagem, configuração, testes, operação e desmontagem.',
 				},
@@ -244,7 +245,8 @@ import imagemProjetoPainel from '@/assets/painel-led/projeto-painel-corporativo.
 			titulo="Seu evento precisa de um painel de LED?"
 			descricao="Envie data, cidade, público estimado e medidas do espaço."
 			textoBotao="Solicitar projeto e orçamento"
-			linkBotao="#contato"
+			linkBotao="/contato/#canais"
 		/>
+		<ServiceAreas service="painel-de-led" label="Painel de LED para eventos" />
 	</main>
 </Layout>

@@ -55,9 +55,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 				data-service-copy
 				class:list={[
 					'relative z-10 flex w-full max-w-197.5 flex-col items-center gap-4.5 text-center lg:max-w-200 lg:items-start lg:overflow-hidden lg:text-left',
-					varianteTitulo === 'tvs-monitores'
-						? 'min-[1100px]:h-auto! lg:h-auto!'
-						: 'min-[1100px]:h-146! lg:h-151',
+					varianteTitulo === 'tvs-monitores' ? 'lg:h-auto' : 'lg:min-h-146',
 				]}
 			>
 				<div>

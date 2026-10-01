@@ -31,6 +31,11 @@ const navigationAfterServices: NavigationItem[] = [
 
 const services: ServiceItem[] = [
 	{
+		label: 'Estrutura audiovisual',
+		href: '/estrutura-audiovisual-para-eventos/',
+		description: 'Catálogo audiovisual, estruturas e projetos para eventos.',
+	},
+	{
 		label: 'Painéis de LED P2 e P3',
 		href: '/paineis-de-led-p2-e-p3/',
 		description: 'Alta definição, montagem e operação para eventos.',
@@ -49,6 +54,16 @@ const services: ServiceItem[] = [
 		label: 'Soluções corporativas',
 		href: '/solucoes-corporativas/',
 		description: 'Planejamento audiovisual integrado para cada formato.',
+	},
+	{
+		label: 'Estruturas e cenografia',
+		href: '/estruturas-e-cenografia-para-eventos/',
+		description: 'Box Truss, praticáveis e backdrops com montagem coordenada.',
+	},
+	{
+		label: 'Projetos técnicos e 3D',
+		href: '/projetos-tecnicos-para-eventos/',
+		description: 'Planejamento, projetos 3D e AutoCAD para a execução.',
 	},
 ]
 
@@ -195,7 +210,7 @@ const isServicePage = services.some((service) => isCurrent(service.href))
 
 				<Button
 					label="Solicitar orçamento"
-					href="#orcamento"
+					href="/contato/#canais"
 					variant="primary"
 					class="ml-2 w-full shadow-lg/20 md:w-auto lg:!min-h-12 lg:!px-5 lg:!py-3"
 					animation="shine"
