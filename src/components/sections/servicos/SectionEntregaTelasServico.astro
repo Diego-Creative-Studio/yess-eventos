@@ -27,10 +27,13 @@ const fundos = ['bg-surface-alt', 'bg-primary', 'bg-primary-soft', 'bg-surface-a
 		class="mx-auto grid w-full overflow-hidden rounded-3xl border-2 border-stroke bg-linear-to-br from-background to-primary-soft lg:min-h-162.5 lg:max-w-345 lg:grid-cols-[700fr_612fr]"
 	>
 		<div class="p-6 lg:p-12">
-			<div data-animate="fade-left">
+			<div data-animate="fade-left" class="text-center md:text-left">
 				<p class="text-sm font-semibold text-primary uppercase" set:html={etiqueta} />
 				<h2 data-motion-title class="mt-2 text-3xl text-foreground lg:text-4xl" set:html={titulo} />
-				<p class="mt-4 max-w-160 text-base text-muted lg:text-lg" set:html={descricao} />
+				<p
+					class="mx-auto mt-4 max-w-160 text-base text-muted md:mx-0 lg:text-lg"
+					set:html={descricao}
+				/>
 			</div>
 
 			<ul class="mt-7 grid gap-1.5 min-[360px]:grid-cols-2 lg:grid-cols-4">
@@ -58,7 +61,7 @@ const fundos = ['bg-surface-alt', 'bg-primary', 'bg-primary-soft', 'bg-surface-a
 			<p
 				data-animate="fade"
 				data-animate-delay={0.4}
-				class="mt-5 text-base text-text-secondary lg:mt-0 lg:pt-5 lg:text-lg"
+				class="mt-5 text-center text-base text-text-secondary md:text-left lg:mt-0 lg:pt-5 lg:text-lg"
 				set:html={nota}
 			/>
 		</div>

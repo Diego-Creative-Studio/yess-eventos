@@ -32,15 +32,21 @@ const animacoesEtapas = ['fade-down', 'fade-right', 'fade-up', 'fade-right'] as 
 		class="mx-auto grid w-full gap-8 overflow-hidden rounded-3xl bg-background p-6 lg:max-w-345 lg:grid-cols-[22.5rem_1fr] lg:p-10"
 	>
 		<div class="flex min-w-0 flex-col justify-between gap-10">
-			<div data-animate="fade-left">
+			<div data-animate="fade-left" class="text-center md:text-left">
 				<p class="text-sm font-semibold text-primary uppercase" set:html={etiqueta} />
 				<h2 data-motion-title class="mt-2 text-3xl text-foreground lg:text-4xl" set:html={titulo} />
 				<p class="mt-4 text-base text-muted lg:text-lg" set:html={descricao} />
 			</div>
 
-			<div data-animate="fade-up" data-animate-delay={0.2} class="max-w-70">
+			<div
+				data-animate="fade-up"
+				data-animate-delay={0.2}
+				class="mx-auto max-w-70 text-center md:mx-0 md:text-left"
+			>
 				<p class="text-xs font-semibold text-muted uppercase" set:html={rotuloFluxo} />
-				<div class="mt-2 flex items-center gap-1 text-xl font-medium text-primary">
+				<div
+					class="mt-2 flex items-center justify-center gap-1 text-xl font-medium text-primary md:justify-start"
+				>
 					{
 						etapas.map((etapa, indice) => (
 							<>
@@ -50,7 +56,10 @@ const animacoesEtapas = ['fade-down', 'fade-right', 'fade-up', 'fade-right'] as 
 						))
 					}
 				</div>
-				<div class="mt-2 flex items-center gap-3" aria-hidden="true">
+				<div
+					class="mt-2 flex items-center justify-center gap-3 md:justify-start"
+					aria-hidden="true"
+				>
 					{
 						etapas.map((_, indice) => (
 							<span

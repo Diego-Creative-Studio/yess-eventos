@@ -60,4 +60,10 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 			},
 		})
 	})
+
+	const refreshTriggers = () => ScrollTrigger.refresh()
+
+	requestAnimationFrame(refreshTriggers)
+	void document.fonts.ready.then(refreshTriggers)
+	window.addEventListener('load', refreshTriggers, { once: true })
 }

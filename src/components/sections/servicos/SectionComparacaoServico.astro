@@ -40,7 +40,7 @@ const {
 		class="mx-auto w-full overflow-hidden rounded-3xl border-2 border-stroke bg-background p-6 lg:max-w-345 lg:p-10"
 	>
 		<header class="grid gap-6 lg:grid-cols-[1.4fr_1fr] lg:items-end">
-			<div data-animate="fade-left">
+			<div data-animate="fade-left" class="text-center md:text-left">
 				<p class="text-sm font-semibold text-primary uppercase" set:html={etiqueta} />
 				<h2
 					data-motion-title
@@ -48,7 +48,7 @@ const {
 					set:html={titulo}
 				/>
 			</div>
-			<div data-animate="fade-right" data-animate-delay={0.1}>
+			<div data-animate="fade-right" data-animate-delay={0.1} class="text-center md:text-left">
 				<p class="text-sm font-semibold text-primary uppercase" set:html={etiquetaOrientacao} />
 				<p class="mt-2 text-base text-muted lg:text-lg" set:html={descricaoOrientacao} />
 			</div>

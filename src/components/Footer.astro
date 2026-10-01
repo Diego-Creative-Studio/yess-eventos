@@ -5,7 +5,7 @@ import Button from '@/components/Button.astro'
 
 <footer id="contato" class="px-3 md:px-8 lg:px-16">
 	<div
-		class="relative mx-auto w-full overflow-hidden rounded-3xl border-2 border-primary bg-linear-30 from-[#0d121c] to-[#142b4a] px-6 py-8 lg:min-h-94.75 lg:max-w-345 lg:px-10"
+		class="relative mx-auto w-full overflow-hidden rounded-3xl border-2 border-primary bg-linear-30 from-[#0d121c] to-[#142b4a] px-6 py-10 md:px-8 lg:min-h-94.75 lg:max-w-345 lg:px-10 lg:py-8"
 	>
 		<span
 			aria-hidden="true"
@@ -13,19 +13,22 @@ import Button from '@/components/Button.astro'
 		></span>
 
 		<div
-			class="relative z-10 grid gap-10 md:grid-cols-2 xl:flex xl:min-h-52.5 xl:justify-between xl:gap-0"
+			class="relative z-10 grid gap-10 text-center min-[420px]:grid-cols-2 min-[420px]:text-left xl:flex xl:min-h-52.5 xl:justify-between xl:gap-0"
 		>
-			<div class="flex flex-col gap-3 xl:w-65">
+			<div class="flex flex-col items-center gap-3 min-[420px]:items-start xl:w-65">
 				<p class="text-xs leading-4 font-semibold tracking-wide text-primary uppercase">
 					Tecnologia • Operação • Presença
 				</p>
 				<p class="text-xl leading-7 font-semibold text-foreground">YESS AUDIOVISUAL</p>
-				<p class="max-w-39 text-sm leading-6 text-muted">
+				<p class="max-w-64 text-sm leading-6 text-muted min-[420px]:max-w-48 xl:max-w-39">
 					Soluções audiovisuais para eventos em São Paulo e Guarulhos.
 				</p>
 			</div>
 
-			<nav aria-label="Serviços" class="flex flex-col gap-2.5 xl:w-70">
+			<nav
+				aria-label="Serviços"
+				class="flex flex-col items-center gap-2.5 min-[420px]:items-start xl:w-70"
+			>
 				<h2 class="text-xl leading-7 font-semibold text-foreground">Serviços</h2>
 				<a
 					href="/paineis-de-led-p2-e-p3/"
@@ -59,7 +62,10 @@ import Button from '@/components/Button.astro'
 				</a>
 			</nav>
 
-			<nav aria-label="Empresa" class="flex flex-col gap-2.5 xl:w-55">
+			<nav
+				aria-label="Empresa"
+				class="flex flex-col items-center gap-2.5 min-[420px]:items-start xl:w-55"
+			>
 				<h2 class="text-xl leading-7 font-semibold text-foreground">Empresa</h2>
 				<a
 					href="/sobre/"
@@ -75,7 +81,7 @@ import Button from '@/components/Button.astro'
 				</a>
 			</nav>
 
-			<div class="flex flex-col items-start gap-2.5 xl:w-62.5">
+			<div class="flex flex-col items-center gap-2.5 min-[420px]:items-start xl:w-62.5">
 				<h2 class="text-xl leading-7 font-semibold text-foreground">Contato</h2>
 				<a
 					href="#contato"
@@ -99,10 +105,14 @@ import Button from '@/components/Button.astro'
 		</div>
 
 		<div
-			class="relative z-10 mt-8 flex flex-col gap-6 border-t border-stroke pt-4 lg:min-h-18 lg:flex-row lg:items-center lg:justify-between"
+			class="relative z-10 mt-10 flex flex-col items-center gap-6 border-t border-stroke pt-6 text-center min-[420px]:items-stretch min-[420px]:text-left lg:min-h-18 lg:flex-row lg:items-center lg:justify-between"
 		>
-			<div class="flex flex-col gap-1 text-xs leading-4 font-semibold tracking-wide uppercase">
-				<p class="flex items-center gap-2 text-text-secondary">
+			<div
+				class="flex flex-col items-center gap-1 text-xs leading-4 font-semibold tracking-wide uppercase min-[420px]:items-start"
+			>
+				<p
+					class="flex items-center justify-center gap-2 text-text-secondary min-[420px]:justify-start"
+				>
 					<span class="size-2 shrink-0 rounded-full bg-primary"></span>
 					Atendimento direto • Resposta humana
 				</p>
