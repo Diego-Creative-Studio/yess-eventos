@@ -177,36 +177,6 @@ if (!reduceMotion) {
 		}
 	})
 
-	const magneticMedia = gsap.matchMedia()
-	magneticMedia.add('(min-width: 1024px) and (hover: hover)', () => {
-		const cleanups: Array<() => void> = []
-
-		gsap.utils.toArray<HTMLElement>('[data-magnetic]').forEach((element) => {
-			const moveX = gsap.quickTo(element, 'x', { duration: 0.35, ease: 'power3.out' })
-			const moveY = gsap.quickTo(element, 'y', { duration: 0.35, ease: 'power3.out' })
-
-			const handleMove = (event: PointerEvent) => {
-				const bounds = element.getBoundingClientRect()
-				moveX((event.clientX - (bounds.left + bounds.width / 2)) * 0.16)
-				moveY((event.clientY - (bounds.top + bounds.height / 2)) * 0.2)
-			}
-
-			const handleLeave = () => {
-				moveX(0)
-				moveY(0)
-			}
-
-			element.addEventListener('pointermove', handleMove)
-			element.addEventListener('pointerleave', handleLeave)
-			cleanups.push(() => {
-				element.removeEventListener('pointermove', handleMove)
-				element.removeEventListener('pointerleave', handleLeave)
-			})
-		})
-
-		return () => cleanups.forEach((cleanup) => cleanup())
-	})
-
 	gsap.utils.toArray<HTMLButtonElement>('[data-flip-detail]').forEach((detail) => {
 		const toggle = () => {
 			const state = Flip.getState(detail)

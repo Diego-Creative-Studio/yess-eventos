@@ -7,13 +7,12 @@ interface Props {
 	type?: 'button' | 'submit' | 'reset'
 	id?: string
 	variant?: 'primary' | 'outline' | 'tertiary' | 'alternative'
-	animation?: 'none' | 'pulse' | 'lift' | 'glow' | 'shine' | 'scale'
+	animation?: 'none' | 'shine'
 	arrow?: boolean
 	whatsapp?: boolean
 	icon?: 'arrow' | 'play' | 'whatsapp'
 	iconPosition?: 'left' | 'right'
 	iconClass?: string
-	magnetic?: boolean
 	'data-animate'?: 'fade' | 'fade-up' | 'fade-down' | 'fade-left' | 'fade-right' | 'scale'
 	'data-animate-delay'?: number
 	class?: string
@@ -30,7 +29,6 @@ const {
 	icon,
 	iconPosition = 'right',
 	iconClass: customIconClass,
-	magnetic,
 	'data-animate': dataAnimate,
 	'data-animate-delay': dataAnimateDelay,
 	class: className,
@@ -48,16 +46,11 @@ const variants = {
 
 const animations = {
 	none: '',
-	pulse: 'motion-safe:animate-[button-pulse_1.8s_ease-in-out_infinite] motion-reduce:animate-none',
-	lift: 'motion-safe:hover:-translate-y-1 motion-safe:hover:scale-[1.02] motion-safe:active:translate-y-0 motion-safe:active:scale-[0.98]',
-	glow: 'motion-safe:hover:scale-[1.02] motion-safe:active:scale-[0.98] hover:shadow-[0_0_32px_rgba(38,120,255,0.55)]',
 	shine:
 		"relative isolate overflow-hidden before:pointer-events-none before:absolute before:inset-y-[-50%] before:left-[-35%] before:w-[22%] before:-skew-x-12 before:bg-white/35 before:blur-sm before:transition-transform before:duration-700 before:content-[''] motion-safe:hover:before:translate-x-[650%]",
-	scale: 'motion-safe:hover:scale-105 motion-safe:active:scale-95 motion-safe:active:duration-100',
 }
 
 const iconName = icon ?? (arrow ? 'arrow' : undefined)
-const isMagnetic = magnetic ?? (variant === 'primary' || variant === 'tertiary')
 const iconClass =
 	customIconClass ??
 	(variant === 'alternative' ? 'relative z-10 block size-3 translate-y-px' : 'relative z-10 size-4')
@@ -68,7 +61,6 @@ const Tag = href ? 'a' : 'button'
 	{id}
 	{href}
 	type={href ? undefined : type}
-	data-magnetic={isMagnetic || undefined}
 	data-animate={dataAnimate}
 	data-animate-delay={dataAnimateDelay}
 	class:list={[
@@ -82,18 +74,3 @@ const Tag = href ? 'a' : 'button'
 	<span class="relative z-10" set:html={label} />
 	{iconName && iconPosition === 'right' && <Icon name={iconName} class={iconClass} />}
 </Tag>
-
-<style>
-	@keyframes button-pulse {
-		0%,
-		100% {
-			transform: scale(1);
-			box-shadow: 0 0 0 0 rgb(38 120 255 / 35%);
-		}
-
-		50% {
-			transform: scale(1.035);
-			box-shadow: 0 0 0 10px rgb(38 120 255 / 0%);
-		}
-	}
-</style>
