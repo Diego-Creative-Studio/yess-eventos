@@ -44,7 +44,11 @@ const fundos = ['bg-surface-alt', 'bg-primary', 'bg-primary-soft', 'bg-surface-a
 							data-animate-delay={0.12 + indice * 0.08}
 							class:list={['min-h-45 rounded-small p-3.5', fundos[indice]]}
 						>
-							<Image src={item.icone} alt="" class="size-11" />
+							<Image
+								src={item.icone}
+								alt={`Ícone: ${item.titulo.replace(/<[^>]+>/g, '')}`}
+								class="size-11"
+							/>
 							<h3 class="mt-2.5 text-[0.9375rem] text-foreground" set:html={item.titulo} />
 							<p
 								class:list={[

@@ -26,7 +26,7 @@ interface Service {
 const benefits: Benefit[] = [
 	{ label: 'Estrutura sob medida', icon: 'estrutura' },
 	{ label: 'Equipe técnica', icon: 'equipe' },
-	{ label: 'Atendimento em São Paulo e Guarulhos', icon: 'localizacao' },
+	{ label: 'Capital, Grande SP e interior', icon: 'localizacao' },
 ]
 
 const services: Service[] = [
@@ -115,7 +115,7 @@ const services: Service[] = [
 				</h2>
 			</div>
 			<p class="mx-auto max-w-86 text-center text-sm text-muted md:mx-0 md:text-left">
-				Do projeto à desmontagem, com equipe técnica em São Paulo e Guarulhos.
+				Do projeto à desmontagem, com equipe técnica na capital, na Grande São Paulo e no interior.
 			</p>
 		</div>
 
@@ -155,7 +155,7 @@ const services: Service[] = [
 						>
 							<Image
 								src={service.image}
-								alt=""
+								alt={`${service.title} para eventos`}
 								class="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
 							/>
 							<div

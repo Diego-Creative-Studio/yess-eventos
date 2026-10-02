@@ -365,6 +365,7 @@ export const landingServices: LandingService[] = [
 			'Projetos em AutoCAD',
 			'Projetos técnicos de palco e audiovisual',
 			'Compatibilização com o espaço',
+			'Emissão de ART quando o projeto exigir',
 			'Execução da montagem',
 		],
 		events: ['Feiras e estandes', 'Congressos', 'Convenções', 'Plenárias', 'Eventos corporativos'],
