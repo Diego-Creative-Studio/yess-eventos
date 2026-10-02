@@ -16,6 +16,9 @@ export default defineConfig({
 		'/locacao/moving-heads/': '/equipamentos/moving-heads/',
 		'/locacao/projetores-epson/': '/equipamentos/projetores-epson/',
 		'/locacao/tvs/': '/equipamentos/tvs/',
+		'/solucoes/painel-de-led/sao-paulo/': '/painel-de-led-para-eventos-em-sao-paulo/',
+		'/solucoes/painel-de-led/guarulhos/': '/painel-de-led-para-eventos-em-guarulhos/',
+		'/solucoes/painel-de-led/zona-sul/': '/painel-de-led-para-eventos-na-zona-sul/',
 	},
 	image: {
 		layout: 'constrained',
@@ -45,6 +48,8 @@ export default defineConfig({
 	},
 	integrations: [
 		alpinejs(),
-		sitemap({ filter: (page) => !new URL(page).pathname.startsWith('/locacao') }),
+		sitemap({
+			filter: (page) => !/^\/(locacao|solucoes)\//.test(new URL(page).pathname),
+		}),
 	],
 })

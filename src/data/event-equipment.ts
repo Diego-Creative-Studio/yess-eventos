@@ -6,6 +6,7 @@ export const eventEquipment = [
 		details:
 			'Informe quantas pessoas falarão, se haverá apresentações simultâneas e como será a dinâmica do palco. A equipe dimensiona os microfones e sua integração com a sonorização.',
 		hub: '/som-e-iluminacao/',
+		landing: 'sonorizacao-para-eventos',
 	},
 	{
 		slug: 'caixas-de-som',
@@ -14,6 +15,7 @@ export const eventEquipment = [
 		details:
 			'O público estimado, as dimensões do espaço e o uso de fala ou música orientam o sistema. A YESS oferece sonorização para até 1.000 pessoas, conforme as condições do projeto.',
 		hub: '/som-e-iluminacao/',
+		landing: 'sonorizacao-para-eventos',
 	},
 	{
 		slug: 'moving-heads',
@@ -22,6 +24,7 @@ export const eventEquipment = [
 		details:
 			'Informe o formato do evento, as dimensões do palco e a programação. A equipe define a iluminação e a montagem em conjunto com os demais equipamentos do projeto.',
 		hub: '/som-e-iluminacao/',
+		landing: 'iluminacao-para-eventos',
 	},
 	{
 		slug: 'projetores-epson',
@@ -30,6 +33,7 @@ export const eventEquipment = [
 		details:
 			'A iluminação do ambiente, a distância de projeção e o conteúdo precisam ser avaliados antes da indicação. Informe o espaço e os arquivos que serão apresentados para orientar a configuração e os testes.',
 		hub: '/tvs-e-monitores/',
+		landing: 'tvs-e-projetores-para-eventos',
 	},
 	{
 		slug: 'tvs',
@@ -38,6 +42,7 @@ export const eventEquipment = [
 		details:
 			'O tamanho e a posição da TV dependem da distância de visualização, do conteúdo e da circulação. Informe os pontos de exibição e o uso previsto: apresentação, sinalização ou apoio ao evento.',
 		hub: '/tvs-e-monitores/',
+		landing: 'tvs-e-projetores-para-eventos',
 	},
 ] as const
 

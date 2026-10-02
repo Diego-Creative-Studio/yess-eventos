@@ -1,11 +1,12 @@
 ---
 import { quoteServices } from '@/data/event-equipment'
 interface Props {
-	service?: string
+	service?: string | string[]
 	city?: string
 	district?: string
 }
 const { service = '', city = '', district = '' } = Astro.props
+const selected = new Set([service].flat().filter(Boolean))
 // Configure a validated form receiver and the confirmed business phone before launch.
 const endpoint = import.meta.env.PUBLIC_QUOTE_ENDPOINT ?? ''
 const whatsapp = (import.meta.env.PUBLIC_WHATSAPP_NUMBER ?? '').replace(/\D/g, '')
@@ -106,7 +107,7 @@ const fieldClass =
 										type="checkbox"
 										name="services"
 										value={item.value}
-										checked={item.value === service}
+										checked={selected.has(item.value)}
 										class="mt-1 size-4 accent-primary"
 									/>
 									<span>{item.name}</span>

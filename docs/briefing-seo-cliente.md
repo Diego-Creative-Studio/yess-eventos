@@ -5,9 +5,23 @@ Registro das informações fornecidas pelo cliente para orientar os textos, a es
 > Data do registro: 1º de outubro de 2026  
 > Status atual: produção e montagem audiovisual para eventos. A estratégia anterior de locação foi substituída pela confirmação final abaixo. Os registros anteriores ficam preservados como histórico, não como orientação vigente.
 
+## Páginas dinâmicas serviço × local — implementação vigente (1º de outubro de 2026)
+
+Esta seção prevalece sobre qualquer trecho abaixo que proíba gerar combinações automaticamente ou que mantenha páginas locais desativadas. Modelo inspirado no marciotoledo.com (slug plano com a palavra-chave inteira e bloco de cidades), na AS Locação (dados que geram as rotas) e no Gescob (aliases em vez de URLs duplicadas).
+
+- URL plana: `/{servico}-{em|na|no}-{local}/`, ex.: `/painel-de-led-para-eventos-em-moema/`, `/som-e-iluminacao-para-eventos-na-zona-sul/`, `/sonoplastia-para-congressos-em-campinas/`.
+- Os slugs nomeiam o **serviço prestado**, nunca "locacao" ou "aluguel": a YESS monta o evento, não é locadora. "Aluguel" e "locação" ficam em `aliases` e aparecem no texto e na FAQ, explicando que não há retirada.
+- Dados: `src/data/landings/services.ts` (9 serviços) e `src/data/landings/locations.ts` (capital, 5 zonas, os 96 distritos oficiais por subprefeitura + bairros conhecidos, os 38 municípios da Grande SP + Alphaville, interior e litoral). Zonas seguem a divisão da Prefeitura: Morumbi e Vila Olímpia são Zona Oeste. Lógica e textos dinâmicos em `src/lib/landings.ts`; rota em `src/pages/[landing].astro`.
+- `scope` de cada serviço define os tipos de local publicados. Projeto técnico e sonoplastia não descem até bairro.
+- Adicionar um serviço ou uma localidade gera as páginas sozinho. O build falha se dois slugs colidirem.
+- Cada localidade tem `note` própria (geografia e acesso, sem afirmar eventos já feitos ali) e `prep` correta. Nunca escrever "em" fixo em template.
+- `ServiceAreas.astro` virou o bloco de links por região: é usado nas páginas-pilar e em cada landing, como o bloco "Cidades" do Marcio.
+- As rotas antigas `/solucoes/painel-de-led/*` redirecionam para as novas landings.
+- Verificação: depois do build, auditar `dist/` (title e description únicos, description com 120–160 caracteres, um H1 por página).
+
 ## Diretriz vigente — confirmação final do cliente em 1º de outubro de 2026
 
-Esta seção substitui as recomendações anteriores de aluguel/locação e expansão de equipamentos por bairro.
+Esta seção substitui as recomendações anteriores de aluguel/locação. As restrições sobre páginas locais e bairros foram substituídas pela seção acima.
 
 - A YESS se apresenta como empresa de produção e montagem audiovisual de eventos, não como locadora.
 - Equipamentos demonstram capacidade de entrega: painel de LED, projeção, sonorização, iluminação e TVs compõem soluções instaladas e acompanhadas por um técnico.

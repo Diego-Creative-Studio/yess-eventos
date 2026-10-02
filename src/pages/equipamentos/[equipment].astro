@@ -4,6 +4,7 @@ import ServiceAreas from '@/components/ServiceAreas.astro'
 import ServiceSchema from '@/components/ServiceSchema.astro'
 import QuoteForm from '@/components/QuoteForm.astro'
 import { eventEquipment } from '@/data/event-equipment'
+import { buildDescription } from '@/utils/description'
 export function getStaticPaths() {
 	return eventEquipment.map((equipment) => ({
 		params: { equipment: equipment.slug },
@@ -15,7 +16,13 @@ interface Props {
 }
 const { equipment } = Astro.props
 const title = `${equipment.name} para eventos`
-const description = `${equipment.summary} Com entrega, instalação e acompanhamento técnico em São Paulo capital e interior. Consulte a disponibilidade.`
+const description = buildDescription(`${equipment.summary}`, [
+	[
+		'Com entrega, instalação e acompanhamento técnico em São Paulo.',
+		'Entrega, instalação e técnico no evento.',
+	],
+	['Capital e interior.'],
+])
 ---
 
 <Layout title={`${title} | YESS`} description={description}>
@@ -49,6 +56,6 @@ const description = `${equipment.summary} Com entrega, instalação e acompanham
 			</div>
 		</section>
 		<QuoteForm service={equipment.slug} />
-		<ServiceAreas service={equipment.slug} label={equipment.name} />
+		<ServiceAreas service={equipment.landing} />
 	</main>
 </Layout>
