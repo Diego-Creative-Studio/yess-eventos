@@ -203,22 +203,24 @@ const services: Service[] = [
 						Painéis, som, iluminação, TVs e projetores com planejamento e operação técnica.
 					</p>
 				</div>
-				<!-- 
-				<a
-					href="/estrutura-audiovisual-para-eventos/"
-					class="flex w-full shrink-0 items-center justify-center gap-2 rounded-full bg-white p-4 font-title text-sm font-semibold text-primary transition-colors duration-300 hover:bg-background hover:text-foreground md:w-auto"
-				>
-					Ver todos os serviços <Icon name="arrow" class="size-4" />
-				</a>
-				-->
-				<Button
-					label="Soluções corporativas"
-					href="/solucoes-corporativas/"
-					variant="tertiary"
-					class="flex w-full shrink-0 transition-colors duration-300 md:w-auto"
-					arrow
-					animation="shine"
-				/>
+				<div class="flex w-full shrink-0 flex-col gap-3 md:w-auto md:flex-col">
+					<Button
+						label="Ver todos os serviços"
+						href="/estrutura-audiovisual-para-eventos/"
+						variant="tertiary"
+						class="flex w-full transition-colors duration-300 md:w-auto"
+						arrow
+						animation="shine"
+					/>
+					<Button
+						label="Soluções corporativas"
+						href="/solucoes-corporativas/"
+						variant="outline"
+						class="flex w-full border-white/40 transition-colors duration-300 md:w-auto"
+						arrow
+						animation="shine"
+					/>
+				</div>
 			</div>
 		</div>
 	</div>
