@@ -4,6 +4,7 @@ import { Image } from 'astro:assets'
 
 import Botao from '@/components/Button.astro'
 import Icon from '@/components/Icon.astro'
+import LightHalo from '@/components/LightHalo.astro'
 
 interface Props {
 	tituloDestaque: string
@@ -47,10 +48,13 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			data-service-content={temVideo || undefined}
 			class="relative isolate z-30 flex min-w-0 items-center overflow-hidden px-6 py-10 max-[359px]:px-4 md:px-10 lg:items-start lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
 		>
-			<span
-				aria-hidden="true"
-				class="pointer-events-none absolute -bottom-32 -left-40 h-80 w-md rounded-full bg-primary/40 blur-3xl lg:-bottom-60 lg:-left-40 lg:h-100 lg:w-80"
-			></span>
+			<LightHalo
+				data-animate={false}
+				class="bottom-10 left-16"
+				color="primary"
+				size="lg"
+				intensity="strong"
+			/>
 			<div
 				data-service-copy
 				class:list={[

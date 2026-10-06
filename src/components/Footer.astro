@@ -1,16 +1,24 @@
 ---
 import Icon from '@/components/Icon.astro'
 import Button from '@/components/Button.astro'
+import LightHalo from '@/components/LightHalo.astro'
 ---
 
 <footer id="contato" class="px-3 md:px-8 lg:px-16">
 	<div
 		class="relative mx-auto w-full overflow-hidden rounded-3xl border-2 border-primary bg-linear-30 from-[#0d121c] to-[#142b4a] px-6 py-10 md:px-8 lg:min-h-94.75 lg:max-w-345 lg:px-10 lg:py-8"
 	>
-		<span
-			aria-hidden="true"
-			class="pointer-events-none absolute top-56 left-1/4 size-166 rounded-full bg-primary/20 blur-3xl"
-		></span>
+		<!-- A luz nasce abaixo da borda inferior e sobe até o meio quando o footer aparece. -->
+		<span data-footer-rise aria-hidden="true" class="pointer-events-none absolute inset-0">
+			<LightHalo
+				data-animate={false}
+				class="bottom-0 left-1/2"
+				color="primary"
+				size="lg"
+				intensity="strong"
+				float
+			/>
+		</span>
 
 		<div
 			class="relative z-10 grid gap-10 text-center min-[420px]:grid-cols-2 min-[420px]:text-left xl:flex xl:min-h-52.5 xl:justify-between xl:gap-0"
@@ -148,3 +156,50 @@ import Button from '@/components/Button.astro'
 		</div>
 	</div>
 </footer>
+
+<script>
+	const rise = document.querySelector<HTMLElement>('[data-footer-rise]')
+
+	if (rise) {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				if (!entries.some((entry) => entry.isIntersecting)) return
+				rise.classList.add('is-risen')
+				observer.disconnect()
+			},
+			{ threshold: 0.35 },
+		)
+		observer.observe(rise)
+	}
+</script>
+
+<style>
+	[data-footer-rise] {
+		transition:
+			transform 2.6s cubic-bezier(0.22, 1, 0.36, 1),
+			opacity 1.8s ease-out;
+	}
+
+	/* Estado inicial só com JS, para a luz nunca sumir se o script não rodar. */
+	:global(.js) [data-footer-rise]:not(.is-risen) {
+		transform: translateY(30%);
+		opacity: 0;
+	}
+
+	[data-footer-rise].is-risen {
+		transform: translateY(-50%);
+	}
+
+	:global(html:not(.js)) [data-footer-rise] {
+		transform: translateY(-50%);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		[data-footer-rise],
+		:global(.js) [data-footer-rise]:not(.is-risen) {
+			transform: translateY(-50%);
+			opacity: 1;
+			transition: none;
+		}
+	}
+</style>

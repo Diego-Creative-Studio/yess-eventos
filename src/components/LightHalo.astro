@@ -29,6 +29,8 @@ interface Props {
 		| 'accent-dark'
 	size?: 'sm' | 'md' | 'lg'
 	intensity?: 'subtle' | 'medium' | 'strong'
+	/** Movimento contínuo e lento: a luz respira e se desloca. Desligado com movimento reduzido. */
+	float?: boolean
 }
 
 const {
@@ -43,6 +45,7 @@ const {
 	color = 'primary',
 	size = 'md',
 	intensity = 'medium',
+	float = false,
 } = Astro.props
 
 const colors = {
@@ -113,7 +116,7 @@ const haloStyle = [
 ---
 
 <span
-	data-animate={animation}
+	data-animate={animation || undefined}
 	data-animate-delay={animationDelay}
 	data-animate-distance={animationDistance}
 	data-animate-duration={animationDuration}
@@ -121,7 +124,7 @@ const haloStyle = [
 	data-animate-once={animationOnce}
 	data-animate-start={animationStart}
 	aria-hidden="true"
-	class:list={['pointer-events-none absolute block', className]}
+	class:list={['pointer-events-none absolute block', float && 'halo-float', className]}
 	style={haloStyle}
 >
 	<span class:list={['halo-layer halo-layer-outer', sizes[size].outer]}></span>
@@ -149,5 +152,48 @@ const haloStyle = [
 
 	.halo-layer-core {
 		opacity: var(--halo-core-opacity);
+	}
+
+	/* Camadas com ritmos diferentes para a luz não pulsar em bloco. */
+	@media (prefers-reduced-motion: no-preference) {
+		.halo-float .halo-layer-outer {
+			animation: halo-drift 16s ease-in-out infinite;
+		}
+
+		.halo-float .halo-layer-middle {
+			animation: halo-drift 11s ease-in-out infinite reverse;
+		}
+
+		.halo-float .halo-layer-core {
+			animation: halo-breathe 6s ease-in-out infinite;
+		}
+	}
+
+	@keyframes halo-drift {
+		0%,
+		100% {
+			transform: translate(-50%, -50%) scale(1);
+		}
+
+		33% {
+			transform: translate(-40%, -58%) scale(1.08);
+		}
+
+		66% {
+			transform: translate(-58%, -44%) scale(0.95);
+		}
+	}
+
+	@keyframes halo-breathe {
+		0%,
+		100% {
+			transform: translate(-50%, -50%) scale(1);
+			opacity: var(--halo-core-opacity);
+		}
+
+		50% {
+			transform: translate(-50%, -50%) scale(1.35);
+			opacity: calc(var(--halo-core-opacity) * 1.6);
+		}
 	}
 </style>

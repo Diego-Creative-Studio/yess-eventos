@@ -6,6 +6,7 @@ import ServiceAreas from '@/components/ServiceAreas.astro'
 import ServiceSchema from '@/components/ServiceSchema.astro'
 import SectionHeroServico from '@/components/sections/servicos/SectionHeroServico.astro'
 import SectionPerguntasServico from '@/components/sections/servicos/SectionPerguntasServico.astro'
+import SectionProcessoServico from '@/components/sections/servicos/SectionProcessoServico.astro'
 import { landingServices } from '@/data/landings/services'
 import {
 	aliasFaq,
@@ -66,23 +67,29 @@ const perguntas: [Pergunta, Pergunta, Pergunta, Pergunta] = [
 	},
 ]
 
-const etapas = [
+type Etapa = { numero: string; titulo: string; descricao: string }
+
+const etapas: [Etapa, Etapa, Etapa, Etapa] = [
 	{
+		numero: '01',
 		titulo: 'Briefing',
-		texto: `Você informa data, endereço ${where}, público estimado e programação.`,
+		descricao: `Você informa data, endereço ${where}, público estimado e programação.`,
 	},
 	{
+		numero: '02',
 		titulo: 'Projeto',
-		texto:
+		descricao:
 			'Dimensionamos equipamentos e estrutura para o espaço, com projeto 3D quando necessário.',
 	},
 	{
+		numero: '03',
 		titulo: 'Montagem e testes',
-		texto: 'Entregamos, montamos e testamos tudo antes da abertura do evento.',
+		descricao: 'Entregamos, montamos e testamos tudo antes da abertura do evento.',
 	},
 	{
+		numero: '04',
 		titulo: 'Operação e desmontagem',
-		texto: 'Um técnico acompanha a programação, e a equipe desmonta ao final.',
+		descricao: 'Um técnico acompanha a programação, e a equipe desmonta ao final.',
 	},
 ]
 
@@ -148,7 +155,7 @@ const faqSchema = {
 			<div
 				class="mx-auto grid max-w-345 gap-8 rounded-3xl border border-stroke bg-surface p-6 md:p-10 lg:grid-cols-[1.4fr_1fr] lg:gap-12"
 			>
-				<div>
+				<div class="text-center lg:text-left">
 					<h2 id="como-funciona" class="text-3xl">Como funciona {service.short} {where}</h2>
 					{service.intro.map((text) => <p class="mt-4 leading-7 text-text-secondary">{text}</p>)}
 					<h3 class="mt-8 text-xl">Atendimento {where}</h3>
@@ -158,12 +165,12 @@ const faqSchema = {
 				</div>
 
 				<div class="flex flex-col gap-6">
-					<div class="rounded-small border border-stroke bg-surface-alt p-6">
+					<div class="rounded-small border border-stroke bg-surface-alt p-6 text-center lg:text-left">
 						<h3 class="text-lg text-primary">O que entra no projeto</h3>
 						<ul class="mt-4 space-y-3">
 							{
 								service.equipment.map((item) => (
-									<li class="flex gap-3 text-text-secondary">
+									<li class="flex justify-center gap-3 text-text-secondary lg:justify-start">
 										<span
 											class="mt-2 size-1.5 shrink-0 rounded-full bg-primary"
 											aria-hidden="true"
@@ -174,9 +181,9 @@ const faqSchema = {
 							}
 						</ul>
 					</div>
-					<div class="rounded-small border border-stroke bg-surface-alt p-6">
+					<div class="rounded-small border border-stroke bg-surface-alt p-6 text-center lg:text-left">
 						<h3 class="text-lg text-primary">Eventos atendidos</h3>
-						<ul class="mt-4 flex flex-wrap gap-2">
+						<ul class="mt-4 flex flex-wrap justify-center gap-2 lg:justify-start">
 							{
 								service.events.map((item) => (
 									<li class="rounded-full bg-primary-soft px-3 py-1.5 text-sm text-foreground">
@@ -190,26 +197,12 @@ const faqSchema = {
 			</div>
 		</section>
 
-		<section class="px-3 py-8 md:px-8 lg:px-16" aria-labelledby="etapas">
-			<div class="mx-auto max-w-345">
-				<h2 id="etapas" class="text-center text-3xl lg:text-left">
-					Do projeto à desmontagem {where}
-				</h2>
-				<ol class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-					{
-						etapas.map((etapa, index) => (
-							<li class="rounded-small border border-stroke bg-surface p-6">
-								<span class="font-title text-sm font-bold text-primary">
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3 class="mt-2 text-lg">{etapa.titulo}</h3>
-								<p class="mt-2 text-text-secondary">{etapa.texto}</p>
-							</li>
-						))
-					}
-				</ol>
-			</div>
-		</section>
+		<SectionProcessoServico
+			etiqueta="Como trabalhamos"
+			titulo={`Do projeto à desmontagem ${where}`}
+			descricao={`Do primeiro contato à desmontagem, a mesma equipe cuida de ${service.short} ${where}.`}
+			{etapas}
+		/>
 
 		<SectionPerguntasServico titulo={`Dúvidas sobre ${service.short} ${where}`} {perguntas} />
 
