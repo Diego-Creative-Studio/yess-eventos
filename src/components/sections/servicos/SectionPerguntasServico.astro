@@ -28,7 +28,7 @@ const fundos = ['bg-primary', 'bg-primary-soft', 'bg-stroke', 'bg-surface']
 					<article
 						data-animate="scale"
 						data-animate-delay={0.1 + indice * 0.08}
-						class:list={['rounded-small p-6', fundos[indice]]}
+						class:list={['flex flex-col justify-center rounded-small p-6', fundos[indice]]}
 					>
 						<>
 							<h3 class="text-base text-foreground lg:text-xl" set:html={item.pergunta} />

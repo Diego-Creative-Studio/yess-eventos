@@ -5,6 +5,7 @@ import QuoteForm from '@/components/QuoteForm.astro'
 import ServiceAreas from '@/components/ServiceAreas.astro'
 import ServiceSchema from '@/components/ServiceSchema.astro'
 import SectionHeroServico from '@/components/sections/servicos/SectionHeroServico.astro'
+import SectionComoFuncionaServico from '@/components/sections/servicos/SectionComoFuncionaServico.astro'
 import SectionPerguntasServico from '@/components/sections/servicos/SectionPerguntasServico.astro'
 import SectionProcessoServico from '@/components/sections/servicos/SectionProcessoServico.astro'
 import { landingServices } from '@/data/landings/services'
@@ -151,55 +152,18 @@ const faqSchema = {
 			/>
 		</SectionHeroServico>
 
-		<section class="px-3 py-8 md:px-8 lg:px-16" aria-labelledby="como-funciona">
-			<div
-				class="mx-auto grid max-w-345 gap-8 rounded-3xl border border-stroke bg-surface p-6 md:p-10 lg:grid-cols-[1.4fr_1fr] lg:gap-12"
-			>
-				<div class="text-center lg:text-left">
-					<h2 id="como-funciona" class="text-3xl">Como funciona {service.short} {where}</h2>
-					{service.intro.map((text) => <p class="mt-4 leading-7 text-text-secondary">{text}</p>)}
-					<h3 class="mt-8 text-xl">Atendimento {where}</h3>
-					{location.note && <p class="mt-3 leading-7 text-text-secondary">{location.note}</p>}
-					<p class="mt-4 leading-7 text-text-secondary">{logisticsText(location)}</p>
-					<p class="mt-4 leading-7 text-text-secondary">{aliasText(service, location)}</p>
-				</div>
-
-				<div class="flex flex-col gap-6">
-					<div
-						class="rounded-small border border-stroke bg-surface-alt p-6 text-center lg:text-left"
-					>
-						<h3 class="text-lg text-primary">O que entra no projeto</h3>
-						<ul class="mt-4 space-y-3">
-							{
-								service.equipment.map((item) => (
-									<li class="flex justify-center gap-3 text-text-secondary lg:justify-start">
-										<span
-											class="mt-2 size-1.5 shrink-0 rounded-full bg-primary motion-safe:animate-pulse"
-											aria-hidden="true"
-										/>
-										<span>{item}</span>
-									</li>
-								))
-							}
-						</ul>
-					</div>
-					<div
-						class="rounded-small border border-stroke bg-surface-alt p-6 text-center lg:text-left"
-					>
-						<h3 class="text-lg text-primary">Eventos atendidos</h3>
-						<ul class="mt-4 flex flex-wrap justify-center gap-2 lg:justify-start">
-							{
-								service.events.map((item) => (
-									<li class="rounded-full bg-primary-soft px-3 py-1.5 text-sm text-foreground">
-										{item}
-									</li>
-								))
-							}
-						</ul>
-					</div>
-				</div>
-			</div>
-		</section>
+		<SectionComoFuncionaServico
+			etiqueta={service.tag}
+			titulo={`Como funciona ${service.short} ${where}`}
+			paragrafos={service.intro}
+			tituloLocal={`Atendimento ${where}`}
+			textosLocal={[location.note, logisticsText(location)].filter((texto): texto is string =>
+				Boolean(texto),
+			)}
+			textoAluguel={aliasText(service, location)}
+			itens={service.equipment}
+			eventos={service.events}
+		/>
 
 		<SectionProcessoServico
 			etiqueta="Como trabalhamos"

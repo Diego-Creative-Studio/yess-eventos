@@ -3,6 +3,8 @@ import Layout from '@/layouts/Layout.astro'
 import ServiceAreas from '@/components/ServiceAreas.astro'
 import Etiqueta from '@/components/Etiqueta.astro'
 import Button from '@/components/Button.astro'
+import Icon from '@/components/Icon.astro'
+import LightHalo from '@/components/LightHalo.astro'
 import { eventEquipment } from '@/data/event-equipment'
 import SectionHeroServico from '@/components/sections/servicos/SectionHeroServico.astro'
 import SectionProcessoServico from '@/components/sections/servicos/SectionProcessoServico.astro'
@@ -63,6 +65,26 @@ const categorias = [
 	},
 ]
 
+const equipamentosEvento = [
+	{
+		href: '/paineis-de-led-p2-e-p3/',
+		titulo: 'Painel de LED P2 e P3',
+		resumo: 'Imagem para palcos, estandes e apresentações.',
+	},
+	...eventEquipment.map((equipment) => ({
+		href: `/equipamentos/${equipment.slug}/`,
+		titulo: `${equipment.name} para eventos`,
+		resumo: equipment.summary,
+	})),
+]
+
+const regioesAtendidas = [
+	{ titulo: 'Capital', texto: 'Ênfase nas zonas Sul, Oeste e Norte.' },
+	{ titulo: 'Guarulhos', texto: 'Uma das áreas de maior atuação.' },
+	{ titulo: 'Grande São Paulo', texto: 'ABC, Alphaville, Osasco e região.' },
+	{ titulo: 'Interior e litoral', texto: 'Montagem programada com antecedência.' },
+]
+
 const baseURL = new URL('/', Astro.site ?? Astro.url.origin)
 const pageURL = new URL('/estrutura-audiovisual-para-eventos/', baseURL)
 const schema = {
@@ -121,104 +143,199 @@ const schema = {
 				class="self-center lg:self-start"
 			/>
 		</SectionHeroServico>
-		<section aria-labelledby="catalogo" class="px-3 py-10 md:px-8 lg:px-16">
-			<div class="mx-auto max-w-345">
-				<h2 id="catalogo" data-motion-title class="text-center text-3xl lg:text-left lg:text-4xl"
-					>Equipamentos e serviços para cada etapa</h2
-				>
-				<p class="mt-4 max-w-3xl text-center leading-7 text-muted lg:text-left"
-					>O painel de LED é uma das principais frentes da YESS. Combinamos imagem, som, luz e
-					estrutura conforme o formato do evento, o público e as condições do espaço. Consulte a
-					disponibilidade dos equipamentos para sua data.</p
-				>
-				<div class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+		<section aria-labelledby="catalogo" class="px-3 py-8 md:px-8 lg:px-16 lg:py-7.5">
+			<div
+				class="relative mx-auto w-full overflow-hidden rounded-3xl border-2 border-stroke bg-linear-to-br from-background to-primary-soft p-6 md:p-10 lg:max-w-345 lg:p-12"
+			>
+				<LightHalo
+					data-animate={false}
+					class="top-0 right-0"
+					color="primary"
+					size="md"
+					intensity="subtle"
+				/>
+				<div data-animate="fade-left" class="relative z-10 text-center lg:text-left">
+					<p class="text-sm font-semibold text-primary uppercase">Catálogo audiovisual</p>
+					<h2 id="catalogo" data-motion-title class="mt-2 text-3xl text-foreground lg:text-4xl">
+						Equipamentos e serviços para cada etapa
+					</h2>
+					<p class="mx-auto mt-4 max-w-3xl text-base text-muted lg:mx-0 lg:text-lg">
+						O painel de LED é uma das principais frentes da YESS. Combinamos imagem, som, luz e
+						estrutura conforme o formato do evento, o público e as condições do espaço. Consulte a
+						disponibilidade dos equipamentos para sua data.
+					</p>
+				</div>
+
+				<ol class="relative z-10 mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
 					{
-						categorias.map((categoria) => (
-							<article
+						categorias.map((categoria, indice) => (
+							<li
 								data-animate="fade-up"
-								class="flex flex-col rounded-3xl border border-stroke bg-surface p-6 lg:p-8"
+								data-animate-delay={indice * 0.06}
+								class:list={[
+									'flex flex-col rounded-3xl p-6 text-center transition-colors md:text-left lg:p-7',
+									indice === 0
+										? 'bg-primary'
+										: 'border border-stroke bg-surface-alt/80 hover:border-primary',
+								]}
 							>
-								<h3 class="text-xl text-foreground">{categoria.titulo}</h3>
-								<p class="mt-3 leading-7 text-muted">{categoria.descricao}</p>
-								<ul class="mt-5 space-y-3 text-sm text-foreground">
+								<p
+									class:list={[
+										'text-5xl font-extrabold',
+										indice === 0 ? 'text-foreground' : 'text-primary',
+									]}
+								>
+									{String(indice + 1).padStart(2, '0')}
+								</p>
+								<h3 class="mt-5 text-xl text-foreground lg:text-2xl">{categoria.titulo}</h3>
+								<p
+									class:list={[
+										'mt-2 text-sm leading-6',
+										indice === 0 ? 'text-white' : 'text-foreground/75',
+									]}
+								>
+									{categoria.descricao}
+								</p>
+								<ul class="mt-5 space-y-2.5 text-sm text-foreground">
 									{categoria.itens.map((item) => (
-										<li class="flex gap-3">
+										<li class="flex items-start justify-center gap-3 md:justify-start">
 											<span
 												aria-hidden="true"
-												class="mt-2 size-1.5 shrink-0 rounded-full bg-primary"
+												class:list={[
+													'mt-1.5 size-1.5 shrink-0 rounded-full',
+													indice === 0 ? 'bg-white' : 'bg-primary',
+												]}
 											/>
-											{item}
+											<span class="text-left">{item}</span>
 										</li>
 									))}
 								</ul>
 								<a
 									href={categoria.href}
-									class="mt-auto pt-6 font-semibold text-primary hover:text-foreground"
+									class:list={[
+										'group mt-auto inline-flex items-center justify-center gap-2 self-center pt-7 font-title text-sm font-semibold md:self-start',
+										indice === 0 ? 'text-white' : 'text-primary hover:text-foreground',
+									]}
 								>
-									{categoria.href.startsWith('/contato/')
-										? 'Conversar sobre o projeto'
-										: 'Conhecer o serviço'}{' '}
-									↗
+									Conhecer o serviço
+									<Icon
+										name="arrow"
+										class="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5"
+									/>
 								</a>
-							</article>
+							</li>
 						))
 					}
-				</div>
+				</ol>
 			</div>
 		</section>
-		<section aria-labelledby="equipamentos-evento" class="px-3 py-10 md:px-8 lg:px-16">
-			<div class="mx-auto max-w-345">
-				<h2 id="equipamentos-evento" class="text-center text-3xl lg:text-left"
-					>Equipamentos que compõem seu evento</h2
-				>
-				<p class="mt-4 text-text-secondary"
-					>Os equipamentos fazem parte da produção e montagem do seu evento. A equipe entrega,
-					instala e acompanha a operação técnica; não oferecemos aluguel para retirada.</p
-				>
-				<div class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-					<a
-						href="/paineis-de-led-p2-e-p3/"
-						class="rounded-3xl bg-surface p-6 hover:ring-2 hover:ring-primary"
-						><h3 class="text-xl">Painel de LED P2 e P3 ↗</h3><p class="mt-3 text-text-secondary"
-							>Imagem para palcos, estandes e apresentações.</p
-						></a
+
+		<section aria-labelledby="equipamentos-evento" class="px-3 py-8 md:px-8 lg:px-16 lg:py-7.5">
+			<div
+				class="mx-auto grid w-full gap-8 overflow-hidden rounded-3xl border-2 border-stroke bg-surface p-6 md:p-10 lg:max-w-345 lg:grid-cols-[22rem_1fr] lg:gap-12 lg:p-12"
+			>
+				<div data-animate="fade-left" class="text-center lg:text-left">
+					<p class="text-sm font-semibold text-warm uppercase">Equipamentos</p>
+					<h2 id="equipamentos-evento" data-motion-title class="mt-2 text-3xl text-foreground">
+						Equipamentos que compõem seu evento
+					</h2>
+					<p class="mt-4 text-muted">
+						Os equipamentos fazem parte da produção e montagem do seu evento. A equipe entrega,
+						instala e acompanha a operação técnica.
+					</p>
+					<p
+						class="mt-5 rounded-small border border-primary/40 bg-primary/10 p-4 text-sm font-semibold text-text-secondary"
 					>
+						Não oferecemos aluguel para retirada: tudo é entregue, montado e acompanhado pela nossa
+						equipe.
+					</p>
+				</div>
+
+				<ul class="grid content-start gap-2 md:grid-cols-2 lg:border-l lg:border-stroke lg:pl-12">
 					{
-						eventEquipment.map((equipment) => (
-							<a
-								href={`/equipamentos/${equipment.slug}/`}
-								class="rounded-3xl bg-surface p-6 hover:ring-2 hover:ring-primary"
-							>
-								<>
-									<h3 class="text-xl">{equipment.name} para eventos ↗</h3>
-									<p class="mt-3 text-text-secondary">{equipment.summary}</p>
-								</>
-							</a>
+						equipamentosEvento.map((item, indice) => (
+							<li data-animate="fade-up" data-animate-delay={indice * 0.05}>
+								<a
+									href={item.href}
+									class="group grid h-full grid-cols-[32px_1fr_14px] items-center gap-3 rounded-2xl border border-transparent px-3 py-3 transition-colors duration-200 hover:border-stroke hover:bg-surface-alt"
+								>
+									<span class="flex size-8 items-center justify-center rounded-full bg-primary-soft font-title text-xs font-bold text-primary">
+										{String(indice + 1).padStart(2, '0')}
+									</span>
+									<span class="min-w-0">
+										<span class="block font-title text-sm font-semibold text-foreground">
+											{item.titulo}
+										</span>
+										<span class="mt-0.5 block text-xs leading-5 text-muted">{item.resumo}</span>
+									</span>
+									<Icon
+										name="arrow"
+										class="size-3 text-muted transition-[color,transform] duration-200 group-hover:translate-x-0.5 group-hover:text-primary"
+									/>
+								</a>
+							</li>
 						))
 					}
-				</div>
+				</ul>
 			</div>
 		</section>
-		<section aria-labelledby="atendimento" class="px-3 py-8 md:px-8 lg:px-16">
-			<div class="mx-auto max-w-345 rounded-3xl bg-surface p-6 text-center lg:p-10 lg:text-left">
-				<h2 id="atendimento" data-motion-title class="text-3xl lg:text-4xl"
-					>Atendimento em São Paulo: capital e interior</h2
-				>
-				<p class="mt-4 max-w-3xl leading-7 text-muted"
-					>Atendemos a capital e o interior de São Paulo, incluindo Guarulhos, com ênfase nas zonas
-					Sul, Oeste e Norte da capital. O orçamento considera os equipamentos, o local, os acessos
-					para montagem, a programação e a equipe técnica necessária.</p
-				>
-				<p class="mt-4 max-w-3xl leading-7 text-muted"
-					>Para eventos corporativos, a YESS também coordena os sistemas em uma entrega integrada,
-					do briefing à desmontagem.</p
-				>
-				<Button
-					href="/solucoes-corporativas/"
-					label="Soluções para eventos corporativos"
-					variant="outline"
-					class="mt-6 w-full md:w-auto"
+
+		<section aria-labelledby="atendimento" class="px-3 py-8 md:px-8 lg:px-16 lg:py-7.5">
+			<div
+				class="relative mx-auto grid w-full gap-8 overflow-hidden rounded-3xl border-2 border-primary bg-linear-to-br from-background to-primary-soft p-6 md:p-10 lg:max-w-345 lg:grid-cols-[1.2fr_1fr] lg:items-center lg:gap-12 lg:p-12"
+			>
+				<LightHalo
+					data-animate={false}
+					class="bottom-0 left-0"
+					color="primary"
+					size="md"
+					intensity="medium"
 				/>
+				<div data-animate="fade-left" class="relative z-10 text-center lg:text-left">
+					<p class="text-sm font-semibold text-primary uppercase">Área de atendimento</p>
+					<h2 id="atendimento" data-motion-title class="mt-2 text-3xl text-foreground lg:text-4xl">
+						Atendimento em São Paulo: capital e interior
+					</h2>
+					<p class="mt-4 text-base text-muted lg:text-lg">
+						Atendemos a capital e o interior de São Paulo, incluindo Guarulhos, com ênfase nas zonas
+						Sul, Oeste e Norte da capital. O orçamento considera os equipamentos, o local, os
+						acessos para montagem, a programação e a equipe técnica necessária.
+					</p>
+					<p class="mt-4 text-base text-muted lg:text-lg">
+						Para eventos corporativos, a YESS também coordena os sistemas em uma entrega integrada,
+						do briefing à desmontagem.
+					</p>
+					<Button
+						href="/solucoes-corporativas/"
+						label="Soluções para eventos corporativos"
+						variant="tertiary"
+						arrow
+						animation="shine"
+						class="mt-6 w-full md:w-auto"
+					/>
+				</div>
+
+				<ul class="relative z-10 grid gap-3 sm:grid-cols-2">
+					{
+						regioesAtendidas.map((regiao, indice) => (
+							<li
+								data-animate="scale"
+								data-animate-delay={0.1 + indice * 0.08}
+								class="flex flex-col items-center gap-3 rounded-small border border-stroke bg-surface/70 p-5 text-center sm:items-start sm:text-left"
+							>
+								<span class="flex size-10 items-center justify-center rounded-full bg-primary-soft text-white">
+									<Icon name="localizacao" class="size-5" />
+								</span>
+								<span>
+									<span class="block font-title font-semibold text-foreground">
+										{regiao.titulo}
+									</span>
+									<span class="mt-1 block text-sm text-muted">{regiao.texto}</span>
+								</span>
+							</li>
+						))
+					}
+				</ul>
 			</div>
 		</section>
 		<SectionProcessoServico
