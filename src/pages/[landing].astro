@@ -165,14 +165,16 @@ const faqSchema = {
 				</div>
 
 				<div class="flex flex-col gap-6">
-					<div class="rounded-small border border-stroke bg-surface-alt p-6 text-center lg:text-left">
+					<div
+						class="rounded-small border border-stroke bg-surface-alt p-6 text-center lg:text-left"
+					>
 						<h3 class="text-lg text-primary">O que entra no projeto</h3>
 						<ul class="mt-4 space-y-3">
 							{
 								service.equipment.map((item) => (
 									<li class="flex justify-center gap-3 text-text-secondary lg:justify-start">
 										<span
-											class="mt-2 size-1.5 shrink-0 rounded-full bg-primary"
+											class="mt-2 size-1.5 shrink-0 rounded-full bg-primary motion-safe:animate-pulse"
 											aria-hidden="true"
 										/>
 										<span>{item}</span>
@@ -181,7 +183,9 @@ const faqSchema = {
 							}
 						</ul>
 					</div>
-					<div class="rounded-small border border-stroke bg-surface-alt p-6 text-center lg:text-left">
+					<div
+						class="rounded-small border border-stroke bg-surface-alt p-6 text-center lg:text-left"
+					>
 						<h3 class="text-lg text-primary">Eventos atendidos</h3>
 						<ul class="mt-4 flex flex-wrap justify-center gap-2 lg:justify-start">
 							{
