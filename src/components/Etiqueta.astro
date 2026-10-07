@@ -5,6 +5,8 @@ interface Props {
 	corTexto?: string
 	corBolinha?: string
 	animar?: boolean
+	/** Troca a bolinha por barras de equalizador animadas. */
+	equalizador?: boolean
 	'data-animate'?: string
 	class?: string
 }
@@ -15,6 +17,7 @@ const {
 	corTexto = 'text-foreground',
 	corBolinha = 'bg-foreground',
 	animar = false,
+	equalizador = false,
 	'data-animate': dataAnimate,
 	class: className,
 } = Astro.props
@@ -29,8 +32,58 @@ const {
 		className,
 	]}
 >
-	<span
-		class:list={['size-2 shrink-0 rounded-full motion-safe:animate-pulse', corBolinha]}
-		aria-hidden="true"></span>
+	{
+		equalizador ? (
+			<span class="equalizador flex h-3 shrink-0 items-end gap-0.5" aria-hidden="true">
+				<span class:list={['h-full w-0.75 rounded-full', corBolinha]} />
+				<span class:list={['h-full w-0.75 rounded-full', corBolinha]} />
+				<span class:list={['h-full w-0.75 rounded-full', corBolinha]} />
+				<span class:list={['h-full w-0.75 rounded-full', corBolinha]} />
+			</span>
+		) : (
+			<span
+				class:list={['size-2 shrink-0 rounded-full motion-safe:animate-pulse', corBolinha]}
+				aria-hidden="true"
+			/>
+		)
+	}
 	<span class="uppercase" set:html={texto} />
 </p>
+
+<style>
+	/* Cada barra sobe e desce num ritmo diferente, como um equalizador. */
+	.equalizador > span {
+		transform-origin: bottom;
+		transform: scaleY(0.5);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.equalizador > span {
+			animation: eq-barra 0.9s ease-in-out infinite alternate;
+		}
+
+		.equalizador > span:nth-child(2) {
+			animation-duration: 0.6s;
+			animation-delay: -0.3s;
+		}
+
+		.equalizador > span:nth-child(3) {
+			animation-duration: 1.1s;
+			animation-delay: -0.5s;
+		}
+
+		.equalizador > span:nth-child(4) {
+			animation-duration: 0.75s;
+			animation-delay: -0.2s;
+		}
+	}
+
+	@keyframes eq-barra {
+		from {
+			transform: scaleY(0.25);
+		}
+		to {
+			transform: scaleY(1);
+		}
+	}
+</style>

@@ -12,6 +12,8 @@ interface Props {
 	varianteTitulo?: 'padrao' | 'som-iluminacao' | 'tvs-monitores'
 	/** Mostra o título em destaque como se estivesse aceso num painel de LED. */
 	painelLed?: boolean
+	/** Feixes de luz de moving head varrendo o hero, com o título aceso. */
+	showDeLuz?: boolean
 	descricao: string
 	imagem: ImageMetadata
 	textoAlternativoImagem: string
@@ -26,6 +28,7 @@ const {
 	titulo,
 	varianteTitulo = 'padrao',
 	painelLed = false,
+	showDeLuz = false,
 	descricao,
 	imagem,
 	textoAlternativoImagem,
@@ -47,6 +50,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			varianteTitulo === 'tvs-monitores' ? 'lg:min-h-170' : 'lg:min-h-184',
 			painelLed && 'led-panel',
 		]}
+		data-light-hero={showDeLuz || undefined}
 	>
 		<div
 			data-service-content={temVideo || undefined}
@@ -80,6 +84,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 					data-motion-immediate={!painelLed || undefined}
 					class:list={[
 						'w-full pt-2 uppercase md:max-w-5xl',
+						showDeLuz && 'light-title',
 						varianteTitulo === 'som-iluminacao' || varianteTitulo === 'tvs-monitores'
 							? 'text-[2rem] leading-[1.08] max-[359px]:text-[1.75rem] min-[1420px]:text-[3.25rem]! md:text-5xl'
 							: 'text-[2rem] leading-[1.08] max-[359px]:text-[1.75rem] min-[1420px]:text-6xl! md:text-5xl',
@@ -189,10 +194,143 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 				)
 			}
 		</div>
+
+		{
+			showDeLuz && (
+				<div
+					aria-hidden="true"
+					class="pointer-events-none absolute inset-0 z-40 overflow-hidden"
+				>
+					<span class="light-rig left-[12%]">
+						<span class="light-beam light-beam--1" />
+					</span>
+					<span class="light-rig left-[40%]">
+						<span class="light-beam light-beam--2" />
+					</span>
+					<span class="light-rig left-[66%] max-lg:hidden">
+						<span class="light-beam light-beam--3" />
+					</span>
+					<span data-light-follow class="light-rig light-rig--follow left-[88%]">
+						<span class="light-beam light-beam--4" />
+					</span>
+				</div>
+			)
+		}
 	</div>
 </section>
 
 <style>
+	/* Show de luz: cada feixe sai do topo, como um moving head, e varre a cena. */
+	.light-rig {
+		position: absolute;
+		top: -4%;
+		width: 0;
+		height: 125%;
+		transform-origin: 50% 0;
+		transform: rotate(var(--follow, 14deg));
+	}
+
+	.light-rig--follow {
+		transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.light-beam {
+		position: absolute;
+		top: 0;
+		left: -8rem;
+		width: 16rem;
+		height: 100%;
+		transform-origin: 50% 0;
+		transform: rotate(var(--from));
+		filter: blur(6px);
+		opacity: var(--alpha, 0.36);
+		mix-blend-mode: screen;
+		will-change: transform;
+	}
+
+	/* O cone fica no pseudo-elemento para o desfoque suavizar as bordas dele. */
+	.light-beam::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(to bottom, var(--beam) 0%, transparent 78%);
+		clip-path: polygon(47% 0, 53% 0, 100% 100%, 0 100%);
+	}
+
+	@media (min-width: 1024px) {
+		.light-beam {
+			left: -13rem;
+			width: 26rem;
+		}
+	}
+
+	.light-beam--1 {
+		--beam: #2678ff;
+		--from: -22deg;
+		--to: 16deg;
+		--speed: 9s;
+	}
+
+	.light-beam--2 {
+		--beam: #8b5cf6;
+		--from: 20deg;
+		--to: -16deg;
+		--speed: 11s;
+	}
+
+	.light-beam--3 {
+		--beam: #f58714;
+		--from: -12deg;
+		--to: 24deg;
+		--speed: 13s;
+		--alpha: 0.2;
+	}
+
+	/* O quarto feixe não varre sozinho: segue o cursor no desktop. */
+	.light-beam--4 {
+		--beam: #9cc3ff;
+		--from: 0deg;
+		--alpha: 0.26;
+	}
+
+	.light-rig:not(.light-rig--follow) {
+		transform: none;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.light-beam:not(.light-beam--4) {
+			animation: beam-sweep var(--speed) ease-in-out infinite alternate;
+		}
+
+		/* O título acende quando a luz passa por ele. */
+		.light-title {
+			animation: title-lit 9s ease-in-out infinite;
+		}
+	}
+
+	@keyframes beam-sweep {
+		from {
+			transform: rotate(var(--from));
+		}
+		to {
+			transform: rotate(var(--to));
+		}
+	}
+
+	@keyframes title-lit {
+		0%,
+		30%,
+		70%,
+		100% {
+			filter: drop-shadow(0 0 0 rgb(38 120 255 / 0));
+		}
+		45%,
+		55% {
+			filter: drop-shadow(0 0 16px rgb(120 175 255 / 0.65));
+		}
+	}
+
+
 	/* Painel de LED: fundo com os pixels apagados, texto aceso em pontos e brilho. */
 	.led-panel {
 		--led-pitch: 3px;
@@ -317,6 +455,25 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 		}
 	}
 </style>
+
+<script>
+	// Show de luz: o feixe seguidor aponta para o cursor (só desktop com mouse).
+	document.querySelectorAll<HTMLElement>('[data-light-hero]').forEach((hero) => {
+		const rig = hero.querySelector<HTMLElement>('[data-light-follow]')
+		const pointer = window.matchMedia('(hover: hover) and (pointer: fine)')
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+		if (!rig) return
+
+		hero.addEventListener('pointermove', (event) => {
+			if (!pointer.matches || reduceMotion.matches) return
+			const origin = rig.getBoundingClientRect()
+			const angle =
+				-Math.atan2(event.clientX - origin.left, event.clientY - origin.top) * (180 / Math.PI)
+			rig.style.setProperty('--follow', `${Math.max(-60, Math.min(60, angle))}deg`)
+		})
+		hero.addEventListener('pointerleave', () => rig.style.removeProperty('--follow'))
+	})
+</script>
 
 <script>
 	import { gsap } from 'gsap'
