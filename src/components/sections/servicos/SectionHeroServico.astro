@@ -10,6 +10,8 @@ interface Props {
 	tituloDestaque: string
 	titulo: string
 	varianteTitulo?: 'padrao' | 'som-iluminacao' | 'tvs-monitores'
+	/** Mostra o título em destaque como se estivesse aceso num painel de LED. */
+	painelLed?: boolean
 	descricao: string
 	imagem: ImageMetadata
 	textoAlternativoImagem: string
@@ -23,6 +25,7 @@ const {
 	tituloDestaque,
 	titulo,
 	varianteTitulo = 'padrao',
+	painelLed = false,
 	descricao,
 	imagem,
 	textoAlternativoImagem,
@@ -42,19 +45,24 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 		class:list={[
 			'relative mx-auto grid w-full grid-cols-1 overflow-hidden rounded-hero bg-linear-to-b from-background via-primary-soft to-violet lg:max-w-345 lg:grid-cols-[1.1fr_1fr] lg:bg-linear-to-r',
 			varianteTitulo === 'tvs-monitores' ? 'lg:min-h-170' : 'lg:min-h-184',
+			painelLed && 'led-panel',
 		]}
 	>
 		<div
 			data-service-content={temVideo || undefined}
 			class="relative isolate z-30 flex min-w-0 items-center overflow-hidden px-6 py-10 max-[359px]:px-4 md:px-10 lg:items-start lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
 		>
-			<LightHalo
-				data-animate={false}
-				class="bottom-10 left-16"
-				color="primary"
-				size="lg"
-				intensity="strong"
-			/>
+			{
+				!painelLed && (
+					<LightHalo
+						data-animate={false}
+						class="bottom-10 left-16"
+						color="primary"
+						size="lg"
+						intensity="strong"
+					/>
+				)
+			}
 			<div
 				data-service-copy
 				class:list={[
@@ -62,13 +70,14 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 					varianteTitulo === 'tvs-monitores' ? 'lg:h-auto' : 'lg:min-h-146',
 				]}
 			>
-				<div>
+				<div class:list={[painelLed && 'led-panel__fine']}>
 					<slot name="etiqueta" />
 				</div>
 
+				<!-- No painel de LED, a animação própria (ligar) substitui a de linhas. -->
 				<h1
-					data-motion-title
-					data-motion-immediate
+					data-motion-title={!painelLed || undefined}
+					data-motion-immediate={!painelLed || undefined}
 					class:list={[
 						'w-full pt-2 uppercase md:max-w-5xl',
 						varianteTitulo === 'som-iluminacao' || varianteTitulo === 'tvs-monitores'
@@ -76,17 +85,39 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 							: 'text-[2rem] leading-[1.08] max-[359px]:text-[1.75rem] min-[1420px]:text-6xl! md:text-5xl',
 					]}
 				>
-					<strong class="block font-extrabold" set:html={tituloDestaque} />
-					<span class="mt-2 block font-semibold" set:html={tituloComplementar} />
+					{
+						painelLed ? (
+							<span class="led-panel__glow block">
+								<span class="led-panel__text block">
+									<strong class="block font-extrabold" set:html={tituloDestaque} />
+									<span
+										class="led-panel__accent mt-2 block font-semibold"
+										set:html={tituloComplementar}
+									/>
+								</span>
+							</span>
+						) : (
+							<>
+								<strong class="block font-extrabold" set:html={tituloDestaque} />
+								<span class="mt-2 block font-semibold" set:html={tituloComplementar} />
+							</>
+						)
+					}
 				</h1>
 
 				<p
-					class="w-full text-base text-foreground/80 md:max-w-147.5 md:text-lg"
+					class:list={[
+						'w-full text-base text-foreground/80 md:max-w-147.5 md:text-lg',
+						painelLed && 'led-panel__fine led-panel__body',
+					]}
 					set:html={descricao}
 				/>
 
 				<div
-					class="flex w-full flex-col items-center justify-center gap-3 md:w-auto md:flex-row lg:justify-start"
+					class:list={[
+						'flex w-full flex-col items-center justify-center gap-3 md:w-auto md:flex-row lg:justify-start',
+						painelLed && 'led-panel__fine',
+					]}
 				>
 					<Botao
 						label={textoBotao}
@@ -116,7 +147,10 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 						loop
 						preload="metadata"
 						poster={imagem.src}
-						class="pointer-events-none absolute inset-0 size-full object-cover lg:rounded-l-3xl"
+						class:list={[
+					'pointer-events-none absolute inset-0 size-full object-cover',
+					!painelLed && 'lg:rounded-l-3xl',
+				]}
 					>
 						{videoWebm && <source src={videoWebm} type="video/webm" />}
 						{videoMp4 && <source src={videoMp4} type="video/mp4" />}
@@ -127,9 +161,14 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 				data-service-poster={temVideo || undefined}
 				src={imagem}
 				alt={textoAlternativoImagem}
-				class="pointer-events-none absolute inset-0 size-full object-cover lg:rounded-l-3xl"
+				class:list={[
+					'pointer-events-none absolute inset-0 size-full object-cover',
+					!painelLed && 'lg:rounded-l-3xl',
+				]}
 				loading="eager"
 			/>
+			<!-- Grade de pixels por cima da imagem, como se ela passasse no painel. -->
+			{painelLed && <span aria-hidden="true" class="led-pixels pointer-events-none absolute inset-0" />}
 			{
 				temVideo && (
 					<button
@@ -152,6 +191,132 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 		</div>
 	</div>
 </section>
+
+<style>
+	/* Painel de LED: fundo com os pixels apagados, texto aceso em pontos e brilho. */
+	.led-panel {
+		--led-pitch: 3px;
+		position: relative;
+		overflow: hidden;
+		/* Moldura grossa do gabinete, como num painel de LED de verdade. */
+		border: 10px solid #10141b;
+		border-radius: 1.75rem;
+		background-color: #020408;
+		background-image:
+			/* Emendas dos módulos do painel. */
+			linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
+			linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px),
+			/* LEDs apagados. */
+			radial-gradient(circle, rgb(255 255 255 / 0.07) 0.6px, transparent 0.9px);
+		background-size:
+			25% 100%,
+			100% 25%,
+			var(--led-pitch) var(--led-pitch);
+		box-shadow:
+			/* Borda externa e interna da moldura. */
+			0 0 0 1px rgb(255 255 255 / 0.1),
+			inset 0 0 0 1px rgb(0 0 0 / 0.9),
+			/* Sombra da tela e luz que ela projeta. */
+			inset 0 0 40px rgb(0 0 0 / 0.7),
+			0 30px 60px -24px rgb(0 0 0 / 0.9),
+			0 0 70px -12px rgb(38 120 255 / 0.5);
+	}
+
+	@media (min-width: 768px) {
+		.led-panel {
+			--led-pitch: 4px;
+			border-width: 14px;
+		}
+	}
+
+	.led-panel__glow {
+		filter: drop-shadow(0 0 6px rgb(120 175 255 / 0.8)) drop-shadow(0 0 18px rgb(38 120 255 / 0.5));
+	}
+
+	/* Segunda linha em azul, como um texto de destaque no painel. */
+	.led-panel__accent {
+		color: #7fb0ff;
+	}
+
+	.led-panel__text {
+		color: #eaf2ff;
+		-webkit-mask-image: radial-gradient(circle, #000 52%, transparent 58%);
+		mask-image: radial-gradient(circle, #000 52%, transparent 58%);
+		-webkit-mask-size: var(--led-pitch) var(--led-pitch);
+		mask-size: var(--led-pitch) var(--led-pitch);
+	}
+
+	/* Textos menores: pontos mais finos para continuar legíveis. */
+	.led-panel__fine {
+		--led-pitch: 2px;
+		-webkit-mask-image: radial-gradient(circle, #000 62%, transparent 72%);
+		mask-image: radial-gradient(circle, #000 62%, transparent 72%);
+		-webkit-mask-size: var(--led-pitch) var(--led-pitch);
+		mask-size: var(--led-pitch) var(--led-pitch);
+	}
+
+	.led-panel__body {
+		color: #d6e4ff;
+		filter: drop-shadow(0 0 6px rgb(38 120 255 / 0.6));
+	}
+
+	.led-pixels {
+		background-image: radial-gradient(circle, transparent 45%, rgb(0 0 0 / 0.55) 80%);
+		background-size: var(--led-pitch) var(--led-pitch);
+	}
+
+	/* Faixa de atualização que percorre o painel. */
+	.led-panel::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		background: linear-gradient(to bottom, transparent, rgb(255 255 255 / 0.07), transparent);
+		background-size: 100% 40%;
+		background-repeat: no-repeat;
+		background-position: 0 -60%;
+		z-index: 40;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.led-panel::after {
+			animation: led-refresh 5s linear infinite;
+		}
+
+		.led-panel__text,
+		.led-panel__fine {
+			animation: led-power-on 1.4s steps(1, end) 0.2s both;
+		}
+	}
+
+	@keyframes led-refresh {
+		to {
+			background-position: 0 160%;
+		}
+	}
+
+	@keyframes led-power-on {
+		0% {
+			opacity: 0;
+		}
+		20% {
+			opacity: 0.6;
+		}
+		30% {
+			opacity: 0.1;
+		}
+		45% {
+			opacity: 1;
+		}
+		55% {
+			opacity: 0.4;
+		}
+		70%,
+		100% {
+			opacity: 1;
+		}
+	}
+</style>
 
 <script>
 	import { gsap } from 'gsap'
