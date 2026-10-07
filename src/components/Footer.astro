@@ -2,6 +2,7 @@
 import Icon from '@/components/Icon.astro'
 import Button from '@/components/Button.astro'
 import LightHalo from '@/components/LightHalo.astro'
+import site from '@/data/site.json'
 ---
 
 <footer id="contato" class="px-3 pb-24 md:px-8 lg:px-16 lg:pb-0">
@@ -142,7 +143,18 @@ import LightHalo from '@/components/LightHalo.astro'
 					Atendimento direto • Resposta humana
 				</p>
 				<p class="text-muted normal-case">
-					© {new Date().getFullYear()} YESS Audiovisual. Todos os direitos reservados.
+					© {new Date().getFullYear()} {site.legalName} · CNPJ {site.cnpj}. Todos os direitos reservados.
+				</p>
+				<p class="text-muted normal-case">
+					Desenvolvido por{' '}
+					<a
+						href={site.developer.url}
+						target="_blank"
+						rel="noopener"
+						class="font-bold text-text-secondary underline-offset-4 transition-colors hover:text-foreground hover:underline focus-visible:outline-2 focus-visible:outline-primary"
+					>
+						{site.developer.name}
+					</a>
 				</p>
 			</div>
 
