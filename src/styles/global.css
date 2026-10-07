@@ -33,6 +33,39 @@
 	--radius-hero: 42px;
 }
 
+/* Animação da transição entre páginas (o opt-in fica inline no Layout). */
+@media (prefers-reduced-motion: no-preference) {
+	::view-transition-old(root) {
+		animation: page-out 0.25s ease-in both;
+	}
+
+	::view-transition-new(root) {
+		animation: page-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	::view-transition-group(*),
+	::view-transition-old(*),
+	::view-transition-new(*) {
+		animation: none !important;
+	}
+}
+
+@keyframes page-out {
+	to {
+		opacity: 0;
+		transform: translateY(-12px);
+	}
+}
+
+@keyframes page-in {
+	from {
+		opacity: 0;
+		transform: translateY(16px);
+	}
+}
+
 @layer base {
 	* {
 		box-sizing: border-box;

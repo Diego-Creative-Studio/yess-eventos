@@ -40,6 +40,12 @@ const {
 <html lang="pt-BR">
 	<head>
 		<meta charset="UTF-8" />
+		<!-- Transição suave entre páginas; fica inline para valer já na chegada da nova página. -->
+		<style is:inline>
+			@view-transition {
+				navigation: auto;
+			}
+		</style>
 		<script is:inline>
 			document.documentElement.classList.add('js')
 		</script>
