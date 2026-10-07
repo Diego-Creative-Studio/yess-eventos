@@ -1,5 +1,11 @@
 {
 	"siteName": "YESS Audiovisual & Eventos",
+	"legalName": "YESS Produções Artísticas e Audiovisuais Ltda",
+	"cnpj": "00.000.000/0001-00",
+	"developer": {
+		"name": "Diego Creative Studio",
+		"url": "https://portfolio-five-sigma-85.vercel.app"
+	},
 	"title": "Produção Audiovisual e Painel de LED para Eventos | YESS",
 	"description": "Painéis de LED P2 e P3, som, iluminação, TVs e projetores para eventos em São Paulo e Guarulhos, com projeto, montagem e operação técnica.",
 	"image": {
