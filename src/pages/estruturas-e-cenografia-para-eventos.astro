@@ -3,7 +3,7 @@ import Layout from '@/layouts/Layout.astro'
 import ServiceAreas from '@/components/ServiceAreas.astro'
 import ServiceSchema from '@/components/ServiceSchema.astro'
 import Etiqueta from '@/components/Etiqueta.astro'
-import Button from '@/components/Button.astro'
+import SectionIntegracaoServico from '@/components/sections/servicos/SectionIntegracaoServico.astro'
 import SectionHeroServico from '@/components/sections/servicos/SectionHeroServico.astro'
 import SectionEntregaServico from '@/components/sections/servicos/SectionEntregaServico.astro'
 import SectionProcessoServico from '@/components/sections/servicos/SectionProcessoServico.astro'
@@ -155,33 +155,14 @@ const opcoes = [
 				},
 			]}
 		/>
-		<section aria-labelledby="integracao" class="px-3 py-8 md:px-8 lg:px-16">
-			<div
-				class="mx-auto max-w-345 rounded-3xl border border-stroke bg-surface p-6 text-center lg:p-10 lg:text-left"
-			>
-				<h2 id="integracao" data-motion-title class="text-3xl lg:text-4xl"
-					>Uma entrega audiovisual integrada</h2
-				>
-				<p class="mx-auto mt-4 max-w-3xl leading-7 text-muted lg:mx-0"
-					>Estrutura, painel de LED, som e iluminação podem fazer parte do mesmo projeto. O
-					orçamento define os equipamentos e as etapas necessárias para o seu evento.</p
-				>
-				<div class="mt-6 flex flex-col flex-wrap justify-center gap-4 md:flex-row lg:justify-start">
-					<Button
-						href="/projetos-tecnicos-para-eventos/"
-						label="Conhecer os projetos técnicos e 3D"
-						variant="outline"
-						class="w-full md:w-auto"
-					/>
-					<Button
-						href="/estrutura-audiovisual-para-eventos/"
-						label="Ver equipamentos e serviços"
-						variant="primary"
-						class="w-full md:w-auto"
-					/>
-				</div>
-			</div>
-		</section>
+		<SectionIntegracaoServico
+			titulo="Uma entrega audiovisual integrada"
+			descricao="Estrutura, painel de LED, som e iluminação podem fazer parte do mesmo projeto. O orçamento define os equipamentos e as etapas necessárias para o seu evento."
+			secundario={{
+				label: 'Conhecer os projetos técnicos e 3D',
+				href: '/projetos-tecnicos-para-eventos/',
+			}}
+		/>
 		<SectionPerguntasServico
 			titulo="Perguntas frequentes"
 			perguntas={[
