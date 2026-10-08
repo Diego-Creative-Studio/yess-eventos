@@ -20,6 +20,8 @@ interface Props {
 	mapaSinal?: boolean
 	/** Pórtico de Box Truss que se monta e pendura a imagem como backdrop. */
 	boxTruss?: boolean
+	/** Planta técnica desenhada sobre a imagem, que vira a foto real. */
+	planta?: boolean
 	descricao: string
 	imagem: ImageMetadata
 	textoAlternativoImagem: string
@@ -38,6 +40,7 @@ const {
 	videowall = false,
 	mapaSinal = false,
 	boxTruss = false,
+	planta = false,
 	descricao,
 	imagem,
 	textoAlternativoImagem,
@@ -67,7 +70,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			'relative mx-auto grid w-full grid-cols-1 overflow-hidden rounded-hero bg-linear-to-b from-background via-primary-soft to-violet lg:max-w-345 lg:grid-cols-[1.1fr_1fr] lg:bg-linear-to-r',
 			varianteTitulo === 'tvs-monitores' ? 'lg:min-h-170' : 'lg:min-h-184',
 			painelLed && 'led-panel',
-			(showDeLuz || videowall || mapaSinal || boxTruss) && 'light-stage',
+			(showDeLuz || videowall || mapaSinal || boxTruss || planta) && 'light-stage',
 		]}
 		data-light-hero={showDeLuz || undefined}
 	>
@@ -76,7 +79,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			class="relative isolate z-30 flex min-w-0 items-center overflow-hidden px-6 py-10 max-[359px]:px-4 md:px-10 lg:items-start lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
 		>
 			{
-				!painelLed && !showDeLuz && !videowall && !mapaSinal && !boxTruss && (
+				!painelLed && !showDeLuz && !videowall && !mapaSinal && !boxTruss && !planta && (
 					<LightHalo
 						data-animate={false}
 						class="bottom-10 left-16"
@@ -158,6 +161,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			data-service-media={temVideo || undefined}
 			class:list={[
 				'relative min-h-96 overflow-hidden lg:min-h-full',
+				planta && 'bp-media',
 				temVideo &&
 					'group cursor-pointer lg:absolute lg:inset-y-0 lg:right-0 lg:z-20 lg:w-[47.62%]',
 			]}
@@ -197,6 +201,41 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			{
 				painelLed && (
 					<span aria-hidden="true" class="led-pixels pointer-events-none absolute inset-0" />
+				)
+			}
+			<!-- Planta técnica: o desenho se forma e uma varredura o transforma na foto real. -->
+			{
+				planta && (
+					<span aria-hidden="true" class="bp pointer-events-none absolute inset-0 z-5">
+						<span class="bp-sheet absolute inset-0">
+							<svg
+								class="absolute inset-0 size-full"
+								viewBox="0 0 160 120"
+								preserveAspectRatio="xMidYMid meet"
+								fill="none"
+							>
+								<path class="bp-draw" d="M8 100H152" pathLength="100" style="--d: 0.20s" />
+								<path class="bp-draw" d="M30 88h100v12H30Z" pathLength="100" style="--d: 0.38s" />
+								<path class="bp-draw" d="M45 30h70v40H45Z" pathLength="100" style="--d: 0.56s" />
+								<path class="bp-draw" d="M62.5 30v40M80 30v40M97.5 30v40M45 50h70" pathLength="100" style="--d: 0.74s" />
+								<path class="bp-draw" d="M36 20h5v68h-5ZM119 20h5v68h-5Z" pathLength="100" style="--d: 0.92s" />
+								<path class="bp-draw" d="M36 15h88v5H36Z" pathLength="100" style="--d: 1.10s" />
+								<path class="bp-draw" d="M22 60h8v14h-8ZM130 60h8v14h-8Z" pathLength="100" style="--d: 1.28s" />
+								<g class="bp-dim">
+									<path class="bp-draw" d="M45 108H115M45 105.5v5M115 105.5v5" pathLength="100" style="--d: 1.5s" />
+									<text x="80" y="114.5" text-anchor="middle">6,00 m</text>
+									<path class="bp-draw" d="M14 30V70M11.5 30h5M11.5 70h5" pathLength="100" style="--d: 1.65s" />
+									<text x="11" y="50" text-anchor="middle" transform="rotate(-90 11 50)">3,50 m</text>
+								</g>
+								<g class="bp-stamp">
+									<path d="M120 103h34v12h-34ZM120 108.5h34" />
+									<text x="122" y="107.2">PROJETO 3D</text>
+									<text x="122" y="113">PRANCHA 01 · YESS</text>
+								</g>
+							</svg>
+						</span>
+						<span class="bp-scan absolute inset-y-0" />
+					</span>
 				)
 			}
 			<!-- Box Truss: colunas sobem, a travessa trava em cima e a imagem desce como backdrop. -->
@@ -333,6 +372,133 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 </section>
 
 <style>
+	/* Planta técnica: papel azul quadriculado com traços brancos. */
+	.bp-sheet {
+		background-color: #0a2350;
+		background-image:
+			linear-gradient(rgb(156 195 255 / 0.12) 1px, transparent 1px),
+			linear-gradient(90deg, rgb(156 195 255 / 0.12) 1px, transparent 1px),
+			linear-gradient(rgb(156 195 255 / 0.05) 1px, transparent 1px),
+			linear-gradient(90deg, rgb(156 195 255 / 0.05) 1px, transparent 1px);
+		background-size:
+			40px 40px,
+			40px 40px,
+			8px 8px,
+			8px 8px;
+		/* Escondida no fim: a foto real fica à mostra. */
+		clip-path: inset(0 0 0 100%);
+		transition: clip-path 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+	}
+
+	.bp-sheet path {
+		stroke: rgb(234 242 255 / 0.9);
+		stroke-width: 0.45;
+		stroke-linejoin: round;
+	}
+
+	.bp-dim path {
+		stroke: #7fb0ff;
+		stroke-width: 0.3;
+	}
+
+	.bp-sheet text {
+		fill: #cfe0ff;
+		font-family: var(--font-jakarta, sans-serif);
+		font-size: 3.4px;
+		font-weight: 600;
+		letter-spacing: 0.1px;
+	}
+
+	.bp-stamp path {
+		stroke: rgb(207 224 255 / 0.6);
+		stroke-width: 0.3;
+	}
+
+	.bp-stamp text {
+		font-size: 2.6px;
+	}
+
+	.bp-scan {
+		left: 0;
+		width: 2px;
+		background: #cfe0ff;
+		box-shadow: 0 0 16px 4px rgb(38 120 255 / 0.8);
+		opacity: 0;
+	}
+
+	/* Passar o mouse mostra a planta de novo por cima da foto. */
+	@media (hover: hover) and (pointer: fine) {
+		.bp-media:hover .bp-sheet {
+			clip-path: inset(0 0 0 0);
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.bp-draw {
+			stroke-dasharray: 100;
+			animation: bp-draw 0.8s ease-out both;
+			animation-delay: var(--d);
+		}
+
+		.bp-sheet text,
+		.bp-stamp {
+			animation: bp-fade 0.5s ease-out 1.8s both;
+		}
+
+		/* A planta fica à mostra e depois a varredura revela a foto. */
+		.bp-sheet {
+			animation: bp-reveal 1.4s cubic-bezier(0.65, 0, 0.35, 1) 2.6s backwards;
+		}
+
+		.bp-scan {
+			animation: bp-scan 1.4s cubic-bezier(0.65, 0, 0.35, 1) 2.6s;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.bp-sheet {
+			transition: none;
+		}
+	}
+
+	@keyframes bp-draw {
+		from {
+			stroke-dashoffset: 100;
+		}
+		to {
+			stroke-dashoffset: 0;
+		}
+	}
+
+	@keyframes bp-fade {
+		from {
+			opacity: 0;
+		}
+	}
+
+	@keyframes bp-reveal {
+		from {
+			clip-path: inset(0 0 0 0);
+		}
+		to {
+			clip-path: inset(0 0 0 100%);
+		}
+	}
+
+	@keyframes bp-scan {
+		from {
+			left: 0;
+			opacity: 1;
+		}
+		95% {
+			opacity: 1;
+		}
+		to {
+			left: 100%;
+			opacity: 0;
+		}
+	}
+
 	/* Box Truss Q30: banzos prateados com a treliça em X entre eles. */
 	.truss {
 		--truss: 22px;
