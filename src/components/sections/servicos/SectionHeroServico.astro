@@ -197,7 +197,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			<!-- Mapa de sinal: cada sistema ligado à operação central por um "cabo" com sinal correndo. -->
 			{
 				mapaSinal && (
-					<div class="sig-map pointer-events-none absolute inset-0 z-5">
+					<div data-video-hide class="sig-map pointer-events-none absolute inset-0 z-5">
 						<svg
 							class="absolute inset-0 size-full"
 							viewBox="0 0 100 100"
@@ -943,6 +943,8 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 		const copy = hero.querySelector<HTMLElement>('[data-service-copy]')
 		const video = hero.querySelector<HTMLVideoElement>('[data-service-video]')
 		const poster = hero.querySelector<HTMLElement>('[data-service-poster]')
+		// Camadas sobre a imagem (ex.: mapa de sinal) somem enquanto o vídeo roda e voltam depois.
+		const videoHide = [...hero.querySelectorAll<HTMLElement>('[data-video-hide]')]
 		const control = hero.querySelector<HTMLButtonElement>('[data-service-video-control]')
 		const label = hero.querySelector<HTMLElement>('[data-service-video-label]')
 		const playIcon = hero.querySelector<HTMLElement>('[data-service-play-icon]')
@@ -1013,8 +1015,8 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 
 			playing = true
 			updateControl('pause')
-			gsap.killTweensOf([poster, control])
-			gsap.to(poster, {
+			gsap.killTweensOf([poster, control, ...videoHide])
+			gsap.to([poster, ...videoHide], {
 				autoAlpha: 0,
 				duration: reduceMotion.matches ? 0 : 0.45,
 				ease: 'power2.out',
@@ -1034,6 +1036,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			video.pause()
 			playing = false
 			updateControl('continue')
+			gsap.to(videoHide, { autoAlpha: 1, duration: reduceMotion.matches ? 0 : 0.4 })
 		}
 
 		const hideVideo = () => {
@@ -1041,8 +1044,8 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			video.pause()
 			playing = false
 			updateControl('play')
-			gsap.killTweensOf([poster, control])
-			gsap.to(poster, {
+			gsap.killTweensOf([poster, control, ...videoHide])
+			gsap.to([poster, ...videoHide], {
 				autoAlpha: 1,
 				duration: reduceMotion.matches ? 0 : 0.4,
 				ease: 'power2.out',
@@ -1077,7 +1080,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			expansionTween?.kill()
 			expansionTimeline.pause(0)
 			gsap.set([media, copy], { clearProps: 'width,opacity,transform' })
-			gsap.set(poster, { clearProps: 'opacity,visibility' })
+			gsap.set([poster, ...videoHide], { clearProps: 'opacity,visibility' })
 			updateControl('play')
 		})
 
