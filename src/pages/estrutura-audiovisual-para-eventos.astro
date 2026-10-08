@@ -11,6 +11,10 @@ import SectionProcessoServico from '@/components/sections/servicos/SectionProces
 import SectionPerguntasServico from '@/components/sections/servicos/SectionPerguntasServico.astro'
 import SectionChamadaServico from '@/components/sections/servicos/SectionChamadaServico.astro'
 import imagemHero from '@/assets/painel-led/hero-painel-led.jpg'
+import imagemProjeto from '@/assets/painel-led/projeto-painel-corporativo.jpg'
+import imagemEntrega from '@/assets/painel-led/entrega-completa.jpg'
+import imagemMontagem from '@/assets/painel-led/projeto-estrutura-integrada.jpg'
+import imagemOperacao from '@/assets/painel-led/projeto-operacao-tecnica.jpg'
 
 const categorias = [
 	{
@@ -131,6 +135,38 @@ const schema = {
 			descricao="Painéis de LED, som, iluminação, TVs, projetores e estruturas em São Paulo capital e interior. Produção e montagem audiovisual com entrega, instalação e acompanhamento técnico, sem retirada pelo cliente."
 			imagem={imagemHero}
 			textoAlternativoImagem="Palco de evento com painel de LED e estrutura audiovisual"
+			etapas={[
+				{
+					titulo: 'Projeto',
+					legenda: 'Briefing, medidas e definição dos equipamentos do evento.',
+					imagem: imagemProjeto,
+					textoAlternativo: 'Projeto de painel de LED para evento corporativo',
+				},
+				{
+					titulo: 'Entrega',
+					legenda: 'Equipamentos levados até o local, sem retirada pelo cliente.',
+					imagem: imagemEntrega,
+					textoAlternativo: 'Entrega completa de equipamentos audiovisuais no evento',
+				},
+				{
+					titulo: 'Montagem',
+					legenda: 'Box Truss, painel de LED, som e luz instalados no espaço.',
+					imagem: imagemMontagem,
+					textoAlternativo: 'Estrutura integrada montada com painel e iluminação',
+				},
+				{
+					titulo: 'Operação',
+					legenda: 'Equipe técnica acompanhando o evento do começo ao fim.',
+					imagem: imagemOperacao,
+					textoAlternativo: 'Operação técnica audiovisual durante o evento',
+				},
+				{
+					titulo: 'Desmontagem',
+					legenda: 'Recolhimento completo da estrutura ao final do evento.',
+					imagem: imagemHero,
+					textoAlternativo: 'Palco de evento com painel de LED e estrutura audiovisual',
+				},
+			]}
 			textoBotao="Solicitar orçamento"
 			linkBotao="/contato/#canais"
 		>

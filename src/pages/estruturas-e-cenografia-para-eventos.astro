@@ -3,6 +3,8 @@ import Layout from '@/layouts/Layout.astro'
 import ServiceAreas from '@/components/ServiceAreas.astro'
 import ServiceSchema from '@/components/ServiceSchema.astro'
 import Etiqueta from '@/components/Etiqueta.astro'
+import Icon from '@/components/Icon.astro'
+import LightHalo from '@/components/LightHalo.astro'
 import SectionIntegracaoServico from '@/components/sections/servicos/SectionIntegracaoServico.astro'
 import SectionHeroServico from '@/components/sections/servicos/SectionHeroServico.astro'
 import SectionEntregaServico from '@/components/sections/servicos/SectionEntregaServico.astro'
@@ -13,16 +15,19 @@ import imagem from '@/assets/painel-led/projeto-estrutura-integrada.jpg'
 const opcoes = [
 	{
 		titulo: 'Box Truss Q15, Q25 e Q30',
+		icone: 'estrutura' as const,
 		descricao:
 			'Estruturas para compor o projeto do evento e a montagem audiovisual. A escolha considera a aplicação, o espaço e as necessidades técnicas.',
 	},
 	{
 		titulo: 'Praticáveis para palcos',
+		icone: 'montagem' as const,
 		descricao:
 			'Módulos para a composição de palcos e áreas de apresentação. Dimensões, disposição e acessos são alinhados ao projeto.',
 	},
 	{
 		titulo: 'Backdrops',
+		icone: 'medida' as const,
 		descricao:
 			'Montagem de fundo de palco ou de apresentação conforme o projeto. Envie as medidas e a proposta visual para definir o escopo.',
 	},
@@ -57,46 +62,81 @@ const opcoes = [
 				class="self-center lg:self-start"
 			/>
 		</SectionHeroServico>
-		<section aria-labelledby="solucoes" class="px-3 py-8 md:px-8 lg:px-16">
-			<div class="mx-auto max-w-345">
-				<div class="mx-auto max-w-3xl text-center lg:mx-0 lg:text-left">
+		<section aria-labelledby="solucoes" class="px-3 py-8 md:px-8 lg:px-16 lg:py-7.5">
+			<div
+				class="relative mx-auto w-full overflow-hidden rounded-3xl border-2 border-stroke bg-linear-to-br from-background to-primary-soft p-6 md:p-10 lg:max-w-345 lg:p-12"
+			>
+				<LightHalo
+					data-animate={false}
+					class="top-0 right-0"
+					color="primary"
+					size="md"
+					intensity="subtle"
+				/>
+				<div
+					data-animate="fade-left"
+					class="relative z-10 mx-auto max-w-3xl text-center lg:mx-0 lg:text-left"
+				>
 					<p class="text-sm font-semibold text-warm uppercase">Do briefing à execução</p>
-					<h2 id="solucoes" data-motion-title class="mt-2 text-3xl lg:text-4xl"
-						>Estruturas e elementos de apoio</h2
-					>
-					<p class="mt-4 leading-7 text-muted"
-						>O formato do evento, o espaço disponível e os equipamentos previstos orientam a escolha
-						da estrutura. A configuração e a disponibilidade são definidas no orçamento.</p
-					>
+					<h2 id="solucoes" data-motion-title class="mt-2 text-3xl text-foreground lg:text-4xl">
+						Estruturas e elementos de apoio
+					</h2>
+					<p class="text-base text-muted lg:text-lg">
+						O formato do evento, o espaço disponível e os equipamentos previstos orientam a escolha
+						da estrutura. A configuração e a disponibilidade são definidas no orçamento.
+					</p>
 				</div>
-				<div class="mt-8 grid gap-5 lg:grid-cols-3">
+				<ol class="relative z-10 mt-8 grid gap-4 lg:grid-cols-3">
 					{
-						opcoes.map((opcao, index) => (
-							<article
+						opcoes.map((opcao, indice) => (
+							<li
 								data-animate="fade-up"
-								data-animate-delay={index * 0.12}
+								data-animate-delay={indice * 0.12}
 								class:list={[
-									'rounded-3xl border border-stroke p-6 text-center lg:p-8 lg:text-left',
-									index === 1 ? 'bg-primary' : 'bg-surface',
+									'flex flex-col rounded-3xl p-6 text-center lg:p-8 lg:text-left',
+									indice === 1
+										? 'bg-primary'
+										: indice === 2
+											? 'bg-primary-soft'
+											: 'border border-stroke bg-surface-alt/80',
 								]}
 							>
-								<span
-									aria-hidden="true"
+								<div class="flex items-center justify-center gap-4 lg:justify-between">
+									<p
+										class:list={[
+											'text-5xl font-extrabold lg:text-6xl',
+											indice === 1 ? 'text-foreground' : 'text-primary',
+										]}
+									>
+										{String(indice + 1).padStart(2, '0')}
+									</p>
+									<span
+										aria-hidden="true"
+										class:list={[
+											'flex size-12 shrink-0 items-center justify-center rounded-full text-white',
+											indice === 1
+												? 'bg-white/15'
+												: indice === 2
+													? 'bg-background/50'
+													: 'bg-primary-soft',
+										]}
+									>
+										<Icon name={opcao.icone} class="size-6" />
+									</span>
+								</div>
+								<h3 class="mt-6 text-xl text-foreground lg:text-2xl">{opcao.titulo}</h3>
+								<p
 									class:list={[
-										'font-title text-4xl',
-										index === 1 ? 'text-foreground' : 'text-primary',
+										'mt-2 text-sm leading-6 lg:text-base',
+										indice === 1 ? 'text-white' : 'text-foreground/75',
 									]}
 								>
-									{String(index + 1).padStart(2, '0')}
-								</span>
-								<h3 class="mt-5 text-xl">{opcao.titulo}</h3>
-								<p class:list={['mt-3 leading-7', index === 1 ? 'text-white' : 'text-muted']}>
 									{opcao.descricao}
 								</p>
-							</article>
+							</li>
 						))
 					}
-				</div>
+				</ol>
 			</div>
 		</section>
 		<SectionEntregaServico

@@ -6,6 +6,13 @@ import Botao from '@/components/Button.astro'
 import Icon from '@/components/Icon.astro'
 import LightHalo from '@/components/LightHalo.astro'
 
+interface Etapa {
+	titulo: string
+	legenda: string
+	imagem: ImageMetadata
+	textoAlternativo: string
+}
+
 interface Props {
 	tituloDestaque: string
 	titulo: string
@@ -22,6 +29,8 @@ interface Props {
 	boxTruss?: boolean
 	/** Planta técnica desenhada sobre a imagem, que vira a foto real. */
 	planta?: boolean
+	/** Linha do tempo do evento: cada etapa troca a foto e a legenda. */
+	etapas?: Etapa[]
 	descricao: string
 	imagem: ImageMetadata
 	textoAlternativoImagem: string
@@ -41,6 +50,7 @@ const {
 	mapaSinal = false,
 	boxTruss = false,
 	planta = false,
+	etapas = [],
 	descricao,
 	imagem,
 	textoAlternativoImagem,
@@ -51,6 +61,7 @@ const {
 } = Astro.props
 
 const temVideo = Boolean(videoMp4 || videoWebm)
+const temEtapas = etapas.length > 1
 
 /** Pontos do mapa de sinal, em % da área da imagem. */
 const pontosSinal = [
@@ -70,7 +81,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			'relative mx-auto grid w-full grid-cols-1 overflow-hidden rounded-hero bg-linear-to-b from-background via-primary-soft to-violet lg:max-w-345 lg:grid-cols-[1.1fr_1fr] lg:bg-linear-to-r',
 			varianteTitulo === 'tvs-monitores' ? 'lg:min-h-170' : 'lg:min-h-184',
 			painelLed && 'led-panel',
-			(showDeLuz || videowall || mapaSinal || boxTruss || planta) && 'light-stage',
+			(showDeLuz || videowall || mapaSinal || boxTruss || planta || temEtapas) && 'light-stage',
 		]}
 		data-light-hero={showDeLuz || undefined}
 	>
@@ -79,7 +90,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			class="relative isolate z-30 flex min-w-0 items-center overflow-hidden px-6 py-10 max-[359px]:px-4 md:px-10 lg:items-start lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
 		>
 			{
-				!painelLed && !showDeLuz && !videowall && !mapaSinal && !boxTruss && !planta && (
+				!painelLed && !showDeLuz && !videowall && !mapaSinal && !boxTruss && !planta && !temEtapas && (
 					<LightHalo
 						data-animate={false}
 						class="bottom-10 left-16"
@@ -159,6 +170,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 
 		<div
 			data-service-media={temVideo || undefined}
+			data-stage-host={temEtapas || undefined}
 			class:list={[
 				'relative min-h-96 overflow-hidden lg:min-h-full',
 				planta && 'bp-media',
@@ -186,21 +198,82 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 					</video>
 				)
 			}
-			<Image
-				data-service-poster={temVideo || undefined}
-				src={imagem}
-				alt={textoAlternativoImagem}
-				class:list={[
-					'pointer-events-none absolute inset-0 size-full object-cover',
-					!painelLed && !videowall && !boxTruss && 'lg:rounded-l-3xl',
-					boxTruss && 'truss-backdrop',
-				]}
-				loading="eager"
-			/>
+			{
+				!temEtapas && (
+					<Image
+						data-service-poster={temVideo || undefined}
+						src={imagem}
+						alt={textoAlternativoImagem}
+						class:list={[
+							'pointer-events-none absolute inset-0 size-full object-cover',
+							!painelLed && !videowall && !boxTruss && 'lg:rounded-l-3xl',
+							boxTruss && 'truss-backdrop',
+						]}
+						loading="eager"
+					/>
+				)
+			}
 			<!-- Grade de pixels por cima da imagem, como se ela passasse no painel. -->
 			{
 				painelLed && (
 					<span aria-hidden="true" class="led-pixels pointer-events-none absolute inset-0" />
+				)
+			}
+			<!-- Linha do tempo: uma foto por etapa, por cima da imagem principal. -->
+			{
+				temEtapas && (
+					<div data-stages class="absolute inset-0">
+						{etapas.map((etapa, indice) => (
+							<Image
+								data-stage-img
+								src={etapa.imagem}
+								alt={etapa.textoAlternativo}
+								width={1100}
+								loading={indice === 0 ? 'eager' : 'lazy'}
+								class:list={[
+									'pointer-events-none absolute inset-0 size-full object-cover lg:rounded-l-3xl',
+									indice > 0 && 'opacity-0',
+								]}
+							/>
+						))}
+						<div class="absolute inset-0 bg-linear-to-t from-background/90 via-background/10 to-transparent lg:rounded-l-3xl" />
+						<div class="absolute inset-x-3 bottom-3 z-10 rounded-2xl border border-white/15 bg-background/70 p-4 backdrop-blur-md md:inset-x-5 md:bottom-5 md:p-5">
+							<p class="font-title text-xs font-bold tracking-wide text-primary uppercase" aria-live="polite">
+								<span data-stage-num>01</span> · <span data-stage-title>{etapas[0].titulo}</span>
+							</p>
+							<p data-stage-caption class="mt-1 min-h-10 text-sm leading-5 text-foreground/90 md:text-base">
+								{etapas[0].legenda}
+							</p>
+							<div class="relative mt-4">
+								<span
+									class="absolute top-1.5 h-0.5 bg-white/15"
+									style={`left: ${50 / etapas.length}%; right: ${50 / etapas.length}%`}
+									aria-hidden="true"
+								>
+									<span data-stage-fill class="block h-full origin-left scale-x-0 bg-primary shadow-[0_0_10px] shadow-primary" />
+								</span>
+								<ol class="relative grid" style={`grid-template-columns: repeat(${etapas.length}, minmax(0, 1fr))`}>
+									{etapas.map((etapa, indice) => (
+										<li class="flex justify-center">
+											<button
+												type="button"
+												data-stage-btn
+												data-caption={etapa.legenda}
+												aria-label={`Etapa ${indice + 1}: ${etapa.titulo}`}
+												aria-current={indice === 0 ? 'step' : undefined}
+												class="group/etapa flex cursor-pointer flex-col items-center gap-2 text-center focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+											>
+												<span class="stage-dot size-3.5 rounded-full border-2 border-white/40 bg-background transition-colors" />
+												<span class="stage-label hidden text-[0.7rem] font-semibold text-foreground/60 transition-colors group-hover/etapa:text-foreground sm:block md:text-xs">
+													{etapa.titulo}
+												</span>
+											</button>
+										</li>
+									))}
+								</ol>
+							</div>
+						</div>
+					</div>
 				)
 			}
 			<!-- Planta técnica: o desenho se forma e uma varredura o transforma na foto real. -->
@@ -372,6 +445,21 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 </section>
 
 <style>
+	/* Etapa atual e as já percorridas ficam acesas na linha do tempo. */
+	[data-stage-btn][aria-current] .stage-dot,
+	[data-stage-btn].is-done .stage-dot {
+		border-color: var(--color-primary);
+		background: var(--color-primary);
+	}
+
+	[data-stage-btn][aria-current] .stage-dot {
+		box-shadow: 0 0 0 4px rgb(38 120 255 / 0.25), 0 0 14px var(--color-primary);
+	}
+
+	[data-stage-btn][aria-current] .stage-label {
+		color: var(--color-foreground);
+	}
+
 	/* Planta técnica: papel azul quadriculado com traços brancos. */
 	.bp-sheet {
 		background-color: #0a2350;
@@ -1325,6 +1413,75 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 		}
 	}
 </style>
+
+<script>
+	import { gsap } from 'gsap'
+
+	// Linha do tempo: avança sozinha, pausa com o mouse em cima e pula no clique.
+	document.querySelectorAll<HTMLElement>('[data-stages]').forEach((stages) => {
+		const images = [...stages.querySelectorAll<HTMLElement>('[data-stage-img]')]
+		const buttons = [...stages.querySelectorAll<HTMLButtonElement>('[data-stage-btn]')]
+		const fill = stages.querySelector<HTMLElement>('[data-stage-fill]')
+		const num = stages.querySelector<HTMLElement>('[data-stage-num]')
+		const title = stages.querySelector<HTMLElement>('[data-stage-title]')
+		const caption = stages.querySelector<HTMLElement>('[data-stage-caption]')
+		if (!fill || !num || !title || !caption || images.length < 2) return
+
+		const data = buttons.map((button) => ({
+			title: button.querySelector('.stage-label')?.textContent?.trim() ?? '',
+			caption: button.dataset.caption ?? '',
+		}))
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+		const duration = reduceMotion ? 0 : 0.6
+		const last = images.length - 1
+		let current = 0
+		let timer: gsap.core.Tween | undefined
+		let hovering = false
+
+		const go = (index: number) => {
+			current = index
+			images.forEach((image, i) =>
+				gsap.to(image, { autoAlpha: i === index ? 1 : 0, duration, ease: 'power2.out' }),
+			)
+			buttons.forEach((button, i) => {
+				button.toggleAttribute('aria-current', i === index)
+				if (i === index) button.setAttribute('aria-current', 'step')
+				button.classList.toggle('is-done', i < index)
+			})
+			gsap.to(fill, { scaleX: index / last, duration, ease: 'power2.inOut' })
+			gsap
+				.timeline()
+				.to([title, caption], { autoAlpha: 0, y: -6, duration: duration / 2 })
+				.add(() => {
+					num.textContent = String(index + 1).padStart(2, '0')
+					title.textContent = data[index].title
+					caption.textContent = data[index].caption
+				})
+				.fromTo([title, caption], { y: 6 }, { autoAlpha: 1, y: 0, duration: duration / 2 })
+			schedule()
+		}
+
+		const schedule = () => {
+			timer?.kill()
+			if (reduceMotion) return
+			timer = gsap.delayedCall(3.2, () => go(current === last ? 0 : current + 1))
+			if (hovering) timer.pause()
+		}
+
+		buttons.forEach((button, i) => button.addEventListener('click', () => go(i)))
+		const media = stages.closest<HTMLElement>('[data-stage-host]') ?? stages
+		media.addEventListener('pointerenter', () => {
+			hovering = true
+			timer?.pause()
+		})
+		media.addEventListener('pointerleave', () => {
+			hovering = false
+			timer?.resume()
+		})
+
+		schedule()
+	})
+</script>
 
 <script>
 	// Show de luz: o feixe seguidor aponta para o cursor (só desktop com mouse).
