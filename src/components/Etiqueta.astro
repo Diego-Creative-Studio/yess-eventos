@@ -11,6 +11,8 @@ interface Props {
 	tela?: boolean
 	/** Troca a bolinha por uma luz vermelha de "ao vivo". */
 	aoVivo?: boolean
+	/** Troca a bolinha pela seção triangular de uma treliça Box Truss. */
+	trelica?: boolean
 	'data-animate'?: string
 	class?: string
 }
@@ -24,6 +26,7 @@ const {
 	equalizador = false,
 	tela = false,
 	aoVivo = false,
+	trelica = false,
 	'data-animate': dataAnimate,
 	class: className,
 } = Astro.props
@@ -39,7 +42,20 @@ const {
 	]}
 >
 	{
-		aoVivo ? (
+		trelica ? (
+			<svg
+				viewBox="0 0 16 14"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1.6"
+				stroke-linejoin="round"
+				class="size-3.5 shrink-0 text-warm"
+				aria-hidden="true"
+			>
+				<path d="M8 1.5 14.5 12.5h-13Z" />
+				<path d="M8 1.5v11M4.75 7l3.25 5.5L11.25 7" />
+			</svg>
+		) : aoVivo ? (
 			<span class="relative flex size-2.5 shrink-0" aria-hidden="true">
 				<span class="absolute inset-0 rounded-full bg-red-500 motion-safe:animate-ping" />
 				<span class="relative size-2.5 rounded-full bg-red-500 shadow-[0_0_8px] shadow-red-500" />

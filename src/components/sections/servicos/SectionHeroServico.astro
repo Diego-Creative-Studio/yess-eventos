@@ -18,6 +18,8 @@ interface Props {
 	videowall?: boolean
 	/** Diagrama de sinal ligando LED, som, luz e TVs a uma operação central. */
 	mapaSinal?: boolean
+	/** Pórtico de Box Truss que se monta e pendura a imagem como backdrop. */
+	boxTruss?: boolean
 	descricao: string
 	imagem: ImageMetadata
 	textoAlternativoImagem: string
@@ -35,6 +37,7 @@ const {
 	showDeLuz = false,
 	videowall = false,
 	mapaSinal = false,
+	boxTruss = false,
 	descricao,
 	imagem,
 	textoAlternativoImagem,
@@ -64,7 +67,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			'relative mx-auto grid w-full grid-cols-1 overflow-hidden rounded-hero bg-linear-to-b from-background via-primary-soft to-violet lg:max-w-345 lg:grid-cols-[1.1fr_1fr] lg:bg-linear-to-r',
 			varianteTitulo === 'tvs-monitores' ? 'lg:min-h-170' : 'lg:min-h-184',
 			painelLed && 'led-panel',
-			(showDeLuz || videowall || mapaSinal) && 'light-stage',
+			(showDeLuz || videowall || mapaSinal || boxTruss) && 'light-stage',
 		]}
 		data-light-hero={showDeLuz || undefined}
 	>
@@ -73,7 +76,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			class="relative isolate z-30 flex min-w-0 items-center overflow-hidden px-6 py-10 max-[359px]:px-4 md:px-10 lg:items-start lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
 		>
 			{
-				!painelLed && !showDeLuz && !videowall && !mapaSinal && (
+				!painelLed && !showDeLuz && !videowall && !mapaSinal && !boxTruss && (
 					<LightHalo
 						data-animate={false}
 						class="bottom-10 left-16"
@@ -170,7 +173,8 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 						poster={imagem.src}
 						class:list={[
 							'pointer-events-none absolute inset-0 size-full object-cover',
-							!painelLed && !videowall && 'lg:rounded-l-3xl',
+							!painelLed && !videowall && !boxTruss && 'lg:rounded-l-3xl',
+					boxTruss && 'truss-backdrop',
 						]}
 					>
 						{videoWebm && <source src={videoWebm} type="video/webm" />}
@@ -184,7 +188,8 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 				alt={textoAlternativoImagem}
 				class:list={[
 					'pointer-events-none absolute inset-0 size-full object-cover',
-					!painelLed && !videowall && 'lg:rounded-l-3xl',
+					!painelLed && !videowall && !boxTruss && 'lg:rounded-l-3xl',
+					boxTruss && 'truss-backdrop',
 				]}
 				loading="eager"
 			/>
@@ -192,6 +197,24 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			{
 				painelLed && (
 					<span aria-hidden="true" class="led-pixels pointer-events-none absolute inset-0" />
+				)
+			}
+			<!-- Box Truss: colunas sobem, a travessa trava em cima e a imagem desce como backdrop. -->
+			{
+				boxTruss && (
+					<span aria-hidden="true" class="pointer-events-none absolute inset-0 z-5">
+						<span class="truss truss--col truss--left" />
+						<span class="truss truss--col truss--right" />
+						<span class="truss truss--beam" />
+						<span class="truss-base truss-base--left" />
+						<span class="truss-base truss-base--right" />
+						<span class="truss-lights">
+							<span class="truss-light" />
+							<span class="truss-light" />
+							<span class="truss-light" />
+							<span class="truss-light" />
+						</span>
+					</span>
 				)
 			}
 			<!-- Mapa de sinal: cada sistema ligado à operação central por um "cabo" com sinal correndo. -->
@@ -310,6 +333,228 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 </section>
 
 <style>
+	/* Box Truss Q30: banzos prateados com a treliça em X entre eles. */
+	.truss {
+		--truss: 22px;
+		--truss-top: 7%;
+		--truss-side: 5%;
+		position: absolute;
+		border: 3px solid #b8c2d0;
+		background:
+			repeating-linear-gradient(45deg, transparent 0 9px, rgb(184 194 208 / 0.75) 9px 11px),
+			repeating-linear-gradient(-45deg, transparent 0 9px, rgb(184 194 208 / 0.75) 9px 11px);
+		box-shadow:
+			0 0 0 1px rgb(0 0 0 / 0.5),
+			0 8px 18px rgb(0 0 0 / 0.5);
+	}
+
+	.truss--col {
+		top: var(--truss-top);
+		bottom: 0;
+		width: var(--truss);
+		border-top: 0;
+		border-bottom: 0;
+		transform-origin: bottom;
+	}
+
+	.truss--left {
+		left: var(--truss-side);
+	}
+
+	.truss--right {
+		right: var(--truss-side);
+	}
+
+	.truss--beam {
+		top: var(--truss-top);
+		left: var(--truss-side);
+		right: var(--truss-side);
+		height: var(--truss);
+		border-left: 0;
+		border-right: 0;
+		transform-origin: left;
+	}
+
+	/* Sapatas no chão. */
+	.truss-base {
+		position: absolute;
+		bottom: 0;
+		width: calc(var(--truss) + 18px);
+		height: 6px;
+		border-radius: 2px 2px 0 0;
+		background: #6b7686;
+	}
+
+	.truss-base--left {
+		left: calc(5% - 9px);
+	}
+
+	.truss-base--right {
+		right: calc(5% - 9px);
+	}
+
+	/* Refletores presos na travessa. */
+	.truss-lights {
+		position: absolute;
+		top: calc(7% + 22px);
+		left: calc(5% + 22px);
+		right: calc(5% + 22px);
+		display: flex;
+		justify-content: space-around;
+	}
+
+	.truss-light {
+		position: relative;
+		width: 14px;
+		height: 12px;
+		border-radius: 0 0 6px 6px;
+		background: #1a2130;
+		border: 1px solid #3a4558;
+	}
+
+	.truss-light::before {
+		content: '';
+		position: absolute;
+		left: 50%;
+		bottom: -3px;
+		width: 8px;
+		height: 8px;
+		margin-left: -4px;
+		border-radius: 999px;
+		background: #ffd9a8;
+		box-shadow: 0 0 12px 4px rgb(255 190 110 / 0.8);
+	}
+
+	/* Cone de luz suave sobre o backdrop. */
+	.truss-light::after {
+		content: '';
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		width: 9rem;
+		height: 14rem;
+		margin-left: -4.5rem;
+		background: linear-gradient(to bottom, rgb(255 205 140 / 0.22), transparent 85%);
+		clip-path: polygon(46% 0, 54% 0, 100% 100%, 0 100%);
+		mix-blend-mode: screen;
+	}
+
+	/* A imagem vira o backdrop pendurado dentro do pórtico. */
+	.truss-backdrop {
+		--t: 22px;
+		--gap: 10px;
+		inset: auto !important;
+		top: calc(7% + var(--t) + var(--gap)) !important;
+		left: calc(5% + var(--t) + var(--gap)) !important;
+		width: calc(90% - 2 * (var(--t) + var(--gap))) !important;
+		height: calc(87% - var(--t) - var(--gap)) !important;
+		border-radius: 4px;
+		box-shadow: 0 18px 40px rgb(0 0 0 / 0.6);
+	}
+
+	@media (min-width: 1024px) {
+		.truss {
+			--truss: 28px;
+		}
+
+		.truss-lights {
+			top: calc(7% + 28px);
+			left: calc(5% + 28px);
+			right: calc(5% + 28px);
+		}
+
+		.truss-base {
+			width: calc(28px + 18px);
+		}
+
+		.truss-backdrop {
+			--t: 28px;
+			--gap: 12px;
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.truss--col {
+			animation: truss-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+		}
+
+		.truss--right {
+			animation-delay: 0.35s;
+		}
+
+		.truss--beam {
+			animation:
+				truss-span 0.6s cubic-bezier(0.65, 0, 0.35, 1) 0.95s both,
+				truss-lock 0.3s ease-out 1.55s;
+		}
+
+		.truss-base {
+			animation: truss-fade 0.3s ease-out 0.1s both;
+		}
+
+		.truss-backdrop {
+			animation: truss-drop 0.9s cubic-bezier(0.65, 0, 0.35, 1) 1.75s both;
+		}
+
+		.truss-light::before,
+		.truss-light::after {
+			animation: truss-light-on 0.5s steps(2, end) both;
+			animation-delay: calc(2.6s + var(--n, 0) * 0.15s);
+		}
+
+		.truss-light:nth-child(2) {
+			--n: 1;
+		}
+
+		.truss-light:nth-child(3) {
+			--n: 2;
+		}
+
+		.truss-light:nth-child(4) {
+			--n: 3;
+		}
+	}
+
+	@keyframes truss-rise {
+		from {
+			transform: scaleY(0);
+		}
+	}
+
+	@keyframes truss-span {
+		from {
+			transform: scaleX(0);
+		}
+	}
+
+	/* Batida da travessa ao encaixar nas colunas. */
+	@keyframes truss-lock {
+		40% {
+			transform: translateY(3px);
+		}
+	}
+
+	@keyframes truss-fade {
+		from {
+			opacity: 0;
+		}
+	}
+
+	@keyframes truss-drop {
+		from {
+			clip-path: inset(0 0 100% 0);
+		}
+		to {
+			clip-path: inset(0 0 0 0);
+		}
+	}
+
+	@keyframes truss-light-on {
+		from {
+			opacity: 0;
+		}
+	}
+
 	/* Mapa de sinal: imagem escurecida para o diagrama aparecer. */
 	.sig-map {
 		background: radial-gradient(ellipse at 50% 50%, rgb(3 5 9 / 0.35), rgb(3 5 9 / 0.7));
