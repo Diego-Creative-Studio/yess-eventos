@@ -7,6 +7,8 @@ interface Props {
 	animar?: boolean
 	/** Troca a bolinha por barras de equalizador animadas. */
 	equalizador?: boolean
+	/** Troca a bolinha por uma TV com a luz de standby piscando. */
+	tela?: boolean
 	'data-animate'?: string
 	class?: string
 }
@@ -18,6 +20,7 @@ const {
 	corBolinha = 'bg-foreground',
 	animar = false,
 	equalizador = false,
+	tela = false,
 	'data-animate': dataAnimate,
 	class: className,
 } = Astro.props
@@ -33,7 +36,13 @@ const {
 	]}
 >
 	{
-		equalizador ? (
+		tela ? (
+			<span class="tela relative flex shrink-0 flex-col items-center" aria-hidden="true">
+				<span class="block h-2.5 w-3.5 rounded-[2px] border-[1.5px] border-current" />
+				<span class="block h-0.5 w-1.5 bg-current" />
+				<span class:list={['tela__led absolute right-0.5 bottom-1.5 size-0.75 rounded-full', corBolinha]} />
+			</span>
+		) : equalizador ? (
 			<span class="equalizador flex h-3 shrink-0 items-end gap-0.5" aria-hidden="true">
 				<span class:list={['h-full w-0.75 rounded-full', corBolinha]} />
 				<span class:list={['h-full w-0.75 rounded-full', corBolinha]} />
@@ -75,6 +84,18 @@ const {
 		.equalizador > span:nth-child(4) {
 			animation-duration: 0.75s;
 			animation-delay: -0.2s;
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.tela__led {
+			animation: tela-standby 1.6s steps(1, end) infinite;
+		}
+	}
+
+	@keyframes tela-standby {
+		50% {
+			opacity: 0.2;
 		}
 	}
 

@@ -14,6 +14,8 @@ interface Props {
 	painelLed?: boolean
 	/** Feixes de luz de moving head varrendo o hero, com o título aceso. */
 	showDeLuz?: boolean
+	/** Mostra a imagem num videowall 2×2 de TVs que ligam em sequência. */
+	videowall?: boolean
 	descricao: string
 	imagem: ImageMetadata
 	textoAlternativoImagem: string
@@ -29,6 +31,7 @@ const {
 	varianteTitulo = 'padrao',
 	painelLed = false,
 	showDeLuz = false,
+	videowall = false,
 	descricao,
 	imagem,
 	textoAlternativoImagem,
@@ -49,7 +52,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			'relative mx-auto grid w-full grid-cols-1 overflow-hidden rounded-hero bg-linear-to-b from-background via-primary-soft to-violet lg:max-w-345 lg:grid-cols-[1.1fr_1fr] lg:bg-linear-to-r',
 			varianteTitulo === 'tvs-monitores' ? 'lg:min-h-170' : 'lg:min-h-184',
 			painelLed && 'led-panel',
-			showDeLuz && 'light-stage',
+			(showDeLuz || videowall) && 'light-stage',
 		]}
 		data-light-hero={showDeLuz || undefined}
 	>
@@ -58,7 +61,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			class="relative isolate z-30 flex min-w-0 items-center overflow-hidden px-6 py-10 max-[359px]:px-4 md:px-10 lg:items-start lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
 		>
 			{
-				!painelLed && !showDeLuz && (
+				!painelLed && !showDeLuz && !videowall && (
 					<LightHalo
 						data-animate={false}
 						class="bottom-10 left-16"
@@ -154,9 +157,9 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 						preload="metadata"
 						poster={imagem.src}
 						class:list={[
-					'pointer-events-none absolute inset-0 size-full object-cover',
-					!painelLed && 'lg:rounded-l-3xl',
-				]}
+							'pointer-events-none absolute inset-0 size-full object-cover',
+							!painelLed && !videowall && 'lg:rounded-l-3xl',
+						]}
 					>
 						{videoWebm && <source src={videoWebm} type="video/webm" />}
 						{videoMp4 && <source src={videoMp4} type="video/mp4" />}
@@ -169,12 +172,31 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 				alt={textoAlternativoImagem}
 				class:list={[
 					'pointer-events-none absolute inset-0 size-full object-cover',
-					!painelLed && 'lg:rounded-l-3xl',
+					!painelLed && !videowall && 'lg:rounded-l-3xl',
 				]}
 				loading="eager"
 			/>
 			<!-- Grade de pixels por cima da imagem, como se ela passasse no painel. -->
-			{painelLed && <span aria-hidden="true" class="led-pixels pointer-events-none absolute inset-0" />}
+			{
+				painelLed && (
+					<span aria-hidden="true" class="led-pixels pointer-events-none absolute inset-0" />
+				)
+			}
+			<!-- Videowall: molduras das 4 TVs por cima da imagem, que continua de uma tela para outra. -->
+			{
+				videowall && (
+					<span
+						aria-hidden="true"
+						class="tv-wall pointer-events-none absolute inset-0 z-5 grid grid-cols-2 grid-rows-2"
+					>
+						<span class="tv-tile" />
+						<span class="tv-tile" />
+						<span class="tv-tile" />
+						<span class="tv-tile" />
+						<span class="tv-glare" />
+					</span>
+				)
+			}
 			{
 				temVideo && (
 					<button
@@ -198,10 +220,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 
 		{
 			showDeLuz && (
-				<div
-					aria-hidden="true"
-					class="pointer-events-none absolute inset-0 z-40 overflow-hidden"
-				>
+				<div aria-hidden="true" class="pointer-events-none absolute inset-0 z-40 overflow-hidden">
 					<span class="light-fog" />
 					<span class="light-rig left-[12%]">
 						<span class="light-lens light-lens--1" />
@@ -226,6 +245,179 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 </section>
 
 <style>
+	/* Videowall: cada TV tem moldura fina; as emendas pretas dividem a imagem. */
+	.tv-wall {
+		--tv-gap: 6px;
+		--tv-radius: 10px;
+		/* Canto das TVs da borda acompanha o arredondamento do hero. */
+		--tv-radius-edge: calc(var(--radius-hero) - var(--tv-gap));
+		overflow: hidden;
+		gap: var(--tv-gap);
+		padding: var(--tv-gap);
+		/* Moldura e emendas pretas, para não vazar imagem onde as TVs se encontram. */
+		background:
+			linear-gradient(#07090d, #07090d) center / var(--tv-gap) 100% no-repeat,
+			linear-gradient(#07090d, #07090d) center / 100% var(--tv-gap) no-repeat;
+		box-shadow: inset 0 0 0 var(--tv-gap) #07090d;
+	}
+
+	/* A sombra preta em volta preenche as emendas e os cantos, deixando a TV arredondada. */
+	.tv-tile {
+		position: relative;
+		overflow: hidden;
+		border-radius: var(--tv-radius);
+		box-shadow:
+			0 0 0 var(--tv-gap) #07090d,
+			inset 0 0 0 1px rgb(255 255 255 / 0.1),
+			inset 0 0 24px rgb(0 0 0 / 0.45);
+	}
+
+	/* No celular o videowall fica embaixo: arredonda os cantos de baixo. */
+	.tv-tile:nth-child(3) {
+		border-bottom-left-radius: var(--tv-radius-edge);
+	}
+
+	.tv-tile:nth-child(4) {
+		border-bottom-right-radius: var(--tv-radius-edge);
+	}
+
+	/* Abertura da tela a partir do meio (0% = apagada, 50% = toda aberta). */
+	@property --tv-open {
+		syntax: '<percentage>';
+		inherits: false;
+		initial-value: 50%;
+	}
+
+	/* Tela apagada que se abre a partir do meio, como uma TV ligando. */
+	.tv-tile::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: #020305;
+		--tv-mask: linear-gradient(
+			to bottom,
+			#000 calc(50% - var(--tv-open)),
+			transparent calc(50% - var(--tv-open)),
+			transparent calc(50% + var(--tv-open)),
+			#000 calc(50% + var(--tv-open))
+		);
+		-webkit-mask-image: var(--tv-mask);
+		mask-image: var(--tv-mask);
+	}
+
+	/* Linha branca que aparece no meio antes da imagem abrir. */
+	.tv-tile::after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 0;
+		width: 100%;
+		height: 2px;
+		margin-top: -1px;
+		background: #e8f0ff;
+		box-shadow: 0 0 12px 2px rgb(156 195 255 / 0.8);
+		opacity: 0;
+	}
+
+	/* Reflexo do vidro passando pelas telas. */
+	.tv-glare {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			115deg,
+			transparent 35%,
+			rgb(255 255 255 / 0.1) 45%,
+			rgb(255 255 255 / 0.03) 52%,
+			transparent 60%
+		);
+		background-size: 250% 100%;
+		background-position: 120% 0;
+		mix-blend-mode: screen;
+	}
+
+	/* No desktop o videowall fica à direita: arredonda os cantos da direita. */
+	@media (min-width: 1024px) {
+		.tv-wall {
+			--tv-gap: 8px;
+		}
+
+		.tv-tile:nth-child(3) {
+			border-bottom-left-radius: var(--tv-radius);
+		}
+
+		.tv-tile:nth-child(2) {
+			border-top-right-radius: var(--tv-radius-edge);
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.tv-tile::before {
+			animation: tv-cover 1.1s cubic-bezier(0.65, 0, 0.35, 1) both;
+		}
+
+		.tv-tile::after {
+			animation: tv-line 1.1s ease-out both;
+		}
+
+		.tv-tile:nth-child(2)::before,
+		.tv-tile:nth-child(2)::after {
+			animation-delay: 0.18s;
+		}
+
+		.tv-tile:nth-child(3)::before,
+		.tv-tile:nth-child(3)::after {
+			animation-delay: 0.36s;
+		}
+
+		.tv-tile:nth-child(4)::before,
+		.tv-tile:nth-child(4)::after {
+			animation-delay: 0.54s;
+		}
+
+		.tv-glare {
+			animation: tv-glare 8s ease-in-out 1.8s infinite;
+		}
+	}
+
+	@keyframes tv-cover {
+		0%,
+		35% {
+			--tv-open: 0%;
+		}
+		100% {
+			--tv-open: 50%;
+		}
+	}
+
+	@keyframes tv-line {
+		0% {
+			opacity: 0;
+			transform: scaleX(0);
+		}
+		25% {
+			opacity: 1;
+			transform: scaleX(1);
+		}
+		45% {
+			opacity: 1;
+		}
+		70%,
+		100% {
+			opacity: 0;
+			transform: scaleX(1);
+		}
+	}
+
+	@keyframes tv-glare {
+		0% {
+			background-position: 120% 0;
+		}
+		35%,
+		100% {
+			background-position: -20% 0;
+		}
+	}
+
 	/* Palco escuro: a luz só aparece de verdade no preto. */
 	.light-stage {
 		background: radial-gradient(ellipse at 50% 0%, #0c1424 0%, #05070c 55%, #030408 100%);
@@ -405,7 +597,6 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 		}
 	}
 
-
 	/* Painel de LED: fundo com os pixels apagados, texto aceso em pontos e brilho. */
 	.led-panel {
 		--led-pitch: 3px;
@@ -419,8 +610,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			/* Emendas dos módulos do painel. */
 			linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
 			linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px),
-			/* LEDs apagados. */
-			radial-gradient(circle, rgb(255 255 255 / 0.07) 0.6px, transparent 0.9px);
+			/* LEDs apagados. */ radial-gradient(circle, rgb(255 255 255 / 0.07) 0.6px, transparent 0.9px);
 		background-size:
 			25% 100%,
 			100% 25%,
@@ -429,8 +619,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			/* Borda externa e interna da moldura. */
 			0 0 0 1px rgb(255 255 255 / 0.1),
 			inset 0 0 0 1px rgb(0 0 0 / 0.9),
-			/* Sombra da tela e luz que ela projeta. */
-			inset 0 0 40px rgb(0 0 0 / 0.7),
+			/* Sombra da tela e luz que ela projeta. */ inset 0 0 40px rgb(0 0 0 / 0.7),
 			0 30px 60px -24px rgb(0 0 0 / 0.9),
 			0 0 70px -12px rgb(38 120 255 / 0.5);
 	}
