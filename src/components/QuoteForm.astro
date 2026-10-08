@@ -1,15 +1,40 @@
 ---
-import { quoteServices } from '@/data/event-equipment'
+import Icon from '@/components/Icon.astro'
+import { quoteAudience, quoteEquipmentOptions, quoteServices } from '@/data/event-equipment'
+import site from '@/data/site.json'
 interface Props {
 	service?: string | string[]
 	city?: string
 	district?: string
+	/** Lista completa de equipamentos (páginas de equipamento) em vez das 4 opções. */
+	detalhado?: boolean
 }
-const { service = '', city = '', district = '' } = Astro.props
-const selected = new Set([service].flat().filter(Boolean))
+const { service = '', city = '', district = '', detalhado = false } = Astro.props
+const options = detalhado ? quoteEquipmentOptions : quoteServices
+const requested = new Set([service].flat().filter(Boolean))
+// Marca a opção que corresponde ao serviço ou equipamento da página.
+const selected = new Set(
+	options
+		.filter((item) => requested.has(item.value) || item.matches.some((m) => requested.has(m)))
+		.map((item) => item.value),
+)
+const local = [district, city].filter(Boolean).join(', ')
 // Configure a validated form receiver and the confirmed business phone before launch.
 const endpoint = import.meta.env.PUBLIC_QUOTE_ENDPOINT ?? ''
-const whatsapp = (import.meta.env.PUBLIC_WHATSAPP_NUMBER ?? '').replace(/\D/g, '')
+// Número com DDI e DDD, só dígitos (ex.: 5511999999999). Edite em src/data/site.json.
+const whatsapp = (import.meta.env.PUBLIC_WHATSAPP_NUMBER || site.whatsapp || '').replace(/\D/g, '')
+// Mensagem já começa com o contexto da página (serviço e local).
+// Minúscula só na primeira letra de palavras comuns ("Som" → "som"; "TVs" e "LED" ficam iguais).
+const softLower = (text: string) =>
+	/^\p{Lu}\p{Ll}/u.test(text) ? text[0].toLowerCase() + text.slice(1) : text
+const needs = options.filter((item) => selected.has(item.value)).map((item) => softLower(item.name))
+const whatsappText = [
+	'Olá! Quero um orçamento para um evento',
+	needs.length ? ` (${needs.join(', ')})` : '',
+	local ? ` em ${local}` : '',
+	'.',
+].join('')
+const whatsappUrl = whatsapp ? `https://wa.me/${whatsapp}?text=${encodeURIComponent(whatsappText)}` : ''
 const fieldClass =
 	'mt-2 w-full rounded-xl border border-stroke/20 bg-foreground p-3 text-surface placeholder:text-stroke/75 focus:border-primary focus:outline-2 focus:outline-primary'
 ---
@@ -32,7 +57,16 @@ const fieldClass =
 			data-ready={Boolean(endpoint)}
 			class="mt-8 space-y-6"
 		>
-			<div class="grid gap-5 md:grid-cols-2">
+			<!-- Armadilha anti-spam: invisível para pessoas; robôs preenchem e o FormSubmit descarta. -->
+			<input
+				type="text"
+				name="_honey"
+				tabindex="-1"
+				autocomplete="off"
+				aria-hidden="true"
+				class="absolute left-[-9999px] h-px w-px opacity-0"
+			/>
+			<div class="grid gap-5 md:grid-cols-3">
 				<label
 					>Nome (obrigatório)<input
 						class={fieldClass}
@@ -53,69 +87,73 @@ const fieldClass =
 					/></label
 				>
 				<label
-					>E-mail (obrigatório)<input
+					>E-mail (opcional)<input
 						class={fieldClass}
 						name="email"
 						type="email"
 						autocomplete="email"
-						required
 						maxlength="200"
 					/></label
 				>
+			</div>
+			<div class="grid gap-5 md:grid-cols-3">
 				<label
-					>Empresa (opcional)<input
+					>Data do evento<input
 						class={fieldClass}
-						name="company"
-						autocomplete="organization"
-						maxlength="160"
-					/></label
-				>
-				<label
-					>Cidade do evento (obrigatório)<input
-						class={fieldClass}
-						name="city"
-						value={city}
+						name="date"
+						type="date"
+						data-quote-date
 						required
-						maxlength="120"
 					/></label
 				>
 				<label
-					>Bairro ou distrito (opcional)<input
-						class={fieldClass}
-						name="district"
-						value={district}
-						maxlength="120"
-					/></label
+					>Quantas pessoas?<select class={fieldClass} name="audience" required>
+						<option value="" disabled selected>Selecione</option>
+						{quoteAudience.map((faixa) => <option>{faixa}</option>)}
+					</select></label
 				>
 				<label
-					>Data ou período (opcional)<input
+					>Local do evento<input
 						class={fieldClass}
-						name="period"
-						placeholder="Ex.: 15 e 16 de novembro"
-						maxlength="120"
+						name="location"
+						value={local}
+						required
+						maxlength="160"
+						placeholder="Cidade, bairro ou espaço"
 					/></label
 				>
 			</div>
-			<fieldset
-				><legend>Quais soluções seu evento precisa? Selecione uma ou mais opções.</legend>
-				<div class="mt-4 grid gap-3 md:grid-cols-2 lg:grid-cols-3"
-					>{
-						quoteServices.map((item) => (
-							<label class="flex cursor-pointer items-start gap-3 rounded-xl border border-stroke/20 bg-foreground p-3 transition-colors hover:border-primary has-checked:border-primary has-checked:bg-primary/10">
-								<>
-									<input
-										type="checkbox"
-										name="services"
-										value={item.value}
-										checked={selected.has(item.value)}
-										class="mt-1 size-4 accent-primary"
-									/>
-									<span>{item.name}</span>
-								</>
+			<fieldset data-quote-services>
+				<legend>O que você precisa? Marque uma ou mais opções.</legend>
+				<div
+					class:list={[
+						'mt-4 grid gap-3 sm:grid-cols-2',
+						detalhado ? 'lg:grid-cols-3' : 'lg:grid-cols-4',
+					]}
+				>
+					{
+						options.map((item) => (
+							<label class="flex cursor-pointer items-start gap-3 rounded-xl border border-stroke/20 bg-foreground p-4 transition-colors hover:border-primary has-checked:border-primary has-checked:bg-primary/10">
+								<input
+									type="checkbox"
+									name="services"
+									value={item.name}
+									data-value={item.value}
+									data-matches={item.matches.join(' ')}
+									checked={selected.has(item.value)}
+									class="mt-1 size-4 accent-primary"
+								/>
+								<span>
+									<span class:list={['block', !detalhado && 'font-semibold']}>{item.name}</span>
+									{item.hint && <span class="block text-sm text-stroke/80">{item.hint}</span>}
+								</span>
 							</label>
 						))
-					}</div
-				>
+					}
+				</div>
+				<p data-quote-services-error hidden class="mt-3 text-sm font-semibold text-red-700">
+					Marque pelo menos uma opção.
+				</p>
 			</fieldset>
 			<label class="block"
 				>Detalhes do evento (opcional)<textarea
@@ -123,12 +161,29 @@ const fieldClass =
 					name="message"
 					rows={4}
 					maxlength="3000"
-					placeholder="Tipo de evento, público estimado, espaço e outras necessidades."
+					placeholder="Tipo de evento, horários, estrutura ou outras informações."
 				></textarea></label
 			>
-			<p class="text-sm text-stroke/85"
-				>Os dados serão utilizados para responder ao seu pedido de orçamento.</p
-			>
+			<div class="rounded-xl border border-stroke/20 bg-foreground/60 p-4 text-sm leading-6">
+				<p class="font-semibold">Duas formas de enviar:</p>
+				<ul class="mt-1 list-disc space-y-1 pl-5">
+					<li>
+						<strong>Solicitar orçamento:</strong> envie o formulário e a equipe da YESS entra em contato
+						com você.
+					</li>
+					{
+						whatsappUrl && (
+							<li>
+								<strong>WhatsApp:</strong> para algo mais rápido, use o botão abaixo. O que você
+								preencher aqui (opções, data, público e local) já vai junto na mensagem.
+							</li>
+						)
+					}
+				</ul>
+				<p class="mt-2 text-stroke/85">
+					Os dados serão utilizados apenas para responder ao seu pedido de orçamento.
+				</p>
+			</div>
 			{
 				!endpoint && (
 					<p role="status" class="rounded-xl border border-primary/25 bg-primary/5 p-4 text-stroke">
@@ -145,10 +200,25 @@ const fieldClass =
 			>
 		</form>
 		{
-			whatsapp && (
-				<a href={`https://wa.me/${whatsapp}`} class="mt-6 inline-block text-primary underline">
-					Prefere conversar? Fale diretamente pelo WhatsApp.
-				</a>
+			whatsappUrl && (
+				<div class="mt-8 flex flex-col items-center gap-4 border-t border-stroke/25 pt-8 text-center md:flex-row md:justify-between md:text-left">
+					<div>
+						<p class="font-title text-lg font-semibold">Prefere falar direto?</p>
+						<p class="mt-1 text-sm text-stroke/85">
+							Chame a equipe no WhatsApp. As opções que você marcou acima já vão na mensagem.
+						</p>
+					</div>
+					<a
+						href={whatsappUrl}
+						data-quote-whatsapp={whatsapp}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-full border-2 border-[#1f9d55] px-7 py-3.5 font-semibold text-[#14713c] transition-colors hover:bg-[#1f9d55] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1f9d55] md:w-auto"
+					>
+						<Icon name="whatsapp" class="size-5" />
+						Falar pelo WhatsApp
+					</a>
+				</div>
 			)
 		}
 	</div>
@@ -156,16 +226,65 @@ const fieldClass =
 <script>
 	document.querySelectorAll<HTMLFormElement>('[data-quote-form]').forEach((form) => {
 		const params = new URLSearchParams(window.location.search)
-		for (const name of ['city', 'district']) {
-			const input = form.querySelector<HTMLInputElement>(`input[name="${name}"]`)
-			if (input && params.has(name)) input.value = params.get(name)!.slice(0, 120)
-		}
+		const location = form.querySelector<HTMLInputElement>('input[name="location"]')
+		const fromUrl = [params.get('district'), params.get('city')].filter(Boolean).join(', ')
+		if (location && fromUrl) location.value = fromUrl.slice(0, 160)
+
+		const boxes = [...form.querySelectorAll<HTMLInputElement>('input[name="services"]')]
 		const service = params.get('service')
 		if (service)
-			form.querySelectorAll<HTMLInputElement>('input[name="services"]').forEach((input) => {
-				input.checked = input.value === service
+			boxes.forEach((box) => {
+				box.checked =
+					box.dataset.value === service || (box.dataset.matches ?? '').split(' ').includes(service)
 			})
-		if (form.dataset.ready !== 'true')
-			form.addEventListener('submit', (event) => event.preventDefault())
+
+		// Não deixa escolher uma data que já passou.
+		const date = form.querySelector<HTMLInputElement>('[data-quote-date]')
+		if (date) {
+			const today = new Date()
+			today.setMinutes(today.getMinutes() - today.getTimezoneOffset())
+			date.min = today.toISOString().slice(0, 10)
+		}
+
+		// O link do WhatsApp leva o que a pessoa já preencheu no formulário.
+		const whatsappLink = form
+			.closest('section')
+			?.querySelector<HTMLAnchorElement>('[data-quote-whatsapp]')
+		const field = (name: string) =>
+			form.querySelector<HTMLInputElement | HTMLSelectElement>(`[name="${name}"]`)?.value.trim() ??
+			''
+		const updateWhatsapp = () => {
+			if (!whatsappLink) return
+			const softLower = (text: string) =>
+				/^\p{Lu}\p{Ll}/u.test(text) ? text[0].toLowerCase() + text.slice(1) : text
+			const needs = boxes.filter((box) => box.checked).map((box) => softLower(box.value))
+			const [year, month, day] = field('date').split('-')
+			const parts = ['Olá! Quero um orçamento para um evento']
+			if (needs.length) parts.push(` (${needs.join(', ')})`)
+			if (field('location')) parts.push(` em ${field('location')}`)
+			if (day) parts.push(`, no dia ${day}/${month}/${year}`)
+			if (field('audience')) parts.push(`, para ${field('audience').toLowerCase()}`)
+			parts.push('.')
+			whatsappLink.href = `https://wa.me/${whatsappLink.dataset.quoteWhatsapp}?text=${encodeURIComponent(parts.join(''))}`
+		}
+		form.addEventListener('input', updateWhatsapp)
+		form.addEventListener('change', updateWhatsapp)
+		updateWhatsapp()
+
+		const error = form.querySelector<HTMLElement>('[data-quote-services-error]')
+		boxes.forEach((box) =>
+			box.addEventListener('change', () => {
+				if (error && boxes.some((b) => b.checked)) error.hidden = true
+			}),
+		)
+		form.addEventListener('submit', (event) => {
+			if (!boxes.some((box) => box.checked)) {
+				event.preventDefault()
+				if (error) error.hidden = false
+				boxes[0]?.focus()
+				return
+			}
+			if (form.dataset.ready !== 'true') event.preventDefault()
+		})
 	})
 </script>

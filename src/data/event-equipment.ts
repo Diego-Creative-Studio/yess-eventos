@@ -46,13 +46,55 @@ export const eventEquipment = [
 	},
 ] as const
 
+/**
+ * O que o evento precisa, nas 4 opções pedidas pelo cliente.
+ * `matches` liga os serviços e equipamentos das páginas à opção que já vem marcada.
+ */
 export const quoteServices = [
-	{ value: 'painel-de-led', name: 'Painel de LED P2 e P3' },
-	{ value: 'sonorizacao', name: 'Sonorização' },
-	{ value: 'iluminacao', name: 'Iluminação' },
-	...eventEquipment.map(({ slug, name }) => ({ value: slug, name })),
-	{ value: 'estruturas', name: 'Estruturas e cenografia' },
-	{ value: 'projetos', name: 'Projetos técnicos e 3D' },
-	{ value: 'sonoplastia', name: 'Sonoplastia' },
-	{ value: 'orientacao', name: 'Preciso de orientação / pacote completo' },
+	{
+		value: 'som',
+		name: 'Som',
+		hint: 'P.A., microfones e mesa',
+		matches: ['sonorizacao', 'sonoplastia', 'caixas-de-som', 'microfones'],
+	},
+	{
+		value: 'luz',
+		name: 'Luz',
+		hint: 'Moving heads e iluminação cênica',
+		matches: ['iluminacao', 'moving-heads'],
+	},
+	{
+		value: 'video',
+		name: 'Vídeo',
+		hint: 'Painel de LED, TVs e projetores',
+		matches: ['painel-de-led', 'tvs', 'projetores-epson'],
+	},
+	{
+		value: 'projetos',
+		name: 'Projetos',
+		hint: 'Projeto técnico, 3D e estrutura',
+		matches: ['projetos', 'estruturas'],
+	},
+]
+
+/** Lista detalhada, usada só no formulário das páginas de equipamento. */
+export const quoteEquipmentOptions = [
+	{ value: 'painel-de-led', name: 'Painel de LED P2 e P3', hint: '', matches: [] as string[] },
+	{ value: 'sonorizacao', name: 'Sonorização', hint: '', matches: [] as string[] },
+	{ value: 'iluminacao', name: 'Iluminação', hint: '', matches: [] as string[] },
+	...eventEquipment.map(({ slug, name }) => ({ value: slug, name, hint: '', matches: [] as string[] })),
+	{ value: 'estruturas', name: 'Estruturas e cenografia', hint: '', matches: [] as string[] },
+	{ value: 'projetos', name: 'Projetos técnicos e 3D', hint: '', matches: [] as string[] },
+	{ value: 'sonoplastia', name: 'Sonoplastia', hint: '', matches: [] as string[] },
+	{ value: 'orientacao', name: 'Preciso de orientação / pacote completo', hint: '', matches: [] as string[] },
+]
+
+/** Faixas de público para a pergunta "Quantas pessoas?". */
+export const quoteAudience = [
+	'Até 50 pessoas',
+	'50 a 100 pessoas',
+	'100 a 300 pessoas',
+	'300 a 500 pessoas',
+	'500 a 1.000 pessoas',
+	'Mais de 1.000 pessoas',
 ]
