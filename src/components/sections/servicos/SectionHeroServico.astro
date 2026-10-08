@@ -16,6 +16,8 @@ interface Props {
 	showDeLuz?: boolean
 	/** Mostra a imagem num videowall 2×2 de TVs que ligam em sequência. */
 	videowall?: boolean
+	/** Diagrama de sinal ligando LED, som, luz e TVs a uma operação central. */
+	mapaSinal?: boolean
 	descricao: string
 	imagem: ImageMetadata
 	textoAlternativoImagem: string
@@ -32,6 +34,7 @@ const {
 	painelLed = false,
 	showDeLuz = false,
 	videowall = false,
+	mapaSinal = false,
 	descricao,
 	imagem,
 	textoAlternativoImagem,
@@ -42,6 +45,15 @@ const {
 } = Astro.props
 
 const temVideo = Boolean(videoMp4 || videoWebm)
+
+/** Pontos do mapa de sinal, em % da área da imagem. */
+const pontosSinal = [
+	{ rotulo: 'Painel de LED', x: 22, y: 22 },
+	{ rotulo: 'Som', x: 78, y: 20 },
+	{ rotulo: 'Iluminação', x: 20, y: 78 },
+	{ rotulo: 'TVs', x: 80, y: 76 },
+]
+const centroSinal = { x: 50, y: 50 }
 const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 ---
 
@@ -52,7 +64,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			'relative mx-auto grid w-full grid-cols-1 overflow-hidden rounded-hero bg-linear-to-b from-background via-primary-soft to-violet lg:max-w-345 lg:grid-cols-[1.1fr_1fr] lg:bg-linear-to-r',
 			varianteTitulo === 'tvs-monitores' ? 'lg:min-h-170' : 'lg:min-h-184',
 			painelLed && 'led-panel',
-			(showDeLuz || videowall) && 'light-stage',
+			(showDeLuz || videowall || mapaSinal) && 'light-stage',
 		]}
 		data-light-hero={showDeLuz || undefined}
 	>
@@ -61,7 +73,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			class="relative isolate z-30 flex min-w-0 items-center overflow-hidden px-6 py-10 max-[359px]:px-4 md:px-10 lg:items-start lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
 		>
 			{
-				!painelLed && !showDeLuz && !videowall && (
+				!painelLed && !showDeLuz && !videowall && !mapaSinal && (
 					<LightHalo
 						data-animate={false}
 						class="bottom-10 left-16"
@@ -182,6 +194,59 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 					<span aria-hidden="true" class="led-pixels pointer-events-none absolute inset-0" />
 				)
 			}
+			<!-- Mapa de sinal: cada sistema ligado à operação central por um "cabo" com sinal correndo. -->
+			{
+				mapaSinal && (
+					<div class="sig-map pointer-events-none absolute inset-0 z-5">
+						<svg
+							class="absolute inset-0 size-full"
+							viewBox="0 0 100 100"
+							preserveAspectRatio="none"
+							aria-hidden="true"
+						>
+							{pontosSinal.map((ponto, indice) => (
+								<g class={`sig-link sig-link--${indice + 1}`} style={`--i: ${indice}`}>
+									<line
+										class="sig-line"
+										x1={ponto.x}
+										y1={ponto.y}
+										x2={centroSinal.x}
+										y2={centroSinal.y}
+										pathLength="100"
+									/>
+									<line
+										class="sig-pulse"
+										x1={ponto.x}
+										y1={ponto.y}
+										x2={centroSinal.x}
+										y2={centroSinal.y}
+										pathLength="100"
+									/>
+								</g>
+							))}
+						</svg>
+						<span
+							class="sig-hub absolute flex -translate-1/2 flex-col items-center justify-center rounded-full font-title text-white"
+							style={`left: ${centroSinal.x}%; top: ${centroSinal.y}%`}
+						>
+							<span class="text-sm font-extrabold tracking-wide">YESS</span>
+							<span class="text-[0.6rem] tracking-widest text-white/70 uppercase">Operação</span>
+						</span>
+						<ul aria-label="Sistemas integrados">
+							{pontosSinal.map((ponto, indice) => (
+								<li
+									class={`sig-node sig-node--${indice + 1} pointer-events-auto absolute flex -translate-1/2 items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold whitespace-nowrap backdrop-blur-sm md:text-sm`}
+									style={`left: ${ponto.x}%; top: ${ponto.y}%; --i: ${indice}`}
+								>
+									<span class="sig-dot size-2 shrink-0 rounded-full" aria-hidden="true" />
+									{ponto.rotulo}
+									<span class="sig-check text-primary" aria-hidden="true">✓</span>
+								</li>
+							))}
+						</ul>
+					</div>
+				)
+			}
 			<!-- Videowall: molduras das 4 TVs por cima da imagem, que continua de uma tela para outra. -->
 			{
 				videowall && (
@@ -245,6 +310,136 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 </section>
 
 <style>
+	/* Mapa de sinal: imagem escurecida para o diagrama aparecer. */
+	.sig-map {
+		background: radial-gradient(ellipse at 50% 50%, rgb(3 5 9 / 0.35), rgb(3 5 9 / 0.7));
+	}
+
+	.sig-line {
+		stroke: rgb(156 195 255 / 0.55);
+		stroke-width: 0.3;
+		stroke-dasharray: 100;
+		stroke-dashoffset: 0;
+	}
+
+	.sig-pulse {
+		stroke: #7fb0ff;
+		stroke-width: 0.7;
+		stroke-linecap: round;
+		stroke-dasharray: 6 94;
+		opacity: 0;
+		filter: drop-shadow(0 0 4px #2678ff);
+	}
+
+	.sig-hub {
+		width: 5.5rem;
+		height: 5.5rem;
+		background: radial-gradient(circle, #1b4fd1, #0a1d4a);
+		border: 1px solid rgb(127 176 255 / 0.6);
+		box-shadow:
+			0 0 0 6px rgb(38 120 255 / 0.12),
+			0 0 40px rgb(38 120 255 / 0.55);
+	}
+
+	.sig-node {
+		color: #eaf2ff;
+		border-color: rgb(127 176 255 / 0.5);
+		background: rgb(5 8 14 / 0.75);
+		transition:
+			border-color 0.25s,
+			box-shadow 0.25s;
+	}
+
+	.sig-dot {
+		background: #2678ff;
+		box-shadow: 0 0 8px #2678ff;
+	}
+
+	/* Passar o mouse num sistema destaca o cabo dele. */
+	.sig-node:hover {
+		border-color: #7fb0ff;
+		box-shadow: 0 0 18px rgb(38 120 255 / 0.55);
+	}
+
+	.sig-map:has(.sig-node--1:hover) .sig-link--1 .sig-line,
+	.sig-map:has(.sig-node--2:hover) .sig-link--2 .sig-line,
+	.sig-map:has(.sig-node--3:hover) .sig-link--3 .sig-line,
+	.sig-map:has(.sig-node--4:hover) .sig-link--4 .sig-line {
+		stroke: #9cc3ff;
+		stroke-width: 0.5;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		/* Cada cabo se desenha até o centro, um depois do outro. */
+		.sig-line {
+			animation: sig-draw 0.7s ease-out both;
+			animation-delay: calc(0.3s + var(--i) * 0.35s);
+		}
+
+		/* O sistema acende quando o sinal chega. */
+		.sig-node {
+			animation: sig-node-on 0.5s ease-out both;
+			animation-delay: calc(0.85s + var(--i) * 0.35s);
+		}
+
+		.sig-check {
+			animation: sig-check 0.4s ease-out both;
+			animation-delay: calc(1s + var(--i) * 0.35s);
+		}
+
+		/* Depois, o sinal fica correndo pelos cabos. */
+		.sig-pulse {
+			opacity: 1;
+			animation: sig-pulse 2.4s linear infinite;
+			animation-delay: calc(2.2s + var(--i) * 0.6s);
+			stroke-dashoffset: 100;
+		}
+
+		.sig-hub {
+			animation: sig-hub 3s ease-in-out 2s infinite;
+		}
+	}
+
+	@keyframes sig-draw {
+		from {
+			stroke-dashoffset: 100;
+		}
+	}
+
+	@keyframes sig-node-on {
+		from {
+			opacity: 0.25;
+			border-color: rgb(127 176 255 / 0.15);
+		}
+		60% {
+			box-shadow: 0 0 22px rgb(38 120 255 / 0.7);
+		}
+	}
+
+	@keyframes sig-check {
+		from {
+			opacity: 0;
+			transform: scale(0.4);
+		}
+	}
+
+	@keyframes sig-pulse {
+		from {
+			stroke-dashoffset: 100;
+		}
+		to {
+			stroke-dashoffset: 0;
+		}
+	}
+
+	@keyframes sig-hub {
+		50% {
+			box-shadow:
+				0 0 0 12px rgb(38 120 255 / 0.06),
+				0 0 56px rgb(38 120 255 / 0.7);
+		}
+	}
+
 	/* Videowall: cada TV tem moldura fina; as emendas pretas dividem a imagem. */
 	.tv-wall {
 		--tv-gap: 6px;

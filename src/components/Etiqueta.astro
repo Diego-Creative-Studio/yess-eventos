@@ -9,6 +9,8 @@ interface Props {
 	equalizador?: boolean
 	/** Troca a bolinha por uma TV com a luz de standby piscando. */
 	tela?: boolean
+	/** Troca a bolinha por uma luz vermelha de "ao vivo". */
+	aoVivo?: boolean
 	'data-animate'?: string
 	class?: string
 }
@@ -21,6 +23,7 @@ const {
 	animar = false,
 	equalizador = false,
 	tela = false,
+	aoVivo = false,
 	'data-animate': dataAnimate,
 	class: className,
 } = Astro.props
@@ -36,7 +39,12 @@ const {
 	]}
 >
 	{
-		tela ? (
+		aoVivo ? (
+			<span class="relative flex size-2.5 shrink-0" aria-hidden="true">
+				<span class="absolute inset-0 rounded-full bg-red-500 motion-safe:animate-ping" />
+				<span class="relative size-2.5 rounded-full bg-red-500 shadow-[0_0_8px] shadow-red-500" />
+			</span>
+		) : tela ? (
 			<span class="tela relative flex shrink-0 flex-col items-center" aria-hidden="true">
 				<span class="block h-2.5 w-3.5 rounded-[2px] border-[1.5px] border-current" />
 				<span class="block h-0.5 w-1.5 bg-current" />
