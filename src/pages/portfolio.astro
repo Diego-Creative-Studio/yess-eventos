@@ -3,6 +3,7 @@ import { Image } from 'astro:assets'
 
 import SectionChamadaServico from '@/components/sections/servicos/SectionChamadaServico.astro'
 import Layout from '@/layouts/Layout.astro'
+import PortfolioIntro from '@/components/PortfolioIntro.astro'
 
 import imagemHero from '@/assets/portfolio/projeto-painel.jpg'
 import imagemCasePrincipal from '@/assets/painel-led/projeto-estrutura-integrada.jpg'
@@ -49,6 +50,7 @@ const projetos = [
 	headerClass="bg-background"
 >
 	<main id="conteudo" class="overflow-hidden bg-background">
+		<PortfolioIntro />
 		<section class="relative px-3 pt-6 pb-12 md:px-8 lg:h-[940px] lg:px-16 lg:pt-16 lg:pb-24">
 			<div
 				data-portfolio-reveal
@@ -76,6 +78,7 @@ const projetos = [
 				</p>
 
 				<div
+					data-portfolio-hero-text
 					class="absolute right-6 bottom-15 left-6 text-center lg:right-9 lg:bottom-19 lg:left-9 lg:text-left"
 				>
 					<p class="font-title text-xl font-semibold text-foreground uppercase lg:text-2xl">
