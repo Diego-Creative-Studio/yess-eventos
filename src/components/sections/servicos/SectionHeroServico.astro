@@ -49,6 +49,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			'relative mx-auto grid w-full grid-cols-1 overflow-hidden rounded-hero bg-linear-to-b from-background via-primary-soft to-violet lg:max-w-345 lg:grid-cols-[1.1fr_1fr] lg:bg-linear-to-r',
 			varianteTitulo === 'tvs-monitores' ? 'lg:min-h-170' : 'lg:min-h-184',
 			painelLed && 'led-panel',
+			showDeLuz && 'light-stage',
 		]}
 		data-light-hero={showDeLuz || undefined}
 	>
@@ -57,7 +58,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			class="relative isolate z-30 flex min-w-0 items-center overflow-hidden px-6 py-10 max-[359px]:px-4 md:px-10 lg:items-start lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
 		>
 			{
-				!painelLed && (
+				!painelLed && !showDeLuz && (
 					<LightHalo
 						data-animate={false}
 						class="bottom-10 left-16"
@@ -201,16 +202,21 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 					aria-hidden="true"
 					class="pointer-events-none absolute inset-0 z-40 overflow-hidden"
 				>
+					<span class="light-fog" />
 					<span class="light-rig left-[12%]">
+						<span class="light-lens light-lens--1" />
 						<span class="light-beam light-beam--1" />
 					</span>
 					<span class="light-rig left-[40%]">
+						<span class="light-lens light-lens--2" />
 						<span class="light-beam light-beam--2" />
 					</span>
 					<span class="light-rig left-[66%] max-lg:hidden">
+						<span class="light-lens light-lens--3" />
 						<span class="light-beam light-beam--3" />
 					</span>
 					<span data-light-follow class="light-rig light-rig--follow left-[88%]">
+						<span class="light-lens light-lens--4" />
 						<span class="light-beam light-beam--4" />
 					</span>
 				</div>
@@ -220,6 +226,38 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 </section>
 
 <style>
+	/* Palco escuro: a luz só aparece de verdade no preto. */
+	.light-stage {
+		background: radial-gradient(ellipse at 50% 0%, #0c1424 0%, #05070c 55%, #030408 100%);
+	}
+
+	/* Lente do moving head, de onde o feixe sai. */
+	.light-lens {
+		position: absolute;
+		top: 4%;
+		left: -0.6rem;
+		z-index: 1;
+		width: 1.2rem;
+		height: 1.2rem;
+		border-radius: 999px;
+		background: radial-gradient(circle, #fff 0%, var(--beam) 45%, transparent 72%);
+		box-shadow: 0 0 24px 6px var(--beam);
+		opacity: 0.85;
+	}
+
+	/* Fumaça no chão, que se move devagar e deixa os feixes visíveis. */
+	.light-fog {
+		position: absolute;
+		inset: auto -20% 0;
+		height: 55%;
+		background:
+			radial-gradient(ellipse 40% 55% at 25% 90%, rgb(170 190 230 / 0.14), transparent 70%),
+			radial-gradient(ellipse 35% 45% at 70% 100%, rgb(150 160 230 / 0.12), transparent 70%),
+			radial-gradient(ellipse 50% 40% at 50% 100%, rgb(120 160 255 / 0.1), transparent 75%);
+		filter: blur(18px);
+		mix-blend-mode: screen;
+	}
+
 	/* Show de luz: cada feixe sai do topo, como um moving head, e varre a cena. */
 	.light-rig {
 		position: absolute;
@@ -257,6 +295,19 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 		clip-path: polygon(47% 0, 53% 0, 100% 100%, 0 100%);
 	}
 
+	/* Reflexo onde o feixe bate no chão. */
+	.light-beam::after {
+		content: '';
+		position: absolute;
+		top: calc(80% - 2.5rem);
+		left: 10%;
+		width: 80%;
+		height: 5rem;
+		border-radius: 50%;
+		background: radial-gradient(ellipse, var(--beam) 0%, transparent 70%);
+		opacity: 0.55;
+	}
+
 	@media (min-width: 1024px) {
 		.light-beam {
 			left: -13rem;
@@ -264,6 +315,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 		}
 	}
 
+	.light-lens--1,
 	.light-beam--1 {
 		--beam: #2678ff;
 		--from: -22deg;
@@ -271,6 +323,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 		--speed: 9s;
 	}
 
+	.light-lens--2,
 	.light-beam--2 {
 		--beam: #8b5cf6;
 		--from: 20deg;
@@ -278,6 +331,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 		--speed: 11s;
 	}
 
+	.light-lens--3,
 	.light-beam--3 {
 		--beam: #f58714;
 		--from: -12deg;
@@ -287,6 +341,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 	}
 
 	/* O quarto feixe não varre sozinho: segue o cursor no desktop. */
+	.light-lens--4,
 	.light-beam--4 {
 		--beam: #9cc3ff;
 		--from: 0deg;
@@ -302,9 +357,29 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			animation: beam-sweep var(--speed) ease-in-out infinite alternate;
 		}
 
+		.light-fog {
+			animation: fog-drift 24s ease-in-out infinite alternate;
+		}
+
+		.light-lens {
+			animation: lens-flicker 3s ease-in-out infinite alternate;
+		}
+
 		/* O título acende quando a luz passa por ele. */
 		.light-title {
 			animation: title-lit 9s ease-in-out infinite;
+		}
+	}
+
+	@keyframes fog-drift {
+		to {
+			transform: translateX(12%);
+		}
+	}
+
+	@keyframes lens-flicker {
+		to {
+			opacity: 0.6;
 		}
 	}
 
