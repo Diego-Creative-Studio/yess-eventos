@@ -1,5 +1,6 @@
 ---
-import Icon from '@/components/Icon.astro'
+import Button from '@/components/Button.astro'
+import LightHalo from '@/components/LightHalo.astro'
 import { quoteAudience, quoteEquipmentOptions, quoteServices } from '@/data/event-equipment'
 import site from '@/data/site.json'
 interface Props {
@@ -36,26 +37,37 @@ const whatsappText = [
 ].join('')
 const whatsappUrl = whatsapp ? `https://wa.me/${whatsapp}?text=${encodeURIComponent(whatsappText)}` : ''
 const fieldClass =
-	'mt-2 w-full rounded-xl border border-stroke/20 bg-foreground p-3 text-surface placeholder:text-stroke/75 focus:border-primary focus:outline-2 focus:outline-primary'
+	'mt-2 w-full rounded-small border border-white/20 bg-white/10 px-4 py-3.5 text-base font-normal text-foreground [color-scheme:dark] placeholder:text-muted transition-colors hover:border-primary/60 focus:border-primary focus:outline-2 focus:outline-primary/40'
+const labelClass = 'block text-sm font-semibold text-text-secondary'
 ---
 
-<section id="canais" class="px-3 py-12 md:px-8 lg:px-16" aria-labelledby="quote-title">
+<section id="canais" class="px-3 py-8 md:px-8 lg:px-16 lg:py-7.5" aria-labelledby="quote-title">
 	<div
-		class="mx-auto max-w-345 rounded-3xl border border-stroke/20 bg-muted p-6 text-surface md:p-10"
+		class="relative mx-auto w-full overflow-hidden rounded-3xl border-2 border-stroke bg-linear-to-br from-[#1c2b44] via-[#18304f] to-[#16407a] p-6 md:p-10 lg:max-w-345 lg:p-12"
 	>
-		<h2 id="quote-title" class="text-center text-3xl lg:text-left"
-			>Solicite um orçamento para seu evento</h2
-		>
-		<p class="mt-4 text-white"
-			>Produção e montagem audiovisual com entrega, instalação e acompanhamento técnico. Não
-			trabalhamos com retirada pelo cliente.</p
-		>
+		<LightHalo
+			data-animate={false}
+			class="top-0 right-0"
+			color="primary"
+			size="md"
+			intensity="medium"
+		/>
+		<div class="relative z-10 max-w-3xl text-center lg:text-left">
+			<p class="text-sm font-semibold text-warm uppercase">Orçamento</p>
+			<h2 id="quote-title" class="mt-2 text-3xl text-foreground lg:text-4xl">
+				Solicite um orçamento para seu evento
+			</h2>
+			<p class="mt-4 text-base text-muted lg:text-lg">
+				Produção e montagem audiovisual com entrega, instalação e acompanhamento técnico. Não
+				trabalhamos com retirada pelo cliente.
+			</p>
+		</div>
 		<form
 			action={endpoint || undefined}
 			method="post"
 			data-quote-form
 			data-ready={Boolean(endpoint)}
-			class="mt-8 space-y-6"
+			class="relative z-10 mt-8 space-y-6"
 		>
 			<!-- Armadilha anti-spam: invisível para pessoas; robôs preenchem e o FormSubmit descarta. -->
 			<input
@@ -67,7 +79,7 @@ const fieldClass =
 				class="absolute left-[-9999px] h-px w-px opacity-0"
 			/>
 			<div class="grid gap-5 md:grid-cols-3">
-				<label
+				<label class={labelClass}
 					>Nome (obrigatório)<input
 						class={fieldClass}
 						name="name"
@@ -76,7 +88,7 @@ const fieldClass =
 						maxlength="120"
 					/></label
 				>
-				<label
+				<label class={labelClass}
 					>WhatsApp (obrigatório)<input
 						class={fieldClass}
 						name="phone"
@@ -86,7 +98,7 @@ const fieldClass =
 						maxlength="30"
 					/></label
 				>
-				<label
+				<label class={labelClass}
 					>E-mail (opcional)<input
 						class={fieldClass}
 						name="email"
@@ -97,7 +109,7 @@ const fieldClass =
 				>
 			</div>
 			<div class="grid gap-5 md:grid-cols-3">
-				<label
+				<label class={labelClass}
 					>Data do evento<input
 						class={fieldClass}
 						name="date"
@@ -106,13 +118,17 @@ const fieldClass =
 						required
 					/></label
 				>
-				<label
-					>Quantas pessoas?<select class={fieldClass} name="audience" required>
+				<label class={labelClass}
+					>Quantas pessoas?<select
+						class:list={[fieldClass, '[&_option]:bg-[#1c2b44] [&_option]:text-foreground']}
+						name="audience"
+						required
+					>
 						<option value="" disabled selected>Selecione</option>
 						{quoteAudience.map((faixa) => <option>{faixa}</option>)}
 					</select></label
 				>
-				<label
+				<label class={labelClass}
 					>Local do evento<input
 						class={fieldClass}
 						name="location"
@@ -124,7 +140,9 @@ const fieldClass =
 				>
 			</div>
 			<fieldset data-quote-services>
-				<legend>O que você precisa? Marque uma ou mais opções.</legend>
+				<legend class="text-sm font-semibold text-text-secondary">
+					O que você precisa? <span class="font-normal text-muted">Marque uma ou mais opções.</span>
+				</legend>
 				<div
 					class:list={[
 						'mt-4 grid gap-3 sm:grid-cols-2',
@@ -133,7 +151,7 @@ const fieldClass =
 				>
 					{
 						options.map((item) => (
-							<label class="flex cursor-pointer items-start gap-3 rounded-xl border border-stroke/20 bg-foreground p-4 transition-colors hover:border-primary has-checked:border-primary has-checked:bg-primary/10">
+							<label class="flex cursor-pointer items-start gap-3 rounded-small border border-white/20 bg-white/[0.08] p-4 text-foreground transition-colors hover:border-primary/60 has-checked:border-primary has-checked:bg-primary/15 has-focus-visible:outline-2 has-focus-visible:outline-primary">
 								<input
 									type="checkbox"
 									name="services"
@@ -141,21 +159,21 @@ const fieldClass =
 									data-value={item.value}
 									data-matches={item.matches.join(' ')}
 									checked={selected.has(item.value)}
-									class="mt-1 size-4 accent-primary"
+									class="mt-0.5 size-4 shrink-0 accent-primary"
 								/>
 								<span>
 									<span class:list={['block', !detalhado && 'font-semibold']}>{item.name}</span>
-									{item.hint && <span class="block text-sm text-stroke/80">{item.hint}</span>}
+									{item.hint && <span class="mt-0.5 block text-sm text-muted">{item.hint}</span>}
 								</span>
 							</label>
 						))
 					}
 				</div>
-				<p data-quote-services-error hidden class="mt-3 text-sm font-semibold text-red-700">
+				<p data-quote-services-error hidden class="mt-3 text-sm font-semibold text-red-400">
 					Marque pelo menos uma opção.
 				</p>
 			</fieldset>
-			<label class="block"
+			<label class={labelClass}
 				>Detalhes do evento (opcional)<textarea
 					class={fieldClass}
 					name="message"
@@ -164,60 +182,64 @@ const fieldClass =
 					placeholder="Tipo de evento, horários, estrutura ou outras informações."
 				></textarea></label
 			>
-			<div class="rounded-xl border border-stroke/20 bg-foreground/60 p-4 text-sm leading-6">
-				<p class="font-semibold">Duas formas de enviar:</p>
-				<ul class="mt-1 list-disc space-y-1 pl-5">
+			<div class="rounded-small border border-primary/30 bg-primary/10 p-5 text-sm leading-6 text-text-secondary">
+				<p class="font-semibold text-foreground">Duas formas de enviar:</p>
+				<ul class="mt-2 list-disc space-y-1 pl-5 marker:text-primary">
 					<li>
-						<strong>Solicitar orçamento:</strong> envie o formulário e a equipe da YESS entra em contato
+						<strong class="text-foreground">Solicitar orçamento:</strong> envie o formulário e a equipe da YESS entra em contato
 						com você.
 					</li>
 					{
 						whatsappUrl && (
 							<li>
-								<strong>WhatsApp:</strong> para algo mais rápido, use o botão abaixo. O que você
+								<strong class="text-foreground">WhatsApp:</strong> para algo mais rápido, use o botão abaixo. O que você
 								preencher aqui (opções, data, público e local) já vai junto na mensagem.
 							</li>
 						)
 					}
 				</ul>
-				<p class="mt-2 text-stroke/85">
+				<p class="mt-2 text-muted">
 					Os dados serão utilizados apenas para responder ao seu pedido de orçamento.
 				</p>
 			</div>
 			{
 				!endpoint && (
-					<p role="status" class="rounded-xl border border-primary/25 bg-primary/5 p-4 text-stroke">
+					<p role="status" class="rounded-small border border-warm/40 bg-warm/10 p-4 text-sm text-text-secondary">
 						O envio do formulário ainda está em configuração. Nenhum pedido será enviado nesta
 						prévia.
 					</p>
 				)
 			}
-			<button
+			<Button
+				label="Solicitar orçamento"
 				type="submit"
 				disabled={!endpoint}
-				class="rounded-full bg-primary px-8 py-4 font-semibold text-white hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-50"
-				>Solicitar orçamento</button
-			>
+				arrow
+				animation="shine"
+				class="w-full disabled:cursor-not-allowed disabled:opacity-50 md:w-auto"
+			/>
 		</form>
 		{
 			whatsappUrl && (
-				<div class="mt-8 flex flex-col items-center gap-4 border-t border-stroke/25 pt-8 text-center md:flex-row md:justify-between md:text-left">
+				<div class="relative z-10 mt-8 flex flex-col items-center gap-5 border-t border-white/15 pt-8 text-center md:flex-row md:justify-between md:text-left">
 					<div>
-						<p class="font-title text-lg font-semibold">Prefere falar direto?</p>
-						<p class="mt-1 text-sm text-stroke/85">
+						<p class="font-title text-lg font-semibold text-foreground">Prefere falar direto?</p>
+						<p class="mt-1 text-sm text-muted">
 							Chame a equipe no WhatsApp. As opções que você marcou acima já vão na mensagem.
 						</p>
 					</div>
-					<a
+					<Button
+						label="Falar pelo WhatsApp"
 						href={whatsappUrl}
 						data-quote-whatsapp={whatsapp}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-full border-2 border-[#1f9d55] px-7 py-3.5 font-semibold text-[#14713c] transition-colors hover:bg-[#1f9d55] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1f9d55] md:w-auto"
-					>
-						<Icon name="whatsapp" class="size-5" />
-						Falar pelo WhatsApp
-					</a>
+						variant="whatsapp"
+						icon="whatsapp"
+						iconPosition="left"
+						animation="shine"
+						class="w-full shrink-0 md:w-auto"
+					/>
 				</div>
 			)
 		}

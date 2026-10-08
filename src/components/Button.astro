@@ -6,7 +6,7 @@ interface Props {
 	href?: string
 	type?: 'button' | 'submit' | 'reset'
 	id?: string
-	variant?: 'primary' | 'outline' | 'tertiary' | 'alternative'
+	variant?: 'primary' | 'outline' | 'tertiary' | 'alternative' | 'whatsapp'
 	animation?: 'none' | 'shine'
 	arrow?: boolean
 	whatsapp?: boolean
@@ -16,6 +16,11 @@ interface Props {
 	'data-animate'?: 'fade' | 'fade-up' | 'fade-down' | 'fade-left' | 'fade-right' | 'scale'
 	'data-animate-delay'?: number
 	class?: string
+	target?: string
+	rel?: string
+	disabled?: boolean
+	/** Atributos data-* extras (ex.: para scripts). */
+	[attr: `data-${string}`]: string | number | boolean | undefined
 }
 
 const {
@@ -32,10 +37,15 @@ const {
 	'data-animate': dataAnimate,
 	'data-animate-delay': dataAnimateDelay,
 	class: className,
+	target,
+	rel,
+	disabled,
+	...attrs
 } = Astro.props
 
 const variants = {
 	primary: 'border-transparent bg-primary text-foreground hover:bg-primary-dark',
+	whatsapp: 'border-transparent bg-[#1a8f4c] text-white hover:bg-[#147a3f]',
 	outline:
 		'border-2 border-stroke bg-transparent text-foreground hover:border-primary hover:bg-primary-dark',
 	tertiary:
@@ -60,7 +70,11 @@ const Tag = href ? 'a' : 'button'
 <Tag
 	{id}
 	{href}
+	{target}
+	{rel}
+	disabled={href ? undefined : disabled}
 	type={href ? undefined : type}
+	{...attrs}
 	data-animate={dataAnimate}
 	data-animate-delay={dataAnimateDelay}
 	class:list={[
