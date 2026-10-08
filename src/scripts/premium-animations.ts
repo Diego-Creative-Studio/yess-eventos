@@ -8,6 +8,9 @@ gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin, Flip)
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+// Com parallax (±5%), a imagem fica um pouco ampliada para nunca mostrar as bordas.
+const restScale = (frame: HTMLElement) => (frame.hasAttribute('data-motion-parallax') ? 1.12 : 1)
+
 if (!reduceMotion) {
 	void document.fonts.ready.then(() => {
 		gsap.utils.toArray<HTMLElement>('[data-motion-title]').forEach((title) => {
@@ -63,7 +66,12 @@ if (!reduceMotion) {
 		)
 
 		if (image) {
-			timeline.fromTo(image, { scale: 1.12 }, { scale: 1, duration: 1.25, ease: 'power3.out' }, 0)
+			timeline.fromTo(
+				image,
+				{ scale: restScale(frame) + 0.12 },
+				{ scale: restScale(frame), duration: 1.25, ease: 'power3.out' },
+				0,
+			)
 		}
 	})
 
@@ -96,11 +104,21 @@ if (!reduceMotion) {
 			if (!image) return
 
 			const handleEnter = () => {
-				gsap.to(image, { scale: 1.04, duration: 0.5, ease: 'power3.out', overwrite: 'auto' })
+				gsap.to(image, {
+					scale: restScale(frame) + 0.04,
+					duration: 0.5,
+					ease: 'power3.out',
+					overwrite: 'auto',
+				})
 			}
 
 			const handleLeave = () => {
-				gsap.to(image, { scale: 1, duration: 0.55, ease: 'power3.out', overwrite: 'auto' })
+				gsap.to(image, {
+					scale: restScale(frame),
+					duration: 0.55,
+					ease: 'power3.out',
+					overwrite: 'auto',
+				})
 			}
 
 			frame.addEventListener('pointerenter', handleEnter)
