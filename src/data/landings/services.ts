@@ -2,15 +2,15 @@ import type { ImageMetadata } from 'astro'
 
 import type { LocationKind } from '@/data/landings/locations'
 
-import imagemAudiovisual from '@/assets/hero-home.png'
+import imagemAudiovisual from '@/assets/yess/hero-evento-iluminacao.jpg'
 import imagemCenografia from '@/assets/painel-led/projeto-estrutura-integrada.jpg'
-import imagemIluminacao from '@/assets/trabalhos/sonorizacao-iluminacao.png'
+import imagemIluminacao from '@/assets/yess/som-e-luz-show.jpg'
 import imagemPainelLed from '@/assets/painel-led/hero-painel-led.jpg'
 import imagemProjetos from '@/assets/painel-led/projeto-painel-corporativo.jpg'
 import imagemSomIluminacao from '@/assets/som-iluminacao/hero-som-iluminacao.jpg'
 import imagemSonoplastia from '@/assets/som-iluminacao/aplicacao-plenarias.jpg'
 import imagemSonorizacao from '@/assets/som-iluminacao/entrega-completa.jpg'
-import imagemTvs from '@/assets/tvs-monitores/c50bdbf544f1e24b84ab715a974c5f10d424fc0e.jpg'
+import imagemTvs from '@/assets/yess/tvs-pedestal.jpg'
 
 /**
  * Serviços das landing pages de serviço × local.

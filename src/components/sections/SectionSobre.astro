@@ -3,7 +3,7 @@ import { Image } from 'astro:assets'
 
 import Button from '@/components/Button.astro'
 import Icon from '@/components/Icon.astro'
-import imageAbout from '@/assets/sobre/sobre-a-empresa.png'
+import imageAbout from '@/assets/sobre/11c5379ee025181be2e20c3b982a46c0c5185ada.jpg'
 import LightHalo from '@/components/LightHalo.astro'
 
 const highlights = [
@@ -58,10 +58,11 @@ const highlights = [
 			data-motion-parallax
 			class="relative order-2 aspect-4/5 overflow-hidden rounded-3xl border-2 border-primary md:order-0 md:aspect-video xl:aspect-6/7 xl:w-149 xl:shrink-0"
 		>
-			<div class="absolute inset-0 xl:inset-auto xl:top-0 xl:-left-71.25 xl:h-175 xl:w-311">
+			<!-- Folga acima e abaixo para o parallax (±5%) não mostrar as bordas da foto. -->
+			<div class="absolute inset-x-0 -inset-y-[8%] xl:inset-auto xl:-top-20 xl:-left-71.25 xl:h-220 xl:w-311">
 				<Image
 					src={imageAbout}
-					alt="Público acompanhando uma apresentação corporativa em um palco com painéis de LED"
+					alt="Evento montado pela YESS com painel de LED exibindo a marca da empresa"
 					class="size-full object-cover"
 				/>
 			</div>
