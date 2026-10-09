@@ -3,23 +3,36 @@ import Icon from '@/components/Icon.astro'
 import Button from '@/components/Button.astro'
 import LightHalo from '@/components/LightHalo.astro'
 import site from '@/data/site.json'
+interface Props {
+	theme?: 'default' | 'dark'
+}
+const { theme = 'default' } = Astro.props
 ---
 
 <footer id="contato" class="px-3 pb-24 md:px-8 lg:px-16 lg:pb-0">
 	<div
-		class="relative mx-auto w-full overflow-hidden rounded-3xl border-2 border-primary bg-linear-30 from-[#0d121c] to-[#142b4a] px-6 py-10 md:px-8 lg:min-h-94.75 lg:max-w-345 lg:px-10 lg:py-8"
+		class:list={[
+			'relative mx-auto w-full overflow-hidden rounded-3xl border-2 px-6 py-10 md:px-8 lg:min-h-94.75 lg:max-w-345 lg:px-10 lg:py-8',
+			theme === 'dark'
+				? 'border-stroke bg-background'
+				: 'border-primary bg-linear-30 from-[#0d121c] to-[#142b4a]',
+		]}
 	>
 		<!-- A luz nasce abaixo da borda inferior e sobe até o meio quando o footer aparece. -->
-		<span data-footer-rise aria-hidden="true" class="pointer-events-none absolute inset-0">
-			<LightHalo
-				data-animate={false}
-				class="bottom-0 left-1/2"
-				color="primary"
-				size="lg"
-				intensity="strong"
-				float
-			/>
-		</span>
+		{
+			theme !== 'dark' && (
+				<span data-footer-rise aria-hidden="true" class="pointer-events-none absolute inset-0">
+					<LightHalo
+						data-animate={false}
+						class="bottom-0 left-1/2"
+						color="primary"
+						size="lg"
+						intensity="strong"
+						float
+					/>
+				</span>
+			)
+		}
 
 		<div
 			class="relative z-10 grid gap-10 text-center min-[420px]:grid-cols-2 min-[420px]:text-left xl:flex xl:min-h-52.5 xl:justify-between xl:gap-0"
@@ -143,7 +156,8 @@ import site from '@/data/site.json'
 					Atendimento direto • Resposta humana
 				</p>
 				<p class="text-muted normal-case">
-					© {new Date().getFullYear()} {site.legalName} · CNPJ {site.cnpj}. Todos os direitos reservados.
+					© {new Date().getFullYear()}
+					{site.legalName} · CNPJ {site.cnpj}. Todos os direitos reservados.
 				</p>
 				<p class="text-muted normal-case">
 					Desenvolvido por{' '}

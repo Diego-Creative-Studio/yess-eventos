@@ -54,6 +54,7 @@ const centro = 7
 			}
 		</div>
 
+		<div data-mosaic-shade aria-hidden="true" class="mosaic-shade pointer-events-none"></div>
 		<div data-mosaic-intro class="mosaic-overlay pointer-events-none">
 			<p class="text-sm font-semibold text-primary uppercase">Portfólio / Eventos reais</p>
 			<h1
@@ -112,8 +113,10 @@ const centro = 7
 		text-align: center;
 	}
 
-	.mosaic-overlay {
-		background: radial-gradient(ellipse at center, rgb(7 10 15 / 0.85), rgb(7 10 15 / 0.35) 75%);
+	.mosaic-shade {
+		position: absolute;
+		inset: 0;
+		background: radial-gradient(ellipse at center, rgb(7 10 15 / 0.7), rgb(7 10 15 / 0.2) 65%, transparent 100%);
 	}
 
 	.mosaic-outro {
@@ -126,6 +129,10 @@ const centro = 7
 	}
 
 	@media (min-width: 1024px) {
+		.mosaic-pin {
+			padding-top: 1.25rem;
+		}
+
 		.mosaic-grid {
 			grid-template-columns: repeat(5, minmax(0, 1fr));
 			gap: 0.75rem;
@@ -144,13 +151,19 @@ const centro = 7
 		}
 	}
 
-	/* Com animação: o mosaico ocupa a tela toda, centralizado, enquanto fica fixo. */
+	/* A abertura segue o espaçamento das outras páginas; o zoom centraliza a foto depois. */
 	[data-mosaic-ready] .mosaic-pin {
 		display: flex;
 		height: 100svh;
-		align-items: center;
+		align-items: flex-start;
 		justify-content: center;
-		padding: 0;
+		padding: 1rem 0 0;
+	}
+
+	@media (min-width: 1024px) {
+		[data-mosaic-ready] .mosaic-pin {
+			padding-top: 1.25rem;
+		}
 	}
 
 	[data-mosaic-ready] .mosaic-grid {
@@ -172,10 +185,21 @@ const centro = 7
 		const center = section.querySelector<HTMLElement>('[data-mosaic-cell="center"]')
 		const others = [...section.querySelectorAll<HTMLElement>('[data-mosaic-cell=""]')]
 		const intro = section.querySelector<HTMLElement>('[data-mosaic-intro]')
+		const shade = section.querySelector<HTMLElement>('[data-mosaic-shade]')
 		const outro = section.querySelector<HTMLElement>('[data-mosaic-outro]')
 		if (!pin || !grid || !center) return
 
 		section.setAttribute('data-mosaic-ready', '')
+
+		// O título acompanha a área das fotos, não a altura total da tela fixada.
+		const alignIntro = () => {
+			if (!intro) return
+			intro.style.top = `${grid.offsetTop}px`
+			intro.style.height = `${grid.offsetHeight}px`
+			intro.style.bottom = 'auto'
+		}
+		alignIntro()
+		new ResizeObserver(alignIntro).observe(grid)
 
 		// Quanto o mosaico precisa crescer para a foto do centro cobrir a tela.
 		const fillScale = () => {
@@ -194,24 +218,39 @@ const centro = 7
 			return `${x}px ${y}px`
 		}
 
+		// A fixação continua no topo, mas o zoom responde desde a primeira rolagem.
+		const pinTrigger = ScrollTrigger.create({
+			trigger: section,
+			start: 'top top',
+			end: () => `+=${window.innerHeight * 1.6}`,
+			pin,
+			invalidateOnRefresh: true,
+		})
+
 		gsap
 			.timeline({
 				defaults: { ease: 'none' },
 				scrollTrigger: {
 					trigger: section,
-					start: 'top top',
-					end: () => `+=${window.innerHeight * 1.6}`,
-					pin,
-					scrub: 0.8,
+					start: 0,
+					end: () => pinTrigger.end,
+					scrub: 0.35,
 					invalidateOnRefresh: true,
 				},
 			})
 			.to(intro, { autoAlpha: 0, y: -40, duration: 0.25 })
+			.to(shade, { autoAlpha: 0, duration: 0.2, ease: 'power1.out' }, 0)
 			.fromTo(
 				grid,
-				{ scale: 1, transformOrigin: origin },
-				{ scale: fillScale, transformOrigin: origin, duration: 1, ease: 'power2.inOut' },
-				0.1,
+				{ scale: 1, y: 0, transformOrigin: origin },
+				{
+					scale: fillScale,
+					y: () => pin.clientHeight / 2 - (grid.offsetTop + center.offsetTop + center.offsetHeight / 2),
+					transformOrigin: origin,
+					duration: 1,
+					ease: 'none',
+				},
+				0,
 			)
 			.to(others, { autoAlpha: 0.15, duration: 0.6 }, 0.35)
 			.to(center, { borderRadius: 0, duration: 0.4 }, 0.7)

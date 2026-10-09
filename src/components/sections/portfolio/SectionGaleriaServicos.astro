@@ -154,6 +154,7 @@ const fotos = await Promise.all(
 <script>
 	import { gsap } from 'gsap'
 	import { Flip } from 'gsap/Flip'
+	import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 	gsap.registerPlugin(Flip)
 
@@ -178,8 +179,14 @@ const fotos = await Promise.all(
 		})
 
 		// Filtro: os cards se reorganizam animados.
+		let filterAnimation: gsap.core.Timeline | undefined
+		const refreshLayout = () => {
+			window.lenis?.resize()
+			ScrollTrigger.refresh()
+		}
 		filters.forEach((button) =>
 			button.addEventListener('click', () => {
+				filterAnimation?.progress(1).kill()
 				const value = button.dataset.galleryFilter ?? 'todos'
 				filters.forEach((b) => b.setAttribute('aria-pressed', String(b === button)))
 				const state = Flip.getState(items)
@@ -187,12 +194,17 @@ const fotos = await Promise.all(
 					item.hidden =
 						value !== 'todos' && !(item.dataset.categories ?? '').split(' ').includes(value)
 				})
-				if (reduceMotion) return
-				Flip.from(state, {
+				if (reduceMotion) {
+					refreshLayout()
+					return
+				}
+				filterAnimation = Flip.from(state, {
 					duration: 0.7,
 					ease: 'power3.inOut',
 					scale: true,
-					absolute: true,
+					// Mantém a altura do grid no fluxo; não deixa o footer subir sobre as fotos.
+					absolute: false,
+					onComplete: refreshLayout,
 					stagger: 0.02,
 					onEnter: (els) =>
 						gsap.fromTo(els, { autoAlpha: 0, scale: 0.85 }, { autoAlpha: 1, scale: 1, duration: 0.5 }),

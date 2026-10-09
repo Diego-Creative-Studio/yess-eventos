@@ -16,6 +16,7 @@ interface Props {
 	type?: string
 	noindex?: boolean
 	headerClass?: string
+	footerTheme?: 'default' | 'dark'
 	animationDefault?: AnimationName
 	animationDuration?: number
 	animationDistance?: number
@@ -29,6 +30,7 @@ const {
 	type,
 	noindex,
 	headerClass,
+	footerTheme = 'default',
 	animationDefault = 'fade',
 	animationDuration = 1,
 	animationDistance = 32,
@@ -63,7 +65,10 @@ const {
 		<Font cssVariable="--font-inter" />
 	</head>
 	<body
-		class="bg-primary-soft font-sans text-white antialiased"
+		class:list={[
+			'font-sans text-white antialiased',
+			footerTheme === 'dark' ? 'bg-background' : 'bg-primary-soft',
+		]}
 		data-animate-default={animationDefault}
 		data-animate-duration={animationDuration}
 		data-animate-distance={animationDistance}
@@ -77,7 +82,7 @@ const {
 		</a>
 		<Header class={headerClass} />
 		<slot />
-		<Footer />
+		<Footer theme={footerTheme} />
 		<script>
 			import '@/scripts/smooth-scroll'
 			import '@/scripts/reveal-animations'

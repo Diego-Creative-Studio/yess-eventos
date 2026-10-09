@@ -1,7 +1,10 @@
 import type { ImageMetadata } from 'astro'
 
 /** Fotos reais de eventos da YESS usadas nas seções do portfólio. */
-const arquivos = import.meta.glob<{ default: ImageMetadata }>('../assets/portfolio/galeria/*.jpg', {
+const arquivos = import.meta.glob<{ default: ImageMetadata }>([
+	'../assets/portfolio/galeria/*.jpg',
+	'!../assets/portfolio/galeria/03-led-paineis-sequencia.jpg',
+], {
 	eager: true,
 })
 
@@ -19,7 +22,6 @@ export const categoriasGaleria: { value: CategoriaGaleria | 'todos'; label: stri
 const lista: { arquivo: string; categorias: CategoriaGaleria[]; alt: string }[] = [
 	{ arquivo: '01-led-luz-convencao-fumaca.jpg', categorias: ['led', 'luz'], alt: 'Convenção com painéis de LED, bandeiras em LED e feixes de luz na fumaça' },
 	{ arquivo: '02-led-convencao-moving-verde.jpg', categorias: ['led', 'luz'], alt: 'Palco de convenção com painéis de LED e moving heads verdes' },
-	{ arquivo: '03-led-paineis-sequencia.jpg', categorias: ['led'], alt: 'Palco com sequência de painéis de LED em rosa' },
 	{ arquivo: '04-led-show-operacao.jpg', categorias: ['led', 'luz', 'som'], alt: 'Show de luz e painéis de LED visto da mesa de operação' },
 	{ arquivo: '05-led-auditorio-feixes.jpg', categorias: ['led', 'luz'], alt: 'Auditório com painel de LED e feixes de luz cruzando o palco' },
 	{ arquivo: '06-led-show-cantora.jpg', categorias: ['led', 'luz'], alt: 'Apresentação musical com painel de LED e moving heads' },

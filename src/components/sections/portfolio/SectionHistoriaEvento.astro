@@ -154,6 +154,8 @@ const etapas = [
 
 	[data-story-ready] .story-stage {
 		position: relative;
+		isolation: isolate;
+		background: var(--color-background);
 		flex: 1;
 		min-height: 0;
 		margin-top: 1.5rem;
@@ -278,14 +280,15 @@ const etapas = [
 
 		// Estado inicial: só a primeira etapa à mostra.
 		steps.forEach((step, i) => gsap.set(step, { zIndex: i + 1 }))
-		medias.slice(1).forEach((media) => gsap.set(media, { clipPath: 'inset(100% 0% 0% 0%)' }))
+		medias.slice(1).forEach((media) => gsap.set(media, { autoAlpha: 0 }))
 		captions.slice(1).forEach((caption) => gsap.set(caption, { autoAlpha: 0, y: 24 }))
 		gsap.set(bars[0], { scaleX: 1 })
 
 		const timeline = gsap.timeline({
 			defaults: { ease: 'none' },
 			scrollTrigger: {
-				trigger: section,
+				// Fixa o bloco no topo, sem somar o padding externo da seção à altura da tela.
+				trigger: pin,
 				start: 'top top',
 				end: () => `+=${window.innerHeight * (steps.length - 1) * 0.9}`,
 				pin,
@@ -309,7 +312,7 @@ const etapas = [
 		for (let i = 1; i < steps.length; i++) {
 			timeline
 				.to(captions[i - 1], { autoAlpha: 0, y: -24, duration: 0.3 })
-				.to(medias[i], { clipPath: 'inset(0% 0% 0% 0%)', duration: 1, ease: 'power2.inOut' }, '<')
+				.to(medias[i], { autoAlpha: 1, duration: 1, ease: 'power2.inOut' }, '<')
 				.fromTo(
 					medias[i]?.querySelector('img, video') ?? [],
 					{ scale: 1.15 },
