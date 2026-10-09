@@ -36,7 +36,7 @@ const fotos = await Promise.all(
 							type="button"
 							data-gallery-filter={categoria.value}
 							aria-pressed={indice === 0 ? 'true' : 'false'}
-							class="rounded-full border border-stroke bg-surface/70 px-4 py-2.5 font-title text-sm font-semibold text-text-secondary transition-colors hover:border-primary hover:text-foreground aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-white"
+							class="cursor-pointer rounded-full border border-stroke bg-surface/70 px-4 py-2.5 font-title text-sm font-semibold text-text-secondary transition-colors hover:border-primary hover:text-foreground aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-white"
 						>
 							{categoria.label}
 							<span data-gallery-count class="ml-1 text-xs opacity-70" />
@@ -89,32 +89,32 @@ const fotos = await Promise.all(
 		class="fixed inset-0 z-100 flex items-center justify-center bg-background/95 p-4 backdrop-blur-md md:p-10"
 	>
 		<figure class="relative flex max-h-full w-full max-w-7xl flex-col items-center">
-			<img data-lightbox-img alt="" class="max-h-[78svh] w-auto max-w-full rounded-small object-contain" />
+			<img data-lightbox-img alt="" draggable="false" class="max-h-[78svh] w-auto max-w-full rounded-small object-contain" />
 			<figcaption data-lightbox-caption class="mt-4 text-center text-sm text-text-secondary md:text-base"></figcaption>
 		</figure>
 		<button
 			type="button"
 			data-lightbox-close
 			aria-label="Fechar"
-			class="absolute top-4 right-4 flex size-12 items-center justify-center rounded-full border border-white/20 bg-background/70 text-2xl text-white hover:border-primary md:top-6 md:right-6"
+			class="absolute top-4 right-4 flex size-12 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-background/70 p-0 text-white hover:border-primary focus-visible:outline-2 focus-visible:outline-primary md:top-6 md:right-6"
 		>
-			×
+			<svg aria-hidden="true" viewBox="0 0 24 24" class="block size-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 6 12 12M18 6 6 18" /></svg>
 		</button>
 		<button
 			type="button"
 			data-lightbox-prev
 			aria-label="Foto anterior"
-			class="absolute top-1/2 left-2 flex size-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-background/70 text-2xl text-white hover:border-primary md:left-6"
+			class="absolute top-1/2 left-2 flex size-12 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-background/70 p-0 text-white hover:border-primary focus-visible:outline-2 focus-visible:outline-primary md:left-6"
 		>
-			‹
+			<svg aria-hidden="true" viewBox="0 0 24 24" class="block size-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6" /></svg>
 		</button>
 		<button
 			type="button"
 			data-lightbox-next
 			aria-label="Próxima foto"
-			class="absolute top-1/2 right-2 flex size-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-background/70 text-2xl text-white hover:border-primary md:right-6"
+			class="absolute top-1/2 right-2 flex size-12 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-background/70 p-0 text-white hover:border-primary focus-visible:outline-2 focus-visible:outline-primary md:right-6"
 		>
-			›
+			<svg aria-hidden="true" viewBox="0 0 24 24" class="block size-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6" /></svg>
 		</button>
 	</div>
 </section>
@@ -134,6 +134,21 @@ const fotos = await Promise.all(
 
 	.gallery-item--tall {
 		grid-row: span 2;
+	}
+
+	@media (max-width: 767px) {
+		.gallery-grid {
+			grid-template-columns: minmax(0, 1fr);
+		}
+
+		.gallery-item--wide {
+			grid-column: auto;
+		}
+	}
+
+	[data-lightbox] {
+		/* A navegação por gesto é nossa; o zoom com dois dedos continua disponível. */
+		touch-action: pinch-zoom;
 	}
 
 	@media (min-width: 768px) {
@@ -271,11 +286,37 @@ const fotos = await Promise.all(
 			if (!reduceMotion) gsap.fromTo(bigImg, { autoAlpha: 0, x: 30 * dir }, { autoAlpha: 1, x: 0, duration: 0.35 })
 		}
 
+		let touchStart: { x: number; y: number; id: number } | null = null
+		let lastSwipe = 0
+		lightbox.addEventListener('touchstart', (event) => {
+			if (event.touches.length !== 1 || (event.target as Element).closest('button')) {
+				touchStart = null
+				return
+			}
+			const touch = event.touches[0]
+			touchStart = { x: touch.clientX, y: touch.clientY, id: touch.identifier }
+		}, { passive: true })
+		lightbox.addEventListener('touchend', (event) => {
+			const start = touchStart
+			touchStart = null
+			if (!start || event.touches.length || lightbox.hidden) return
+			const touch = [...event.changedTouches].find((touch) => touch.identifier === start.id)
+			if (!touch) return
+			const dx = touch.clientX - start.x
+			const dy = touch.clientY - start.y
+			const distance = Math.abs(dx) >= Math.abs(dy) ? dx : dy
+			if (Math.abs(distance) < 60) return
+			lastSwipe = performance.now()
+			step(distance < 0 ? 1 : -1)
+		}, { passive: true })
+		lightbox.addEventListener('touchcancel', () => { touchStart = null })
+
 		openers.forEach((opener) => opener.addEventListener('click', () => open(opener)))
 		lightbox.querySelector('[data-lightbox-close]')?.addEventListener('click', close)
 		lightbox.querySelector('[data-lightbox-prev]')?.addEventListener('click', () => step(-1))
 		lightbox.querySelector('[data-lightbox-next]')?.addEventListener('click', () => step(1))
 		lightbox.addEventListener('click', (event) => {
+			if (performance.now() - lastSwipe < 400) return
 			if (event.target === lightbox) close()
 		})
 		document.addEventListener('keydown', (event) => {
