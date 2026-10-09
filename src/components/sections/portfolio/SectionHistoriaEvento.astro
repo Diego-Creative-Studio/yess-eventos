@@ -1,0 +1,324 @@
+---
+import { Image } from 'astro:assets'
+
+import imagemMontagem from '@/assets/yess/historia-01-montagem.jpg'
+import imagemPronto from '@/assets/yess/historia-02-pronto.jpg'
+import imagemAbertura from '@/assets/yess/historia-03-abertura.jpg'
+import imagemFesta from '@/assets/yess/historia-04-festa.jpg'
+
+const etapas = [
+	{
+		titulo: 'Montagem e testes',
+		texto: 'Box Truss, painel de LED e luz instalados. O painel roda o sinal de teste antes de tudo.',
+		imagem: imagemMontagem,
+		alt: 'Salão em montagem com painel de LED exibindo sinal de teste e pista de LED',
+	},
+	{
+		titulo: 'Pronto para receber',
+		texto: 'Conteúdo no painel, iluminação ajustada e salão preparado para a chegada do público.',
+		imagem: imagemPronto,
+		alt: 'Salão de gala montado com palco, painéis de LED e mesas preparadas',
+	},
+	{
+		titulo: 'Abertura',
+		texto: 'Som, imagem e luz em operação para a cerimônia e a mesa de autoridades.',
+		imagem: imagemAbertura,
+		alt: 'Cerimônia de abertura com mesa no palco, painéis de LED e público',
+	},
+	{
+		titulo: 'A festa',
+		texto: 'Moving heads, painel e som acompanham o ritmo da noite, com a equipe operando até o fim.',
+		imagem: imagemFesta,
+		alt: 'Festa com feixes de moving heads, painel de LED e público na pista',
+		video: '/videos/evento-iluminacao',
+	},
+]
+---
+
+<!--
+	Um evento real contado em 4 etapas. Com movimento, a seção fica fixa enquanto a
+	pessoa rola e cada etapa revela a próxima. Sem JS ou com "reduzir movimento",
+	as etapas aparecem em sequência normal.
+-->
+<section data-story class="relative px-3 py-12 md:px-8 lg:px-16" aria-labelledby="historia-titulo">
+	<div class="mx-auto w-full max-w-345">
+		<div data-story-pin class="story-pin">
+			<header class="story-header">
+				<p class="text-sm font-semibold text-primary uppercase">Bastidores / APCEESP + FENAE</p>
+				<h2
+					id="historia-titulo"
+					class="mt-3 text-3xl leading-[1.06] font-extrabold tracking-[-0.02em] text-foreground uppercase md:text-5xl lg:text-[56px]"
+				>
+					Do salão vazio ao evento.
+				</h2>
+			</header>
+
+			<div class="story-stage">
+				<ol class="story-list">
+					{
+						etapas.map((etapa, indice) => (
+							<li data-story-step class="story-step">
+								<div data-story-media class="story-media">
+									{etapa.video ? (
+										<video
+											data-story-video
+											muted
+											playsinline
+											loop
+											preload="none"
+											poster={etapa.imagem.src}
+											aria-label={etapa.alt}
+											class="size-full object-cover"
+										>
+											<source src={`${etapa.video}.webm`} type="video/webm" />
+											<source src={`${etapa.video}.mp4`} type="video/mp4" />
+										</video>
+									) : (
+										<Image
+											src={etapa.imagem}
+											alt={etapa.alt}
+											widths={[640, 1080, 1600]}
+											sizes="(min-width: 1380px) 1380px, 100vw"
+											class="size-full object-cover"
+										/>
+									)}
+								</div>
+								<div data-story-caption class="story-caption">
+									<p class="font-title text-sm font-semibold text-primary">
+										{String(indice + 1).padStart(2, '0')} / {String(etapas.length).padStart(2, '0')}
+									</p>
+									<h3 class="mt-2 text-2xl font-bold text-foreground uppercase lg:text-4xl">
+										{etapa.titulo}
+									</h3>
+									<p class="mt-2 max-w-110 text-sm leading-6 text-text-secondary lg:text-base">
+										{etapa.texto}
+									</p>
+								</div>
+							</li>
+						))
+					}
+				</ol>
+
+				<div class="story-progress" aria-hidden="true">
+					{
+						etapas.map((etapa) => (
+							<span class="story-progress__item">
+								<span class="story-progress__bar">
+									<span data-story-bar class="story-progress__fill" />
+								</span>
+								<span class="story-progress__label">{etapa.titulo}</span>
+							</span>
+						))
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	/* Layout padrão (sem JS ou com "reduzir movimento"): etapas uma embaixo da outra. */
+	.story-stage {
+		margin-top: 2.5rem;
+	}
+
+	.story-list {
+		display: grid;
+		gap: 2.5rem;
+	}
+
+	.story-media {
+		position: relative;
+		aspect-ratio: 16 / 9;
+		overflow: hidden;
+		border-radius: 1.5rem;
+		border: 1px solid var(--color-stroke);
+	}
+
+	.story-caption {
+		margin-top: 1rem;
+	}
+
+	.story-progress {
+		display: none;
+	}
+
+	/* Com animação: tudo empilhado num "palco" que fica fixo na tela. */
+	[data-story-ready] .story-pin {
+		display: flex;
+		height: 100svh;
+		flex-direction: column;
+		/* Embaixo fica livre para o botão flutuante "Menu" do celular. */
+		padding-block: 5rem 6.5rem;
+	}
+
+	[data-story-ready] .story-stage {
+		position: relative;
+		flex: 1;
+		min-height: 0;
+		margin-top: 1.5rem;
+		overflow: hidden;
+		border-radius: 1.5rem;
+		border: 1px solid var(--color-stroke);
+	}
+
+	[data-story-ready] .story-list,
+	[data-story-ready] .story-step,
+	[data-story-ready] .story-media {
+		position: absolute;
+		inset: 0;
+	}
+
+	[data-story-ready] .story-media {
+		aspect-ratio: auto;
+		border: 0;
+		border-radius: 0;
+	}
+
+	/* Escurece a base da imagem para a legenda ficar legível. */
+	[data-story-ready] .story-media::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(to top, rgb(7 10 15 / 0.92), rgb(7 10 15 / 0.2) 45%, transparent 70%);
+	}
+
+	[data-story-ready] .story-caption {
+		position: absolute;
+		right: 1.25rem;
+		bottom: 4.75rem;
+		left: 1.25rem;
+		margin: 0;
+	}
+
+	[data-story-ready] .story-progress {
+		position: absolute;
+		right: 1.25rem;
+		bottom: 1.25rem;
+		left: 1.25rem;
+		z-index: 5;
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 0.5rem;
+	}
+
+	.story-progress__bar {
+		display: block;
+		height: 3px;
+		overflow: hidden;
+		border-radius: 999px;
+		background: rgb(255 255 255 / 0.2);
+	}
+
+	.story-progress__fill {
+		display: block;
+		height: 100%;
+		background: var(--color-primary);
+		box-shadow: 0 0 10px var(--color-primary);
+		transform: scaleX(0);
+		transform-origin: left;
+	}
+
+	.story-progress__label {
+		display: none;
+		margin-top: 0.5rem;
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: rgb(245 247 250 / 0.7);
+		text-transform: uppercase;
+	}
+
+	@media (min-width: 1024px) {
+		[data-story-ready] .story-pin {
+			padding-block: 5.5rem 1.5rem;
+		}
+	}
+
+	@media (min-width: 768px) {
+		[data-story-ready] .story-caption {
+			right: auto;
+			bottom: 6rem;
+			left: 2.5rem;
+		}
+
+		[data-story-ready] .story-progress {
+			right: 2.5rem;
+			bottom: 2rem;
+			left: 2.5rem;
+			gap: 1rem;
+		}
+
+		.story-progress__label {
+			display: block;
+		}
+	}
+</style>
+
+<script>
+	import { gsap } from 'gsap'
+	import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+	gsap.registerPlugin(ScrollTrigger)
+
+	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+	document.querySelectorAll<HTMLElement>('[data-story]').forEach((section) => {
+		if (reduceMotion) return
+
+		const pin = section.querySelector<HTMLElement>('[data-story-pin]')
+		const steps = [...section.querySelectorAll<HTMLElement>('[data-story-step]')]
+		const bars = [...section.querySelectorAll<HTMLElement>('[data-story-bar]')]
+		const video = section.querySelector<HTMLVideoElement>('[data-story-video]')
+		if (!pin || steps.length < 2) return
+
+		section.setAttribute('data-story-ready', '')
+
+		const medias = steps.map((step) => step.querySelector<HTMLElement>('[data-story-media]'))
+		const captions = steps.map((step) => step.querySelector<HTMLElement>('[data-story-caption]'))
+
+		// Estado inicial: só a primeira etapa à mostra.
+		steps.forEach((step, i) => gsap.set(step, { zIndex: i + 1 }))
+		medias.slice(1).forEach((media) => gsap.set(media, { clipPath: 'inset(100% 0% 0% 0%)' }))
+		captions.slice(1).forEach((caption) => gsap.set(caption, { autoAlpha: 0, y: 24 }))
+		gsap.set(bars[0], { scaleX: 1 })
+
+		const timeline = gsap.timeline({
+			defaults: { ease: 'none' },
+			scrollTrigger: {
+				trigger: section,
+				start: 'top top',
+				end: () => `+=${window.innerHeight * (steps.length - 1) * 0.9}`,
+				pin,
+				scrub: 0.6,
+				snap: { snapTo: 'labels', duration: 0.5, ease: 'power2.inOut' },
+				invalidateOnRefresh: true,
+				// Fora da seção o vídeo fica parado.
+				onLeave: () => video?.pause(),
+				onLeaveBack: () => video?.pause(),
+				onUpdate: (self) => {
+					if (!video) return
+					// O vídeo da última etapa só toca quando ela está aberta.
+					if (self.isActive && self.progress > 0.8) {
+						if (video.paused) void video.play().catch(() => {})
+					} else if (!video.paused) video.pause()
+				},
+			},
+		})
+
+		timeline.addLabel('etapa-1')
+		for (let i = 1; i < steps.length; i++) {
+			timeline
+				.to(captions[i - 1], { autoAlpha: 0, y: -24, duration: 0.3 })
+				.to(medias[i], { clipPath: 'inset(0% 0% 0% 0%)', duration: 1, ease: 'power2.inOut' }, '<')
+				.fromTo(
+					medias[i]?.querySelector('img, video') ?? [],
+					{ scale: 1.15 },
+					{ scale: 1, duration: 1, ease: 'power2.out' },
+					'<',
+				)
+				.to(bars[i], { scaleX: 1, duration: 1 }, '<')
+				.to(captions[i], { autoAlpha: 1, y: 0, duration: 0.4 }, '-=0.35')
+				.addLabel(`etapa-${i + 1}`)
+		}
+	})
+</script>

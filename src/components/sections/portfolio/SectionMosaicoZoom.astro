@@ -1,0 +1,220 @@
+---
+import { Image } from 'astro:assets'
+import { fotoGaleria } from '@/data/portfolio-galeria'
+
+// 15 fotos em 5 colunas × 3 linhas; a do meio (8ª) é a que ganha a tela.
+const prefixos = [
+	'09',
+	'17',
+	'05',
+	'28',
+	'33',
+	'22',
+	'06',
+	'01',
+	'12',
+	'30',
+	'34',
+	'15',
+	'02',
+	'29',
+	'18',
+]
+const fotos = prefixos.map(fotoGaleria)
+const centro = 7
+---
+
+<!--
+	Mosaico de eventos que dá zoom na foto do centro ao rolar, até ela ocupar a tela.
+	Sem JS ou com "reduzir movimento", fica um mosaico estático.
+-->
+<section data-mosaic class="relative" aria-labelledby="mosaico-titulo">
+	<div data-mosaic-pin class="mosaic-pin relative overflow-hidden">
+		<div data-mosaic-grid class="mosaic-grid">
+			{
+				fotos.map((foto, indice) => (
+					<div
+						data-mosaic-cell={indice === centro ? 'center' : ''}
+						class:list={[
+							'mosaic-cell',
+							(indice % 5 === 0 || indice % 5 === 4) && 'mosaic-cell--outer',
+						]}
+					>
+						<Image
+							src={foto.imagem}
+							alt={indice === centro ? foto.alt : ''}
+							aria-hidden={indice === centro ? undefined : 'true'}
+							widths={indice === centro ? [800, 1400, 2000, 2400] : [400, 640]}
+							sizes={indice === centro ? '100vw' : '(min-width: 1024px) 20vw, 33vw'}
+							loading={indice === centro ? 'eager' : 'lazy'}
+							class="size-full object-cover"
+						/>
+					</div>
+				))
+			}
+		</div>
+
+		<div data-mosaic-intro class="mosaic-overlay pointer-events-none">
+			<p class="text-sm font-semibold text-primary uppercase">Portfólio / Eventos reais</p>
+			<h1
+				id="mosaico-titulo"
+				class="mt-3 text-4xl leading-[1.02] font-extrabold tracking-[-0.02em] text-foreground uppercase md:text-6xl lg:text-[88px]"
+			>
+				Cada evento,<br />uma entrega.
+			</h1>
+			<p class="mt-5 text-sm font-semibold text-text-secondary uppercase md:text-base">
+				Role para entrar ↓
+			</p>
+		</div>
+
+		<div data-mosaic-outro class="mosaic-outro pointer-events-none">
+			<p class="font-title text-sm font-semibold text-primary uppercase">Na prática</p>
+			<p
+				class="mt-3 max-w-180 text-3xl leading-tight font-bold text-foreground uppercase md:text-5xl"
+			>
+				Painel de LED, som, luz e estrutura num só projeto.
+			</p>
+		</div>
+	</div>
+</section>
+
+<style>
+	.mosaic-pin {
+		padding: 1rem 0.75rem;
+	}
+
+	.mosaic-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 0.5rem;
+	}
+
+	.mosaic-cell {
+		/* Em pé no celular para o mosaico preencher a tela; deitadas no desktop. */
+		aspect-ratio: 3 / 4;
+		overflow: hidden;
+		border-radius: 0.75rem;
+	}
+
+	.mosaic-cell--outer {
+		display: none;
+	}
+
+	.mosaic-overlay,
+	.mosaic-outro {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: 1.5rem;
+		text-align: center;
+	}
+
+	.mosaic-overlay {
+		background: radial-gradient(ellipse at center, rgb(7 10 15 / 0.85), rgb(7 10 15 / 0.35) 75%);
+	}
+
+	.mosaic-outro {
+		justify-content: flex-end;
+		align-items: flex-start;
+		padding: 2rem 1.5rem 7rem;
+		text-align: left;
+		background: linear-gradient(to top, rgb(7 10 15 / 0.85), transparent 55%);
+		opacity: 0;
+	}
+
+	@media (min-width: 1024px) {
+		.mosaic-grid {
+			grid-template-columns: repeat(5, minmax(0, 1fr));
+			gap: 0.75rem;
+		}
+
+		.mosaic-cell--outer {
+			display: block;
+		}
+
+		.mosaic-cell {
+			aspect-ratio: 4 / 3;
+		}
+
+		.mosaic-outro {
+			padding: 4rem;
+		}
+	}
+
+	/* Com animação: o mosaico ocupa a tela toda, centralizado, enquanto fica fixo. */
+	[data-mosaic-ready] .mosaic-pin {
+		display: flex;
+		height: 100svh;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
+	}
+
+	[data-mosaic-ready] .mosaic-grid {
+		width: min(100vw - 1.5rem, 1600px);
+	}
+</style>
+
+<script>
+	import { gsap } from 'gsap'
+	import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+	gsap.registerPlugin(ScrollTrigger)
+
+	document.querySelectorAll<HTMLElement>('[data-mosaic]').forEach((section) => {
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+		const pin = section.querySelector<HTMLElement>('[data-mosaic-pin]')
+		const grid = section.querySelector<HTMLElement>('[data-mosaic-grid]')
+		const center = section.querySelector<HTMLElement>('[data-mosaic-cell="center"]')
+		const others = [...section.querySelectorAll<HTMLElement>('[data-mosaic-cell=""]')]
+		const intro = section.querySelector<HTMLElement>('[data-mosaic-intro]')
+		const outro = section.querySelector<HTMLElement>('[data-mosaic-outro]')
+		if (!pin || !grid || !center) return
+
+		section.setAttribute('data-mosaic-ready', '')
+
+		// Quanto o mosaico precisa crescer para a foto do centro cobrir a tela.
+		const fillScale = () => {
+			const box = center.getBoundingClientRect()
+			const gridBox = grid.getBoundingClientRect()
+			const current = gridBox.width / grid.offsetWidth || 1
+			const width = box.width / current
+			const height = box.height / current
+			return Math.max(window.innerWidth / width, window.innerHeight / height) * 1.02
+		}
+
+		// Ponto de origem do zoom: o centro da foto do meio, dentro do mosaico.
+		const origin = () => {
+			const x = center.offsetLeft + center.offsetWidth / 2
+			const y = center.offsetTop + center.offsetHeight / 2
+			return `${x}px ${y}px`
+		}
+
+		gsap
+			.timeline({
+				defaults: { ease: 'none' },
+				scrollTrigger: {
+					trigger: section,
+					start: 'top top',
+					end: () => `+=${window.innerHeight * 1.6}`,
+					pin,
+					scrub: 0.8,
+					invalidateOnRefresh: true,
+				},
+			})
+			.to(intro, { autoAlpha: 0, y: -40, duration: 0.25 })
+			.fromTo(
+				grid,
+				{ scale: 1, transformOrigin: origin },
+				{ scale: fillScale, transformOrigin: origin, duration: 1, ease: 'power2.inOut' },
+				0.1,
+			)
+			.to(others, { autoAlpha: 0.15, duration: 0.6 }, 0.35)
+			.to(center, { borderRadius: 0, duration: 0.4 }, 0.7)
+			.to(outro, { autoAlpha: 1, duration: 0.25 }, 0.95)
+	})
+</script>

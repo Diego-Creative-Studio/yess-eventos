@@ -1,0 +1,135 @@
+---
+import { Image } from 'astro:assets'
+import { fotoGaleria } from '@/data/portfolio-galeria'
+
+const linhaUm = ['02', '23', '14', '10', '19', '31', '37', '04'].map(fotoGaleria)
+const linhaDois = ['26', '16', '27', '03', '36', '21', '11', '08'].map(fotoGaleria)
+const servicos = ['Painel de LED', 'Som', 'Iluminação', 'Estrutura', 'TVs e projetores']
+---
+
+<!-- Faixas de fotos que correm em sentidos opostos conforme a rolagem, como uma vinheta. -->
+<section data-strips class="relative overflow-hidden py-16 lg:py-24" aria-label="Serviços em eventos reais">
+	<div data-strip data-direction="-1" class="strip">
+		{
+			linhaUm.map((foto) => (
+				<div class="strip-item">
+					<Image src={foto.imagem} alt={foto.alt} widths={[480, 800]} sizes="(min-width: 1024px) 30vw, 70vw" class="size-full object-cover" />
+				</div>
+			))
+		}
+	</div>
+
+	<div data-strip data-direction="1" class="strip-words" aria-hidden="true">
+		{
+			[...servicos, ...servicos].map((servico) => (
+				<span class="strip-word">
+					{servico}
+					<span class="strip-dot">●</span>
+				</span>
+			))
+		}
+	</div>
+	<p class="sr-only">{servicos.join(', ')}</p>
+
+	<div data-strip data-direction="-1" class="strip">
+		{
+			linhaDois.map((foto) => (
+				<div class="strip-item">
+					<Image src={foto.imagem} alt={foto.alt} widths={[480, 800]} sizes="(min-width: 1024px) 30vw, 70vw" class="size-full object-cover" />
+				</div>
+			))
+		}
+	</div>
+</section>
+
+<style>
+	.strip,
+	.strip-words {
+		display: flex;
+		width: max-content;
+		gap: 0.75rem;
+	}
+
+	.strip {
+		padding-inline: 0.75rem;
+	}
+
+	.strip-item {
+		height: 11rem;
+		aspect-ratio: 16 / 10;
+		flex-shrink: 0;
+		overflow: hidden;
+		border-radius: 1rem;
+		border: 1px solid var(--color-stroke);
+	}
+
+	.strip-words {
+		margin-block: 1.75rem;
+		gap: 2rem;
+		white-space: nowrap;
+	}
+
+	.strip-word {
+		display: inline-flex;
+		align-items: center;
+		gap: 2rem;
+		font-family: var(--font-jakarta), sans-serif;
+		font-size: clamp(2.5rem, 7vw, 6.5rem);
+		font-weight: 800;
+		line-height: 1;
+		letter-spacing: -0.02em;
+		text-transform: uppercase;
+		color: transparent;
+		-webkit-text-stroke: 1.5px rgb(245 247 250 / 0.55);
+	}
+
+	.strip-word:nth-child(3n + 1) {
+		color: var(--color-foreground);
+		-webkit-text-stroke: 0;
+	}
+
+	.strip-dot {
+		font-size: 0.35em;
+		color: var(--color-primary);
+		-webkit-text-stroke: 0;
+	}
+
+	@media (min-width: 1024px) {
+		.strip-item {
+			height: 17rem;
+		}
+	}
+</style>
+
+<script>
+	import { gsap } from 'gsap'
+	import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+	gsap.registerPlugin(ScrollTrigger)
+
+	document.querySelectorAll<HTMLElement>('[data-strips]').forEach((section) => {
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+		section.querySelectorAll<HTMLElement>('[data-strip]').forEach((strip) => {
+			// Quanto a faixa pode andar sem deixar buraco na tela.
+			const distance = () => Math.max(0, strip.scrollWidth - window.innerWidth)
+			const startsAtEnd = strip.hasAttribute('data-reverse') || strip.dataset.direction === '1'
+
+			gsap.fromTo(
+				strip,
+				{ x: () => (startsAtEnd ? -distance() : 0) },
+				{
+					x: () => (startsAtEnd ? 0 : -distance()),
+					ease: 'none',
+					scrollTrigger: {
+						trigger: section,
+						start: 'top bottom',
+						end: 'bottom top',
+						scrub: 0.6,
+						invalidateOnRefresh: true,
+					},
+				},
+			)
+		})
+	})
+</script>

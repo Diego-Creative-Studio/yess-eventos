@@ -1,0 +1,276 @@
+---
+import { Image, getImage } from 'astro:assets'
+import { categoriasGaleria, fotosGaleria } from '@/data/portfolio-galeria'
+
+// Versão grande de cada foto para a tela cheia.
+const fotos = await Promise.all(
+	fotosGaleria.map(async (foto) => {
+		const grande = await getImage({ src: foto.imagem, width: 1920, format: 'webp', quality: 85 })
+		return { ...foto, grande: grande.src, retrato: foto.imagem.height > foto.imagem.width }
+	}),
+)
+---
+
+<section
+	data-gallery
+	class="relative px-3 py-16 md:px-8 lg:px-16 lg:py-24"
+	aria-labelledby="galeria-titulo"
+>
+	<div class="mx-auto w-full max-w-345">
+		<div class="flex flex-col gap-8">
+			<div>
+				<p class="text-sm font-semibold text-primary uppercase">Arquivo / {fotos.length} registros</p>
+				<h2
+					id="galeria-titulo"
+					data-motion-title
+					class="mt-3 text-4xl leading-[1.06] font-extrabold tracking-[-0.02em] text-foreground uppercase md:text-5xl lg:text-[64px] lg:leading-[68px]"
+				>
+					Escolha o serviço.<br />Veja na prática.
+				</h2>
+			</div>
+
+			<div class="flex flex-wrap gap-2" role="group" aria-label="Filtrar fotos por serviço">
+				{
+					categoriasGaleria.map((categoria, indice) => (
+						<button
+							type="button"
+							data-gallery-filter={categoria.value}
+							aria-pressed={indice === 0 ? 'true' : 'false'}
+							class="rounded-full border border-stroke bg-surface/70 px-4 py-2.5 font-title text-sm font-semibold text-text-secondary transition-colors hover:border-primary hover:text-foreground aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-white"
+						>
+							{categoria.label}
+							<span data-gallery-count class="ml-1 text-xs opacity-70" />
+						</button>
+					))
+				}
+			</div>
+		</div>
+
+		<ul data-gallery-grid class="gallery-grid mt-10">
+			{
+				fotos.map((foto, indice) => (
+					<li
+						data-gallery-item
+						data-categories={foto.categorias.join(' ')}
+						class:list={['gallery-item', foto.retrato ? 'gallery-item--tall' : 'gallery-item--wide']}
+					>
+						<button
+							type="button"
+							data-gallery-open={indice}
+							data-full={foto.grande}
+							data-alt={foto.alt}
+							class="group relative block size-full cursor-zoom-in overflow-hidden rounded-small border border-stroke focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+							aria-label={`Ampliar: ${foto.alt}`}
+						>
+							<Image
+								src={foto.imagem}
+								alt={foto.alt}
+								widths={[480, 800, 1200]}
+								sizes={foto.retrato ? '(min-width: 1024px) 25vw, 50vw' : '(min-width: 1024px) 50vw, 100vw'}
+								class="size-full object-cover transition-transform duration-700 group-hover:scale-105"
+							/>
+							<span class="pointer-events-none absolute inset-x-0 bottom-0 bg-linear-to-t from-background/90 to-transparent p-4 pt-12 text-left text-sm text-foreground opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+								{foto.alt}
+							</span>
+						</button>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+
+	<!-- Tela cheia: a foto cresce a partir da miniatura (GSAP Flip). -->
+	<div
+		data-lightbox
+		hidden
+		role="dialog"
+		aria-modal="true"
+		aria-label="Foto ampliada"
+		class="fixed inset-0 z-100 flex items-center justify-center bg-background/95 p-4 backdrop-blur-md md:p-10"
+	>
+		<figure class="relative flex max-h-full w-full max-w-7xl flex-col items-center">
+			<img data-lightbox-img alt="" class="max-h-[78svh] w-auto max-w-full rounded-small object-contain" />
+			<figcaption data-lightbox-caption class="mt-4 text-center text-sm text-text-secondary md:text-base"></figcaption>
+		</figure>
+		<button
+			type="button"
+			data-lightbox-close
+			aria-label="Fechar"
+			class="absolute top-4 right-4 flex size-12 items-center justify-center rounded-full border border-white/20 bg-background/70 text-2xl text-white hover:border-primary md:top-6 md:right-6"
+		>
+			×
+		</button>
+		<button
+			type="button"
+			data-lightbox-prev
+			aria-label="Foto anterior"
+			class="absolute top-1/2 left-2 flex size-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-background/70 text-2xl text-white hover:border-primary md:left-6"
+		>
+			‹
+		</button>
+		<button
+			type="button"
+			data-lightbox-next
+			aria-label="Próxima foto"
+			class="absolute top-1/2 right-2 flex size-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-background/70 text-2xl text-white hover:border-primary md:right-6"
+		>
+			›
+		</button>
+	</div>
+</section>
+
+<style>
+	.gallery-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		grid-auto-rows: 9rem;
+		grid-auto-flow: dense;
+		gap: 0.75rem;
+	}
+
+	.gallery-item--wide {
+		grid-column: span 2;
+	}
+
+	.gallery-item--tall {
+		grid-row: span 2;
+	}
+
+	@media (min-width: 768px) {
+		.gallery-grid {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+			grid-auto-rows: 11rem;
+		}
+	}
+
+	@media (min-width: 1280px) {
+		.gallery-grid {
+			grid-template-columns: repeat(6, minmax(0, 1fr));
+			grid-auto-rows: 12rem;
+		}
+	}
+</style>
+
+<script>
+	import { gsap } from 'gsap'
+	import { Flip } from 'gsap/Flip'
+
+	gsap.registerPlugin(Flip)
+
+	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+	document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((section) => {
+		const items = [...section.querySelectorAll<HTMLElement>('[data-gallery-item]')]
+		const filters = [...section.querySelectorAll<HTMLButtonElement>('[data-gallery-filter]')]
+		const lightbox = section.querySelector<HTMLElement>('[data-lightbox]')
+		const bigImg = section.querySelector<HTMLImageElement>('[data-lightbox-img]')
+		const caption = section.querySelector<HTMLElement>('[data-lightbox-caption]')
+		if (!lightbox || !bigImg || !caption) return
+
+		// Quantidade de fotos em cada filtro.
+		filters.forEach((button) => {
+			const value = button.dataset.galleryFilter ?? 'todos'
+			const total = items.filter(
+				(item) => value === 'todos' || (item.dataset.categories ?? '').split(' ').includes(value),
+			).length
+			const count = button.querySelector('[data-gallery-count]')
+			if (count) count.textContent = String(total)
+		})
+
+		// Filtro: os cards se reorganizam animados.
+		filters.forEach((button) =>
+			button.addEventListener('click', () => {
+				const value = button.dataset.galleryFilter ?? 'todos'
+				filters.forEach((b) => b.setAttribute('aria-pressed', String(b === button)))
+				const state = Flip.getState(items)
+				items.forEach((item) => {
+					item.hidden =
+						value !== 'todos' && !(item.dataset.categories ?? '').split(' ').includes(value)
+				})
+				if (reduceMotion) return
+				Flip.from(state, {
+					duration: 0.7,
+					ease: 'power3.inOut',
+					scale: true,
+					absolute: true,
+					stagger: 0.02,
+					onEnter: (els) =>
+						gsap.fromTo(els, { autoAlpha: 0, scale: 0.85 }, { autoAlpha: 1, scale: 1, duration: 0.5 }),
+					onLeave: (els) => gsap.to(els, { autoAlpha: 0, scale: 0.85, duration: 0.35 }),
+				})
+			}),
+		)
+
+		// Tela cheia
+		const openers = [...section.querySelectorAll<HTMLButtonElement>('[data-gallery-open]')]
+		let current = -1
+		let lastFocus: HTMLElement | null = null
+
+		const visibleOpeners = () => openers.filter((o) => !o.closest<HTMLElement>('[data-gallery-item]')?.hidden)
+
+		const show = (opener: HTMLButtonElement, animate: boolean) => {
+			const thumb = opener.querySelector('img')
+			current = openers.indexOf(opener)
+			caption.textContent = opener.dataset.alt ?? ''
+			bigImg.alt = opener.dataset.alt ?? ''
+			// Mostra primeiro a miniatura (já carregada) e troca pela versão grande em seguida.
+			bigImg.src = thumb?.currentSrc || opener.dataset.full || ''
+			const full = new Image()
+			full.onload = () => {
+				if (openers[current] === opener) bigImg.src = full.src
+			}
+			full.src = opener.dataset.full ?? ''
+
+			if (animate && thumb && !reduceMotion) {
+				thumb.dataset.flipId = 'lightbox'
+				bigImg.dataset.flipId = 'lightbox'
+				const state = Flip.getState(thumb)
+				lightbox.hidden = false
+				Flip.from(state, { targets: bigImg, duration: 0.6, ease: 'power3.inOut', scale: true })
+				gsap.fromTo(lightbox, { backgroundColor: 'rgb(7 10 15 / 0)' }, { backgroundColor: 'rgb(7 10 15 / 0.95)', duration: 0.4 })
+				delete thumb.dataset.flipId
+			} else {
+				lightbox.hidden = false
+			}
+		}
+
+		const open = (opener: HTMLButtonElement) => {
+			lastFocus = opener
+			document.documentElement.style.overflow = 'hidden'
+			window.lenis?.stop()
+			show(opener, true)
+			lightbox.querySelector<HTMLButtonElement>('[data-lightbox-close]')?.focus()
+		}
+
+		const close = () => {
+			lightbox.hidden = true
+			gsap.set(lightbox, { clearProps: 'backgroundColor' })
+			document.documentElement.style.overflow = ''
+			window.lenis?.start()
+			lastFocus?.focus()
+		}
+
+		const step = (dir: number) => {
+			const list = visibleOpeners()
+			const pos = list.indexOf(openers[current])
+			const next = list[(pos + dir + list.length) % list.length]
+			if (!next) return
+			show(next, false)
+			if (!reduceMotion) gsap.fromTo(bigImg, { autoAlpha: 0, x: 30 * dir }, { autoAlpha: 1, x: 0, duration: 0.35 })
+		}
+
+		openers.forEach((opener) => opener.addEventListener('click', () => open(opener)))
+		lightbox.querySelector('[data-lightbox-close]')?.addEventListener('click', close)
+		lightbox.querySelector('[data-lightbox-prev]')?.addEventListener('click', () => step(-1))
+		lightbox.querySelector('[data-lightbox-next]')?.addEventListener('click', () => step(1))
+		lightbox.addEventListener('click', (event) => {
+			if (event.target === lightbox) close()
+		})
+		document.addEventListener('keydown', (event) => {
+			if (lightbox.hidden) return
+			if (event.key === 'Escape') close()
+			if (event.key === 'ArrowRight') step(1)
+			if (event.key === 'ArrowLeft') step(-1)
+		})
+	})
+</script>
