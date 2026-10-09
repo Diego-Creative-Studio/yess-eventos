@@ -4,40 +4,12 @@ import { Image } from 'astro:assets'
 import SectionChamadaServico from '@/components/sections/servicos/SectionChamadaServico.astro'
 import Layout from '@/layouts/Layout.astro'
 import PortfolioIntro from '@/components/PortfolioIntro.astro'
+import SectionFaixasEventos from '@/components/sections/portfolio/SectionFaixasEventos.astro'
+import SectionGaleriaServicos from '@/components/sections/portfolio/SectionGaleriaServicos.astro'
+import SectionHistoriaEvento from '@/components/sections/portfolio/SectionHistoriaEvento.astro'
+import SectionMosaicoZoom from '@/components/sections/portfolio/SectionMosaicoZoom.astro'
 
 import imagemHero from '@/assets/portfolio/projeto-painel.jpg'
-import imagemCasePrincipal from '@/assets/painel-led/projeto-estrutura-integrada.jpg'
-import imagemCaseDetalhe from '@/assets/yess/projeto-montagem-palco.jpg'
-import imagemProjetoEstrutura from '@/assets/painel-led/aplicacao-feiras.jpg'
-import imagemProjetoPlenaria from '@/assets/painel-led/aplicacao-congressos.jpg'
-import imagemProjetoSomLuz from '@/assets/portfolio/som-e-iluminacao.jpg'
-
-const projetos = [
-	{
-		numero: '02',
-		data: '01.08.2025',
-		titulo: 'ESTRUTURA\nINTERNACIONAL',
-		midias: '12 FOTOS  •  1 VÍDEO',
-		imagem: imagemProjetoEstrutura,
-		textoAlternativo: 'Estrutura audiovisual com painel de LED e bandeiras internacionais',
-	},
-	{
-		numero: '03',
-		data: '22.10.2025',
-		titulo: 'PLENÁRIA\nCORPORATIVA',
-		midias: '21 FOTOS  •  2 VÍDEOS',
-		imagem: imagemProjetoPlenaria,
-		textoAlternativo: 'Plenária corporativa com projeção e operação audiovisual',
-	},
-	{
-		numero: '04',
-		data: '17.03.2026',
-		titulo: 'SOM E\nILUMINAÇÃO',
-		midias: '14 FOTOS  •  2 VÍDEOS',
-		imagem: imagemProjetoSomLuz,
-		textoAlternativo: 'Iluminação azul e sistema de som em ambiente de evento',
-	},
-]
 ---
 
 <Layout
@@ -51,204 +23,14 @@ const projetos = [
 >
 	<main id="conteudo" class="overflow-hidden bg-background">
 		<PortfolioIntro />
-		<section class="relative px-3 pt-6 pb-12 md:px-8 lg:h-[940px] lg:px-16 lg:pt-16 lg:pb-24">
-			<div
-				data-portfolio-reveal
-				class="relative mx-auto min-h-155 w-full max-w-345 overflow-hidden rounded-3xl border border-stroke lg:h-195 lg:min-h-0"
-			>
-				<Image
-					src={imagemHero}
-					alt="Estrutura de palco e painéis de LED preparados para evento corporativo"
-					class="absolute inset-0 size-full object-cover"
-					loading="eager"
-				/>
-				<div
-					aria-hidden="true"
-					class="absolute inset-0 bg-linear-to-b from-background/5 via-background/25 to-background/95"
-				></div>
-				<p
-					class="absolute top-8 left-1/2 -translate-x-1/2 text-center text-xs font-semibold whitespace-nowrap text-primary uppercase sm:text-sm lg:top-10 lg:left-9 lg:translate-x-0 lg:text-left"
-				>
-					Portfólio / Projetos reais
-				</p>
-				<p
-					class="absolute top-8 right-6 hidden text-sm font-semibold text-foreground uppercase md:block lg:top-10 lg:right-17"
-				>
-					Role para explorar ↓
-				</p>
 
-				<div
-					data-portfolio-hero-text
-					class="absolute right-6 bottom-15 left-6 text-center lg:right-9 lg:bottom-19 lg:left-9 lg:text-left"
-				>
-					<p class="font-title text-xl font-semibold text-foreground uppercase lg:text-2xl">
-						Projetos que
-					</p>
-					<h1
-						data-motion-title
-						data-motion-immediate
-						class="mt-2 font-title text-[2.5rem] leading-[1.05] font-extrabold tracking-[-0.02em] text-foreground uppercase sm:text-5xl lg:text-[84px] lg:leading-[92px]"
-					>
-						Entram em cena.
-					</h1>
-					<p
-						class="mt-16 font-title text-xs font-semibold text-foreground uppercase lg:mt-20 lg:text-sm"
-					>
-						LED&nbsp; • &nbsp;SOM&nbsp; • &nbsp;LUZ&nbsp; • &nbsp;OPERAÇÃO TÉCNICA
-					</p>
-				</div>
-			</div>
-		</section>
+		<SectionMosaicoZoom />
 
-		<section class="relative px-3 py-12 md:px-8 lg:h-[980px] lg:px-16 lg:py-18">
-			<div class="mx-auto w-full max-w-345">
-				<div data-portfolio-reveal>
-					<p class="text-sm font-semibold text-primary uppercase">01 / Case em destaque</p>
-					<h2
-						data-motion-title
-						class="mt-5 max-w-190 text-4xl leading-[1.06] font-extrabold tracking-[-0.02em] text-foreground uppercase md:text-5xl lg:text-[64px] lg:leading-[68px]"
-					>
-						Do palco ao<br />último detalhe.
-					</h2>
-				</div>
+		<SectionHistoriaEvento />
 
-				<div class="mt-12 grid gap-6 lg:mt-18 lg:h-140 lg:grid-cols-[820fr_468fr]">
-					<div
-						data-portfolio-reveal
-						data-motion-parallax
-						class="relative min-h-88 overflow-hidden rounded-3xl lg:min-h-0"
-					>
-						<Image
-							src={imagemCasePrincipal}
-							alt="Evento de grande porte com painéis de LED e mesa de operação"
-							class="absolute inset-0 size-full object-cover"
-						/>
-						<button
-							data-flip-detail
-							type="button"
-							aria-expanded="false"
-							aria-label="Ampliar ou reduzir o detalhe da operação técnica"
-							class="absolute right-3 bottom-3 h-28 w-36 overflow-hidden rounded-small border border-stroke shadow-2xl md:right-6 md:bottom-6 md:h-38 md:w-50 lg:right-3.5 lg:bottom-8 lg:h-47.5 lg:w-62.5"
-						>
-							<Image
-								src={imagemCaseDetalhe}
-								alt="Detalhe da operação técnica do evento"
-								class="size-full object-cover"
-							/>
-						</button>
-					</div>
+		<SectionFaixasEventos />
 
-					<article
-						data-portfolio-reveal
-						class="relative min-h-120 overflow-hidden rounded-3xl bg-primary-soft p-8 shadow-2xl lg:min-h-0 lg:p-10"
-					>
-						<p
-							aria-hidden="true"
-							class="absolute top-0 left-7 font-title text-[8rem] leading-none font-extrabold text-foreground/10 lg:text-[160px] lg:leading-40"
-						>
-							01
-						</p>
-						<div class="relative z-10 flex h-full flex-col pt-36 lg:pt-45">
-							<p class="font-title text-sm font-semibold text-primary">20.05.2025</p>
-							<h3
-								class="mt-4 text-3xl leading-tight font-bold tracking-[-0.01em] text-foreground uppercase lg:text-[46px] lg:leading-[52px]"
-							>
-								Evento de<br />grande porte
-							</h3>
-							<p class="mt-4 max-w-87.5 text-base leading-7.5 text-muted lg:text-lg">
-								Uma entrega audiovisual pensada para ocupar o espaço com imagem, som e presença.
-							</p>
-							<p
-								class="mt-auto pt-6 font-title text-xs font-semibold text-foreground uppercase lg:text-sm"
-							>
-								18 fotos&nbsp; • &nbsp;3 vídeos&nbsp; • &nbsp;bastidores
-							</p>
-						</div>
-					</article>
-				</div>
-			</div>
-		</section>
-
-		<section
-			id="projetos"
-			class="relative overflow-hidden px-3 py-16 md:px-8 lg:h-[1740px] lg:px-16 lg:py-16"
-		>
-			<div class="relative mx-auto w-full max-w-345">
-				<header data-portfolio-reveal class="relative">
-					<p class="text-sm font-semibold text-primary uppercase">02 / Arquivo selecionado</p>
-					<h2
-						data-motion-title
-						class="mt-5 max-w-195 text-4xl leading-[1.06] font-extrabold tracking-[-0.02em] text-foreground uppercase md:text-5xl lg:text-[64px] lg:leading-[68px]"
-					>
-						Cada projeto,<br />uma presença.
-					</h2>
-					<p
-						class="mt-5 font-title text-sm font-semibold text-primary uppercase lg:absolute lg:right-14 lg:bottom-3"
-					>
-						2025 — 2026&nbsp; / &nbsp;04 projetos
-					</p>
-				</header>
-
-				<div class="mt-13 grid gap-20 lg:mt-13 lg:gap-20">
-					{
-						projetos.map((projeto, indice) => (
-							<article
-								data-portfolio-reveal
-								class="relative isolate grid gap-7 lg:h-95 lg:grid-cols-[760fr_512fr] lg:gap-10"
-							>
-								<!-- Luz de fundo: sem animação de recorte, para o brilho não ficar preso num quadrado. -->
-								<div
-									aria-hidden="true"
-									class:list={[
-										'pointer-events-none absolute z-0 size-[459px]',
-										indice === 0 &&
-											'top-[110px] left-1/2 -translate-x-1/2 md:top-[80px] lg:top-[-24px] lg:right-[calc(50%-50vw-260px)] lg:left-auto lg:translate-x-0',
-										indice === 1 &&
-											'top-[110px] left-1/2 -translate-x-1/2 md:top-[80px] lg:top-[-30px] lg:left-[calc(50%-50vw-230px)] lg:translate-x-0',
-										indice === 2 &&
-											'top-[110px] left-1/2 -translate-x-1/2 md:top-[80px] lg:top-[-40px] lg:right-[calc(50%-50vw-230px)] lg:left-auto lg:translate-x-0',
-									]}
-								>
-									<span class="absolute top-1/2 left-1/2 h-[420px] w-[540px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/5 blur-[80px] md:h-[560px] md:w-[720px] md:blur-[95px] lg:h-[700px] lg:w-[900px] lg:blur-[110px]" />
-									<span class="absolute top-1/2 left-1/2 h-[340px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-[54px] md:h-[420px] md:w-[540px] md:blur-[62px] lg:h-[480px] lg:w-[620px] lg:blur-[70px]" />
-									<span class="absolute top-1/2 left-1/2 size-[90px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/25 blur-[28px] md:size-[105px] md:blur-[32px] lg:size-[120px] lg:blur-[36px]" />
-								</div>
-								<div
-									class:list={[
-										'relative z-10 min-h-65 overflow-hidden rounded-[20px] lg:min-h-0',
-										indice === 1 && 'lg:order-2',
-									]}
-								>
-									<Image
-										src={projeto.imagem}
-										alt={projeto.textoAlternativo}
-										class="absolute inset-0 size-full object-cover"
-									/>
-								</div>
-
-								<div
-									class:list={[
-										'relative z-10 flex min-w-0 flex-col lg:py-4',
-										indice === 1 && 'lg:order-1',
-									]}
-								>
-									<p class="font-title text-6xl leading-none font-extrabold text-foreground/20">
-										{projeto.numero}
-									</p>
-									<p class="mt-7 font-title text-sm font-semibold text-primary">{projeto.data}</p>
-									<h3 class="mt-4 text-3xl leading-tight font-bold tracking-[-0.01em] whitespace-pre-line text-foreground uppercase lg:text-[46px] lg:leading-[52px]">
-										{projeto.titulo}
-									</h3>
-									<p class="mt-auto pt-8 font-title text-sm font-semibold text-muted uppercase">
-										{projeto.midias}
-									</p>
-								</div>
-							</article>
-						))
-					}
-				</div>
-			</div>
-		</section>
+		<SectionGaleriaServicos />
 
 		<SectionChamadaServico
 			titulo="Quer um projeto como esses para o seu evento?"
@@ -281,19 +63,3 @@ const projetos = [
 		}
 	</script>
 </Layout>
-
-<style>
-	[data-flip-detail] {
-		cursor: zoom-in;
-		z-index: 20;
-	}
-
-	[data-flip-detail].is-expanded {
-		right: 0;
-		bottom: 0;
-		width: 100%;
-		height: 100%;
-		border-radius: 1.5rem;
-		cursor: zoom-out;
-	}
-</style>
