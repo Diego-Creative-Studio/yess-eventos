@@ -78,7 +78,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 	<div
 		data-service-hero={temVideo || undefined}
 		class:list={[
-			'relative mx-auto grid w-full grid-cols-1 overflow-hidden rounded-hero bg-linear-to-b from-background via-primary-soft to-violet lg:max-w-345 lg:grid-cols-[1.1fr_1fr] lg:bg-linear-to-r',
+			'service-hero-shell relative mx-auto grid w-full grid-cols-1 overflow-hidden rounded-hero bg-linear-to-b from-background via-primary-soft to-violet lg:max-w-345 lg:grid-cols-[1.1fr_1fr] lg:bg-linear-to-r',
 			varianteTitulo === 'tvs-monitores' ? 'lg:min-h-170' : 'lg:min-h-184',
 			painelLed && 'led-panel',
 			(showDeLuz || videowall || mapaSinal || boxTruss || planta || temEtapas) && 'light-stage',
@@ -445,6 +445,32 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 </section>
 
 <style>
+	/* Preserva mobile e desktops altos; retira o excesso vertical nos notebooks. */
+	@media (min-width: 1024px) and (max-height: 800px) {
+		.service-hero-shell {
+			min-height: min(38rem, calc(100svh - 10rem));
+		}
+
+		.service-hero-shell > div:first-child {
+			padding-top: 3rem;
+			padding-bottom: 2.5rem;
+		}
+
+		[data-service-copy] {
+			min-height: 0;
+			gap: 1rem;
+		}
+
+		[data-service-copy] h1 {
+			font-size: 2.5rem !important;
+			text-wrap: balance;
+		}
+
+		[data-service-copy] > p {
+			font-size: 1rem;
+		}
+	}
+
 	/* Etapa atual e as já percorridas ficam acesas na linha do tempo. */
 	[data-stage-btn][aria-current] .stage-dot,
 	[data-stage-btn].is-done .stage-dot {
