@@ -35,7 +35,9 @@ const whatsappText = [
 	local ? ` em ${local}` : '',
 	'.',
 ].join('')
-const whatsappUrl = whatsapp ? `https://wa.me/${whatsapp}?text=${encodeURIComponent(whatsappText)}` : ''
+const whatsappUrl = whatsapp
+	? `https://wa.me/${whatsapp}?text=${encodeURIComponent(whatsappText)}`
+	: ''
 const fieldClass =
 	'mt-2 w-full rounded-small border border-white/20 bg-white/10 px-4 py-3.5 text-base font-normal text-foreground [color-scheme:dark] placeholder:text-muted transition-colors hover:border-primary/60 focus:border-primary focus:outline-2 focus:outline-primary/40'
 const labelClass = 'block text-sm font-semibold text-text-secondary'
@@ -182,18 +184,21 @@ const labelClass = 'block text-sm font-semibold text-text-secondary'
 					placeholder="Tipo de evento, horários, estrutura ou outras informações."
 				></textarea></label
 			>
-			<div class="rounded-small border border-primary/30 bg-primary/10 p-5 text-sm leading-6 text-text-secondary">
+			<div
+				class="rounded-small border border-primary/30 bg-primary/10 p-5 text-sm leading-6 text-text-secondary"
+			>
 				<p class="font-semibold text-foreground">Duas formas de enviar:</p>
 				<ul class="mt-2 list-disc space-y-1 pl-5 marker:text-primary">
 					<li>
-						<strong class="text-foreground">Solicitar orçamento:</strong> envie o formulário e a equipe da YESS entra em contato
-						com você.
+						<strong class="text-foreground">Solicitar orçamento:</strong> envie o formulário e a equipe
+						da YESS entra em contato com você.
 					</li>
 					{
 						whatsappUrl && (
 							<li>
-								<strong class="text-foreground">WhatsApp:</strong> para algo mais rápido, use o botão abaixo. O que você
-								preencher aqui (opções, data, público e local) já vai junto na mensagem.
+								<strong class="text-foreground">WhatsApp:</strong> para algo mais rápido, use o
+								botão abaixo. O que você preencher aqui (opções, data, público e local) já vai junto
+								na mensagem.
 							</li>
 						)
 					}
@@ -204,13 +209,17 @@ const labelClass = 'block text-sm font-semibold text-text-secondary'
 			</div>
 			{
 				!endpoint && (
-					<p role="status" class="rounded-small border border-warm/40 bg-warm/10 p-4 text-sm text-text-secondary">
+					<p
+						role="status"
+						class="rounded-small border border-warm/40 bg-warm/10 p-4 text-sm text-text-secondary"
+					>
 						O envio do formulário ainda está em configuração. Nenhum pedido será enviado nesta
 						prévia.
 					</p>
 				)
 			}
 			<Button
+				id="whatsapp"
 				label="Solicitar orçamento"
 				type="submit"
 				disabled={!endpoint}
