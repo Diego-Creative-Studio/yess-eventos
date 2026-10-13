@@ -1,5 +1,23 @@
 export const eventEquipment = [
 	{
+		slug: 'painel-de-led-p2',
+		name: 'Painel de LED P2',
+		summary: 'Imagem com maior definição para apresentações e leitura de conteúdo com o público próximo ao painel.',
+		details:
+			'O P2 tem distância de 2 mm entre pixels, menor que a do P3. Para uma mesma dimensão de painel, isso permite mais pixels e favorece a exibição de textos e detalhes. Informe a distância do público, o tamanho disponível e o conteúdo: a equipe avalia a configuração, prepara o sinal e monta o painel para o evento.',
+		hub: '/paineis-de-led-p2-e-p3/',
+		landing: 'painel-de-led-para-eventos',
+	},
+	{
+		slug: 'painel-de-led-p3',
+		name: 'Painel de LED P3',
+		summary: 'Exibição de vídeos e comunicação visual em palcos e estandes, com dimensionamento conforme a distância do público.',
+		details:
+			'O P3 tem distância de 3 mm entre pixels. A escolha considera a distância de visualização, as dimensões da tela e o nível de detalhe do conteúdo. Para imagens amplas e vídeos, a equipe avalia se o P3 atende ao projeto; quando há textos pequenos ou público muito próximo, compara também a opção P2 antes de definir a montagem.',
+		hub: '/paineis-de-led-p2-e-p3/',
+		landing: 'painel-de-led-para-eventos',
+	},
+	{
 		slug: 'microfones',
 		name: 'Microfones Shure e Sennheiser',
 		summary: 'Captação de voz para reuniões, apresentações e plenárias.',
@@ -67,7 +85,7 @@ export const quoteServices = [
 		value: 'video',
 		name: 'Vídeo',
 		hint: 'Painel de LED, TVs e projetores',
-		matches: ['painel-de-led', 'tvs', 'projetores-epson'],
+		matches: ['painel-de-led', 'painel-de-led-p2', 'painel-de-led-p3', 'tvs', 'projetores-epson'],
 	},
 	{
 		value: 'projetos',

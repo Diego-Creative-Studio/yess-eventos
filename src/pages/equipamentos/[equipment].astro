@@ -9,6 +9,7 @@ import imagemSom from '@/assets/yess/som-palco-show.jpg'
 import imagemLuz from '@/assets/yess/iluminacao-moving-heads.jpg'
 import imagemProjetor from '@/assets/portfolio/galeria/36-tvs-projetor.jpg'
 import imagemTvs from '@/assets/yess/tvs-pedestal.jpg'
+import imagemLed from '@/assets/yess/painel-led-panoramico.jpg'
 import Etiqueta from '@/components/Etiqueta.astro'
 import { eventEquipment } from '@/data/event-equipment'
 import { buildDescription } from '@/utils/description'
@@ -24,6 +25,8 @@ interface Props {
 const { equipment } = Astro.props
 const title = `${equipment.name} para eventos`
 const heroMedia = {
+	'painel-de-led-p2': { image: imagemLed, alt: 'Painel de LED instalado em palco de evento' },
+	'painel-de-led-p3': { image: imagemLed, alt: 'Estrutura audiovisual com painel de LED para evento' },
 	microfones: {
 		image: imagemMicrofones,
 		alt: 'Apresentação com palestrantes e operação audiovisual',
