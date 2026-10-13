@@ -79,7 +79,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 		data-service-hero={temVideo || undefined}
 		class:list={[
 			'service-hero-shell relative mx-auto grid w-full grid-cols-1 overflow-hidden rounded-hero bg-linear-to-b from-background via-primary-soft to-violet lg:max-w-345 lg:grid-cols-[1.1fr_1fr] lg:bg-linear-to-r',
-			varianteTitulo === 'tvs-monitores' ? 'lg:min-h-170' : 'lg:min-h-184',
+			'lg:min-h-192',
 			painelLed && 'led-panel',
 			(showDeLuz || videowall || mapaSinal || boxTruss || planta || temEtapas) && 'light-stage',
 		]}
@@ -104,7 +104,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 				data-service-copy
 				class:list={[
 					'relative z-10 flex w-full max-w-197.5 flex-col items-center gap-4.5 text-center lg:max-w-200 lg:items-start lg:overflow-hidden lg:text-left',
-					varianteTitulo === 'tvs-monitores' ? 'lg:h-auto' : 'lg:min-h-146',
+					'lg:min-h-146',
 				]}
 			>
 				<div class:list={[painelLed && 'led-panel__fine']}>
