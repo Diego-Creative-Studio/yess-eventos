@@ -3,6 +3,13 @@ import Icon from '@/components/Icon.astro'
 import Button from '@/components/Button.astro'
 import LightHalo from '@/components/LightHalo.astro'
 import AnimatedWaves from '@/components/AnimatedWaves.astro'
+import site from '@/data/site.json'
+
+// Mesmo número e mensagem inicial usados no formulário de orçamento.
+const whatsapp = (import.meta.env.PUBLIC_WHATSAPP_NUMBER || site.whatsapp || '').replace(/\D/g, '')
+const whatsappUrl = whatsapp
+	? `https://wa.me/${whatsapp}?text=${encodeURIComponent('Olá! Quero um orçamento para um evento.')}`
+	: '/contato/#canais'
 ---
 
 <section
@@ -166,7 +173,9 @@ import AnimatedWaves from '@/components/AnimatedWaves.astro'
 			-->
 			<Button
 				data-animate="fade-left"
-				href="/contato/#whatsapp"
+				href={whatsappUrl}
+				target={whatsapp ? '_blank' : undefined}
+				rel={whatsapp ? 'noopener noreferrer' : undefined}
 				label="Conversar pelo WhatsApp"
 				variant="tertiary"
 				icon="whatsapp"
