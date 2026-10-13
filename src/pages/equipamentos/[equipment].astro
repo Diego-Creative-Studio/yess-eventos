@@ -4,6 +4,7 @@ import ServiceAreas from '@/components/ServiceAreas.astro'
 import ServiceSchema from '@/components/ServiceSchema.astro'
 import QuoteForm from '@/components/QuoteForm.astro'
 import SectionHeroServico from '@/components/sections/servicos/SectionHeroServico.astro'
+import SectionPerguntasServico from '@/components/sections/servicos/SectionPerguntasServico.astro'
 import imagemMicrofones from '@/assets/portfolio/galeria/07-led-talk-operacao.jpg'
 import imagemSom from '@/assets/yess/som-palco-show.jpg'
 import imagemLuz from '@/assets/yess/iluminacao-moving-heads.jpg'
@@ -24,6 +25,15 @@ interface Props {
 }
 const { equipment } = Astro.props
 const title = `${equipment.name} para eventos`
+const equipmentQuestion = {
+	'painel-de-led-p2': 'Quando escolher um painel de LED P2?',
+	'painel-de-led-p3': 'Como saber se o painel de LED P3 atende ao evento?',
+	microfones: 'Como definir os microfones para a apresentação?',
+	'caixas-de-som': 'Como é dimensionada a sonorização do evento?',
+	'moving-heads': 'Como escolher a iluminação com moving heads?',
+	'projetores-epson': 'O que considerar antes de definir o projetor?',
+	tvs: 'Como escolher o tamanho e a posição das TVs?',
+}[equipment.slug]
 const heroMedia = {
 	'painel-de-led-p2': { image: imagemLed, alt: 'Painel de LED instalado em palco de evento' },
 	'painel-de-led-p3': { image: imagemLed, alt: 'Estrutura audiovisual com painel de LED para evento' },
@@ -121,6 +131,24 @@ const description = buildDescription(`${equipment.summary}`, [
 				>
 			</div>
 		</section>
+		<SectionPerguntasServico
+			titulo={`Dúvidas sobre ${equipment.name}`}
+			perguntas={[
+				{ pergunta: equipmentQuestion, resposta: equipment.details },
+				{
+					pergunta: 'Posso retirar o equipamento e montar por conta própria?',
+					resposta: 'Não. Os equipamentos fazem parte de uma solução instalada pela YESS, com entrega, montagem, acompanhamento técnico durante o evento e desmontagem. Não oferecemos aluguel para retirada.',
+				},
+				{
+					pergunta: 'Vocês atendem São Paulo e Guarulhos?',
+					resposta: 'Sim. Atendemos São Paulo capital e interior, além de Guarulhos, com ênfase nas zonas Sul, Oeste e Norte da capital. Informe a cidade, o endereço e os horários do evento para planejarmos a logística.',
+				},
+				{
+					pergunta: 'Quais informações preciso enviar para o orçamento?',
+					resposta: 'Envie a data, o local, o tipo de evento, o público estimado e os equipamentos ou conteúdos necessários. Informe também os horários disponíveis para montagem e desmontagem. A equipe avalia o projeto antes de definir a estrutura.',
+				},
+			]}
+		/>
 		<QuoteForm service={equipment.slug} detalhado />
 		<ServiceAreas service={equipment.landing} />
 	</main>

@@ -12,11 +12,8 @@ import imagemOperacao from '@/assets/painel-led/projeto-operacao-tecnica.jpg'
 
 const capacidades = [
 	'Projeto sob medida',
-	'•',
 	'Montagem técnica',
-	'•',
 	'Processamento de vídeo',
-	'•',
 	'Operação no evento',
 ]
 
@@ -78,17 +75,18 @@ const bastidores = [
 					</div>
 				</div>
 
-				<div
-					class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 rounded-[20px] bg-primary p-6 text-center"
+				<ul
+					class="grid grid-cols-1 gap-x-8 gap-y-3 rounded-[20px] bg-primary p-6 sm:grid-cols-2 xl:flex xl:flex-wrap xl:justify-center"
 				>
 					{
 						capacidades.map((capacidade) => (
-							<p class="font-title text-xs leading-5 font-semibold text-white uppercase sm:text-sm">
-								{capacidade}
-							</p>
+							<li class="flex items-center justify-center gap-3 text-center font-title text-xs leading-5 font-semibold text-white uppercase sm:justify-start sm:text-left sm:text-sm">
+								<span aria-hidden="true" class="hidden size-1.5 shrink-0 rounded-full bg-white sm:block" />
+								<span>{capacidade}</span>
+							</li>
 						))
 					}
-				</div>
+				</ul>
 			</div>
 		</section>
 
@@ -147,7 +145,7 @@ const bastidores = [
 					</p>
 				</div>
 
-				<div class="relative min-h-100 xl:min-h-0">
+				<div data-motion-image data-motion-parallax class="relative min-h-100 overflow-hidden xl:min-h-0">
 					<Image
 						src={imagemTrajetoria}
 						alt="Evento produzido pela YESS com estrutura audiovisual completa"
@@ -203,7 +201,7 @@ const bastidores = [
 				<div class="mt-10 grid gap-4 lg:mt-20 lg:grid-cols-3">
 					{
 						bastidores.map((item) => (
-							<article class="relative min-h-117.5 overflow-hidden rounded-[20px]">
+							<article data-motion-image data-motion-parallax class="relative min-h-117.5 overflow-hidden rounded-[20px]">
 								<Image
 									src={item.imagem}
 									alt={item.alt}
