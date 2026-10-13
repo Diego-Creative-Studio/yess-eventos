@@ -43,7 +43,6 @@ interface Props {
 const {
 	tituloDestaque,
 	titulo,
-	varianteTitulo = 'padrao',
 	painelLed = false,
 	showDeLuz = false,
 	videowall = false,
@@ -116,11 +115,8 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 					data-motion-title={!painelLed || undefined}
 					data-motion-immediate={!painelLed || undefined}
 					class:list={[
-						'w-full pt-2 uppercase md:max-w-5xl',
+						'w-full pt-2 text-[2rem] leading-[1.08] uppercase max-[359px]:text-[1.75rem] min-[400px]:text-4xl md:max-w-5xl md:text-5xl lg:text-6xl',
 						showDeLuz && 'light-title',
-						varianteTitulo === 'som-iluminacao' || varianteTitulo === 'tvs-monitores'
-							? 'text-[2rem] leading-[1.08] max-[359px]:text-[1.75rem] min-[1420px]:text-[3.25rem]! md:text-5xl'
-							: 'text-[2rem] leading-[1.08] max-[359px]:text-[1.75rem] min-[1420px]:text-6xl! md:text-5xl',
 					]}
 				>
 					{
@@ -462,7 +458,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 		}
 
 		[data-service-copy] h1 {
-			font-size: 2.5rem !important;
+			font-size: 3rem;
 			text-wrap: balance;
 		}
 
