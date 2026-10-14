@@ -1,0 +1,45 @@
+---
+import { Image } from 'astro:assets'
+
+import helvetia from '@/assets/parceiros/clube-helvetia.png'
+import apcef from '@/assets/parceiros/apcef-sp.png'
+import mesaAfins from '@/assets/parceiros/mesa-e-afins.png'
+import velocity from '@/assets/parceiros/studio-velocity.png'
+import urbia from '@/assets/parceiros/urbia.png'
+import corinthians from '@/assets/parceiros/corinthians.jpg'
+import acesc from '@/assets/parceiros/acesc.png'
+import rosmarino from '@/assets/parceiros/rosmarino.svg'
+
+const parceiros = [
+	{ nome: 'Clube Helvetia', logo: helvetia },
+	{ nome: 'APCEF/SP', logo: apcef },
+	{ nome: 'Mesa & Afins · Célia Mineiro', logo: mesaAfins },
+	{ nome: 'Studio Velocity', logo: velocity },
+	{ nome: 'Urbia', logo: urbia, escuro: true },
+	{ nome: 'Corinthians', logo: corinthians },
+	{ nome: 'ACESC', logo: acesc },
+	{ nome: 'Rosmarino', logo: rosmarino, escuro: true },
+]
+---
+
+<section id="parceiros" aria-labelledby="titulo-parceiros" class="px-3 py-8 md:px-8 lg:px-16 lg:py-12">
+	<div class="mx-auto w-full max-w-345 rounded-3xl border border-stroke bg-surface p-6 md:p-8 lg:p-10">
+		<div data-animate="fade-up" class="text-center md:text-left">
+			<p class="text-sm font-semibold text-warm uppercase">Quem já atendemos</p>
+			<h2 id="titulo-parceiros" data-motion-title class="mt-2 text-3xl text-foreground lg:text-4xl">Clientes atendidos.</h2>
+		</div>
+		<ul class="mt-8 grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-4 md:gap-x-6">
+			{parceiros.map((parceiro, indice) => (
+				<li data-animate="fade-up" data-animate-delay={indice * 0.06} class="flex min-w-0 flex-col items-center gap-3">
+					<div class:list={[
+						'flex h-28 w-full items-center justify-center rounded-small px-3 py-4 md:h-32 md:px-5',
+						parceiro.escuro ? 'border border-stroke bg-background' : 'bg-white',
+					]}>
+						<Image src={parceiro.logo} alt="" loading="lazy" class="h-auto max-h-20 w-auto max-w-full object-contain" />
+					</div>
+					<p class="text-center text-xs leading-5 text-text-secondary md:text-sm">{parceiro.nome}</p>
+				</li>
+			))}
+		</ul>
+	</div>
+</section>
