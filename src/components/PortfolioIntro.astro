@@ -1,0 +1,145 @@
+---
+import logoYess from '@/assets/logo-yess.svg'
+
+// Botão para rever a abertura: só no ambiente local (pnpm dev), nunca no site publicado.
+const showReplay = import.meta.env.DEV
+---
+
+<!--
+	Abertura do portfólio: logo, contador e barra; depois a tela sobe como uma cortina.
+	Só aparece com JS, uma vez por sessão e sem "reduzir movimento". Clique ou toque pula.
+-->
+<div
+	data-portfolio-intro
+	aria-hidden="true"
+	class="portfolio-intro fixed inset-0 z-100 flex cursor-pointer flex-col items-center justify-center overflow-hidden"
+>
+	<span class="portfolio-intro__light pointer-events-none absolute inset-x-0 bottom-0 h-3/4"></span>
+	<img
+		data-intro-logo
+		src={logoYess.src}
+		alt=""
+		width="250"
+		height="113"
+		class="relative w-44 md:w-62"
+		decoding="sync"
+	/>
+	<p
+		data-intro-count
+		class="absolute bottom-24 font-title text-xl font-semibold text-white tabular-nums md:bottom-28"
+	>
+		0%
+	</p>
+	<span
+		data-intro-bar
+		class="absolute bottom-0 left-0 h-6 w-full origin-left scale-x-0 bg-[#141a26]"></span>
+</div>
+
+<script is:inline>
+	// Roda antes da página aparecer, para a abertura não "piscar" quando não deve tocar.
+	;(function () {
+		var intro = document.currentScript && document.currentScript.previousElementSibling
+		var seen = false
+		try {
+			seen = sessionStorage.getItem('yess-portfolio-intro') === '1'
+		} catch (e) {}
+		var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+		// /portfolio/?intro força a abertura (útil para apresentar ao cliente).
+		if (new URLSearchParams(location.search).has('intro')) seen = false
+		if (!intro || seen || reduce) {
+			if (intro) intro.remove()
+			return
+		}
+		document.documentElement.classList.add('intro-playing')
+	})()
+</script>
+
+{
+	showReplay && (
+		<button
+			type="button"
+			data-intro-replay
+			class="fixed right-4 bottom-24 z-90 rounded-full border border-white/20 bg-background/85 px-4 py-2.5 font-title text-xs font-semibold text-foreground shadow-lg backdrop-blur-md hover:border-primary lg:bottom-6"
+		>
+			↻ Rever abertura (dev)
+		</button>
+	)
+}
+
+<style>
+	.portfolio-intro {
+		display: none;
+		background: linear-gradient(to bottom, #0f2c5c 0%, #1d55c4 55%, #2678ff 100%);
+	}
+
+	:global(html.js.intro-playing) .portfolio-intro {
+		display: flex;
+	}
+
+	:global(html.intro-playing) {
+		overflow: hidden;
+	}
+
+	.portfolio-intro__light {
+		background: radial-gradient(ellipse 45% 55% at 50% 100%, rgb(255 255 255 / 0.9), transparent 70%);
+	}
+</style>
+
+<script>
+	import { gsap } from 'gsap'
+
+	document.querySelector('[data-intro-replay]')?.addEventListener('click', () => {
+		try {
+			sessionStorage.removeItem('yess-portfolio-intro')
+		} catch {}
+		window.scrollTo(0, 0)
+		location.reload()
+	})
+
+	const intro = document.querySelector<HTMLElement>('[data-portfolio-intro]')
+
+	if (intro && document.documentElement.classList.contains('intro-playing')) {
+		const logo = intro.querySelector<HTMLElement>('[data-intro-logo]')
+		const count = intro.querySelector<HTMLElement>('[data-intro-count]')
+		const bar = intro.querySelector<HTMLElement>('[data-intro-bar]')
+		const heroText = document.querySelector<HTMLElement>('[data-portfolio-hero-text]')
+		const progress = { value: 0 }
+
+		window.lenis?.stop()
+		try {
+			sessionStorage.setItem('yess-portfolio-intro', '1')
+		} catch {}
+
+		const finish = () => {
+			document.documentElement.classList.remove('intro-playing')
+			window.lenis?.start()
+			intro.remove()
+		}
+
+		const timeline = gsap.timeline({ onComplete: finish })
+		timeline
+			.from(logo, { autoAlpha: 0, y: 12, duration: 0.7, ease: 'power2.out' })
+			.to(
+				progress,
+				{
+					value: 100,
+					duration: 2.6,
+					ease: 'power2.inOut',
+					onUpdate: () => {
+						if (count) count.textContent = `${Math.round(progress.value)}%`
+						if (bar) gsap.set(bar, { scaleX: progress.value / 100 })
+					},
+				},
+				0.3,
+			)
+			.to(count, { autoAlpha: 0, duration: 0.3 }, '+=0.3')
+			.to(logo, { scale: 1.9, duration: 0.8, ease: 'power3.inOut' }, '<')
+			.to(intro, { yPercent: -100, duration: 0.9, ease: 'power3.inOut' }, '+=0.15')
+
+		if (heroText)
+			timeline.from(heroText, { autoAlpha: 0, y: 30, duration: 0.7, ease: 'power3.out' }, '-=0.35')
+
+		// Clique ou toque pula direto para o fim.
+		intro.addEventListener('click', () => timeline.progress(1))
+	}
+</script>

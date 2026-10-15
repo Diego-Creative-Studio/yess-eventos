@@ -1,0 +1,200 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import ServiceAreas from '@/components/ServiceAreas.astro'
+
+import Etiqueta from '@/components/Etiqueta.astro'
+import SectionChamadaServico from '@/components/sections/servicos/SectionChamadaServico.astro'
+import SectionComparacaoServico from '@/components/sections/servicos/SectionComparacaoServico.astro'
+import SectionCredibilidadeServico from '@/components/sections/servicos/SectionCredibilidadeServico.astro'
+import SectionEntregaServico from '@/components/sections/servicos/SectionEntregaServico.astro'
+import SectionGaleriaServico from '@/components/sections/servicos/SectionGaleriaServico.astro'
+import SectionHeroServico from '@/components/sections/servicos/SectionHeroServico.astro'
+import SectionPerguntasServico from '@/components/sections/servicos/SectionPerguntasServico.astro'
+
+import imagemAplicacaoImagem from '@/assets/painel-led/aplicacao-feiras.jpg'
+import imagemAplicacaoLuz from '@/assets/painel-led/aplicacao-plenarias.jpg'
+import imagemAplicacaoSom from '@/assets/painel-led/aplicacao-congressos.jpg'
+import imagemEntrega from '@/assets/painel-led/entrega-completa.jpg'
+import imagemHero from '@/assets/yess/poster-evento-corporativo-gala.jpg'
+import iconeBriefing from '@/assets/solucoes-corporativas/icones/92-2646.svg'
+import iconeSistemas from '@/assets/solucoes-corporativas/icones/92-2654.svg'
+import iconeCronograma from '@/assets/solucoes-corporativas/icones/92-2662.svg'
+import iconeOperacao from '@/assets/solucoes-corporativas/icones/92-2670.svg'
+---
+
+<Layout
+	title="Soluções corporativas para eventos | YESS"
+	description="Soluções audiovisuais integradas para eventos corporativos, com painel de LED, som, iluminação, TVs e operação técnica coordenada."
+>
+	<main id="conteudo">
+		<SectionHeroServico
+			mapaSinal
+			tituloDestaque="Tudo conectado."
+			titulo="Uma operação audiovisual coordenada."
+			varianteTitulo="tvs-monitores"
+			descricao="Painéis de LED, som, iluminação e telas para reuniões, feiras, congressos e convenções, com projeto, montagem e operação técnica integrados."
+			imagem={imagemHero}
+			textoAlternativoImagem="Jantar de gala com painéis de LED, treliças e iluminação cênica"
+			textoBotao="Solicitar orçamento"
+			linkBotao="/contato/#canais"
+			videoMp4="/videos/evento-corporativo-gala.mp4"
+			videoWebm="/videos/evento-corporativo-gala.webm"
+		>
+			<Etiqueta
+				slot="etiqueta"
+				texto="Soluções para eventos corporativos"
+				aoVivo
+				corFundo="bg-stroke"
+				corTexto="text-foreground"
+				corBolinha="bg-warm"
+				class="self-center lg:self-start lg:text-left"
+			/>
+		</SectionHeroServico>
+
+		<SectionCredibilidadeServico
+			etiqueta="Uma só equipe"
+			titulo="Soluções integradas, uma entrega coordenada"
+			itens={[
+				{
+					numero: '01',
+					titulo: 'Diagnóstico integrado',
+					descricao: 'Briefing, espaço e programação definem a solução completa.',
+				},
+				{
+					numero: '02',
+					titulo: 'Sistemas coordenados',
+					descricao: 'LED, som, luz e TVs planejados para trabalhar juntos.',
+				},
+				{
+					numero: '03',
+					titulo: 'Sinal e conteúdo validados',
+					descricao: 'Testes de vídeo, áudio e distribuição antes da abertura.',
+				},
+				{
+					numero: '04',
+					titulo: 'Operação centralizada',
+					descricao: 'Uma equipe acompanha todas as frentes até o encerramento.',
+				},
+			]}
+		/>
+
+		<SectionGaleriaServico
+			layout="destaque"
+			titulo="Uma solução, três frentes coordenadas"
+			descricao="Cada sistema cumpre uma função - e todos trabalham no mesmo projeto."
+			itens={[
+				{
+					titulo: 'IMAGEM QUE CONDUZ',
+					descricao: 'Painéis de LED e telas para conteúdo, apresentações e identidade visual.',
+					imagem: imagemAplicacaoImagem,
+					textoAlternativoImagem: 'Painel de LED em evento corporativo',
+				},
+				{
+					titulo: 'SOM QUE ALCANÇA',
+					descricao: 'Microfones, caixas e processamento dimensionados para cada ambiente.',
+					imagem: imagemAplicacaoSom,
+					textoAlternativoImagem: 'Sonorização em evento corporativo',
+				},
+				{
+					titulo: 'LUZ QUE ORGANIZA',
+					descricao: 'Cenas e pontos de luz que valorizam palco, marca e momentos importantes.',
+					imagem: imagemAplicacaoLuz,
+					textoAlternativoImagem: 'Iluminação em sala de evento corporativo',
+				},
+			]}
+		/>
+
+		<SectionComparacaoServico
+			etiqueta="Comparação / Antes x Durante"
+			titulo="O que muda quando tudo é integrado"
+			etiquetaOrientacao="Visão do processo"
+			descricaoOrientacao="Menos decisões isoladas. Mais clareza do planejamento à operação."
+			marcadorItem="•"
+			opcaoClara={{
+				codigo: 'Antes do evento',
+				etiqueta: 'Planejamento',
+				titulo: 'Um único planejamento técnico',
+				descricao: 'Espaço, programação e conteúdo orientam o projeto audiovisual completo.',
+				itens: ['Dimensionamento conjunto', 'Cronograma de montagem', 'Testes com conteúdo real'],
+			}}
+			opcaoDestaque={{
+				codigo: 'Durante o evento',
+				etiqueta: 'Operação',
+				titulo: 'Uma operação que responde em conjunto',
+				descricao: 'A equipe coordena imagem, áudio e luz com leitura única da programação.',
+				itens: [
+					'Comunicação centralizada',
+					'Ajustes durante a agenda',
+					'Responsabilidade técnica clara',
+				],
+			}}
+			nota="Menos decisões isoladas. Mais clareza do planejamento à operação."
+			resumo="Antes — planejamento / Durante — operação"
+		/>
+
+		<SectionEntregaServico
+			etiqueta="Operação integrada"
+			titulo="Seu evento, uma única responsabilidade técnica"
+			descricao="A YESS centraliza o diálogo com produção, conteúdo e local para que todos os sistemas cheguem prontos ao evento."
+			itens={[
+				{
+					iconeImagem: iconeBriefing,
+					titulo: 'Briefing unificado',
+					descricao: 'Produção, conteúdo e local alinhados desde o início.',
+				},
+				{
+					iconeImagem: iconeSistemas,
+					titulo: 'Sistemas dimensionados',
+					descricao: 'LED, som, luz e TVs planejados como uma estrutura.',
+				},
+				{
+					iconeImagem: iconeCronograma,
+					titulo: 'Montagem coordenada',
+					descricao: 'Cronograma, acessos e testes sob uma equipe.',
+				},
+				{
+					iconeImagem: iconeOperacao,
+					titulo: 'Operação completa',
+					descricao: 'Acompanhamento técnico até a desmontagem.',
+				},
+			]}
+			nota="Menos fornecedores dispersos. Mais clareza para quem produz."
+			imagem={imagemEntrega}
+			textoAlternativoImagem="Operação audiovisual integrada em evento corporativo"
+		/>
+
+		<SectionPerguntasServico
+			titulo="Perguntas frequentes"
+			perguntas={[
+				{
+					pergunta: 'O que uma solução audiovisual integrada pode incluir?',
+					resposta:
+						'Painéis de LED, som, iluminação, TVs, projetores, estruturas, praticáveis, backdrop e operação técnica, conforme as necessidades do projeto.',
+				},
+				{
+					pergunta: 'A YESS cuida do projeto até a desmontagem?',
+					resposta:
+						'Sim. O atendimento contempla projeto técnico ou 3D, entrega, montagem, testes, operação técnica e desmontagem.',
+				},
+				{
+					pergunta: 'A YESS trabalha com projetos já desenvolvidos?',
+					resposta:
+						'Sim. A equipe pode elaborar um projeto novo ou executar e concluir um projeto previamente desenvolvido.',
+				},
+				{
+					pergunta: 'A YESS possui estrutura própria e monta backdrop?',
+					resposta:
+						'Sim. A YESS possui estrutura para os eventos e também realiza a montagem de backdrop.',
+				},
+			]}
+		/>
+
+		<SectionChamadaServico
+			titulo="Seu evento precisa de uma operação audiovisual integrada?"
+			descricao="Conte o formato do evento. A YESS organiza a solução técnica completa."
+			textoBotao="Solicitar projeto e orçamento"
+			linkBotao="/contato/#canais"
+		/>
+		<ServiceAreas service="sonoplastia-para-congressos" />
+	</main>
+</Layout>

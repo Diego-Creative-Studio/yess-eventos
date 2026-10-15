@@ -1,0 +1,66 @@
+---
+import { Image } from 'astro:assets'
+
+import SectionChamadaServico from '@/components/sections/servicos/SectionChamadaServico.astro'
+import Layout from '@/layouts/Layout.astro'
+import PortfolioIntro from '@/components/PortfolioIntro.astro'
+import SectionFaixasEventos from '@/components/sections/portfolio/SectionFaixasEventos.astro'
+import SectionGaleriaServicos from '@/components/sections/portfolio/SectionGaleriaServicos.astro'
+import SectionHistoriaEvento from '@/components/sections/portfolio/SectionHistoriaEvento.astro'
+import SectionMosaicoZoom from '@/components/sections/portfolio/SectionMosaicoZoom.astro'
+
+import imagemHero from '@/assets/portfolio/projeto-painel.jpg'
+---
+
+<Layout
+	animationDefault="fade-up"
+	animationDuration={0.9}
+	animationDistance={36}
+	animationStart="top 88%"
+	title="Portfólio de Projetos Audiovisuais para Eventos | YESS"
+	description="Conheça projetos audiovisuais realizados pela YESS, com painéis de LED, som, iluminação e operação técnica para feiras, congressos e eventos."
+	headerClass="bg-background"
+	footerTheme="dark"
+>
+	<main id="conteudo" class="overflow-hidden bg-background">
+		<PortfolioIntro />
+
+		<SectionMosaicoZoom />
+
+		<SectionHistoriaEvento />
+
+		<SectionFaixasEventos />
+
+		<SectionGaleriaServicos />
+
+		<SectionChamadaServico
+			titulo="Quer um projeto como esses para o seu evento?"
+			descricao="Conte o formato, a cidade e o público. A equipe prepara uma proposta."
+			textoBotao="Solicitar projeto e orçamento"
+			linkBotao="/contato/#canais"
+		/>
+	</main>
+
+	<script>
+		import { gsap } from 'gsap'
+		import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+		gsap.registerPlugin(ScrollTrigger)
+
+		if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			gsap.utils.toArray<HTMLElement>('[data-portfolio-reveal]').forEach((element) => {
+				gsap.fromTo(
+					element,
+					{ opacity: 0, y: 36 },
+					{
+						opacity: 1,
+						y: 0,
+						duration: 0.9,
+						ease: 'power2.out',
+						scrollTrigger: { trigger: element, start: 'top 88%', once: true },
+					},
+				)
+			})
+		}
+	</script>
+</Layout>

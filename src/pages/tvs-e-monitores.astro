@@ -1,0 +1,236 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import ServiceAreas from '@/components/ServiceAreas.astro'
+
+import Etiqueta from '@/components/Etiqueta.astro'
+import ServiceSchema from '@/components/ServiceSchema.astro'
+import SectionChamadaServico from '@/components/sections/servicos/SectionChamadaServico.astro'
+import SectionComparacaoServico from '@/components/sections/servicos/SectionComparacaoServico.astro'
+import SectionCredibilidadeServico from '@/components/sections/servicos/SectionCredibilidadeServico.astro'
+import SectionEntregaTelasServico from '@/components/sections/servicos/SectionEntregaTelasServico.astro'
+import SectionGaleriaServico from '@/components/sections/servicos/SectionGaleriaServico.astro'
+import SectionHeroServico from '@/components/sections/servicos/SectionHeroServico.astro'
+import SectionPerguntasServico from '@/components/sections/servicos/SectionPerguntasServico.astro'
+import SectionProcessoServico from '@/components/sections/servicos/SectionProcessoServico.astro'
+
+import imagemAplicacaoEvento from '@/assets/yess/tv-apresentacao.jpg'
+import imagemAplicacaoOperacao from '@/assets/yess/tv-palestra.jpg'
+import imagemAplicacaoPlenaria from '@/assets/som-iluminacao/hero-som-iluminacao.jpg'
+import imagemEntrega from '@/assets/yess/tvs-pedestal.jpg'
+import iconeMapeamento from '@/assets/tvs-monitores/icones/92-2606.svg'
+import iconeSuportes from '@/assets/tvs-monitores/icones/92-2614.svg'
+import iconeSinal from '@/assets/tvs-monitores/icones/98-2790.svg'
+import iconeTestes from '@/assets/tvs-monitores/icones/92-2630.svg'
+---
+
+<Layout
+	title="TVs e Projetores para Eventos em SP | YESS"
+	description="TVs de 42, 55 e 65 polegadas, monitores e projetores Epson para eventos em São Paulo e Guarulhos, com montagem e operação técnica."
+>
+	<ServiceSchema
+		name="TVs, monitores e projetores para eventos"
+		description="TVs de 42, 55 e 65 polegadas e projetores Epson para eventos, com planejamento, montagem, testes e operação técnica em São Paulo e Guarulhos."
+	/>
+	<main id="conteudo">
+		<SectionHeroServico
+			videowall
+			tituloDestaque="TVs e projetores para eventos."
+			titulo="<br/>Conteúdo no ponto certo."
+			varianteTitulo="tvs-monitores"
+			descricao="TVs de 42, 55 e 65 polegadas, monitores e projetores Epson para reuniões, feiras, congressos e plenárias. Do planejamento à desmontagem."
+			imagem={imagemAplicacaoEvento}
+			textoAlternativoImagem="Palestrante ao lado de TV em pedestal num evento corporativo"
+			textoBotao="Solicitar orçamento"
+			linkBotao="/contato/#canais"
+			videoMp4="/videos/plenaria-projecao.mp4"
+			videoWebm="/videos/plenaria-projecao.webm"
+		>
+			<Etiqueta
+				slot="etiqueta"
+				texto="TVs e projetores para eventos"
+				tela
+				corFundo="bg-stroke"
+				corTexto="text-foreground"
+				corBolinha="bg-warm"
+				class="self-center lg:self-start lg:text-left"
+			/>
+		</SectionHeroServico>
+
+		<SectionCredibilidadeServico
+			etiqueta="Por que a YESS?"
+			titulo="Segurança em cada etapa"
+			itens={[
+				{
+					numero: '01',
+					titulo: 'Projeto sob medida',
+					descricao: 'TVs de 42, 55 ou 65 polegadas conforme distância, espaço e conteúdo.',
+				},
+				{
+					numero: '02',
+					titulo: 'Montagem técnica',
+					descricao: 'Estrutura, fixação e acabamento organizados.',
+				},
+				{
+					numero: '03',
+					titulo: 'Conteúdo testado',
+					descricao: 'Sinal, proporção e reprodução validados.',
+				},
+				{
+					numero: '04',
+					titulo: 'Operação no evento',
+					descricao: 'Acompanhamento técnico até a desmontagem.',
+				},
+			]}
+		/>
+
+		<SectionComparacaoServico
+			etiqueta="TVs e monitores × Projetores"
+			titulo="Tela ou projeção? A escolha começa pelo espaço"
+			compactarCodigoDestaqueNoMobile
+			etiquetaOrientacao="Como escolher"
+			descricaoOrientacao="A indicação considera quantidade de pessoas, distância de leitura, mobilidade e conteúdo exibido."
+			marcadorItem="•"
+			opcaoClara={{
+				codigo: 'TVs',
+				etiqueta: 'Grupos e ambientes',
+				titulo: 'Conteúdo para grupos e ambientes',
+				descricao:
+					'Indicadas para salas, recepções e espaços onde várias pessoas acompanham a mesma informação.',
+				itens: ['Apresentações e vídeos', 'Salas e plenárias', 'Conteúdo institucional'],
+			}}
+			opcaoDestaque={{
+				codigo: 'PROJETORES',
+				etiqueta: 'Projetores Epson',
+				titulo: 'Projeção planejada para o ambiente',
+				descricao:
+					'A YESS trabalha com projetores Epson. A indicação considera a iluminação do ambiente, a distância de projeção e o conteúdo da apresentação.',
+				itens: [
+					'Reuniões e apresentações',
+					'Congressos e plenárias',
+					'Configuração e testes de conteúdo',
+				],
+			}}
+			nota="A escolha considera público, distância, mobilidade e conteúdo."
+			resumo="TVs e monitores ou projetores: dimensionamento conforme o evento."
+		/>
+
+		<SectionEntregaTelasServico
+			etiqueta="Instalação e acompanhamento técnico"
+			titulo="Cada tela instalada com uma função clara"
+			descricao="A YESS define os pontos de exibição, seleciona suportes, organiza o sinal e valida o conteúdo antes da abertura."
+			itens={[
+				{
+					icone: iconeMapeamento,
+					titulo: 'Mapeamento',
+					descricao: 'Pontos definidos por leitura e circulação.',
+				},
+				{
+					icone: iconeSuportes,
+					titulo: 'Suportes',
+					descricao: 'Tamanhos e fixações adequados ao ambiente.',
+				},
+				{
+					icone: iconeSinal,
+					titulo: 'Sinal',
+					descricao: 'Conexões e conteúdo verificados.',
+				},
+				{
+					icone: iconeTestes,
+					titulo: 'Testes',
+					descricao: 'Funcionamento e desmontagem organizados.',
+				},
+			]}
+			nota="Imagem pronta, cabos organizados e circulação preservada."
+			imagem={imagemEntrega}
+			textoAlternativoImagem="TVs em pedestais instaladas para evento corporativo"
+		/>
+
+		<SectionGaleriaServico
+			layout="destaque"
+			titulo="Uma tela para cada momento do evento"
+			descricao="O tamanho, o suporte e a posição são definidos pela distância, circulação e função do conteúdo."
+			itens={[
+				{
+					titulo: 'ESTANDES E ATIVAÇÕES',
+					descricao: 'Conteúdo institucional e demonstrações próximos do público.',
+					imagem: imagemAplicacaoEvento,
+					textoAlternativoImagem: 'TV em pedestal com conteúdo do evento',
+				},
+				{
+					titulo: 'SALAS E PLENÁRIAS',
+					descricao: 'Apresentações e vídeos com leitura clara para todos.',
+					imagem: imagemAplicacaoPlenaria,
+					textoAlternativoImagem: 'Tela em sala de plenária',
+				},
+				{
+					titulo: 'APOIO E OPERAÇÃO',
+					descricao: 'Retorno, sinalização e acompanhamento técnico da programação.',
+					imagem: imagemAplicacaoOperacao,
+					textoAlternativoImagem: 'Palestrante apresentando com apoio de TV',
+				},
+			]}
+		/>
+
+		<SectionProcessoServico
+			etiqueta="Processo técnico"
+			titulo="Da definição dos pontos à desmontagem"
+			descricao="Planejamento claro, instalação organizada e acompanhamento até a desmontagem."
+			etapas={[
+				{
+					numero: '01',
+					titulo: 'Mapeamento',
+					descricao: 'Locais escolhidos conforme circulação e leitura.',
+				},
+				{
+					numero: '02',
+					titulo: 'Instalação',
+					descricao: 'Telas posicionadas com segurança e acabamento.',
+				},
+				{
+					numero: '03',
+					titulo: 'Sinal e testes',
+					descricao: 'Conexões, proporção e reprodução verificadas.',
+				},
+				{
+					numero: '04',
+					titulo: 'Retirada',
+					descricao: 'Funcionamento validado e desmontagem organizada.',
+				},
+			]}
+		/>
+
+		<SectionPerguntasServico
+			titulo="Perguntas frequentes"
+			perguntas={[
+				{
+					pergunta: 'Quando utilizar TVs, monitores ou projetores?',
+					resposta:
+						'TVs e monitores atendem apresentações, sinalização, credenciamento e estandes. Projetores são uma alternativa para conteúdos exibidos em áreas maiores, conforme o espaço.',
+				},
+				{
+					pergunta: 'Quais tamanhos de TV estão disponíveis?',
+					resposta:
+						'A YESS trabalha com TVs de 42, 55 e 65 polegadas. A escolha depende da distância de visualização, da circulação e da função do conteúdo.',
+				},
+				{
+					pergunta: 'O serviço inclui instalação e desmontagem?',
+					resposta:
+						'Sim. Cuidamos do planejamento, entrega, instalação, configuração, testes, operação técnica necessária e desmontagem dos equipamentos.',
+				},
+				{
+					pergunta: 'Posso usar meus próprios conteúdos?',
+					resposta:
+						'Sim. A equipe orienta os formatos e testa apresentações e vídeos antes do evento.',
+				},
+			]}
+		/>
+
+		<SectionChamadaServico
+			titulo="Seu evento precisa de TVs ou projetores?"
+			descricao="Envie data, cidade, público estimado e medidas do espaço."
+			textoBotao="Solicitar projeto e orçamento"
+			linkBotao="/contato/#canais"
+		/>
+		<ServiceAreas service="tvs-e-projetores-para-eventos" />
+	</main>
+</Layout>

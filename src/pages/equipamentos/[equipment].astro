@@ -1,0 +1,155 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import ServiceAreas from '@/components/ServiceAreas.astro'
+import ServiceSchema from '@/components/ServiceSchema.astro'
+import QuoteForm from '@/components/QuoteForm.astro'
+import SectionHeroServico from '@/components/sections/servicos/SectionHeroServico.astro'
+import SectionPerguntasServico from '@/components/sections/servicos/SectionPerguntasServico.astro'
+import imagemMicrofones from '@/assets/portfolio/galeria/07-led-talk-operacao.jpg'
+import imagemSom from '@/assets/yess/som-palco-show.jpg'
+import imagemLuz from '@/assets/yess/iluminacao-moving-heads.jpg'
+import imagemProjetor from '@/assets/portfolio/galeria/36-tvs-projetor.jpg'
+import imagemTvs from '@/assets/yess/tvs-pedestal.jpg'
+import imagemLed from '@/assets/yess/painel-led-panoramico.jpg'
+import Etiqueta from '@/components/Etiqueta.astro'
+import { eventEquipment } from '@/data/event-equipment'
+import { buildDescription } from '@/utils/description'
+export function getStaticPaths() {
+	return eventEquipment.map((equipment) => ({
+		params: { equipment: equipment.slug },
+		props: { equipment },
+	}))
+}
+interface Props {
+	equipment: (typeof eventEquipment)[number]
+}
+const { equipment } = Astro.props
+const title = `${equipment.name} para eventos`
+const equipmentQuestion = {
+	'painel-de-led-p2': 'Quando escolher um painel de LED P2?',
+	'painel-de-led-p3': 'Como saber se o painel de LED P3 atende ao evento?',
+	microfones: 'Como definir os microfones para a apresentação?',
+	'caixas-de-som': 'Como é dimensionada a sonorização do evento?',
+	'moving-heads': 'Como escolher a iluminação com moving heads?',
+	'projetores-epson': 'O que considerar antes de definir o projetor?',
+	tvs: 'Como escolher o tamanho e a posição das TVs?',
+}[equipment.slug]
+const heroMedia = {
+	'painel-de-led-p2': { image: imagemLed, alt: 'Painel de LED instalado em palco de evento' },
+	'painel-de-led-p3': { image: imagemLed, alt: 'Estrutura audiovisual com painel de LED para evento' },
+	microfones: {
+		image: imagemMicrofones,
+		alt: 'Apresentação com palestrantes e operação audiovisual',
+	},
+	'caixas-de-som': { image: imagemSom, alt: 'Palco com caixas de som e estrutura audiovisual' },
+	'moving-heads': {
+		image: imagemLuz,
+		alt: 'Feixes de moving heads durante apresentação em evento',
+	},
+	'projetores-epson': {
+		image: imagemProjetor,
+		alt: 'Projetor instalado com tela em salão de eventos',
+	},
+	tvs: { image: imagemTvs, alt: 'TV instalada em pedestal para apresentação em evento' },
+}[equipment.slug]
+const description = buildDescription(`${equipment.summary}`, [
+	[
+		'Com entrega, instalação e acompanhamento técnico em São Paulo.',
+		'Entrega, instalação e técnico no evento.',
+	],
+	['Capital e interior.'],
+])
+---
+
+<Layout title={`${title} | YESS`} description={description}>
+	<ServiceSchema name={title} description={description} stateServed="São Paulo" />
+	<main id="conteudo">
+		<SectionHeroServico
+			tituloDestaque={equipment.name}
+			titulo="Para seu evento."
+			descricao={equipment.summary}
+			imagem={heroMedia.image}
+			textoAlternativoImagem={heroMedia.alt}
+			textoBotao="Conheça a solução completa"
+			linkBotao={equipment.hub}
+		>
+			<Etiqueta
+				slot="etiqueta"
+				texto="Equipamentos / Estrutura audiovisual"
+				class="self-center lg:self-start"
+			/>
+		</SectionHeroServico>
+
+		<section class="px-3 py-10 md:px-8 lg:px-16 lg:py-16" aria-labelledby="equipment-project">
+			<div class="mx-auto max-w-345 rounded-3xl border border-stroke bg-surface p-6 md:p-10 lg:p-12">
+				<div
+					class="grid gap-8 border-b border-stroke pb-10 text-center lg:grid-cols-[0.8fr_1.2fr] lg:gap-16 lg:text-left"
+				>
+					<div>
+						<p class="text-sm font-semibold text-warm uppercase">Do equipamento à entrega</p>
+						<h2 id="equipment-project" class="mt-4 text-3xl leading-tight font-semibold md:text-4xl"
+							>A estrutura certa começa pelo seu projeto.</h2
+						>
+					</div>
+					<div class="space-y-5 text-base leading-7 text-text-secondary md:text-lg md:leading-8">
+						<p>{equipment.details}</p>
+						<p
+							>A equipe planeja a entrega, instala os equipamentos e acompanha a operação durante o
+							evento. Não trabalhamos com retirada pelo cliente: cada contratação é uma solução
+							instalada.</p
+						>
+					</div>
+				</div>
+				<div class="mt-10 grid gap-8 text-center md:grid-cols-3 md:gap-6 lg:text-left">
+					<div
+						><p class="text-sm font-semibold text-primary">01 / PLANEJAMENTO</p><h3
+							class="mt-3 text-xl font-semibold">Conforme o seu evento</h3
+						><p class="mt-3 leading-7 text-text-secondary"
+							>Formato, público e espaço orientam o dimensionamento dos equipamentos.</p
+						></div
+					>
+					<div class="md:border-l md:border-stroke md:pl-6"
+						><p class="text-sm font-semibold text-primary">02 / MONTAGEM E OPERAÇÃO</p><h3
+							class="mt-3 text-xl font-semibold">Acompanhamento técnico</h3
+						><p class="mt-3 leading-7 text-text-secondary"
+							>Entrega, instalação e acompanhamento da estrutura até a desmontagem.</p
+						></div
+					>
+					<div class="md:border-l md:border-stroke md:pl-6"
+						><p class="text-sm font-semibold text-primary">03 / ATENDIMENTO</p><h3
+							class="mt-3 text-xl font-semibold">Capital e interior de São Paulo</h3
+						><p class="mt-3 leading-7 text-text-secondary"
+							>Atendemos também Guarulhos. Informe a cidade e o endereço para planejarmos a
+							logística.</p
+						></div
+					>
+				</div>
+				<a
+					href="/estrutura-audiovisual-para-eventos/"
+					class="mt-10 inline-flex items-center gap-2 text-sm text-text-secondary transition-colors hover:text-primary"
+					><span aria-hidden="true">←</span> Ver estrutura audiovisual e equipamentos</a
+				>
+			</div>
+		</section>
+		<SectionPerguntasServico
+			titulo={`Dúvidas sobre ${equipment.name}`}
+			perguntas={[
+				{ pergunta: equipmentQuestion, resposta: equipment.details },
+				{
+					pergunta: 'Posso retirar o equipamento e montar por conta própria?',
+					resposta: 'Não. Os equipamentos fazem parte de uma solução instalada pela YESS, com entrega, montagem, acompanhamento técnico durante o evento e desmontagem. Não oferecemos aluguel para retirada.',
+				},
+				{
+					pergunta: 'Vocês atendem São Paulo e Guarulhos?',
+					resposta: 'Sim. Atendemos São Paulo capital e interior, além de Guarulhos, com ênfase nas zonas Sul, Oeste e Norte da capital. Informe a cidade, o endereço e os horários do evento para planejarmos a logística.',
+				},
+				{
+					pergunta: 'Quais informações preciso enviar para o orçamento?',
+					resposta: 'Envie a data, o local, o tipo de evento, o público estimado e os equipamentos ou conteúdos necessários. Informe também os horários disponíveis para montagem e desmontagem. A equipe avalia o projeto antes de definir a estrutura.',
+				},
+			]}
+		/>
+		<QuoteForm service={equipment.slug} detalhado />
+		<ServiceAreas service={equipment.landing} />
+	</main>
+</Layout>

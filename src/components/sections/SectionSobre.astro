@@ -3,7 +3,8 @@ import { Image } from 'astro:assets'
 
 import Button from '@/components/Button.astro'
 import Icon from '@/components/Icon.astro'
-import imageAbout from '@/assets/sobre/sobre-a-empresa.png'
+import imageAbout from '@/assets/sobre/yess-main.jpg'
+import LightHalo from '@/components/LightHalo.astro'
 
 const highlights = [
 	{
@@ -11,20 +12,21 @@ const highlights = [
 		iconClass: 'size-7',
 		title: 'Planejamento personalizado',
 		description:
-			'Entendemos o objetivo do evento e criamos a estrutura ideal para alcançar o resultado esperado.',
+			'Desenvolvemos projetos técnicos e 3D de acordo com o formato, o público e os objetivos do evento.',
 	},
 	{
 		icon: 'ferramentas',
 		iconClass: 'size-7',
 		title: 'Equipamentos profissionais',
 		description:
-			'Tecnologia de ponta para garantir qualidade, segurança e desempenho em qualquer escala.',
+			'Painéis de LED, som, iluminação, TVs, projetores e estruturas profissionais para cada necessidade.',
 	},
 	{
 		icon: 'equipe',
 		iconClass: 'size-7',
 		title: 'Equipe técnica especializada',
-		description: 'Profissionais experientes que cuidam de cada etapa com foco total na excelência.',
+		description:
+			'Equipe experiente para montagem, operação técnica e desmontagem com acompanhamento integrado.',
 	},
 ] as const
 ---
@@ -34,41 +36,59 @@ const highlights = [
 	aria-labelledby="titulo-sobre"
 	class="relative overflow-hidden bg-background px-3 py-12 md:px-8 lg:px-16 lg:py-16"
 >
+	<!-- Light Halo 
 	<span
 		aria-hidden="true"
 		class="pointer-events-none absolute -top-70 -right-98 size-170 rounded-full bg-primary/20 blur-3xl"
 	></span>
+	-->
+	<LightHalo
+		data-animate="scale"
+		data-animate-duration={1.4}
+		data-animate-delay={0.2}
+		class="top-0 right-0"
+		color="primary"
+		size="lg"
+		intensity="strong"
+	/>
 
-	<div class="relative z-10 mx-auto flex w-full flex-col gap-10 lg:max-w-345 lg:flex-row lg:gap-15">
+	<div class="relative z-10 mx-auto flex w-full flex-col gap-10 lg:max-w-345 xl:flex-row xl:gap-15">
 		<div
-			data-animate
-			class="relative aspect-4/5 overflow-hidden rounded-3xl border-2 border-primary lg:aspect-6/7 lg:w-149 lg:shrink-0"
+			data-motion-image
+			data-motion-parallax
+			class="relative order-2 aspect-4/5 overflow-hidden rounded-3xl border-2 border-primary md:order-0 md:aspect-video xl:aspect-6/7 xl:w-149 xl:shrink-0"
 		>
-			<div class="absolute inset-0 lg:inset-auto lg:top-0 lg:-left-71.25 lg:h-175 lg:w-311">
+			<!-- Folga acima e abaixo para o parallax (±5%) não mostrar as bordas da foto. -->
+			<div class="absolute inset-x-0 -inset-y-[8%]">
 				<Image
 					src={imageAbout}
-					alt="Público acompanhando uma apresentação corporativa em um palco com painéis de LED"
-					class="size-full object-cover"
+					alt="Evento montado pela YESS com painel de LED exibindo a marca da empresa"
+					class="size-full object-cover object-[50%_35%]"
 				/>
 			</div>
 		</div>
 
-		<div data-animate class="flex flex-1 flex-col lg:max-w-140 lg:pt-6">
-			<p class="text-sm font-semibold text-warm uppercase">Sobre a empresa</p>
+		<div data-animate="fade-left" class="flex flex-1 flex-col xl:max-w-140 xl:pt-6">
+			<p class="text-center text-sm font-semibold text-warm uppercase md:text-left"
+				>Sobre a empresa</p
+			>
 
-			<h2 id="titulo-sobre" class="mt-2 text-3xl text-foreground lg:text-5xl">
-				Estrutura, técnica <br class="hidden lg:block" />e cuidado em cada <br
-					class="hidden lg:block"
-				/>evento.
+			<h2
+				data-motion-title
+				id="titulo-sobre"
+				class="mx-auto mt-2 text-center text-[1.75rem] leading-[1.2] text-foreground min-[400px]:text-3xl md:mx-0 md:text-left lg:text-5xl"
+			>
+				Estrutura, técnica e cuidado em cada evento.
 			</h2>
 
-			<div class="mt-5 max-w-md space-y-2 text-muted">
+			<div class="mx-auto mt-5 max-w-md space-y-2 text-center text-muted md:mx-0 md:text-left">
 				<p>
-					A YESS ajuda empresas e produtores a transformar projetos em eventos corporativos com
-					estrutura audiovisual completa e operação integrada.
+					A YESS atende empresas, agências e produtores com soluções audiovisuais para reuniões,
+					feiras, congressos, convenções e plenárias.
 				</p>
 				<p>
-					Mais do que equipamentos, entregamos tranquilidade, organização e impacto em cada detalhe.
+					Do projeto técnico à desmontagem, coordenamos equipamentos, montagem e operação para
+					entregar segurança e organização em cada etapa.
 				</p>
 			</div>
 
@@ -76,7 +96,10 @@ const highlights = [
 				{
 					highlights.map((highlight) => (
 						<li class="flex items-center gap-5">
-							<span class="flex size-15 shrink-0 items-center justify-center rounded-full bg-primary-soft text-white">
+							<span
+								data-motion-icon
+								class="flex size-15 shrink-0 items-center justify-center rounded-full bg-violet-dark text-white"
+							>
 								<Icon name={highlight.icon} class={highlight.iconClass} />
 							</span>
 							<div class="max-w-95 font-title text-sm">
@@ -90,10 +113,11 @@ const highlights = [
 
 			<Button
 				label="Conheça nossa história"
-				href="#nossa-historia"
+				href="/sobre/"
 				variant="outline"
 				arrow
-				class="mt-6 self-start border-primary"
+				animation="shine"
+				class="mt-6 w-full self-start border-primary md:w-auto"
 			/>
 		</div>
 	</div>

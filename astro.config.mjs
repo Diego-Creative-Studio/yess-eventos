@@ -9,6 +9,17 @@ const site = 'https://yess-eventos.vercel.app'
 export default defineConfig({
 	site,
 	trailingSlash: 'always',
+	redirects: {
+		'/locacao-de-equipamentos-para-eventos/': '/estrutura-audiovisual-para-eventos/',
+		'/locacao/microfones/': '/equipamentos/microfones/',
+		'/locacao/caixas-de-som/': '/equipamentos/caixas-de-som/',
+		'/locacao/moving-heads/': '/equipamentos/moving-heads/',
+		'/locacao/projetores-epson/': '/equipamentos/projetores-epson/',
+		'/locacao/tvs/': '/equipamentos/tvs/',
+		'/solucoes/painel-de-led/sao-paulo/': '/painel-de-led-para-eventos-em-sao-paulo/',
+		'/solucoes/painel-de-led/guarulhos/': '/painel-de-led-para-eventos-em-guarulhos/',
+		'/solucoes/painel-de-led/zona-sul/': '/painel-de-led-para-eventos-na-zona-sul/',
+	},
 	image: {
 		layout: 'constrained',
 	},
@@ -35,5 +46,10 @@ export default defineConfig({
 	vite: {
 		plugins: [tailwindcss()],
 	},
-	integrations: [alpinejs(), sitemap()],
+	integrations: [
+		alpinejs(),
+		sitemap({
+			filter: (page) => !/^\/(locacao|solucoes)\//.test(new URL(page).pathname),
+		}),
+	],
 })

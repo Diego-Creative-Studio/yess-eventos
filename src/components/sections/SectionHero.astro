@@ -1,6 +1,6 @@
 ---
 import type { ImageMetadata } from 'astro'
-import { Image } from 'astro:assets'
+import { Image, getImage } from 'astro:assets'
 
 import heroHome from '@/assets/hero-home.png'
 import Button from '@/components/Button.astro'
@@ -24,43 +24,73 @@ interface Props {
 	corFundoEtiqueta?: string
 	corTextoEtiqueta?: string
 	corBolinhaEtiqueta?: string
+	videoMp4?: string
+	videoWebm?: string
 }
 
 const {
 	eyebrow = 'Painéis de LED P2 e P3 para eventos',
-	titleStrong = 'Painéis de LED para eventos corporativos',
-	title = 'Que precisam impressionar',
-	description = 'Locação de painéis P2 e P3, som, iluminação e TVs, com montagem e operação técnica.',
+	titleStrong = 'Painéis de LED para eventos.',
+	title = '<br/>Do projeto à <br class="hero-compact-break"/><span class="hero-operation">operação técnica.</span>',
+	description = 'Painéis P2 e P3, som, iluminação e TVs para eventos corporativos, feiras e congressos, do projeto à desmontagem.',
 	image = heroHome,
-	imageAlt = 'Evento corporativo com grandes painéis de LED azuis',
-	primaryCta = { label: 'Solicitar orçamento', href: '#contato' },
+	imageAlt = 'Evento com palco, público e grandes painéis de LED azuis',
+	primaryCta = { label: 'Solicitar orçamento', href: '/contato/#canais' },
 	secondaryCta = { label: 'Conhecer soluções', href: '#servicos' },
-	features = ['Planejamento', 'Montagem', 'Operação técnica'],
+	features = ['Projeto técnico', 'Montagem', 'Operação e desmontagem'],
 	corFundoEtiqueta = 'bg-violet-dark',
 	corTextoEtiqueta = 'text-foreground',
 	corBolinhaEtiqueta = 'bg-foreground',
+	videoMp4 = '/videos/hero-evento-iluminacao.mp4',
+	videoWebm = '/videos/hero-evento-iluminacao.webm',
 } = Astro.props
+
+// O poster do vídeo também precisa ser otimizado: image.src é o PNG original.
+const videoPoster = await getImage({
+	src: image,
+	width: Math.min(image.width, 1280),
+	format: 'webp',
+	quality: 80,
+})
 ---
 
-<section class="bg-stroke px-3 pt-4 pb-8 md:px-8 lg:px-16 lg:pt-5 lg:pb-16">
+<section data-hero-stage class="px-3 pt-4 pb-8 md:px-8 lg:px-16 lg:pt-5 lg:pb-16">
 	<div
-		class="relative container mx-auto flex w-full items-center overflow-hidden rounded-hero bg-surface px-6 py-10 sm:px-10 md:max-w-7xl lg:max-w-345 lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
+		data-hero-shell
+		class="relative container mx-auto flex w-full origin-center items-center overflow-hidden rounded-hero bg-surface px-6 py-10 max-[359px]:px-4 md:max-w-7xl md:px-10 lg:max-w-345 lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
 	>
+		<video
+			data-hero-video
+			muted
+			playsinline
+			preload="none"
+			poster={videoPoster.src}
+			aria-hidden="true"
+			class="pointer-events-none absolute inset-0 size-full object-cover object-[58%_center] opacity-0 lg:object-center"
+		>
+			<source data-hero-video-source data-src={videoMp4} type="video/mp4" />
+			<source data-hero-video-source data-src={videoWebm} type="video/webm" />
+		</video>
+
 		<Image
+			data-hero-poster
 			src={image}
 			alt={imageAlt}
+			loading="eager"
 			fetchpriority="high"
+			decoding="sync"
 			class="absolute inset-0 size-full object-cover object-[58%_center] lg:object-center"
 		/>
 		<div
+			data-hero-overlay
 			class="absolute inset-0 bg-linear-to-t from-background/95 from-20% to-transparent to-80% lg:bg-linear-to-r lg:from-20% lg:to-60%"
 			aria-hidden="true"></div>
 
 		<div
+			data-hero-content
 			class="relative z-10 flex w-full max-w-197.5 flex-col items-center gap-4.5 text-center lg:h-146 lg:max-w-200 lg:items-start lg:overflow-hidden lg:text-left"
 		>
 			<Etiqueta
-				animar
 				texto={eyebrow}
 				corFundo={corFundoEtiqueta}
 				corTexto={corTextoEtiqueta}
@@ -69,41 +99,39 @@ const {
 			/>
 
 			<h1
-				data-animate
-				class="w-full pt-2 text-[2.35rem] uppercase sm:text-5xl md:max-w-5xl lg:text-6xl"
+				class="w-full pt-2 text-[2rem] leading-[1.08] uppercase max-[359px]:text-[1.75rem] min-[400px]:text-4xl md:max-w-5xl md:text-5xl lg:text-6xl"
 			>
 				<span class="font-extrabold" set:html={titleStrong} />{' '}
 				<span class="font-semibold" set:html={title} />
 			</h1>
 
 			<p
-				data-animate
 				class="w-full text-base text-foreground/80 md:max-w-147.5 md:text-lg"
 				set:html={description}
 			/>
 
 			<div
-				data-animate
-				class="flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row lg:justify-start"
+				class="flex w-full flex-col items-center justify-center gap-3 md:w-auto md:flex-row lg:justify-start"
 			>
 				<Button
 					label={primaryCta.label}
 					href={primaryCta.href}
 					variant="primary"
 					arrow
-					class="w-full sm:w-auto"
+					class="w-full md:w-auto"
+					animation="shine"
 				/>
 				<Button
 					label={secondaryCta.label}
 					href={secondaryCta.href}
 					variant="outline"
-					class="w-full sm:w-auto"
+					class="w-full md:w-auto"
+					animation="shine"
 				/>
 			</div>
 
 			<ul
-				data-animate
-				class="flex w-full list-none flex-wrap items-center justify-center gap-x-5.5 gap-y-2 pt-5 font-title text-sm text-muted sm:text-[15px] lg:w-auto lg:justify-start"
+				class="flex w-full list-none flex-wrap items-center justify-center gap-x-5.5 gap-y-2 pt-5 font-title text-sm text-muted md:text-base lg:w-auto lg:justify-start"
 			>
 				{
 					features.map((feature, index) => (
@@ -117,6 +145,283 @@ const {
 					))
 				}
 			</ul>
+
+			<div class="h-[3.7rem] shrink-0 lg:hidden" aria-hidden="true"></div>
 		</div>
+
+		<div class="absolute right-4 bottom-4 z-20 md:right-6 md:bottom-6">
+			<Button
+				id="hero-play"
+				label="Ver vídeo"
+				type="button"
+				variant="outline"
+				icon="play"
+				animation="shine"
+				class="cursor-pointer bg-background/80"
+			/>
+		</div>
+
+		<div
+			data-hero-background-controls
+			hidden
+			class="absolute right-4 bottom-4 z-20 md:right-6 md:bottom-6"
+		>
+			<Button
+				id="hero-pause"
+				label="Pausar vídeo"
+				type="button"
+				variant="outline"
+				animation="shine"
+				class="cursor-pointer bg-background/90"
+			/>
+		</div>
+		<p data-hero-video-status class="sr-only" role="status" aria-live="polite"></p>
 	</div>
 </section>
+
+<style>
+	[data-hero-video],
+	[data-hero-poster],
+	[data-hero-content],
+	[data-hero-overlay] {
+		transition: opacity 0.25s ease;
+	}
+	[data-hero-shell][data-playing='true'] [data-hero-video] {
+		opacity: 1;
+	}
+	[data-hero-shell][data-playing='true'] [data-hero-poster] {
+		opacity: 0;
+	}
+	[data-hero-shell][data-video-view='true'] [data-hero-content],
+	[data-hero-shell][data-video-view='true'] [data-hero-overlay] {
+		opacity: 0;
+		pointer-events: none;
+	}
+	[data-hero-shell][data-video-view='true'] [data-hero-video] {
+		object-fit: contain;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		[data-hero-video],
+		[data-hero-poster],
+		[data-hero-content],
+		[data-hero-overlay] {
+			transition: none;
+		}
+	}
+	[data-hero-content] :global(.hero-compact-break) {
+		display: none;
+	}
+
+	/* Notebooks: compacta apenas a composição inicial em telas desktop baixas. */
+	@media (min-width: 1024px) and (max-height: 800px) {
+		[data-hero-shell] {
+			min-height: min(38rem, calc(100svh - 10rem));
+			align-items: flex-start;
+			padding-top: 3rem;
+			padding-bottom: 2.5rem;
+		}
+
+		[data-hero-content] {
+			height: auto;
+			overflow: visible;
+			gap: 0.875rem;
+		}
+
+		[data-hero-content] h1 {
+			font-size: 3rem;
+		}
+
+		[data-hero-content] :global(.hero-compact-break) {
+			display: inline;
+		}
+
+		[data-hero-content] :global(.hero-operation) {
+			white-space: nowrap;
+		}
+
+		[data-hero-content] > p {
+			font-size: 1rem;
+		}
+
+		[data-hero-content] > ul {
+			padding-top: 0.5rem;
+		}
+	}
+</style>
+
+<script>
+	const heroShell = document.querySelector<HTMLElement>('[data-hero-shell]')
+
+	if (heroShell && heroShell.dataset.videoInitialized !== 'true') {
+		heroShell.dataset.videoInitialized = 'true'
+		const video = heroShell.querySelector<HTMLVideoElement>('[data-hero-video]')
+		const content = heroShell.querySelector<HTMLElement>('[data-hero-content]')
+		const playButton = heroShell.querySelector<HTMLButtonElement>('#hero-play')
+		const pauseButton = heroShell.querySelector<HTMLButtonElement>('#hero-pause')
+		const backgroundControls = heroShell.querySelector<HTMLElement>(
+			'[data-hero-background-controls]',
+		)
+		const status = heroShell.querySelector<HTMLElement>('[data-hero-video-status]')
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+		const desktop = window.matchMedia('(min-width: 1024px)')
+		const connection = (
+			navigator as Navigator & {
+				connection?: { saveData?: boolean; effectiveType?: string }
+			}
+		).connection
+		const saveData =
+			connection?.saveData === true || ['slow-2g', '2g'].includes(connection?.effectiveType ?? '')
+
+		if (
+			video &&
+			content &&
+			playButton &&
+			pauseButton &&
+			backgroundControls
+		) {
+			let mode: 'idle' | 'background' | 'view' = 'idle'
+			let wanted = false
+			let playing = false
+			let sourcesAttached = false
+			let attemptedAutoplay = false
+			let hasPlayed = false
+			let request = 0
+			const initialRect = heroShell.getBoundingClientRect()
+			let inView = initialRect.bottom > 0 && initialRect.top < window.innerHeight
+
+			const syncPresentation = () => {
+				const viewing = mode === 'view' && playing
+				heroShell.dataset.playing = String(playing)
+				heroShell.dataset.videoView = String(viewing)
+				content.inert = viewing
+				backgroundControls.hidden = mode === 'idle'
+				const awaitingAutoplay =
+					!attemptedAutoplay && desktop.matches && !reduceMotion.matches && !saveData
+				// Visibility preserva o espaço do botão no mobile, sem saltos na altura da hero.
+				playButton.style.visibility = mode !== 'idle' || awaitingAutoplay ? 'hidden' : ''
+				playButton.disabled = mode !== 'idle' || awaitingAutoplay
+				const label = playButton.querySelector('span')
+				if (label) label.textContent = hasPlayed ? 'Rever vídeo' : 'Ver vídeo'
+			}
+
+			const restore = (returnFocus = false) => {
+				request++
+				wanted = false
+				playing = false
+				mode = 'idle'
+				video.pause()
+				playButton.disabled = false
+				syncPresentation()
+				if (returnFocus && inView && !document.hidden) playButton.focus({ preventScroll: true })
+			}
+
+			const attachSources = () => {
+				if (sourcesAttached) return
+				video.querySelectorAll<HTMLSourceElement>('[data-hero-video-source]').forEach((source) => {
+					if (source.dataset.src) source.src = source.dataset.src
+				})
+				sourcesAttached = true
+				video.load()
+			}
+
+			const start = async (nextMode: 'background' | 'view') => {
+				const currentRequest = ++request
+				mode = nextMode
+				wanted = true
+				if (status) status.textContent = ''
+				playButton.disabled = true
+				syncPresentation()
+				if (nextMode === 'view') pauseButton.focus({ preventScroll: true })
+				attachSources()
+				video.currentTime = 0
+				try {
+					await video.play()
+					if (currentRequest !== request) return
+					if (!inView || document.hidden) video.pause()
+				} catch {
+					if (currentRequest !== request) return
+					restore(nextMode === 'view')
+					if (nextMode === 'view' && status)
+						status.textContent = 'Não foi possível reproduzir o vídeo. Tente novamente.'
+				}
+			}
+
+			const autoplayOnce = () => {
+				if (
+					attemptedAutoplay ||
+					mode !== 'idle' ||
+					!inView ||
+					document.hidden ||
+					!desktop.matches ||
+					reduceMotion.matches ||
+					saveData
+				)
+					return
+				attemptedAutoplay = true
+				void start('background')
+			}
+
+			const updateVisibility = () => {
+				if (!wanted || mode === 'idle') return
+				if (!inView || document.hidden) video.pause()
+				else void video.play().catch(() => restore())
+			}
+
+			video.addEventListener('playing', () => {
+				if (!wanted || !inView || document.hidden) {
+					video.pause()
+					return
+				}
+				playing = true
+				hasPlayed = true
+				syncPresentation()
+			})
+			// Uma pausa por visibilidade mantém o último quadro e o modo de vídeo.
+			// Apenas fechar, terminar ou falhar deve restaurar a imagem e os textos.
+			video.addEventListener('ended', () => restore(mode === 'view'))
+			video.addEventListener('error', () => {
+				const wasViewing = mode === 'view'
+				restore(wasViewing)
+				if (wasViewing && status)
+					status.textContent = 'Não foi possível carregar o vídeo. Tente novamente.'
+			})
+			playButton.addEventListener('click', () => {
+				attemptedAutoplay = true
+				void start('view')
+			})
+			pauseButton.addEventListener('click', () => restore(true))
+			document.addEventListener('keydown', (event) => {
+				if (event.key === 'Escape' && mode === 'view') restore(true)
+			})
+			document.addEventListener('visibilitychange', updateVisibility)
+			desktop.addEventListener('change', () => {
+				if (!desktop.matches && mode === 'background') restore()
+			})
+			reduceMotion.addEventListener('change', () => {
+				if (reduceMotion.matches && mode === 'background') restore()
+			})
+			const observer = new IntersectionObserver(
+				([entry]) => {
+					inView = entry.isIntersecting && entry.intersectionRatio >= 0.1
+					updateVisibility()
+				},
+				{ threshold: [0, 0.1] },
+			)
+			observer.observe(heroShell)
+			window.addEventListener(
+				'pagehide',
+				() => {
+					restore()
+					observer.disconnect()
+				},
+				{ once: true },
+			)
+			syncPresentation()
+			// Mostra a hero estática antes de iniciar a reprodução, sem aguardar vídeo ou animação.
+			const poster = heroShell.querySelector<HTMLImageElement>('[data-hero-poster]')
+			void (poster?.decode().catch(() => undefined) ?? Promise.resolve()).then(() =>
+				requestAnimationFrame(autoplayOnce),
+			)
+		}
+	}
+</script>

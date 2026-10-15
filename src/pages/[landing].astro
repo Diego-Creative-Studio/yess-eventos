@@ -1,0 +1,213 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import Etiqueta from '@/components/Etiqueta.astro'
+import QuoteForm from '@/components/QuoteForm.astro'
+import ServiceAreas from '@/components/ServiceAreas.astro'
+import ServiceSchema from '@/components/ServiceSchema.astro'
+import SectionHeroServico from '@/components/sections/servicos/SectionHeroServico.astro'
+import SectionComoFuncionaServico from '@/components/sections/servicos/SectionComoFuncionaServico.astro'
+import SectionPerguntasServico from '@/components/sections/servicos/SectionPerguntasServico.astro'
+import SectionProcessoServico from '@/components/sections/servicos/SectionProcessoServico.astro'
+import { landingServices } from '@/data/landings/services'
+import {
+	aliasFaq,
+	aliasText,
+	getLandings,
+	hubNames,
+	inLocation,
+	isPublished,
+	landingURL,
+	logisticsText,
+	quoteLocation,
+	type Landing,
+} from '@/lib/landings'
+import { buildDescription } from '@/utils/description'
+
+export function getStaticPaths() {
+	return getLandings().map((landing) => ({
+		params: { landing: landing.slug },
+		props: { landing },
+	}))
+}
+
+interface Props {
+	landing: Landing
+}
+
+const { landing } = Astro.props as Props
+const { service, location } = landing
+
+type Pergunta = { pergunta: string; resposta: string }
+const where = inLocation(location)
+const heading = `${service.label} ${where}`
+const title = `${service.title} ${where} | YESS`
+const description = buildDescription(`${heading}: ${service.metaLead}.`, [
+	[
+		'Atendimento para feiras, congressos e eventos corporativos.',
+		'Feiras, congressos e eventos corporativos.',
+	],
+	['Peça seu orçamento.'],
+])
+const quote = quoteLocation(location)
+const hubName = hubNames[service.hub] ?? service.tag
+
+const coverageAnswer =
+	location.kind === 'interior' || location.kind === 'litoral'
+		? `Sim. Atendemos o interior e o litoral de São Paulo, e ${location.name} fica a cerca de ${location.distanceKm} km da capital. A montagem é programada com antecedência, considerando o deslocamento da equipe e dos equipamentos.`
+		: location.kind === 'metropole'
+			? `Sim. ${location.name} é atendida pela mesma equipe que monta os eventos na capital, com entrega, montagem, operação técnica e desmontagem no local.`
+			: `Sim. Atendemos toda a capital, com ênfase nas zonas Sul, Oeste e Norte. Informe o endereço do evento ${where} para planejarmos a entrega e a montagem.`
+
+const perguntas: [Pergunta, Pergunta, Pergunta, Pergunta] = [
+	service.faq,
+	aliasFaq(service, location),
+	{ pergunta: `Vocês atendem ${where}?`, resposta: coverageAnswer },
+	{
+		pergunta: 'Como funciona o pagamento?',
+		resposta: 'Uma entrada na contratação e o restante no dia do evento.',
+	},
+]
+
+type Etapa = { numero: string; titulo: string; descricao: string }
+
+const etapas: [Etapa, Etapa, Etapa, Etapa] = [
+	{
+		numero: '01',
+		titulo: 'Briefing',
+		descricao: `Você informa data, endereço ${where}, público estimado e programação.`,
+	},
+	{
+		numero: '02',
+		titulo: 'Projeto',
+		descricao:
+			'Dimensionamos equipamentos e estrutura para o espaço, com projeto 3D quando necessário.',
+	},
+	{
+		numero: '03',
+		titulo: 'Montagem e testes',
+		descricao: 'Entregamos, montamos e testamos tudo antes da abertura do evento.',
+	},
+	{
+		numero: '04',
+		titulo: 'Operação e desmontagem',
+		descricao: 'Um técnico acompanha a programação, e a equipe desmonta ao final.',
+	},
+]
+
+const otherServices = landingServices.filter(
+	(item) => item.slug !== service.slug && isPublished(item, location),
+)
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: perguntas.map((item) => ({
+		'@type': 'Question',
+		name: item.pergunta,
+		acceptedAnswer: { '@type': 'Answer', text: item.resposta },
+	})),
+}
+---
+
+<Layout {title} {description}>
+	<ServiceSchema
+		name={heading}
+		{description}
+		areaServed={[location.name]}
+		areaType={location.kind === 'bairro' || location.kind === 'zona'
+			? 'AdministrativeArea'
+			: 'City'}
+		stateServed="São Paulo"
+		breadcrumb={[{ name: hubName, url: service.hub }]}
+	/>
+	<script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+	<main id="conteudo">
+		<nav aria-label="Trilha de navegação" class="px-3 pt-2 md:px-8 lg:px-16">
+			<ol class="mx-auto flex max-w-345 flex-wrap items-center gap-2 text-sm text-muted">
+				<li><a href="/" class="hover:text-foreground">Início</a></li>
+				<li aria-hidden="true">/</li>
+				<li><a href={service.hub} class="hover:text-foreground">{hubName}</a></li>
+				<li aria-hidden="true">/</li>
+				<li aria-current="page" class="text-foreground">{location.name}</li>
+			</ol>
+		</nav>
+
+		<SectionHeroServico
+			tituloDestaque={service.label}
+			titulo={where}
+			descricao={`${service.lead} Atendimento ${where} e região.`}
+			imagem={service.image}
+			textoAlternativoImagem={`${service.imageAlt} ${where}`}
+			textoBotao="Solicitar orçamento"
+			linkBotao="#canais"
+		>
+			<Etiqueta
+				slot="etiqueta"
+				texto={service.tag}
+				corFundo="bg-stroke"
+				corTexto="text-foreground"
+				corBolinha="bg-warm"
+				class="self-center lg:self-start lg:text-left"
+			/>
+		</SectionHeroServico>
+
+		<SectionComoFuncionaServico
+			etiqueta={service.tag}
+			titulo={`Como funciona ${service.short} ${where}`}
+			paragrafos={service.intro}
+			tituloLocal={`Atendimento ${where}`}
+			textosLocal={[location.note, logisticsText(location)].filter((texto): texto is string =>
+				Boolean(texto),
+			)}
+			textoAluguel={aliasText(service, location)}
+			itens={service.equipment}
+			eventos={service.events}
+		/>
+
+		<SectionProcessoServico
+			etiqueta="Como trabalhamos"
+			titulo={`Do projeto à desmontagem ${where}`}
+			descricao={`Do primeiro contato à desmontagem, a mesma equipe cuida de ${service.short} ${where}.`}
+			{etapas}
+		/>
+
+		<SectionPerguntasServico titulo={`Dúvidas sobre ${service.short} ${where}`} {perguntas} />
+
+		<QuoteForm service={service.quote} city={quote.city} district={quote.district} />
+
+		<section class="px-3 py-8 md:px-8 lg:px-16" aria-labelledby="outros-servicos">
+			<div class="mx-auto max-w-345 rounded-3xl border border-stroke bg-surface p-6 md:p-10">
+				<h2 id="outros-servicos" class="text-center text-3xl lg:text-left">
+					Outros serviços {where}
+				</h2>
+				<ul class="mt-6 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+					{
+						otherServices.map((item) => (
+							<li>
+								<a
+									href={landingURL(item, location)}
+									class="flex h-full items-center justify-between gap-3 rounded-small border border-stroke bg-surface-alt px-4 py-4 text-sm font-semibold transition-colors hover:border-primary focus-visible:outline-2 focus-visible:outline-primary"
+								>
+									<span>
+										{item.label} {where}
+									</span>
+									<span aria-hidden="true" class="text-primary">
+										↗
+									</span>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</section>
+
+		<ServiceAreas
+			service={service.slug}
+			currentLocation={location.slug}
+			title={service.label}
+			highlight="em outras regiões"
+		/>
+	</main>
+</Layout>

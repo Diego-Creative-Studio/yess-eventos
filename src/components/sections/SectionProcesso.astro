@@ -1,8 +1,15 @@
 ---
-import { Image } from 'astro:assets'
-
 import Icon from '@/components/Icon.astro'
-import linhasProcesso from '@/assets/processo/linhas-processo.png'
+import Button from '@/components/Button.astro'
+import LightHalo from '@/components/LightHalo.astro'
+import AnimatedWaves from '@/components/AnimatedWaves.astro'
+import site from '@/data/site.json'
+
+// Mesmo número e mensagem inicial usados no formulário de orçamento.
+const whatsapp = (import.meta.env.PUBLIC_WHATSAPP_NUMBER || site.whatsapp || '').replace(/\D/g, '')
+const whatsappUrl = whatsapp
+	? `https://wa.me/${whatsapp}?text=${encodeURIComponent('Olá! Quero um orçamento para um evento.')}`
+	: '/contato/#canais'
 ---
 
 <section
@@ -11,28 +18,43 @@ import linhasProcesso from '@/assets/processo/linhas-processo.png'
 	class="overflow-hidden px-3 py-12 md:px-8 lg:px-16 lg:pt-16 lg:pb-24"
 >
 	<div class="mx-auto flex w-full flex-col lg:max-w-345">
-		<div data-animate class="flex flex-col gap-2 lg:min-h-27.5">
+		<div data-animate="fade-up" class="flex flex-col gap-2 text-center md:text-left lg:min-h-27.5">
 			<p class="text-sm font-semibold text-warm uppercase">Nosso processo</p>
-			<h2 id="titulo-processo" class="text-3xl text-foreground lg:text-4xl">
+			<h2 data-motion-title id="titulo-processo" class="text-3xl text-foreground lg:text-4xl">
 				Do briefing à operação técnica.
 			</h2>
 		</div>
 
 		<div
-			data-animate
-			class="relative overflow-hidden rounded-3xl border-2 border-stroke bg-linear-to-r from-surface to-primary-soft/70 lg:min-h-56.5"
+			data-motion-process
+			data-animate="scale"
+			data-animate-duration={0.7}
+			class="relative mt-8 overflow-hidden rounded-3xl border-2 border-stroke bg-linear-to-r from-surface to-primary-soft/70 lg:mt-0 lg:min-h-56.5"
 		>
+			<!-- Light Halo 
 			<span
 				aria-hidden="true"
 				class="pointer-events-none absolute -top-24 -right-20 size-50 rounded-full bg-primary/20 blur-3xl"
 			></span>
+			-->
+			<LightHalo
+				data-animate="scale"
+				data-animate-duration={1.4}
+				data-animate-delay={0.8}
+				class="top-0 right-0"
+				color="primary"
+				size="sm"
+				intensity="medium"
+			/>
 
 			<div class="relative grid lg:grid-cols-4">
-				<article class="relative flex min-h-48 flex-col px-6 py-5 lg:min-h-56.5 lg:px-5.5">
-					<span class="font-title text-3xl leading-tight font-medium text-primary lg:text-4xl"
-						>01</span
-					>
-					<h3 class="mt-2 text-xl leading-8 text-foreground">Entendemos o evento</h3>
+				<article
+					data-animate="fade-left"
+					data-animate-delay={0.15}
+					class="relative flex min-h-48 flex-col items-center px-6 py-7 text-center lg:min-h-56.5 lg:items-start lg:px-5.5 lg:py-5 lg:text-left"
+				>
+					<span class="font-title text-4xl leading-tight font-medium text-primary">01</span>
+					<h3 class="mt-2 text-xl text-foreground lg:leading-8">Entendemos o evento</h3>
 					<p class="mt-2 max-w-60 text-sm leading-6 text-muted">
 						Alinhamos objetivos, público, formato e necessidades técnicas.
 					</p>
@@ -41,18 +63,21 @@ import linhasProcesso from '@/assets/processo/linhas-processo.png'
 						class="absolute right-0 bottom-0 left-0 h-px bg-white/70 lg:top-8 lg:right-4 lg:bottom-auto lg:left-auto lg:h-42.5 lg:w-px"
 					></span>
 					<span
+						data-motion-process-node
 						aria-hidden="true"
-						class="absolute right-1/2 bottom-0 grid size-7.5 translate-x-1/2 translate-y-1/2 rotate-90 place-items-center rounded-full bg-primary text-white lg:top-1/2 lg:right-4 lg:bottom-auto lg:translate-x-1/2 lg:-translate-y-1/2 lg:rotate-0"
+						class="absolute right-1/2 bottom-0 grid size-7.5 translate-x-1/2 translate-y-1/2 rotate-90 place-items-center rounded-full bg-violet-dark text-white lg:top-1/2 lg:right-4 lg:bottom-auto lg:translate-x-1/2 lg:-translate-y-1/2 lg:rotate-0"
 					>
 						<Icon name="chevron" class="size-3.5 translate-x-px" />
 					</span>
 				</article>
 
-				<article class="relative flex min-h-48 flex-col px-6 py-5 lg:min-h-56.5 lg:px-5.5">
-					<span class="font-title text-3xl leading-tight font-medium text-primary lg:text-4xl"
-						>02</span
-					>
-					<h3 class="mt-2 text-xl leading-8 text-foreground">Planejamos a estrutura</h3>
+				<article
+					data-animate="fade-left"
+					data-animate-delay={0.3}
+					class="relative flex min-h-48 flex-col items-center px-6 py-7 text-center lg:min-h-56.5 lg:items-start lg:px-5.5 lg:py-5 lg:text-left"
+				>
+					<span class="font-title text-4xl leading-tight font-medium text-primary">02</span>
+					<h3 class="mt-2 text-xl text-foreground lg:leading-8">Planejamos a estrutura</h3>
 					<p class="mt-2 max-w-60 text-sm leading-6 text-muted">
 						Desenvolvemos o projeto técnico e definimos os recursos ideais.
 					</p>
@@ -61,18 +86,21 @@ import linhasProcesso from '@/assets/processo/linhas-processo.png'
 						class="absolute right-0 bottom-0 left-0 h-px bg-white/70 lg:top-8 lg:right-4 lg:bottom-auto lg:left-auto lg:h-42.5 lg:w-px"
 					></span>
 					<span
+						data-motion-process-node
 						aria-hidden="true"
-						class="absolute right-1/2 bottom-0 grid size-7.5 translate-x-1/2 translate-y-1/2 rotate-90 place-items-center rounded-full bg-primary text-white lg:top-1/2 lg:right-4 lg:bottom-auto lg:translate-x-1/2 lg:-translate-y-1/2 lg:rotate-0"
+						class="absolute right-1/2 bottom-0 grid size-7.5 translate-x-1/2 translate-y-1/2 rotate-90 place-items-center rounded-full bg-violet-dark text-white lg:top-1/2 lg:right-4 lg:bottom-auto lg:translate-x-1/2 lg:-translate-y-1/2 lg:rotate-0"
 					>
 						<Icon name="chevron" class="size-3.5 translate-x-px" />
 					</span>
 				</article>
 
-				<article class="relative flex min-h-48 flex-col px-6 py-5 lg:min-h-56.5 lg:px-5.5">
-					<span class="font-title text-3xl leading-tight font-medium text-primary lg:text-4xl"
-						>03</span
-					>
-					<h3 class="mt-2 text-xl leading-8 text-foreground">Realizamos a montagem</h3>
+				<article
+					data-animate="fade-left"
+					data-animate-delay={0.45}
+					class="relative flex min-h-48 flex-col items-center px-6 py-7 text-center lg:min-h-56.5 lg:items-start lg:px-5.5 lg:py-5 lg:text-left"
+				>
+					<span class="font-title text-4xl leading-tight font-medium text-primary">03</span>
+					<h3 class="mt-2 text-xl text-foreground lg:leading-8">Realizamos a montagem</h3>
 					<p class="mt-2 max-w-60 text-sm leading-6 text-muted">
 						Executamos a montagem com segurança, organização e precisão.
 					</p>
@@ -81,22 +109,23 @@ import linhasProcesso from '@/assets/processo/linhas-processo.png'
 						class="absolute right-0 bottom-0 left-0 h-px bg-white/70 lg:top-8 lg:right-4 lg:bottom-auto lg:left-auto lg:h-42.5 lg:w-px"
 					></span>
 					<span
+						data-motion-process-node
 						aria-hidden="true"
-						class="absolute right-1/2 bottom-0 grid size-7.5 translate-x-1/2 translate-y-1/2 rotate-90 place-items-center rounded-full bg-primary text-white lg:top-1/2 lg:right-4 lg:bottom-auto lg:translate-x-1/2 lg:-translate-y-1/2 lg:rotate-0"
+						class="absolute right-1/2 bottom-0 grid size-7.5 translate-x-1/2 translate-y-1/2 rotate-90 place-items-center rounded-full bg-violet-dark text-white lg:top-1/2 lg:right-4 lg:bottom-auto lg:translate-x-1/2 lg:-translate-y-1/2 lg:rotate-0"
 					>
 						<Icon name="chevron" class="size-3.5 translate-x-px" />
 					</span>
 				</article>
 
-				<article class="relative flex min-h-48 flex-col px-6 py-5 lg:min-h-56.5 lg:px-5.5">
-					<span class="font-title text-3xl leading-tight font-medium text-primary lg:text-4xl"
-						>04</span
-					>
-					<h3 class="mt-2 text-xl leading-8 text-foreground">
-						Acompanhamos a operação
-					</h3>
+				<article
+					data-animate="fade-left"
+					data-animate-delay={0.6}
+					class="relative flex min-h-48 flex-col items-center px-6 py-7 text-center lg:min-h-56.5 lg:items-start lg:px-5.5 lg:py-5 lg:text-left"
+				>
+					<span class="font-title text-4xl leading-tight font-medium text-primary">04</span>
+					<h3 class="mt-2 text-xl text-foreground lg:leading-8"> Acompanhamos a operação </h3>
 					<p class="mt-2 max-w-60 text-sm leading-6 text-muted">
-						Alinhamos objetivos, público, formato e necessidades técnicas.
+						Operamos os equipamentos durante o evento e organizamos a desmontagem.
 					</p>
 				</article>
 			</div>
@@ -104,36 +133,57 @@ import linhasProcesso from '@/assets/processo/linhas-processo.png'
 
 		<div
 			id="orcamento"
-			data-animate
+			data-animate="fade-up"
 			class="relative mt-8 flex min-h-65 flex-col justify-center gap-8 overflow-hidden rounded-3xl border-2 border-primary bg-primary-dark px-6 py-8 lg:flex-row lg:items-center lg:justify-between lg:px-9"
 		>
-			<span
-				aria-hidden="true"
-				class="pointer-events-none absolute -top-36 -left-32 size-104 rounded-full bg-white/20 blur-3xl"
-			></span>
-			<Image
-				src={linhasProcesso}
-				alt=""
-				class="pointer-events-none absolute -right-94 -bottom-90 w-225 max-w-none -rotate-10"
+			<LightHalo
+				data-animate="scale"
+				data-animate-duration={1.4}
+				data-animate-delay={0.2}
+				class="top-0 left-0"
+				color="white"
+				size="sm"
+				intensity="medium"
+			/>
+			<AnimatedWaves
+				class="-right-94 -bottom-90 w-225 max-w-none -rotate-10"
+				color="bg-primary"
+				opacity="opacity-80"
+				echoOpacity="opacity-30"
 			/>
 
-			<div class="relative z-10 max-w-153 text-shadow-lg">
+			<div class="relative z-10 max-w-153 text-center text-shadow-lg md:text-left">
 				<h2 class="text-3xl text-white lg:text-4xl">
-					Seu evento corporativo começa <br class="hidden lg:block" />com a estrutura certa.
+					Seu evento começa com <br class="hidden lg:block" />a estrutura certa.
 				</h2>
 				<p class="mt-2 text-lg leading-7.5 text-white">
-					Conte o formato, o público e o objetivo. <br class="hidden lg:block" />A YESS cuida da
-					solução audiovisual.
+					Conte o formato, o público e o objetivo. <br class="hidden lg:block" />A YESS cuida do
+					projeto à desmontagem.
 				</p>
 			</div>
 
+			<!--
 			<a
-				href="#contato"
-				class="relative z-10 inline-flex min-h-13.5 items-center justify-center gap-2.5 self-start rounded-full bg-white px-6 py-4 font-title text-sm font-semibold text-background shadow-xl/20 transition-transform duration-200 hover:-translate-y-0.5 lg:mr-16 lg:min-w-64 lg:self-center"
+				href="/contato/#canais"
+				class="relative z-10 inline-flex min-h-13.5 w-full items-center justify-center gap-2.5 self-start rounded-full bg-white px-6 py-4 font-title text-sm font-semibold text-background shadow-xl/20 transition-transform duration-200 hover:-translate-y-0.5 md:w-auto lg:mr-16 lg:min-w-64 lg:self-center"
 			>
 				<Icon name="whatsapp" class="size-5" />
 				Conversar pelo WhatsApp
 			</a>
+			-->
+			<Button
+				data-animate="fade-left"
+				href={whatsappUrl}
+				target={whatsapp ? '_blank' : undefined}
+				rel={whatsapp ? 'noopener noreferrer' : undefined}
+				label="Conversar pelo WhatsApp"
+				variant="tertiary"
+				icon="whatsapp"
+				iconPosition="left"
+				iconClass="size-6"
+				animation="shine"
+				class="relative z-10 w-full self-start border-white md:w-auto lg:min-w-64 lg:shrink-0 lg:self-center lg:whitespace-nowrap xl:mr-16"
+			/>
 		</div>
 	</div>
 </section>

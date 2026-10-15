@@ -1,0 +1,105 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import Etiqueta from '@/components/Etiqueta.astro'
+import QuoteForm from '@/components/QuoteForm.astro'
+import SectionChamadaServico from '@/components/sections/servicos/SectionChamadaServico.astro'
+import SectionHeroServico from '@/components/sections/servicos/SectionHeroServico.astro'
+import SectionProcessoServico from '@/components/sections/servicos/SectionProcessoServico.astro'
+
+import imagemHero from '@/assets/yess/poster-evento-iluminacao.jpg'
+---
+
+<Layout
+	animationDefault="fade-up"
+	animationDuration={0.8}
+	animationDistance={28}
+	animationStart="top 90%"
+	title="Contato | YESS Audiovisual e Eventos"
+	description="Solicite orçamento de painel de LED, som, iluminação e equipamentos audiovisuais para seu evento em São Paulo ou Guarulhos."
+>
+	<main id="conteudo" class="overflow-hidden">
+		<SectionHeroServico
+			tituloDestaque=`Seu evento sempre começa com<br class="hidden lg:block"/>  uma boa`
+			titulo="<br/>conversa."
+			varianteTitulo="som-iluminacao"
+			descricao="Fale diretamente com a equipe que planeja, monta e opera cada entrega audiovisual."
+			imagem={imagemHero}
+			textoAlternativoImagem="Evento com moving heads, painel de LED e público"
+			textoBotao="Iniciar conversa"
+			linkBotao="#canais"
+			videoMp4="/videos/evento-iluminacao.mp4"
+			videoWebm="/videos/evento-iluminacao.webm"
+		>
+			<Etiqueta
+				slot="etiqueta"
+				texto="Contato / Atendimento YESS"
+				corFundo="bg-stroke"
+				corTexto="text-foreground"
+				corBolinha="bg-[#f5750a]"
+				class="self-center border border-stroke lg:self-start lg:text-left"
+			/>
+		</SectionHeroServico>
+
+		<SectionChamadaServico
+			titulo="Vamos falar sobre seu evento."
+			descricao="Resposta direta, orientação técnica e próximos passos claros."
+			textoBotao="Solicitar projeto e orçamento"
+			linkBotao="#canais"
+		/>
+
+		<SectionProcessoServico
+			etiqueta="Briefing inicial"
+			titulo="Um bom briefing<br />começa simples."
+			descricao="Não precisa ter o projeto fechado. Estas informações já permitem uma primeira orientação."
+			rotuloFluxo="Fluxo do briefing"
+			layout="assimetrico"
+			etapas={[
+				{
+					numero: '01',
+					titulo: 'Data',
+					descricao: 'Quando acontece?',
+				},
+				{
+					numero: '02',
+					titulo: 'Local',
+					descricao: 'Cidade e espaço',
+				},
+				{
+					numero: '03',
+					titulo: 'Formato',
+					descricao: 'Tipo de evento',
+				},
+				{
+					numero: '04',
+					titulo: 'Público',
+					descricao: 'Estimativa inicial',
+				},
+			]}
+		/>
+
+		<QuoteForm />
+	</main>
+
+	<script>
+		import { gsap } from 'gsap'
+		import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+		gsap.registerPlugin(ScrollTrigger)
+
+		if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			gsap.utils.toArray<HTMLElement>('[data-contato-reveal]').forEach((element) => {
+				gsap.fromTo(
+					element,
+					{ opacity: 0, y: 28 },
+					{
+						opacity: 1,
+						y: 0,
+						duration: 0.8,
+						ease: 'power2.out',
+						scrollTrigger: { trigger: element, start: 'top 90%', once: true },
+					},
+				)
+			})
+		}
+	</script>
+</Layout>

@@ -1,0 +1,54 @@
+---
+interface Props {
+	name: string
+	description: string
+	areaServed?: string[]
+	stateServed?: string
+	areaType?: 'City' | 'AdministrativeArea'
+	/** Níveis entre "Início" e a página atual. */
+	breadcrumb?: { name: string; url: string }[]
+}
+
+const {
+	name,
+	description,
+	areaServed = ['São Paulo', 'Guarulhos'],
+	stateServed,
+	areaType = 'City',
+	breadcrumb = [{ name: 'Equipamentos e serviços', url: '/estrutura-audiovisual-para-eventos/' }],
+} = Astro.props
+const baseURL = new URL('/', Astro.site ?? Astro.url.origin)
+const pageURL = new URL(Astro.url.pathname, baseURL)
+const schema = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Service',
+			'@id': `${pageURL.href}#service`,
+			name,
+			description,
+			url: pageURL.href,
+			provider: { '@id': `${baseURL.href}#organization` },
+			areaServed: [
+				...areaServed.map((city) => ({ '@type': areaType, name: city })),
+				...(stateServed ? [{ '@type': 'State', name: stateServed }] : []),
+			],
+		},
+		{
+			'@type': 'BreadcrumbList',
+			itemListElement: [
+				{ '@type': 'ListItem', position: 1, name: 'Início', item: baseURL.href },
+				...breadcrumb.map((crumb, index) => ({
+					'@type': 'ListItem',
+					position: index + 2,
+					name: crumb.name,
+					item: new URL(crumb.url, baseURL).href,
+				})),
+				{ '@type': 'ListItem', position: breadcrumb.length + 2, name, item: pageURL.href },
+			],
+		},
+	],
+}
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />

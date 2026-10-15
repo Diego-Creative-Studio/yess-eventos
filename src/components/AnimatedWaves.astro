@@ -1,0 +1,72 @@
+---
+import linhasProcesso from '@/assets/processo/linhas-processo.svg'
+
+interface Props {
+	class?: string
+	color?: string
+	opacity?: string
+	echoOpacity?: string
+}
+
+const {
+	class: className,
+	color = 'bg-primary',
+	opacity = 'opacity-80',
+	echoOpacity = 'opacity-30',
+} = Astro.props
+
+const maskStyle = `mask-image: url(${linhasProcesso.src}); -webkit-mask-image: url(${linhasProcesso.src});`
+---
+
+<span
+	aria-hidden="true"
+	class:list={['animated-waves pointer-events-none absolute aspect-square', className]}
+>
+	<span
+		class:list={[
+			'animated-waves__layer absolute inset-0 size-full mask-contain mask-center mask-no-repeat',
+			color,
+			opacity,
+		]}
+		style={maskStyle}></span>
+	<span
+		class:list={[
+			'animated-waves__layer animated-waves__layer--echo absolute inset-0 size-full mask-contain mask-center mask-no-repeat',
+			color,
+			echoOpacity,
+		]}
+		style={maskStyle}></span>
+</span>
+
+<style>
+	.animated-waves__layer {
+		transform-origin: 55% 65%;
+		will-change: transform;
+		animation: animated-waves-flow 12s ease-in-out infinite alternate;
+	}
+
+	.animated-waves__layer--echo {
+		animation-duration: 16s;
+		animation-delay: -7s;
+	}
+
+	@keyframes animated-waves-flow {
+		0% {
+			transform: translate3d(0, 1.5rem, 0) scale(1.01) rotate(-0.35deg);
+		}
+
+		50% {
+			transform: translate3d(-0.65rem, -0.35rem, 0) scale(1.035) rotate(0.2deg);
+		}
+
+		100% {
+			transform: translate3d(0.4rem, -2rem, 0) scale(1.02) rotate(-0.15deg);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.animated-waves__layer {
+			animation: none;
+		}
+	}
+</style>

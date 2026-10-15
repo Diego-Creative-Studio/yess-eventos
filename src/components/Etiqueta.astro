@@ -5,6 +5,15 @@ interface Props {
 	corTexto?: string
 	corBolinha?: string
 	animar?: boolean
+	/** Troca a bolinha por barras de equalizador animadas. */
+	equalizador?: boolean
+	/** Troca a bolinha por uma TV com a luz de standby piscando. */
+	tela?: boolean
+	/** Troca a bolinha por uma luz vermelha de "ao vivo". */
+	aoVivo?: boolean
+	/** Troca a bolinha pela seção triangular de uma treliça Box Truss. */
+	trelica?: boolean
+	'data-animate'?: string
 	class?: string
 }
 
@@ -14,12 +23,17 @@ const {
 	corTexto = 'text-foreground',
 	corBolinha = 'bg-foreground',
 	animar = false,
+	equalizador = false,
+	tela = false,
+	aoVivo = false,
+	trelica = false,
+	'data-animate': dataAnimate,
 	class: className,
 } = Astro.props
 ---
 
 <p
-	data-animate={animar || undefined}
+	data-animate={dataAnimate ?? (animar || undefined)}
 	class:list={[
 		'inline-flex items-center justify-center gap-2 rounded-full px-3 py-2 text-center text-xs font-semibold md:text-sm',
 		corFundo,
@@ -27,6 +41,94 @@ const {
 		className,
 	]}
 >
-	<span class:list={['size-2 shrink-0 rounded-full', corBolinha]} aria-hidden="true"></span>
+	{
+		trelica ? (
+			<svg
+				viewBox="0 0 16 14"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1.6"
+				stroke-linejoin="round"
+				class="size-3.5 shrink-0 text-warm"
+				aria-hidden="true"
+			>
+				<path d="M8 1.5 14.5 12.5h-13Z" />
+				<path d="M8 1.5v11M4.75 7l3.25 5.5L11.25 7" />
+			</svg>
+		) : aoVivo ? (
+			<span class="relative flex size-2.5 shrink-0" aria-hidden="true">
+				<span class="absolute inset-0 rounded-full bg-red-500 motion-safe:animate-ping" />
+				<span class="relative size-2.5 rounded-full bg-red-500 shadow-[0_0_8px] shadow-red-500" />
+			</span>
+		) : tela ? (
+			<span class="tela relative flex shrink-0 flex-col items-center" aria-hidden="true">
+				<span class="block h-2.5 w-3.5 rounded-[2px] border-[1.5px] border-current" />
+				<span class="block h-0.5 w-1.5 bg-current" />
+				<span class:list={['tela__led absolute right-0.5 bottom-1.5 size-0.75 rounded-full', corBolinha]} />
+			</span>
+		) : equalizador ? (
+			<span class="equalizador flex h-3 shrink-0 items-end gap-0.5" aria-hidden="true">
+				<span class:list={['h-full w-0.75 rounded-full', corBolinha]} />
+				<span class:list={['h-full w-0.75 rounded-full', corBolinha]} />
+				<span class:list={['h-full w-0.75 rounded-full', corBolinha]} />
+				<span class:list={['h-full w-0.75 rounded-full', corBolinha]} />
+			</span>
+		) : (
+			<span
+				class:list={['size-2 shrink-0 rounded-full motion-safe:animate-pulse', corBolinha]}
+				aria-hidden="true"
+			/>
+		)
+	}
 	<span class="uppercase" set:html={texto} />
 </p>
+
+<style>
+	/* Cada barra sobe e desce num ritmo diferente, como um equalizador. */
+	.equalizador > span {
+		transform-origin: bottom;
+		transform: scaleY(0.5);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.equalizador > span {
+			animation: eq-barra 0.9s ease-in-out infinite alternate;
+		}
+
+		.equalizador > span:nth-child(2) {
+			animation-duration: 0.6s;
+			animation-delay: -0.3s;
+		}
+
+		.equalizador > span:nth-child(3) {
+			animation-duration: 1.1s;
+			animation-delay: -0.5s;
+		}
+
+		.equalizador > span:nth-child(4) {
+			animation-duration: 0.75s;
+			animation-delay: -0.2s;
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.tela__led {
+			animation: tela-standby 1.6s steps(1, end) infinite;
+		}
+	}
+
+	@keyframes tela-standby {
+		50% {
+			opacity: 0.2;
+		}
+	}
+
+	@keyframes eq-barra {
+		from {
+			transform: scaleY(0.25);
+		}
+		to {
+			transform: scaleY(1);
+		}
+	}
+</style>

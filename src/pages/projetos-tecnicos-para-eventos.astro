@@ -1,0 +1,241 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import ServiceAreas from '@/components/ServiceAreas.astro'
+import ServiceSchema from '@/components/ServiceSchema.astro'
+import Etiqueta from '@/components/Etiqueta.astro'
+import Icon from '@/components/Icon.astro'
+import LightHalo from '@/components/LightHalo.astro'
+import SectionIntegracaoServico from '@/components/sections/servicos/SectionIntegracaoServico.astro'
+import SectionHeroServico from '@/components/sections/servicos/SectionHeroServico.astro'
+import SectionEntregaServico from '@/components/sections/servicos/SectionEntregaServico.astro'
+import SectionProcessoServico from '@/components/sections/servicos/SectionProcessoServico.astro'
+import SectionPerguntasServico from '@/components/sections/servicos/SectionPerguntasServico.astro'
+import SectionChamadaServico from '@/components/sections/servicos/SectionChamadaServico.astro'
+import imagem from '@/assets/painel-led/projeto-operacao-tecnica.jpg'
+import imagemHero from '@/assets/yess/projeto-montagem-palco.jpg'
+const opcoes = [
+	{
+		titulo: 'Projetos técnicos',
+		icone: 'ferramentas' as const,
+		descricao:
+			'Planejamento dos sistemas audiovisuais e das estruturas conforme o formato do evento, as condições do espaço e os equipamentos necessários.',
+	},
+	{
+		titulo: 'Projetos 3D',
+		icone: 'estrutura' as const,
+		descricao:
+			'Representação da proposta para apoiar o alinhamento da configuração do evento. O escopo da apresentação é definido no briefing.',
+	},
+	{
+		titulo: 'Projetos em AutoCAD',
+		icone: 'medida' as const,
+		descricao:
+			'Desenhos técnicos para apoiar o planejamento e a coordenação da montagem, conforme as necessidades e informações disponíveis do projeto.',
+	},
+]
+---
+
+<Layout
+	title="Projetos Técnicos e 3D para Eventos | YESS"
+	description="Planejamento audiovisual, projetos técnicos, 3D e AutoCAD para eventos em São Paulo e Guarulhos, com coordenação da montagem e operação pela YESS."
+>
+	<main id="conteudo" class="overflow-hidden">
+		<ServiceSchema
+			name="Projetos técnicos e 3D para eventos"
+			description="Planejamento audiovisual, projetos técnicos, 3D e AutoCAD para eventos em São Paulo e Guarulhos, com coordenação da montagem e operação pela YESS."
+		/>
+		<SectionHeroServico
+			planta
+			tituloDestaque="Projetos técnicos e 3D para eventos."
+			titulo="Planejar antes de montar."
+			descricao="Transformamos as necessidades do evento em um projeto audiovisual. Elaboramos projetos novos e executamos projetos previamente desenvolvidos, do planejamento à desmontagem."
+			imagem={imagemHero}
+			textoAlternativoImagem="Palco em montagem com painel de LED em teste, treliças e iluminação"
+			textoBotao="Solicitar orçamento"
+			linkBotao="/contato/#canais"
+		>
+			<Etiqueta
+				slot="etiqueta"
+				texto="Projetos técnicos e 3D para eventos"
+				corFundo="bg-stroke"
+				corTexto="text-foreground"
+				corBolinha="bg-warm"
+				class="self-center lg:self-start"
+			/>
+		</SectionHeroServico>
+		<section aria-labelledby="solucoes" class="px-3 py-8 md:px-8 lg:px-16 lg:py-7.5">
+			<div
+				class="relative mx-auto w-full overflow-hidden rounded-3xl border-2 border-stroke bg-linear-to-br from-background to-primary-soft p-6 md:p-10 lg:max-w-345 lg:p-12"
+			>
+				<LightHalo
+					data-animate={false}
+					class="top-0 right-0"
+					color="primary"
+					size="md"
+					intensity="subtle"
+				/>
+				<div
+					data-animate="fade-left"
+					class="relative z-10 mx-auto max-w-3xl text-center lg:mx-0 lg:text-left"
+				>
+					<p class="text-sm font-semibold text-warm uppercase">Do briefing à execução</p>
+					<h2 id="solucoes" data-motion-title class="mt-2 text-3xl text-foreground lg:text-4xl">
+						Planejamento com uma função clara
+					</h2>
+					<p class="text-base text-muted lg:text-lg">
+						O projeto começa pelo espaço, pelo público e pela programação. A YESS coordena imagem,
+						áudio, iluminação e estrutura para organizar a execução.
+					</p>
+				</div>
+				<ol class="relative z-10 mt-8 grid gap-4 lg:grid-cols-3">
+					{
+						opcoes.map((opcao, indice) => (
+							<li
+								data-animate="fade-up"
+								data-animate-delay={indice * 0.12}
+								class:list={[
+									'flex flex-col rounded-3xl p-6 text-center lg:p-8 lg:text-left',
+									indice === 1
+										? 'bg-primary'
+										: indice === 2
+											? 'bg-primary-soft'
+											: 'border border-stroke bg-surface-alt/80',
+								]}
+							>
+								<div class="flex items-center justify-center gap-4 lg:justify-between">
+									<p
+										class:list={[
+											'text-5xl font-extrabold lg:text-6xl',
+											indice === 1 ? 'text-foreground' : 'text-primary',
+										]}
+									>
+										{String(indice + 1).padStart(2, '0')}
+									</p>
+									<span
+										aria-hidden="true"
+										class:list={[
+											'flex size-12 shrink-0 items-center justify-center rounded-full text-white',
+											indice === 1
+												? 'bg-white/15'
+												: indice === 2
+													? 'bg-background/50'
+													: 'bg-primary-soft',
+										]}
+									>
+										<Icon name={opcao.icone} class="size-6" />
+									</span>
+								</div>
+								<h3 class="mt-6 text-xl text-foreground lg:text-2xl">{opcao.titulo}</h3>
+								<p
+									class:list={[
+										'mt-2 text-sm leading-6 lg:text-base',
+										indice === 1 ? 'text-white' : 'text-foreground/75',
+									]}
+								>
+									{opcao.descricao}
+								</p>
+							</li>
+						))
+					}
+				</ol>
+			</div>
+		</section>
+		<SectionEntregaServico
+			etiqueta="Entrega coordenada"
+			titulo="Um projeto conectado à execução"
+			descricao="A experiência da coordenação acompanha a elaboração e a conclusão de projetos novos ou previamente desenvolvidos."
+			itens={[
+				{
+					icone: 'calendario',
+					titulo: 'Briefing e programação',
+					descricao: 'Formato, público e roteiro orientam as decisões do projeto.',
+				},
+				{
+					icone: 'medida',
+					titulo: 'Espaço e equipamentos',
+					descricao: 'Medidas e necessidades de imagem, som e luz alinhadas em conjunto.',
+				},
+				{
+					icone: 'montagem',
+					titulo: 'Coordenação da montagem',
+					descricao: 'Cronograma e execução conectados ao planejamento.',
+				},
+				{
+					icone: 'operacao',
+					titulo: 'Acompanhamento técnico',
+					descricao: 'Operação e desmontagem conforme o escopo contratado.',
+				},
+			]}
+			nota="Atendimento na capital, com ênfase nas zonas Sul, Oeste e Norte, em Guarulhos, na Grande São Paulo e no interior."
+			imagem={imagem}
+			textoAlternativoImagem="Equipamentos de controle e operação audiovisual de evento"
+		/>
+		<SectionProcessoServico
+			etiqueta="Nosso processo"
+			titulo="Do planejamento à desmontagem"
+			descricao="A experiência da coordenação acompanha a elaboração e a conclusão de projetos novos ou previamente desenvolvidos."
+			etapas={[
+				{
+					numero: '01',
+					titulo: 'Briefing',
+					descricao: 'Recebemos objetivos, programação, medidas e referências.',
+				},
+				{
+					numero: '02',
+					titulo: 'Elaboração',
+					descricao: 'Definimos a proposta técnica e as representações previstas no escopo.',
+				},
+				{
+					numero: '03',
+					titulo: 'Alinhamento',
+					descricao: 'Revisamos a solução com produção, espaço e necessidades do evento.',
+				},
+				{
+					numero: '04',
+					titulo: 'Execução',
+					descricao: 'Coordenamos montagem, operação e desmontagem do projeto contratado.',
+				},
+			]}
+		/>
+		<SectionIntegracaoServico
+			titulo="Uma entrega audiovisual integrada"
+			descricao="Estrutura, painel de LED, som e iluminação podem fazer parte do mesmo projeto. O orçamento define os equipamentos e as etapas necessárias para o seu evento."
+			secundario={{
+				label: 'Conhecer as estruturas e a cenografia',
+				href: '/estruturas-e-cenografia-para-eventos/',
+			}}
+		/>
+		<SectionPerguntasServico
+			titulo="Perguntas frequentes"
+			perguntas={[
+				{
+					pergunta: 'A YESS elabora projetos técnicos e 3D?',
+					resposta:
+						'Sim. A YESS oferece elaboração de projetos técnicos, projetos 3D e projetos em AutoCAD, com emissão de ART quando o projeto exigir. O tipo de entrega é definido conforme o briefing e o escopo do evento.',
+				},
+				{
+					pergunta: 'Vocês trabalham com um projeto já desenvolvido?',
+					resposta:
+						'Sim. A equipe pode receber um projeto previamente desenvolvido para avaliar, executar e coordenar sua conclusão, conforme as necessidades do evento.',
+				},
+				{
+					pergunta: 'O projeto pode incluir montagem e operação?',
+					resposta:
+						'Sim. A YESS atende desde a produção do projeto até a desmontagem, incluindo equipamentos, montagem e operação técnica conforme o orçamento contratado.',
+				},
+				{
+					pergunta: 'Quais informações ajudam a iniciar o projeto?',
+					resposta:
+						'Envie data, local, medidas, público estimado, programação e referências. Se houver planta, desenho ou projeto anterior, ele também ajuda no alinhamento inicial.',
+				},
+			]}
+		/>
+		<SectionChamadaServico
+			titulo="Seu evento começa com um projeto bem definido."
+			descricao="Compartilhe as medidas, a programação e as referências. A equipe orienta os próximos passos para o planejamento audiovisual."
+			textoBotao="Solicitar projeto e orçamento"
+			linkBotao="/contato/#canais"
+		/>
+		<ServiceAreas service="projeto-tecnico-para-eventos" />
+	</main>
+</Layout>
