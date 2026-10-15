@@ -19,6 +19,8 @@ if (!reduceMotion) {
 				mask: 'lines',
 				autoSplit: true,
 				onSplit(self) {
+					// Folga para acentos e cedilhas sem alterar a distância entre as linhas.
+					gsap.set(self.masks, { overflowClipMargin: '0.2em' })
 					return gsap.fromTo(
 						self.lines,
 						{
@@ -35,6 +37,8 @@ if (!reduceMotion) {
 							stagger: 0.11,
 							ease: 'power4.out',
 							onComplete: () => {
+								// A máscara só é necessária durante a entrada, não no título parado.
+								gsap.set(self.masks, { overflow: 'visible' })
 								gsap.set(self.lines, { clearProps: 'opacity,visibility,transform' })
 							},
 							...(title.hasAttribute('data-motion-immediate')

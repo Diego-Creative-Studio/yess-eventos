@@ -3,6 +3,7 @@ import type { ImageMetadata } from 'astro'
 import { Image, getImage } from 'astro:assets'
 
 import heroHome from '@/assets/hero-home.png'
+import heroVideoPoster from '@/assets/hero-video-poster.jpg'
 import Button from '@/components/Button.astro'
 import Etiqueta from '@/components/Etiqueta.astro'
 
@@ -30,8 +31,8 @@ interface Props {
 
 const {
 	eyebrow = 'Painéis de LED P2 e P3 para eventos',
-	titleStrong = 'Painéis de LED para eventos.',
-	title = '<br/>Do projeto à <br class="hero-compact-break"/><span class="hero-operation">operação técnica.</span>',
+	titleStrong = 'Painéis de LED <br class="hidden lg:block"/>para eventos.',
+	title = '<br/>Do projeto à <br class="hidden lg:block"/>operação técnica.',
 	description = 'Painéis P2 e P3, som, iluminação e TVs para eventos corporativos, feiras e congressos, do projeto à desmontagem.',
 	image = heroHome,
 	imageAlt = 'Evento com palco, público e grandes painéis de LED azuis',
@@ -45,10 +46,10 @@ const {
 	videoWebm = '/videos/hero-evento-iluminacao.webm',
 } = Astro.props
 
-// O poster do vídeo também precisa ser otimizado: image.src é o PNG original.
+// O primeiro quadro evita trocar de cenário enquanto o vídeo começa a carregar.
 const videoPoster = await getImage({
-	src: image,
-	width: Math.min(image.width, 1280),
+	src: heroVideoPoster,
+	width: 1280,
 	format: 'webp',
 	quality: 80,
 })
@@ -71,6 +72,40 @@ const videoPoster = await getImage({
 			<source data-hero-video-source data-src={videoMp4} type="video/mp4" />
 			<source data-hero-video-source data-src={videoWebm} type="video/webm" />
 		</video>
+		<script is:inline>
+			// Inicia sem esperar o bundle, as fontes ou a decodificação da imagem estática.
+			{
+				const video = document.currentScript.previousElementSibling
+				const shell = video.parentElement
+				if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+					// Antes do primeiro paint: não mostra o texto para depois escondê-lo via GSAP.
+					shell.dataset.introPending = 'true'
+					// Se o bundle falhar, o conteúdo continua acessível sem depender da animação.
+					shell.dataset.introFallback = String(setTimeout(() => {
+						delete shell.dataset.introPending
+						delete shell.dataset.introFallback
+					}, 1800))
+				}
+				const connection = navigator.connection
+				const saveData =
+					connection?.saveData || ['slow-2g', '2g'].includes(connection?.effectiveType)
+				if (matchMedia('(min-width: 1024px)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches && !saveData) {
+					video.parentElement.dataset.autoplayPending = 'true'
+					video.dataset.autoplayStarted = 'true'
+					video.muted = true
+					video.preload = 'auto'
+					video.querySelectorAll('source').forEach((source) => {
+						source.src = source.dataset.src
+					})
+					video.load()
+					video.play().catch(() => {
+						video.dataset.autoplayFailed = 'true'
+						delete video.parentElement.dataset.autoplayPending
+						video.dispatchEvent(new Event('hero-autoplay-failed'))
+					})
+				}
+			}
+		</script>
 
 		<Image
 			data-hero-poster
@@ -149,7 +184,7 @@ const videoPoster = await getImage({
 			<div class="h-[3.7rem] shrink-0 lg:hidden" aria-hidden="true"></div>
 		</div>
 
-		<div class="absolute right-4 bottom-4 z-20 md:right-6 md:bottom-6">
+		<div class="absolute inset-x-4 bottom-4 z-20 flex justify-center md:bottom-6 lg:left-auto lg:right-6">
 			<Button
 				id="hero-play"
 				label="Ver vídeo"
@@ -164,8 +199,16 @@ const videoPoster = await getImage({
 		<div
 			data-hero-background-controls
 			hidden
-			class="absolute right-4 bottom-4 z-20 md:right-6 md:bottom-6"
+			class="absolute inset-x-4 bottom-4 z-20 flex flex-wrap justify-center gap-2 md:bottom-6 lg:left-auto lg:right-6 lg:justify-end"
 		>
+			<Button
+				id="hero-sound"
+				label="Ativar som"
+				type="button"
+				variant="outline"
+				animation="shine"
+				class="cursor-pointer bg-background/90"
+			/>
 			<Button
 				id="hero-pause"
 				label="Pausar vídeo"
@@ -180,17 +223,28 @@ const videoPoster = await getImage({
 </section>
 
 <style>
+	[data-hero-shell][data-intro-pending='true']
+		[data-hero-content] > :global(:not([aria-hidden='true'])) {
+		opacity: 0;
+		transform: translateY(12px);
+	}
 	[data-hero-video],
 	[data-hero-poster],
 	[data-hero-content],
 	[data-hero-overlay] {
 		transition: opacity 0.25s ease;
 	}
+	[data-hero-shell][data-autoplay-pending='true'] [data-hero-video],
 	[data-hero-shell][data-playing='true'] [data-hero-video] {
 		opacity: 1;
 	}
+	[data-hero-shell][data-autoplay-pending='true'] [data-hero-poster],
 	[data-hero-shell][data-playing='true'] [data-hero-poster] {
 		opacity: 0;
+	}
+	[data-hero-shell][data-autoplay-pending='true'] [data-hero-video],
+	[data-hero-shell][data-autoplay-pending='true'] [data-hero-poster] {
+		transition: none;
 	}
 	[data-hero-shell][data-video-view='true'] [data-hero-content],
 	[data-hero-shell][data-video-view='true'] [data-hero-overlay] {
@@ -198,7 +252,7 @@ const videoPoster = await getImage({
 		pointer-events: none;
 	}
 	[data-hero-shell][data-video-view='true'] [data-hero-video] {
-		object-fit: contain;
+		object-fit: cover;
 	}
 	@media (prefers-reduced-motion: reduce) {
 		[data-hero-video],
@@ -207,9 +261,6 @@ const videoPoster = await getImage({
 		[data-hero-overlay] {
 			transition: none;
 		}
-	}
-	[data-hero-content] :global(.hero-compact-break) {
-		display: none;
 	}
 
 	/* Notebooks: compacta apenas a composição inicial em telas desktop baixas. */
@@ -231,14 +282,6 @@ const videoPoster = await getImage({
 			font-size: 3rem;
 		}
 
-		[data-hero-content] :global(.hero-compact-break) {
-			display: inline;
-		}
-
-		[data-hero-content] :global(.hero-operation) {
-			white-space: nowrap;
-		}
-
 		[data-hero-content] > p {
 			font-size: 1rem;
 		}
@@ -250,6 +293,8 @@ const videoPoster = await getImage({
 </style>
 
 <script>
+	import { gsap } from 'gsap'
+
 	const heroShell = document.querySelector<HTMLElement>('[data-hero-shell]')
 
 	if (heroShell && heroShell.dataset.videoInitialized !== 'true') {
@@ -258,6 +303,7 @@ const videoPoster = await getImage({
 		const content = heroShell.querySelector<HTMLElement>('[data-hero-content]')
 		const playButton = heroShell.querySelector<HTMLButtonElement>('#hero-play')
 		const pauseButton = heroShell.querySelector<HTMLButtonElement>('#hero-pause')
+		const soundButton = heroShell.querySelector<HTMLButtonElement>('#hero-sound')
 		const backgroundControls = heroShell.querySelector<HTMLElement>(
 			'[data-hero-background-controls]',
 		)
@@ -271,20 +317,45 @@ const videoPoster = await getImage({
 		).connection
 		const saveData =
 			connection?.saveData === true || ['slow-2g', '2g'].includes(connection?.effectiveType ?? '')
+		const introItems = content
+			? [...content.children].filter((element) => element.getAttribute('aria-hidden') !== 'true')
+			: []
+		let introTween: gsap.core.Tween | undefined
+		window.clearTimeout(Number(heroShell.dataset.introFallback))
+		delete heroShell.dataset.introFallback
+		const finishIntro = () => {
+			introTween?.kill()
+			delete heroShell.dataset.introPending
+			gsap.set(introItems, { clearProps: 'opacity,transform' })
+		}
+		// Aguarda as fontes por um intervalo curto para evitar remontar as linhas na entrada.
+		void Promise.race([
+			document.fonts.ready,
+			new Promise((resolve) => window.setTimeout(resolve, 400)),
+		]).then(() => {
+			if (reduceMotion.matches || heroShell.dataset.introPending !== 'true') {
+				finishIntro()
+				return
+			}
+			introTween = gsap.to(introItems, {
+				opacity: 1,
+				y: 0,
+				duration: 0.5,
+				stagger: 0.065,
+				ease: 'power2.out',
+				onComplete: finishIntro,
+			})
+		})
 
-		if (
-			video &&
-			content &&
-			playButton &&
-			pauseButton &&
-			backgroundControls
-		) {
-			let mode: 'idle' | 'background' | 'view' = 'idle'
-			let wanted = false
-			let playing = false
-			let sourcesAttached = false
-			let attemptedAutoplay = false
-			let hasPlayed = false
+		if (video && content && playButton && pauseButton && soundButton && backgroundControls) {
+			const bootStarted = video.dataset.autoplayStarted === 'true'
+			const bootActive = bootStarted && video.dataset.autoplayFailed !== 'true' && !video.ended
+			let mode: 'idle' | 'background' | 'view' = bootActive ? 'background' : 'idle'
+			let wanted = bootActive
+			let playing = bootActive && video.readyState >= 2 && !video.paused
+			let sourcesAttached = bootStarted
+			let attemptedAutoplay = bootStarted
+			let hasPlayed = video.currentTime > 0
 			let request = 0
 			const initialRect = heroShell.getBoundingClientRect()
 			let inView = initialRect.bottom > 0 && initialRect.top < window.innerHeight
@@ -295,13 +366,15 @@ const videoPoster = await getImage({
 				heroShell.dataset.videoView = String(viewing)
 				content.inert = viewing
 				backgroundControls.hidden = mode === 'idle'
-				const awaitingAutoplay =
-					!attemptedAutoplay && desktop.matches && !reduceMotion.matches && !saveData
+				const awaitingAutoplay = !attemptedAutoplay && desktop.matches && !reduceMotion.matches && !saveData
 				// Visibility preserva o espaço do botão no mobile, sem saltos na altura da hero.
 				playButton.style.visibility = mode !== 'idle' || awaitingAutoplay ? 'hidden' : ''
 				playButton.disabled = mode !== 'idle' || awaitingAutoplay
 				const label = playButton.querySelector('span')
 				if (label) label.textContent = hasPlayed ? 'Rever vídeo' : 'Ver vídeo'
+				const soundLabel = soundButton.querySelector('span')
+				if (soundLabel) soundLabel.textContent = video.muted ? 'Ativar som' : 'Silenciar'
+				soundButton.setAttribute('aria-pressed', String(!video.muted))
 			}
 
 			const restore = (returnFocus = false) => {
@@ -309,7 +382,9 @@ const videoPoster = await getImage({
 				wanted = false
 				playing = false
 				mode = 'idle'
+				delete heroShell.dataset.autoplayPending
 				video.pause()
+				video.muted = true
 				playButton.disabled = false
 				syncPresentation()
 				if (returnFocus && inView && !document.hidden) playButton.focus({ preventScroll: true })
@@ -325,6 +400,7 @@ const videoPoster = await getImage({
 			}
 
 			const start = async (nextMode: 'background' | 'view') => {
+				if (nextMode === 'view') finishIntro()
 				const currentRequest = ++request
 				mode = nextMode
 				wanted = true
@@ -373,12 +449,15 @@ const videoPoster = await getImage({
 					return
 				}
 				playing = true
+				delete heroShell.dataset.autoplayPending
 				hasPlayed = true
 				syncPresentation()
 			})
 			// Uma pausa por visibilidade mantém o último quadro e o modo de vídeo.
 			// Apenas fechar, terminar ou falhar deve restaurar a imagem e os textos.
 			video.addEventListener('ended', () => restore(mode === 'view'))
+			video.addEventListener('hero-autoplay-failed', () => restore())
+			video.addEventListener('volumechange', syncPresentation)
 			video.addEventListener('error', () => {
 				const wasViewing = mode === 'view'
 				restore(wasViewing)
@@ -390,14 +469,21 @@ const videoPoster = await getImage({
 				void start('view')
 			})
 			pauseButton.addEventListener('click', () => restore(true))
+			soundButton.addEventListener('click', () => {
+				video.muted = !video.muted
+				syncPresentation()
+			})
 			document.addEventListener('keydown', (event) => {
 				if (event.key === 'Escape' && mode === 'view') restore(true)
 			})
 			document.addEventListener('visibilitychange', updateVisibility)
 			desktop.addEventListener('change', () => {
 				if (!desktop.matches && mode === 'background') restore()
+				else autoplayOnce()
+				syncPresentation()
 			})
 			reduceMotion.addEventListener('change', () => {
+				if (reduceMotion.matches) finishIntro()
 				if (reduceMotion.matches && mode === 'background') restore()
 			})
 			const observer = new IntersectionObserver(
@@ -417,11 +503,8 @@ const videoPoster = await getImage({
 				{ once: true },
 			)
 			syncPresentation()
-			// Mostra a hero estática antes de iniciar a reprodução, sem aguardar vídeo ou animação.
-			const poster = heroShell.querySelector<HTMLImageElement>('[data-hero-poster]')
-			void (poster?.decode().catch(() => undefined) ?? Promise.resolve()).then(() =>
-				requestAnimationFrame(autoplayOnce),
-			)
+			if (bootActive) updateVisibility()
+			else autoplayOnce()
 		}
 	}
 </script>
