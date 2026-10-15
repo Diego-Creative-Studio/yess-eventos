@@ -1,10 +1,7 @@
 import { gsap } from 'gsap'
-import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin'
-import { Flip } from 'gsap/Flip'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { SplitText } from 'gsap/SplitText'
 
-gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin, Flip)
+gsap.registerPlugin(ScrollTrigger)
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -12,52 +9,93 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 const restScale = (frame: HTMLElement) => (frame.hasAttribute('data-motion-parallax') ? 1.12 : 1)
 
 if (!reduceMotion) {
-	void document.fonts.ready.then(() => {
-		gsap.utils.toArray<HTMLElement>('[data-motion-title]').forEach((title) => {
-			// Divide cada bloco sem clonar a margem entre destaque e complemento nas máscaras.
-			const parts = title.querySelectorAll<HTMLElement>('[data-motion-title-part]')
-			SplitText.create(parts.length ? parts : title, {
-				// As linhas continuam como texto do h1; strong/span não aceitam aria-label.
-				aria: parts.length ? 'none' : 'auto',
-				type: 'lines',
-				mask: 'lines',
-				autoSplit: true,
-				onSplit(self) {
-					// Folga para acentos e cedilhas sem alterar a distância entre as linhas.
-					gsap.set(self.masks, { overflowClipMargin: '0.2em' })
-					return gsap.fromTo(
-						self.lines,
-						{
-							yPercent: 115,
-							autoAlpha: 0,
-							rotateX: -8,
-							transformOrigin: '50% 100%',
-						},
-						{
-							yPercent: 0,
-							autoAlpha: 1,
-							rotateX: 0,
-							duration: 0.9,
-							stagger: 0.11,
-							ease: 'power4.out',
-							onComplete: () => {
-								// A máscara só é necessária durante a entrada, não no título parado.
-								gsap.set(self.masks, { overflow: 'visible' })
-								gsap.set(self.lines, { clearProps: 'opacity,visibility,transform' })
-							},
-							...(title.hasAttribute('data-motion-immediate')
-								? {}
-								: {
-										scrollTrigger: {
-											trigger: title,
-											start: title.dataset.motionStart || 'top 86%',
-											once: true,
-										},
-									}),
-						},
-					)
-				},
+	// Não dividir todos os títulos fora da tela durante o primeiro carregamento.
+	const pending = new Map<Element, () => void>()
+	const observer = new IntersectionObserver(
+		(entries) => {
+			entries.forEach((entry) => {
+				if (!entry.isIntersecting) return
+				const setup = pending.get(entry.target)
+				pending.delete(entry.target)
+				observer.unobserve(entry.target)
+				setup?.()
 			})
+		},
+		{ rootMargin: '160px 0px' },
+	)
+	const whenNear = (element: Element, setup: () => void) => {
+		pending.set(element, setup)
+		observer.observe(element)
+	}
+	const setupTitle = async (title: HTMLElement) => {
+		const parts = title.querySelectorAll<HTMLElement>('[data-motion-title-part]')
+		if (
+			title.hasAttribute('data-motion-immediate') &&
+			window.matchMedia('(max-width: 1023px)').matches
+		) {
+			// No mobile, a hero entra sem remontar linhas nem ocultar texto já pintado.
+			gsap.fromTo(
+				parts.length ? parts : title,
+				{ y: 8 },
+				{
+					y: 0,
+					duration: 0.45,
+					ease: 'power2.out',
+					clearProps: 'transform',
+				},
+			)
+			return
+		}
+		await document.fonts.ready
+		const { SplitText } = await import('gsap/SplitText')
+		gsap.registerPlugin(SplitText)
+		// Divide cada bloco sem clonar a margem entre destaque e complemento nas máscaras.
+		SplitText.create(parts.length ? parts : title, {
+			// As linhas continuam como texto do h1; strong/span não aceitam aria-label.
+			aria: parts.length ? 'none' : 'auto',
+			type: 'lines',
+			mask: 'lines',
+			autoSplit: true,
+			onSplit(self) {
+				// Folga para acentos e cedilhas sem alterar a distância entre as linhas.
+				gsap.set(self.masks, { overflowClipMargin: '0.2em' })
+				return gsap.fromTo(
+					self.lines,
+					{
+						yPercent: 115,
+						autoAlpha: 0,
+						rotateX: -8,
+						transformOrigin: '50% 100%',
+					},
+					{
+						yPercent: 0,
+						autoAlpha: 1,
+						rotateX: 0,
+						duration: 0.9,
+						stagger: 0.11,
+						ease: 'power4.out',
+						onComplete: () => {
+							// A máscara só é necessária durante a entrada, não no título parado.
+							gsap.set(self.masks, { overflow: 'visible' })
+							gsap.set(self.lines, { clearProps: 'opacity,visibility,transform' })
+						},
+						...(title.hasAttribute('data-motion-immediate')
+							? {}
+							: {
+									scrollTrigger: {
+										trigger: title,
+										start: title.dataset.motionStart || 'top 86%',
+										once: true,
+									},
+								}),
+					},
+				)
+			},
+		})
+	}
+	gsap.utils.toArray<HTMLElement>('[data-motion-title]').forEach((title) => {
+		whenNear(title, () => {
+			void setupTitle(title)
 		})
 	})
 
@@ -141,35 +179,42 @@ if (!reduceMotion) {
 	})
 
 	gsap.utils.toArray<HTMLElement>('[data-motion-icon]').forEach((icon) => {
-		const strokes = icon.querySelectorAll<SVGGeometryElement>('path[stroke], line, polyline, rect')
-		const fills = icon.querySelectorAll<SVGGraphicsElement>('path[fill]:not([fill="none"])')
-		const timeline = gsap.timeline({
-			scrollTrigger: { trigger: icon, start: 'top 90%', once: true },
-		})
+		whenNear(icon, () => {
+			void import('gsap/DrawSVGPlugin').then(({ DrawSVGPlugin }) => {
+				gsap.registerPlugin(DrawSVGPlugin)
+				const strokes = icon.querySelectorAll<SVGGeometryElement>(
+					'path[stroke], line, polyline, rect',
+				)
+				const fills = icon.querySelectorAll<SVGGraphicsElement>('path[fill]:not([fill="none"])')
+				const timeline = gsap.timeline({
+					scrollTrigger: { trigger: icon, start: 'top 90%', once: true },
+				})
 
-		if (strokes.length) {
-			timeline.from(strokes, {
-				drawSVG: 0,
-				duration: 0.75,
-				stagger: 0.06,
-				ease: 'power2.out',
+				if (strokes.length) {
+					timeline.from(strokes, {
+						drawSVG: 0,
+						duration: 0.75,
+						stagger: 0.06,
+						ease: 'power2.out',
+					})
+				}
+
+				if (fills.length) {
+					timeline.from(
+						fills,
+						{
+							autoAlpha: 0,
+							scale: 0.75,
+							transformOrigin: '50% 50%',
+							duration: 0.45,
+							stagger: 0.04,
+							ease: 'back.out(1.7)',
+						},
+						strokes.length ? '-=0.25' : 0,
+					)
+				}
 			})
-		}
-
-		if (fills.length) {
-			timeline.from(
-				fills,
-				{
-					autoAlpha: 0,
-					scale: 0.75,
-					transformOrigin: '50% 50%',
-					duration: 0.45,
-					stagger: 0.04,
-					ease: 'back.out(1.7)',
-				},
-				strokes.length ? '-=0.25' : 0,
-			)
-		}
+		})
 	})
 
 	gsap.utils.toArray<HTMLElement>('[data-motion-process]').forEach((process) => {
@@ -204,7 +249,9 @@ if (!reduceMotion) {
 	})
 
 	gsap.utils.toArray<HTMLButtonElement>('[data-flip-detail]').forEach((detail) => {
-		const toggle = () => {
+		const toggle = async () => {
+			const { Flip } = await import('gsap/Flip')
+			gsap.registerPlugin(Flip)
 			const state = Flip.getState(detail)
 			const expanded = detail.classList.toggle('is-expanded')
 			detail.setAttribute('aria-expanded', String(expanded))

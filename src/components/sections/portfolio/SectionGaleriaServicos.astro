@@ -36,10 +36,10 @@ const fotos = await Promise.all(
 							type="button"
 							data-gallery-filter={categoria.value}
 							aria-pressed={indice === 0 ? 'true' : 'false'}
-							class="cursor-pointer rounded-full border border-stroke bg-surface/70 px-4 py-2.5 font-title text-sm font-semibold text-text-secondary transition-colors hover:border-primary hover:text-foreground aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-white"
+							class="cursor-pointer rounded-full border border-stroke bg-surface/70 px-4 py-2.5 font-title text-sm font-semibold text-text-secondary transition-colors hover:border-primary hover:text-foreground aria-pressed:border-primary aria-pressed:bg-primary-dark aria-pressed:text-white"
 						>
 							{categoria.label}
-							<span data-gallery-count class="ml-1 text-xs opacity-70" />
+							<span data-gallery-count class="ml-1 text-xs" />
 						</button>
 					))
 				}

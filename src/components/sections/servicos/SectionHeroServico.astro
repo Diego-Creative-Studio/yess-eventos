@@ -253,7 +253,12 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 								src={etapa.imagem}
 								alt={etapa.textoAlternativo}
 								width={1100}
+								widths={[400, 640, 800, 1100].filter((width) => width <= etapa.imagem.width)}
+								sizes={`(min-width: 1024px) max(48vw, ${Math.ceil((768 * etapa.imagem.width) / etapa.imagem.height)}px), 100vw`}
+								format="webp"
+								quality={75}
 								loading={indice === 0 ? 'eager' : 'lazy'}
+								fetchpriority={indice === 0 ? 'high' : 'low'}
 								class:list={[
 									'pointer-events-none absolute inset-0 size-full object-cover lg:rounded-l-3xl',
 									indice > 0 && 'opacity-0',
