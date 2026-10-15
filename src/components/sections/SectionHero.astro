@@ -41,8 +41,8 @@ const {
 	corFundoEtiqueta = 'bg-violet-dark',
 	corTextoEtiqueta = 'text-foreground',
 	corBolinhaEtiqueta = 'bg-foreground',
-	videoMp4 = '/videos/evento-iluminacao.mp4',
-	videoWebm = '/videos/evento-iluminacao.webm',
+	videoMp4 = '/videos/hero-evento-iluminacao.mp4',
+	videoWebm = '/videos/hero-evento-iluminacao.webm',
 } = Astro.props
 
 // O poster do vídeo também precisa ser otimizado: image.src é o PNG original.
@@ -66,10 +66,10 @@ const videoPoster = await getImage({
 			preload="none"
 			poster={videoPoster.src}
 			aria-hidden="true"
-			class="will-change-opacity pointer-events-none absolute inset-0 size-full object-cover object-[58%_center] opacity-0 lg:object-center"
+			class="pointer-events-none absolute inset-0 size-full object-cover object-[58%_center] opacity-0 lg:object-center"
 		>
-			<source data-hero-video-source data-src={videoWebm} type="video/webm" />
 			<source data-hero-video-source data-src={videoMp4} type="video/mp4" />
+			<source data-hero-video-source data-src={videoWebm} type="video/webm" />
 		</video>
 
 		<Image
@@ -79,7 +79,7 @@ const videoPoster = await getImage({
 			loading="eager"
 			fetchpriority="high"
 			decoding="sync"
-			class="will-change-opacity absolute inset-0 size-full object-cover object-[58%_center] lg:object-center"
+			class="absolute inset-0 size-full object-cover object-[58%_center] lg:object-center"
 		/>
 		<div
 			data-hero-overlay
@@ -91,9 +91,6 @@ const videoPoster = await getImage({
 			class="relative z-10 flex w-full max-w-197.5 flex-col items-center gap-4.5 text-center lg:h-146 lg:max-w-200 lg:items-start lg:overflow-hidden lg:text-left"
 		>
 			<Etiqueta
-				data-animate="fade-right"
-				data-animate-delay={0.1}
-				animar
 				texto={eyebrow}
 				corFundo={corFundoEtiqueta}
 				corTexto={corTextoEtiqueta}
@@ -102,8 +99,6 @@ const videoPoster = await getImage({
 			/>
 
 			<h1
-				data-animate="fade-up"
-				data-animate-delay={0.3}
 				class="w-full pt-2 text-[2rem] leading-[1.08] uppercase max-[359px]:text-[1.75rem] min-[400px]:text-4xl md:max-w-5xl md:text-5xl lg:text-6xl"
 			>
 				<span class="font-extrabold" set:html={titleStrong} />{' '}
@@ -111,15 +106,11 @@ const videoPoster = await getImage({
 			</h1>
 
 			<p
-				data-animate="fade-up"
-				data-animate-delay={0.5}
 				class="w-full text-base text-foreground/80 md:max-w-147.5 md:text-lg"
 				set:html={description}
 			/>
 
 			<div
-				data-animate="fade-right"
-				data-animate-delay={0.6}
 				class="flex w-full flex-col items-center justify-center gap-3 md:w-auto md:flex-row lg:justify-start"
 			>
 				<Button
@@ -144,16 +135,9 @@ const videoPoster = await getImage({
 			>
 				{
 					features.map((feature, index) => (
-						<li
-							data-animate="fade-up"
-							data-animate-delay={1.4 + index * 0.2}
-							class="flex items-center gap-2"
-						>
+						<li class="flex items-center gap-2">
 							<span
-								class:list={[
-									'size-1.5 rounded-full motion-safe:animate-pulse',
-									index === 1 ? 'bg-primary' : 'bg-foreground',
-								]}
+								class:list={['size-1.5 rounded-full', index === 1 ? 'bg-primary' : 'bg-foreground']}
 								aria-hidden="true"
 							/>
 							<span set:html={feature} />
@@ -162,30 +146,68 @@ const videoPoster = await getImage({
 				}
 			</ul>
 
+			<div class="h-[3.7rem] shrink-0 lg:hidden" aria-hidden="true"></div>
+		</div>
+
+		<div class="absolute right-4 bottom-4 z-20 md:right-6 md:bottom-6">
 			<Button
-				id="hero-mobile-play"
-				label="Assistir vídeo"
+				id="hero-play"
+				label="Ver vídeo"
 				type="button"
 				variant="outline"
 				icon="play"
 				animation="shine"
-				class="mt-1 cursor-pointer bg-background/70 backdrop-blur-md lg:hidden"
+				class="cursor-pointer bg-background/80"
 			/>
 		</div>
 
-		<Button
-			id="hero-replay"
-			label="Rever vídeo"
-			type="button"
-			variant="outline"
-			icon="play"
-			animation="shine"
-			class="pointer-events-none !absolute right-[clamp(32px,4vw,72px)] bottom-8 z-20 hidden translate-y-2 cursor-pointer bg-background/70 opacity-0 backdrop-blur-md lg:inline-flex"
-		/>
+		<div
+			data-hero-background-controls
+			hidden
+			class="absolute right-4 bottom-4 z-20 md:right-6 md:bottom-6"
+		>
+			<Button
+				id="hero-pause"
+				label="Pausar vídeo"
+				type="button"
+				variant="outline"
+				animation="shine"
+				class="cursor-pointer bg-background/90"
+			/>
+		</div>
+		<p data-hero-video-status class="sr-only" role="status" aria-live="polite"></p>
 	</div>
 </section>
 
 <style>
+	[data-hero-video],
+	[data-hero-poster],
+	[data-hero-content],
+	[data-hero-overlay] {
+		transition: opacity 0.25s ease;
+	}
+	[data-hero-shell][data-playing='true'] [data-hero-video] {
+		opacity: 1;
+	}
+	[data-hero-shell][data-playing='true'] [data-hero-poster] {
+		opacity: 0;
+	}
+	[data-hero-shell][data-video-view='true'] [data-hero-content],
+	[data-hero-shell][data-video-view='true'] [data-hero-overlay] {
+		opacity: 0;
+		pointer-events: none;
+	}
+	[data-hero-shell][data-video-view='true'] [data-hero-video] {
+		object-fit: contain;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		[data-hero-video],
+		[data-hero-poster],
+		[data-hero-content],
+		[data-hero-overlay] {
+			transition: none;
+		}
+	}
 	[data-hero-content] :global(.hero-compact-break) {
 		display: none;
 	}
@@ -228,269 +250,178 @@ const videoPoster = await getImage({
 </style>
 
 <script>
-	import { gsap } from 'gsap'
-
 	const heroShell = document.querySelector<HTMLElement>('[data-hero-shell]')
-	const heroStage = document.querySelector<HTMLElement>('[data-hero-stage]')
-	const homeHeader = document.querySelector<HTMLElement>('.home-header')
-	const headerContainer = homeHeader?.querySelector<HTMLElement>('[data-header-container]')
-	const headerSurface = homeHeader?.querySelector<HTMLElement>('[data-header-surface]')
 
-	if (heroShell && heroStage && heroShell.dataset.videoInitialized !== 'true') {
+	if (heroShell && heroShell.dataset.videoInitialized !== 'true') {
 		heroShell.dataset.videoInitialized = 'true'
-
 		const video = heroShell.querySelector<HTMLVideoElement>('[data-hero-video]')
-		const poster = heroShell.querySelector<HTMLElement>('[data-hero-poster]')
-		const overlay = heroShell.querySelector<HTMLElement>('[data-hero-overlay]')
-		const heroContent = heroShell.querySelector<HTMLElement>('[data-hero-content]')
-		const replayButton = heroShell.querySelector<HTMLButtonElement>('#hero-replay')
-		const mobilePlayButton = heroShell.querySelector<HTMLButtonElement>('#hero-mobile-play')
-		const mobilePlayLabel = mobilePlayButton?.querySelector<HTMLElement>('span')
-		const videoSources = heroShell.querySelectorAll<HTMLSourceElement>('[data-hero-video-source]')
-		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-		const desktopQuery = window.matchMedia('(min-width: 1024px)')
-		const disableDesktopSequence = ['localhost', '127.0.0.1', '::1'].includes(
-			window.location.hostname,
+		const content = heroShell.querySelector<HTMLElement>('[data-hero-content]')
+		const playButton = heroShell.querySelector<HTMLButtonElement>('#hero-play')
+		const pauseButton = heroShell.querySelector<HTMLButtonElement>('#hero-pause')
+		const backgroundControls = heroShell.querySelector<HTMLElement>(
+			'[data-hero-background-controls]',
 		)
-		const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection
-		const saveData = connection?.saveData === true
-		let sourcesAttached = false
-
-		const attachVideoSources = () => {
-			if (!video || sourcesAttached) return
-
-			videoSources.forEach((source) => {
-				const sourceUrl = source.dataset.src
-				if (sourceUrl) source.src = sourceUrl
-			})
-			video.load()
-			sourcesAttached = true
-		}
+		const status = heroShell.querySelector<HTMLElement>('[data-hero-video-status]')
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+		const desktop = window.matchMedia('(min-width: 1024px)')
+		const connection = (
+			navigator as Navigator & {
+				connection?: { saveData?: boolean; effectiveType?: string }
+			}
+		).connection
+		const saveData =
+			connection?.saveData === true || ['slow-2g', '2g'].includes(connection?.effectiveType ?? '')
 
 		if (
 			video &&
-			poster &&
-			overlay &&
-			heroContent &&
-			replayButton &&
-			headerContainer &&
-			headerSurface &&
-			desktopQuery.matches &&
-			!disableDesktopSequence &&
-			!reduceMotion &&
-			!saveData
+			content &&
+			playButton &&
+			pauseButton &&
+			backgroundControls
 		) {
-			attachVideoSources()
+			let mode: 'idle' | 'background' | 'view' = 'idle'
+			let wanted = false
+			let playing = false
+			let sourcesAttached = false
+			let attemptedAutoplay = false
+			let hasPlayed = false
+			let request = 0
+			const initialRect = heroShell.getBoundingClientRect()
+			let inView = initialRect.bottom > 0 && initialRect.top < window.innerHeight
 
-			let revealed = false
-			let sequenceComplete = false
-			let videoEnded = false
-			let transitionTimeline: gsap.core.Timeline | undefined
-			let revealTimer = 0
-			let collapseTimer = 0
-			const revealAt = Date.now() + 3000
-
-			const collapseHero = () => {
-				if (!transitionTimeline || sequenceComplete) return
-
-				sequenceComplete = true
-				collapseTimer = window.setTimeout(() => {
-					transitionTimeline?.eventCallback('onReverseComplete', () => {
-						video.pause()
-						video.currentTime = 0
-						revealed = false
-						replayButton.style.pointerEvents = 'auto'
-						gsap.fromTo(
-							replayButton,
-							{ autoAlpha: 0, y: 8 },
-							{ autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out' },
-						)
-					})
-					transitionTimeline?.reverse()
-				}, 700)
+			const syncPresentation = () => {
+				const viewing = mode === 'view' && playing
+				heroShell.dataset.playing = String(playing)
+				heroShell.dataset.videoView = String(viewing)
+				content.inert = viewing
+				backgroundControls.hidden = mode === 'idle'
+				const awaitingAutoplay =
+					!attemptedAutoplay && desktop.matches && !reduceMotion.matches && !saveData
+				// Visibility preserva o espaço do botão no mobile, sem saltos na altura da hero.
+				playButton.style.visibility = mode !== 'idle' || awaitingAutoplay ? 'hidden' : ''
+				playButton.disabled = mode !== 'idle' || awaitingAutoplay
+				const label = playButton.querySelector('span')
+				if (label) label.textContent = hasPlayed ? 'Rever vídeo' : 'Ver vídeo'
 			}
 
-			const revealVideo = async () => {
-				if (revealed || !desktopQuery.matches) return
-				sequenceComplete = false
-				videoEnded = false
-				replayButton.style.pointerEvents = 'none'
-				gsap.to(replayButton, { autoAlpha: 0, y: 8, duration: 0.2, ease: 'power2.in' })
-
-				try {
-					await video.play()
-				} catch {
-					return
-				}
-
-				revealed = true
-				const headerHeight = homeHeader?.offsetHeight ?? 0
-				transitionTimeline = gsap
-					.timeline({
-						defaults: { ease: 'power3.inOut' },
-						onComplete: () => {
-							if (videoEnded) collapseHero()
-						},
-					})
-					.to(
-						heroStage,
-						{
-							marginTop: -headerHeight,
-							paddingTop: 0,
-							paddingRight: 0,
-							paddingBottom: 0,
-							paddingLeft: 0,
-							duration: 2.6,
-						},
-						0,
-					)
-					.to(
-						heroShell,
-						{
-							maxWidth: '100%',
-							minHeight: '100svh',
-							paddingLeft: 'clamp(72px, 7vw, 144px)',
-							borderRadius: 0,
-							duration: 2.6,
-						},
-						0,
-					)
-					.to(homeHeader, { paddingRight: 0, paddingLeft: 0, duration: 2.6 }, 0)
-					.to(headerContainer, { maxWidth: '100%', duration: 2.6 }, 0)
-					.to(video, { autoAlpha: 1, duration: 1.8 }, 0.05)
-					.to(poster, { autoAlpha: 0, duration: 1.4 }, 0.35)
-					.to(overlay, { opacity: 0.88, duration: 1.6 }, 0.25)
-					.set(
-						headerSurface,
-						{
-							boxShadow: 'none',
-							backdropFilter: 'none',
-						},
-						0.35,
-					)
-					.to(
-						headerSurface,
-						{
-							paddingRight: 'clamp(72px, 7vw, 144px)',
-							paddingLeft: 'clamp(72px, 7vw, 144px)',
-							backgroundColor: 'transparent',
-							borderColor: 'transparent',
-							duration: 1.8,
-						},
-						0.35,
-					)
-			}
-
-			video.addEventListener('ended', () => {
-				videoEnded = true
-				if ((transitionTimeline?.progress() ?? 0) >= 0.999) collapseHero()
-			})
-
-			replayButton.addEventListener('click', () => {
-				transitionTimeline?.kill()
-				video.currentTime = 0
-				revealVideo()
-			})
-
-			const scheduleReveal = () => {
-				if (!desktopQuery.matches) return
-				const remainingDelay = Math.max(0, revealAt - Date.now())
-				revealTimer = window.setTimeout(revealVideo, remainingDelay)
-			}
-
-			if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) scheduleReveal()
-			else video.addEventListener('canplay', scheduleReveal, { once: true })
-
-			document.addEventListener('visibilitychange', () => {
-				if (!revealed || sequenceComplete) return
-				if (document.hidden) video.pause()
-				else video.play().catch(() => undefined)
-			})
-
-			desktopQuery.addEventListener('change', (event) => {
-				if (event.matches) return
-
-				window.clearTimeout(revealTimer)
-				window.clearTimeout(collapseTimer)
-				transitionTimeline?.kill()
-				gsap.killTweensOf([
-					heroStage,
-					heroShell,
-					homeHeader,
-					headerContainer,
-					headerSurface,
-					video,
-					poster,
-					overlay,
-					replayButton,
-				])
+			const restore = (returnFocus = false) => {
+				request++
+				wanted = false
+				playing = false
+				mode = 'idle'
 				video.pause()
-				video.currentTime = 0
-				revealed = false
-				sequenceComplete = false
-				videoEnded = false
-				transitionTimeline = undefined
-
-				gsap.set(heroStage, {
-					clearProps: 'marginTop,paddingTop,paddingRight,paddingBottom,paddingLeft',
-				})
-				gsap.set(heroShell, {
-					clearProps: 'maxWidth,minHeight,paddingLeft,borderRadius',
-				})
-				gsap.set(homeHeader, { clearProps: 'paddingRight,paddingLeft' })
-				gsap.set(headerContainer, { clearProps: 'maxWidth' })
-				gsap.set(headerSurface, {
-					clearProps:
-						'paddingRight,paddingLeft,backgroundColor,borderColor,boxShadow,backdropFilter',
-				})
-				gsap.set(video, { clearProps: 'opacity,visibility,transform' })
-				gsap.set(poster, { clearProps: 'opacity,visibility' })
-				gsap.set(overlay, { clearProps: 'opacity' })
-				gsap.set(replayButton, {
-					clearProps: 'opacity,visibility,transform,pointerEvents',
-				})
-			})
-		}
-
-		if (video && poster && mobilePlayButton && mobilePlayLabel) {
-			let mobilePlaying = false
-
-			const playOnMobile = async () => {
-				if (desktopQuery.matches || mobilePlaying) return
-				attachVideoSources()
-				mobilePlayButton.disabled = true
-
-				try {
-					video.currentTime = 0
-					await video.play()
-				} catch {
-					mobilePlayButton.disabled = false
-					return
-				}
-
-				mobilePlaying = true
-				gsap.to(mobilePlayButton, { autoAlpha: 0, duration: 0.2 })
-				gsap.to(video, { autoAlpha: 1, duration: 0.8, ease: 'power2.out' })
-				gsap.to(poster, { autoAlpha: 0, duration: 0.65, ease: 'power2.out' })
+				playButton.disabled = false
+				syncPresentation()
+				if (returnFocus && inView && !document.hidden) playButton.focus({ preventScroll: true })
 			}
 
-			mobilePlayButton.addEventListener('click', playOnMobile)
-			video.addEventListener('ended', () => {
-				if (!mobilePlaying) return
+			const attachSources = () => {
+				if (sourcesAttached) return
+				video.querySelectorAll<HTMLSourceElement>('[data-hero-video-source]').forEach((source) => {
+					if (source.dataset.src) source.src = source.dataset.src
+				})
+				sourcesAttached = true
+				video.load()
+			}
 
-				gsap
-					.timeline({
-						onComplete: () => {
-							mobilePlaying = false
-							mobilePlayButton.disabled = false
-							mobilePlayLabel.textContent = 'Rever vídeo'
-							video.currentTime = 0
-						},
-					})
-					.to(video, { autoAlpha: 0, duration: 0.5, ease: 'power2.inOut' })
-					.to(poster, { autoAlpha: 1, duration: 0.5, ease: 'power2.inOut' }, 0)
-					.to(mobilePlayButton, { autoAlpha: 1, duration: 0.25 }, 0.3)
+			const start = async (nextMode: 'background' | 'view') => {
+				const currentRequest = ++request
+				mode = nextMode
+				wanted = true
+				if (status) status.textContent = ''
+				playButton.disabled = true
+				syncPresentation()
+				if (nextMode === 'view') pauseButton.focus({ preventScroll: true })
+				attachSources()
+				video.currentTime = 0
+				try {
+					await video.play()
+					if (currentRequest !== request) return
+					if (!inView || document.hidden) video.pause()
+				} catch {
+					if (currentRequest !== request) return
+					restore(nextMode === 'view')
+					if (nextMode === 'view' && status)
+						status.textContent = 'Não foi possível reproduzir o vídeo. Tente novamente.'
+				}
+			}
+
+			const autoplayOnce = () => {
+				if (
+					attemptedAutoplay ||
+					mode !== 'idle' ||
+					!inView ||
+					document.hidden ||
+					!desktop.matches ||
+					reduceMotion.matches ||
+					saveData
+				)
+					return
+				attemptedAutoplay = true
+				void start('background')
+			}
+
+			const updateVisibility = () => {
+				if (!wanted || mode === 'idle') return
+				if (!inView || document.hidden) video.pause()
+				else void video.play().catch(() => restore())
+			}
+
+			video.addEventListener('playing', () => {
+				if (!wanted || !inView || document.hidden) {
+					video.pause()
+					return
+				}
+				playing = true
+				hasPlayed = true
+				syncPresentation()
 			})
+			// Uma pausa por visibilidade mantém o último quadro e o modo de vídeo.
+			// Apenas fechar, terminar ou falhar deve restaurar a imagem e os textos.
+			video.addEventListener('ended', () => restore(mode === 'view'))
+			video.addEventListener('error', () => {
+				const wasViewing = mode === 'view'
+				restore(wasViewing)
+				if (wasViewing && status)
+					status.textContent = 'Não foi possível carregar o vídeo. Tente novamente.'
+			})
+			playButton.addEventListener('click', () => {
+				attemptedAutoplay = true
+				void start('view')
+			})
+			pauseButton.addEventListener('click', () => restore(true))
+			document.addEventListener('keydown', (event) => {
+				if (event.key === 'Escape' && mode === 'view') restore(true)
+			})
+			document.addEventListener('visibilitychange', updateVisibility)
+			desktop.addEventListener('change', () => {
+				if (!desktop.matches && mode === 'background') restore()
+			})
+			reduceMotion.addEventListener('change', () => {
+				if (reduceMotion.matches && mode === 'background') restore()
+			})
+			const observer = new IntersectionObserver(
+				([entry]) => {
+					inView = entry.isIntersecting && entry.intersectionRatio >= 0.1
+					updateVisibility()
+				},
+				{ threshold: [0, 0.1] },
+			)
+			observer.observe(heroShell)
+			window.addEventListener(
+				'pagehide',
+				() => {
+					restore()
+					observer.disconnect()
+				},
+				{ once: true },
+			)
+			syncPresentation()
+			// Mostra a hero estática antes de iniciar a reprodução, sem aguardar vídeo ou animação.
+			const poster = heroShell.querySelector<HTMLImageElement>('[data-hero-poster]')
+			void (poster?.decode().catch(() => undefined) ?? Promise.resolve()).then(() =>
+				requestAnimationFrame(autoplayOnce),
+			)
 		}
 	}
 </script>
