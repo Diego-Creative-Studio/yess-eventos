@@ -210,3 +210,25 @@ Validação: build de produção concluído; Astro Check sem erros/avisos (dois 
 
 **Ainda pendente:** publicar e medir novamente no PageSpeed. Não há nova nota de desempenho nem redução de LCP/CLS comprovada em produção nesta etapa. A investigação de CLS, contraste e scripts de medição permanece na lista acima.
 
+## 10. Segunda rodada — estabilidade visual (CLS)
+
+Correções implementadas localmente:
+
+- **Portfólio:** o mosaico agora reserva sua altura e o percurso de rolagem no CSS antes do bundle. A inicialização do ScrollTrigger não acrescenta outro espaçador. O texto permanece centralizado nas fotos por CSS, sem esperar um `ResizeObserver`. O zoom e as etapas seguintes foram preservados.
+- **Fontes:** desativado somente o ajuste automático do fallback Arial; as fontes finais, seus pesos e tamanhos não mudaram. O CSS gerado anteriormente ampliava o fallback de Jakarta em 27% e o de Inter em 34%, alterando quebras de linha. Na trilha de navegação de Zona Sul, isso deslocava a hero em 28 px ao carregar a fonte.
+- **Títulos de serviço:** o SplitText divide destaque e complemento separadamente dentro da mesma animação. Isso evita clonar a margem entre os blocos, que acrescentava 8 px à altura depois da inicialização. Mantida a folga de recorte para acentos e cedilhas.
+
+Teste diagnóstico em Edge/Chromium, viewport mobile de 390 × 844, CPU 4× mais lenta, fontes atrasadas artificialmente em 1,2 s e módulos em 1,5 s, cache novo e abertura do Portfólio já vista na sessão:
+
+| Página | Soma dos shifts sem interação, antes | Depois |
+| --- | ---: | ---: |
+| Portfólio | 0,2773 | 0,0016 |
+| Audiovisual — Zona Sul | 0,2226 | 0 |
+| LED — São Bernardo do Campo | 0,0036 | 0 |
+
+Esses valores são **diagnósticos locais de uma execução**, não novos resultados do PageSpeed nem dados reais de usuários. A diferença em relação ao baseline público, especialmente São Bernardo, reforça a necessidade de repetir o teste publicado.
+
+Também verificados: mosaico em 375, 768 e 1.366 px (alinhamento, zoom e ausência de overflow horizontal); alternativas sem JavaScript e com movimento reduzido; títulos de serviço legíveis; home com foto inicial no mobile e reprodução após clique. Build e Astro Check passaram, com os mesmos dois hints preexistentes do Portfólio.
+
+Próximos itens: publicar e repetir as medições, corrigir os contrastes apontados e investigar a transferência intermitente dos vídeos. A revisão de GTM/Cloudflare continua dependendo de alinhamento com o responsável pelo rastreamento.
+

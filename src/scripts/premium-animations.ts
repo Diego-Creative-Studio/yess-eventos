@@ -14,7 +14,9 @@ const restScale = (frame: HTMLElement) => (frame.hasAttribute('data-motion-paral
 if (!reduceMotion) {
 	void document.fonts.ready.then(() => {
 		gsap.utils.toArray<HTMLElement>('[data-motion-title]').forEach((title) => {
-			SplitText.create(title, {
+			// Divide cada bloco sem clonar a margem entre destaque e complemento nas máscaras.
+			const parts = title.querySelectorAll<HTMLElement>('[data-motion-title-part]')
+			SplitText.create(parts.length ? parts : title, {
 				type: 'lines',
 				mask: 'lines',
 				autoSplit: true,

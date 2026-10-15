@@ -32,6 +32,8 @@ export default defineConfig({
 			styles: ['normal'],
 			subsets: ['latin', 'latin-ext'],
 			fallbacks: ['Arial', 'sans-serif'],
+			// O ajuste automático ampliava o Arial e mudava as quebras antes da fonte carregar.
+			optimizedFallbacks: false,
 		},
 		{
 			name: 'Inter',
@@ -41,6 +43,7 @@ export default defineConfig({
 			styles: ['normal'],
 			subsets: ['latin', 'latin-ext'],
 			fallbacks: ['Arial', 'sans-serif'],
+			optimizedFallbacks: false,
 		},
 	],
 	vite: {

@@ -116,7 +116,12 @@ const centro = 7
 	.mosaic-shade {
 		position: absolute;
 		inset: 0;
-		background: radial-gradient(ellipse at center, rgb(7 10 15 / 0.7), rgb(7 10 15 / 0.2) 65%, transparent 100%);
+		background: radial-gradient(
+			ellipse at center,
+			rgb(7 10 15 / 0.7),
+			rgb(7 10 15 / 0.2) 65%,
+			transparent 100%
+		);
 	}
 
 	.mosaic-outro {
@@ -151,23 +156,36 @@ const centro = 7
 		}
 	}
 
-	/* A abertura segue o espaçamento das outras páginas; o zoom centraliza a foto depois. */
-	[data-mosaic-ready] .mosaic-pin {
-		display: flex;
-		height: 100svh;
-		align-items: flex-start;
-		justify-content: center;
-		padding: 1rem 0 0;
-	}
-
-	@media (min-width: 1024px) {
-		[data-mosaic-ready] .mosaic-pin {
-			padding-top: 1.25rem;
+	/* Reserva a geometria antes do bundle: o pin não empurra a próxima seção ao iniciar. */
+	@media (prefers-reduced-motion: no-preference) {
+		:global(.js) [data-mosaic] {
+			min-height: 260svh;
 		}
-	}
 
-	[data-mosaic-ready] .mosaic-grid {
-		width: min(100vw - 1.5rem, 1600px);
+		:global(.js) .mosaic-pin {
+			display: grid;
+			height: 100svh;
+			grid-template-columns: 100%;
+			grid-template-rows: max-content 1fr;
+			justify-items: center;
+			padding: 1rem 0 0;
+		}
+
+		:global(.js) .mosaic-grid {
+			grid-area: 1 / 1;
+			width: min(100vw - 1.5rem, 1600px);
+		}
+
+		:global(.js) .mosaic-overlay {
+			/* A área do grid mantém o texto no meio das fotos, já no primeiro paint. */
+			grid-area: 1 / 1 / 2 / 2;
+		}
+
+		@media (min-width: 1024px) {
+			:global(.js) .mosaic-pin {
+				padding-top: 1.25rem;
+			}
+		}
 	}
 </style>
 
@@ -191,16 +209,6 @@ const centro = 7
 
 		section.setAttribute('data-mosaic-ready', '')
 
-		// O título acompanha a área das fotos, não a altura total da tela fixada.
-		const alignIntro = () => {
-			if (!intro) return
-			intro.style.top = `${grid.offsetTop}px`
-			intro.style.height = `${grid.offsetHeight}px`
-			intro.style.bottom = 'auto'
-		}
-		alignIntro()
-		new ResizeObserver(alignIntro).observe(grid)
-
 		// Quanto o mosaico precisa crescer para a foto do centro cobrir a tela.
 		const fillScale = () => {
 			const box = center.getBoundingClientRect()
@@ -222,8 +230,9 @@ const centro = 7
 		const pinTrigger = ScrollTrigger.create({
 			trigger: section,
 			start: 'top top',
-			end: () => `+=${window.innerHeight * 1.6}`,
+			end: () => `+=${section.offsetHeight - pin.offsetHeight}`,
 			pin,
+			pinSpacing: false,
 			invalidateOnRefresh: true,
 		})
 
@@ -245,7 +254,8 @@ const centro = 7
 				{ scale: 1, y: 0, transformOrigin: origin },
 				{
 					scale: fillScale,
-					y: () => pin.clientHeight / 2 - (grid.offsetTop + center.offsetTop + center.offsetHeight / 2),
+					y: () =>
+						pin.clientHeight / 2 - (grid.offsetTop + center.offsetTop + center.offsetHeight / 2),
 					transformOrigin: origin,
 					duration: 1,
 					ease: 'none',

@@ -143,8 +143,16 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 							</span>
 						) : (
 							<>
-								<strong class="block font-extrabold" set:html={tituloDestaque} />
-								<span class="mt-2 block font-semibold" set:html={tituloComplementar} />
+								<strong
+									data-motion-title-part
+									class="block font-extrabold"
+									set:html={tituloDestaque}
+								/>
+								<span
+									data-motion-title-part
+									class="mt-2 block font-semibold"
+									set:html={tituloComplementar}
+								/>
 							</>
 						)
 					}
