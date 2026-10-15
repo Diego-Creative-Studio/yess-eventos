@@ -46,10 +46,11 @@ Não é necessário refazer essa implantação do zero. Conferir apenas os resul
 
 ### 2.1 Domínio definitivo nos metadados
 
-**Confirmado no código local:** `astro.config.mjs` ainda contém `https://yess-eventos.vercel.app` em `site`. Isso não confirma o que está no último deploy, mas exige conferência.
+**Corrigido localmente em 15/10/2026:** `site` no `astro.config.mjs` agora usa `https://yessproducoes.com.br`, sem `www`. O build foi validado: índice de sitemaps, 1.694 URLs do sitemap, robots e canonicals conferidos usam o domínio definitivo. A versão publicada ainda precisa receber esse build e ser revalidada.
 
 - [ ] Confirmar qual é o domínio definitivo aprovado pelo cliente. Os documentos do projeto mencionam `https://yessproducoes.com.br/`.
-- [ ] Ajustar `site` no Astro para esse domínio, se ainda estiver incorreto, e publicar um novo build.
+- [x] Ajustar `site` no Astro para o domínio definitivo e validar o build local.
+- [ ] Publicar o build corrigido, conferir os arquivos no endereço público e reenviar o sitemap no Search Console.
 - [ ] Conferir no HTML publicado: canonical, `og:url`, URL da imagem OG e URLs dos dados estruturados.
 - [ ] Abrir `/robots.txt`, `/sitemap-index.xml` e os sitemaps filhos: todos devem apontar para o domínio definitivo.
 - [ ] Confirmar a versão preferida de HTTPS e de `www`/sem `www`, com redirecionamento consistente e sem ciclos.
