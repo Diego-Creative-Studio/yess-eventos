@@ -1,6 +1,6 @@
 ---
 import type { ImageMetadata } from 'astro'
-import { Image } from 'astro:assets'
+import { Image, getImage } from 'astro:assets'
 
 import heroHome from '@/assets/hero-home.png'
 import Button from '@/components/Button.astro'
@@ -44,6 +44,14 @@ const {
 	videoMp4 = '/videos/evento-iluminacao.mp4',
 	videoWebm = '/videos/evento-iluminacao.webm',
 } = Astro.props
+
+// O poster do vídeo também precisa ser otimizado: image.src é o PNG original.
+const videoPoster = await getImage({
+	src: image,
+	width: Math.min(image.width, 1280),
+	format: 'webp',
+	quality: 80,
+})
 ---
 
 <section data-hero-stage class="px-3 pt-4 pb-8 md:px-8 lg:px-16 lg:pt-5 lg:pb-16">
@@ -56,7 +64,7 @@ const {
 			muted
 			playsinline
 			preload="none"
-			poster={image.src}
+			poster={videoPoster.src}
 			aria-hidden="true"
 			class="will-change-opacity pointer-events-none absolute inset-0 size-full object-cover object-[58%_center] opacity-0 lg:object-center"
 		>
@@ -68,7 +76,9 @@ const {
 			data-hero-poster
 			src={image}
 			alt={imageAlt}
+			loading="eager"
 			fetchpriority="high"
+			decoding="sync"
 			class="will-change-opacity absolute inset-0 size-full object-cover object-[58%_center] lg:object-center"
 		/>
 		<div
