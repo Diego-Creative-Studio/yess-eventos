@@ -338,21 +338,8 @@ const videoPoster = await getImage({
 			delete heroShell.dataset.introPending
 			gsap.set(introItems, { clearProps: 'opacity,transform' })
 		}
-		if (!desktop.matches) {
-			// O conteúdo mobile já está visível no HTML: sem esperar fontes ou revelar opacidade.
-			if (!reduceMotion.matches) {
-				introTween = gsap.fromTo(
-					introItems,
-					{ y: 8 },
-					{
-						y: 0,
-						duration: 0.45,
-						ease: 'power2.out',
-						onComplete: finishIntro,
-					},
-				)
-			}
-		} else {
+		// No mobile, a primeira renderização é estática, sem tween ou leitura de layout.
+		if (desktop.matches) {
 			// Mantém a entrada desktop sem remontar as linhas durante a troca de fonte.
 			void Promise.race([
 				document.fonts.ready,
@@ -383,8 +370,8 @@ const videoPoster = await getImage({
 			let attemptedAutoplay = bootStarted
 			let hasPlayed = video.currentTime > 0
 			let request = 0
-			const initialRect = heroShell.getBoundingClientRect()
-			let inView = initialRect.bottom > 0 && initialRect.top < window.innerHeight
+			// O IntersectionObserver abaixo informa a visibilidade sem forçar um reflow no boot.
+			let inView = true
 
 			const syncPresentation = () => {
 				const viewing = mode === 'view' && playing
