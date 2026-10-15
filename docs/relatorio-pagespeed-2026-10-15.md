@@ -196,3 +196,17 @@ Uma verificação HEAD posterior retornou **HTTP 200** com tipos `video/mp4` e `
 
 Referências de método: [PageSpeed Insights](https://pagespeed.web.dev/), [API oficial](https://developers.google.com/speed/docs/insights/v5/get-started), [LCP](https://web.dev/articles/lcp), [CLS](https://web.dev/articles/cls).
 
+## 9. Primeira rodada de melhorias — validada localmente
+
+Implementada após a auditoria, sem alterar os resultados de referência acima:
+
+- Heros de serviço com vídeo: pôster WebP de até 1.280 px, compartilhado entre a imagem visível e o vídeo. O navegador confirmou a mesma URL nos dois elementos, evitando o JPG original pesado e um download separado para cada camada.
+- TVs: novo pôster de **178.006 bytes (174 KiB)**, contra aproximadamente 6.345 KiB do original registrado no PageSpeed.
+- Contato: novo pôster de **68.364 bytes (67 KiB)**, contra aproximadamente 2.874 KiB do original registrado no PageSpeed.
+- Vídeos das heros de serviço com `preload="none"`: nenhuma requisição MP4/WebM antes da interação nos testes locais.
+- Home mobile: camada de vídeo já oculta no HTML inicial; o pôster nativo do vídeo só é atribuído quando necessário. Confirmado que o arquivo `hero-video-poster` não é solicitado antes do clique, mantendo a foto principal e sua animação de entrada.
+
+Validação: build de produção concluído; Astro Check sem erros/avisos (dois hints preexistentes de imports não utilizados em Portfólio); reprodução, som e pausa testados em cinco heros de serviço, em desktop e mobile. Home testada em 320, 375 e 768 px, com reprodução manual no mobile, autoplay desktop e três ciclos de replay/pausa por dispositivo sem exposição da camada de vídeo após a pausa. Nenhum arquivo de vídeo foi alterado ou cortado.
+
+**Ainda pendente:** publicar e medir novamente no PageSpeed. Não há nova nota de desempenho nem redução de LCP/CLS comprovada em produção nesta etapa. A investigação de CLS, contraste e scripts de medição permanece na lista acima.
+

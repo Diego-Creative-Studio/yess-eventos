@@ -58,6 +58,7 @@ const videoPoster = await getImage({
 <section data-hero-stage class="px-3 pt-4 pb-8 md:px-8 lg:px-16 lg:pt-5 lg:pb-16">
 	<div
 		data-hero-shell
+		data-playing="false"
 		class="relative container mx-auto flex w-full origin-center items-center overflow-hidden rounded-hero bg-surface px-6 py-10 max-[359px]:px-4 md:max-w-7xl md:px-10 lg:max-w-345 lg:pt-16 lg:pr-9 lg:pb-22 lg:pl-14"
 	>
 		<video
@@ -65,7 +66,7 @@ const videoPoster = await getImage({
 			muted
 			playsinline
 			preload="none"
-			poster={videoPoster.src}
+			data-poster={videoPoster.src}
 			aria-hidden="true"
 			class="pointer-events-none absolute inset-0 size-full object-cover object-[58%_center] lg:object-center"
 		>
@@ -93,6 +94,7 @@ const videoPoster = await getImage({
 					video.parentElement.dataset.autoplayPending = 'true'
 					video.dataset.autoplayStarted = 'true'
 					video.muted = true
+					video.poster = video.dataset.poster
 					video.preload = 'auto'
 					video.querySelectorAll('source').forEach((source) => {
 						source.src = source.dataset.src
@@ -243,7 +245,7 @@ const videoPoster = await getImage({
 	}
 	/* Ao pausar, troca diretamente para a foto: não mistura quadros nem deixa
 	   a camada de vídeo aparecer nas bordas enquanto o conteúdo retorna. */
-	[data-hero-shell][data-playing='false'] [data-hero-poster] {
+	[data-hero-shell][data-playing='false']:not([data-autoplay-pending='true']) [data-hero-poster] {
 		opacity: 1;
 		transition: none;
 	}
@@ -402,6 +404,7 @@ const videoPoster = await getImage({
 
 			const attachSources = () => {
 				if (sourcesAttached) return
+				video.poster = video.dataset.poster ?? ''
 				video.querySelectorAll<HTMLSourceElement>('[data-hero-video-source]').forEach((source) => {
 					if (source.dataset.src) source.src = source.dataset.src
 				})
