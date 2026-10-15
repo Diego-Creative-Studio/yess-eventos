@@ -67,7 +67,7 @@ const videoPoster = await getImage({
 			preload="none"
 			poster={videoPoster.src}
 			aria-hidden="true"
-			class="pointer-events-none absolute inset-0 size-full object-cover object-[58%_center] opacity-0 lg:object-center"
+			class="pointer-events-none absolute inset-0 size-full object-cover object-[58%_center] lg:object-center"
 		>
 			<source data-hero-video-source data-src={videoMp4} type="video/mp4" />
 			<source data-hero-video-source data-src={videoWebm} type="video/webm" />
@@ -228,7 +228,6 @@ const videoPoster = await getImage({
 		opacity: 0;
 		transform: translateY(12px);
 	}
-	[data-hero-video],
 	[data-hero-poster],
 	[data-hero-content],
 	[data-hero-overlay] {
@@ -241,6 +240,15 @@ const videoPoster = await getImage({
 	[data-hero-shell][data-autoplay-pending='true'] [data-hero-poster],
 	[data-hero-shell][data-playing='true'] [data-hero-poster] {
 		opacity: 0;
+	}
+	/* Ao pausar, troca diretamente para a foto: não mistura quadros nem deixa
+	   a camada de vídeo aparecer nas bordas enquanto o conteúdo retorna. */
+	[data-hero-shell][data-playing='false'] [data-hero-poster] {
+		opacity: 1;
+		transition: none;
+	}
+	[data-hero-shell][data-playing='false']:not([data-autoplay-pending='true']) [data-hero-video] {
+		visibility: hidden;
 	}
 	[data-hero-shell][data-autoplay-pending='true'] [data-hero-video],
 	[data-hero-shell][data-autoplay-pending='true'] [data-hero-poster] {
@@ -371,9 +379,11 @@ const videoPoster = await getImage({
 				playButton.style.visibility = mode !== 'idle' || awaitingAutoplay ? 'hidden' : ''
 				playButton.disabled = mode !== 'idle' || awaitingAutoplay
 				const label = playButton.querySelector('span')
-				if (label) label.textContent = hasPlayed ? 'Rever vídeo' : 'Ver vídeo'
+				const playLabel = hasPlayed ? 'Rever vídeo' : 'Ver vídeo'
+				if (label && label.textContent !== playLabel) label.textContent = playLabel
 				const soundLabel = soundButton.querySelector('span')
-				if (soundLabel) soundLabel.textContent = video.muted ? 'Ativar som' : 'Silenciar'
+				const soundText = video.muted ? 'Ativar som' : 'Silenciar'
+				if (soundLabel && soundLabel.textContent !== soundText) soundLabel.textContent = soundText
 				soundButton.setAttribute('aria-pressed', String(!video.muted))
 			}
 
@@ -468,7 +478,7 @@ const videoPoster = await getImage({
 				attemptedAutoplay = true
 				void start('view')
 			})
-			pauseButton.addEventListener('click', () => restore(true))
+			pauseButton.addEventListener('click', (event) => restore(event.detail === 0))
 			soundButton.addEventListener('click', () => {
 				video.muted = !video.muted
 				syncPresentation()
