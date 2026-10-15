@@ -6,6 +6,8 @@ import Seo from '@/components/Seo.astro'
 import Header from '@/components/Header.astro'
 import SiteSchema from '@/components/SiteSchema.astro'
 import Footer from '@/components/Footer.astro'
+import PageMotion from '@/components/PageMotion.astro'
+import DeferredMobileMotion from '@/components/DeferredMobileMotion.astro'
 
 type AnimationName = 'fade' | 'fade-up' | 'fade-down' | 'fade-left' | 'fade-right' | 'scale'
 
@@ -21,6 +23,8 @@ interface Props {
 	animationDuration?: number
 	animationDistance?: number
 	animationStart?: string
+	/** Prioriza a primeira pintura da hero antes de carregar animações no mobile. */
+	deferMobileMotion?: boolean
 }
 
 const {
@@ -35,6 +39,7 @@ const {
 	animationDuration = 1,
 	animationDistance = 32,
 	animationStart = 'top 80%',
+	deferMobileMotion = false,
 } = Astro.props
 ---
 
@@ -86,11 +91,7 @@ const {
 		<Header class={headerClass} />
 		<slot />
 		<Footer theme={footerTheme} />
-		<script>
-			import '@/scripts/smooth-scroll'
-			import '@/scripts/reveal-animations'
-			import '@/scripts/premium-animations'
-		</script>
+		{deferMobileMotion ? <DeferredMobileMotion /> : <PageMotion />}
 	</body></html
 >
 
