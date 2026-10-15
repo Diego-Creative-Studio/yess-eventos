@@ -7,7 +7,8 @@ const showReplay = import.meta.env.DEV
 
 <!--
 	Abertura do portfólio: logo, contador e barra; depois a tela sobe como uma cortina.
-	Só aparece com JS, uma vez por sessão e sem "reduzir movimento". Clique ou toque pula.
+	Abertura curta no desktop, uma vez por sessão e sem "reduzir movimento".
+	No mobile, o mosaico aparece direto; ?intro permite rever a abertura. Clique pula.
 -->
 <div
 	data-portfolio-intro
@@ -45,12 +46,21 @@ const showReplay = import.meta.env.DEV
 		} catch (e) {}
 		var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 		// /portfolio/?intro força a abertura (útil para apresentar ao cliente).
-		if (new URLSearchParams(location.search).has('intro')) seen = false
-		if (!intro || seen || reduce) {
+		var force = new URLSearchParams(location.search).has('intro')
+		if (force) seen = false
+		if (!intro || seen || reduce || (!force && matchMedia('(max-width: 1023px)').matches)) {
 			if (intro) intro.remove()
 			return
 		}
 		document.documentElement.classList.add('intro-playing')
+		// A cortina nunca deve aguardar o bundle indefinidamente em uma conexão lenta.
+		intro.dataset.fallback = String(
+			setTimeout(function () {
+				document.documentElement.classList.remove('intro-playing')
+				intro.remove()
+				window.lenis?.start()
+			}, 1200),
+		)
 	})()
 </script>
 
@@ -81,7 +91,11 @@ const showReplay = import.meta.env.DEV
 	}
 
 	.portfolio-intro__light {
-		background: radial-gradient(ellipse 45% 55% at 50% 100%, rgb(255 255 255 / 0.9), transparent 70%);
+		background: radial-gradient(
+			ellipse 45% 55% at 50% 100%,
+			rgb(255 255 255 / 0.9),
+			transparent 70%
+		);
 	}
 </style>
 
@@ -111,6 +125,7 @@ const showReplay = import.meta.env.DEV
 		} catch {}
 
 		const finish = () => {
+			clearTimeout(Number(intro.dataset.fallback))
 			document.documentElement.classList.remove('intro-playing')
 			window.lenis?.start()
 			intro.remove()
@@ -118,23 +133,23 @@ const showReplay = import.meta.env.DEV
 
 		const timeline = gsap.timeline({ onComplete: finish })
 		timeline
-			.from(logo, { autoAlpha: 0, y: 12, duration: 0.7, ease: 'power2.out' })
+			.from(logo, { autoAlpha: 0, y: 12, duration: 0.25, ease: 'power2.out' })
 			.to(
 				progress,
 				{
 					value: 100,
-					duration: 2.6,
+					duration: 0.45,
 					ease: 'power2.inOut',
 					onUpdate: () => {
 						if (count) count.textContent = `${Math.round(progress.value)}%`
 						if (bar) gsap.set(bar, { scaleX: progress.value / 100 })
 					},
 				},
-				0.3,
+				0.1,
 			)
-			.to(count, { autoAlpha: 0, duration: 0.3 }, '+=0.3')
-			.to(logo, { scale: 1.9, duration: 0.8, ease: 'power3.inOut' }, '<')
-			.to(intro, { yPercent: -100, duration: 0.9, ease: 'power3.inOut' }, '+=0.15')
+			.to(count, { autoAlpha: 0, duration: 0.1 }, '+=0.1')
+			.to(logo, { scale: 1.9, duration: 0.15, ease: 'power3.inOut' }, '<')
+			.to(intro, { yPercent: -100, duration: 0.3, ease: 'power3.inOut' }, '+=0.05')
 
 		if (heroText)
 			timeline.from(heroText, { autoAlpha: 0, y: 30, duration: 0.7, ease: 'power3.out' }, '-=0.35')

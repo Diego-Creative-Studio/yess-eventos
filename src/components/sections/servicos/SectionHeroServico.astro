@@ -62,7 +62,10 @@ const {
 const temVideo = Boolean(videoMp4 || videoWebm)
 const temEtapas = etapas.length > 1
 const posterWidth = Math.min(imagem.width, 1280)
-// O vídeo e a foto usam o mesmo arquivo otimizado; não baixar o JPG original por baixo.
+// No desktop, considera também o recorte vertical da coluna em object-cover.
+const imageRatio = imagem.width / imagem.height
+const imageSizes = `(min-width: 1024px) max(48vw, ${Math.ceil(768 * imageRatio)}px), 100vw`
+// Pôster otimizado para a reprodução; a foto inicial usa variantes responsivas abaixo.
 const videoPoster = temVideo
 	? await getImage({ src: imagem, width: posterWidth, format: 'webp', quality: 80 })
 	: undefined
@@ -201,9 +204,9 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 						playsinline
 						loop
 						preload="none"
-						poster={videoPoster?.src}
+						data-poster={videoPoster?.src}
 						class:list={[
-							'pointer-events-none absolute inset-0 size-full object-cover',
+							'pointer-events-none invisible absolute inset-0 size-full object-cover',
 							!painelLed && !videowall && !boxTruss && 'lg:rounded-l-3xl',
 							boxTruss && 'truss-backdrop',
 						]}
@@ -219,7 +222,8 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 						data-service-poster={temVideo || undefined}
 						src={imagem}
 						width={temVideo ? posterWidth : undefined}
-						layout={temVideo ? 'none' : undefined}
+						widths={[480, 800, 1280, 1600, imagem.width].filter((width) => width <= imagem.width)}
+						sizes={imageSizes}
 						format={temVideo ? 'webp' : undefined}
 						quality={temVideo ? 80 : undefined}
 						alt={textoAlternativoImagem}
@@ -229,6 +233,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 							boxTruss && 'truss-backdrop',
 						]}
 						loading="eager"
+						fetchpriority="high"
 					/>
 				)
 			}
@@ -1680,6 +1685,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 
 		const showVideo = async () => {
 			const currentInteraction = ++interactionVersion
+			video.poster = video.dataset.poster ?? ''
 
 			try {
 				await video.play()
@@ -1693,6 +1699,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 			}
 
 			playing = true
+			gsap.set(video, { visibility: 'visible' })
 			updateControl('pause')
 			gsap.killTweensOf([poster, control, ...videoHide])
 			gsap.to([poster, ...videoHide], {

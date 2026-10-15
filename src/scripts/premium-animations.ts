@@ -17,6 +17,8 @@ if (!reduceMotion) {
 			// Divide cada bloco sem clonar a margem entre destaque e complemento nas máscaras.
 			const parts = title.querySelectorAll<HTMLElement>('[data-motion-title-part]')
 			SplitText.create(parts.length ? parts : title, {
+				// As linhas continuam como texto do h1; strong/span não aceitam aria-label.
+				aria: parts.length ? 'none' : 'auto',
 				type: 'lines',
 				mask: 'lines',
 				autoSplit: true,
