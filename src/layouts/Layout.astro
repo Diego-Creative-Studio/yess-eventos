@@ -63,8 +63,9 @@ const {
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<Seo {title} {description} {image} {type} {noindex} />
 		<SiteSchema />
-		<Font cssVariable="--font-jakarta" preload />
-		<Font cssVariable="--font-inter" />
+		<!-- Prioriza os subconjuntos usados no conteúdo; latin-ext continua disponível sob demanda. -->
+		<Font cssVariable="--font-jakarta" preload={[{ subset: 'latin' }]} />
+		<Font cssVariable="--font-inter" preload={[{ subset: 'latin' }]} />
 	</head>
 	<body
 		class:list={[

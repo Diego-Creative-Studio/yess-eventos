@@ -1,10 +1,19 @@
 ---
-import { Image } from 'astro:assets'
+import { Image, getImage } from 'astro:assets'
 
 import imagemMontagem from '@/assets/yess/historia-01-montagem.jpg'
 import imagemPronto from '@/assets/yess/historia-02-pronto.jpg'
 import imagemAbertura from '@/assets/yess/historia-03-abertura.jpg'
 import imagemFesta from '@/assets/yess/historia-04-festa.jpg'
+
+// O poster nativo é baixado mesmo com preload="none" e o vídeo fora da tela.
+// Nunca usar o JPG original de vários MB na abertura do Portfólio.
+const posterFesta = await getImage({
+	src: imagemFesta,
+	width: Math.min(imagemFesta.width, 1280),
+	format: 'webp',
+	quality: 80,
+})
 
 const etapas = [
 	{
@@ -66,7 +75,7 @@ const etapas = [
 											playsinline
 											loop
 											preload="none"
-											poster={etapa.imagem.src}
+											poster={posterFesta.src}
 											aria-label={etapa.alt}
 											class="size-full object-cover"
 										>
