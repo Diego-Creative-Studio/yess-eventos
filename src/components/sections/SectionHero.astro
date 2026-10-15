@@ -78,7 +78,7 @@ const videoPoster = await getImage({
 			{
 				const video = document.currentScript.previousElementSibling
 				const shell = video.parentElement
-				if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+				if (matchMedia('(min-width: 1024px)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
 					// Antes do primeiro paint: não mostra o texto para depois escondê-lo via GSAP.
 					shell.dataset.introPending = 'true'
 					// Se o bundle falhar, o conteúdo continua acessível sem depender da animação.
@@ -115,7 +115,7 @@ const videoPoster = await getImage({
 			alt={imageAlt}
 			loading="eager"
 			fetchpriority="high"
-			decoding="sync"
+			decoding="async"
 			class="absolute inset-0 size-full object-cover object-[58%_center] lg:object-center"
 		/>
 		<div
@@ -338,24 +338,40 @@ const videoPoster = await getImage({
 			delete heroShell.dataset.introPending
 			gsap.set(introItems, { clearProps: 'opacity,transform' })
 		}
-		// Aguarda as fontes por um intervalo curto para evitar remontar as linhas na entrada.
-		void Promise.race([
-			document.fonts.ready,
-			new Promise((resolve) => window.setTimeout(resolve, 400)),
-		]).then(() => {
-			if (reduceMotion.matches || heroShell.dataset.introPending !== 'true') {
-				finishIntro()
-				return
+		if (!desktop.matches) {
+			// O conteúdo mobile já está visível no HTML: sem esperar fontes ou revelar opacidade.
+			if (!reduceMotion.matches) {
+				introTween = gsap.fromTo(
+					introItems,
+					{ y: 8 },
+					{
+						y: 0,
+						duration: 0.45,
+						ease: 'power2.out',
+						onComplete: finishIntro,
+					},
+				)
 			}
-			introTween = gsap.to(introItems, {
-				opacity: 1,
-				y: 0,
-				duration: 0.5,
-				stagger: 0.065,
-				ease: 'power2.out',
-				onComplete: finishIntro,
+		} else {
+			// Mantém a entrada desktop sem remontar as linhas durante a troca de fonte.
+			void Promise.race([
+				document.fonts.ready,
+				new Promise((resolve) => window.setTimeout(resolve, 400)),
+			]).then(() => {
+				if (reduceMotion.matches || heroShell.dataset.introPending !== 'true') {
+					finishIntro()
+					return
+				}
+				introTween = gsap.to(introItems, {
+					opacity: 1,
+					y: 0,
+					duration: 0.5,
+					stagger: 0.065,
+					ease: 'power2.out',
+					onComplete: finishIntro,
+				})
 			})
-		})
+		}
 
 		if (video && content && playButton && pauseButton && soundButton && backgroundControls) {
 			const bootStarted = video.dataset.autoplayStarted === 'true'
