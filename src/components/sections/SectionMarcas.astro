@@ -1,0 +1,89 @@
+---
+// images
+import { Image } from 'astro:assets'
+
+const title = 'Algumas das marcas que já nos contrataram'
+
+/* A ordem é a desta lista, e não a do glob (alfabética): ela é decisão
+comercial, com as marcas mais fortes na frente. Um `file` sem arquivo
+correspondente derruba o build, em vez de a faixa sair com um buraco sem
+aviso. */
+const marcas = [
+	{ file: 'btg', name: 'BTG Pactual' },
+	{ file: 'vivo', name: 'Vivo' },
+	{ file: 'visa', name: 'Visa' },
+	{ file: 'mitsubishi', name: 'Mitsubishi Motors' },
+	{ file: 'redbull', name: 'Red Bull' },
+	{ file: 'anima', name: 'Ânima Educação' },
+	{ file: 'cateno', name: 'Cateno' },
+	{ file: 'eletromidia', name: 'Eletromidia' },
+	{ file: 'bancodobrasil', name: 'Banco do Brasil' },
+]
+const files = import.meta.glob<{ default: ImageMetadata }>('@/assets/palestras/logos/*.png', {
+	eager: true,
+})
+
+const logos = marcas.map(({ file, name }) => {
+	const mod = files[`/src/assets/palestras/logos/logo-${file}.png`]
+	if (!mod) throw new Error(`Marcas: falta logo-${file}.png em src/assets/palestras/logos/`)
+	return { src: mod.default, name }
+})
+---
+
+<section class="pt-4 pb-12 lg:pt-6 lg:pb-20" aria-labelledby="marcas-titulo">
+	<div class="container mx-auto">
+		<h2
+			id="marcas-titulo"
+			data-reveal
+			class="text-center text-xs font-medium tracking-[0.2em] uppercase sm:text-sm">
+			{title}
+		</h2>
+	</div>
+
+	{
+		/* Marquee só com CSS. A lista sai do build três vezes, lado a lado, e cada
+		cópia anda a própria largura (o `slideLeft` do global.css): quando a
+		primeira termina de sair, a seguinte ocupa exatamente o lugar dela, e o loop
+		emenda sem salto. Não há JS reposicionando logo a cada quadro, e sem JS a
+		faixa já está completa no HTML.
+
+		Três cópias, e não duas: perto do fim de cada volta, só o que vem depois da
+		primeira cópia cobre a tela. Com duas, uma lista mais estreita que a janela
+		deixaria um vão vazio na direita. Duas listas de ~1700px cobrem até ~3400px.
+
+		O respiro fica em cada logo (padding dos dois lados), e não em `gap` entre
+		eles: com gap, a emenda entre as duas cópias ficaria sem o espaço de um
+		vão e daria um tranco a cada volta.
+
+		As cópias extras são `aria-hidden`: o leitor de tela lê as marcas uma vez só.
+
+		Com `prefers-reduced-motion`, a faixa para e vira uma grade centralizada com
+		uma cópia só, para as marcas escondidas além da borda não sumirem. */
+	}
+	<div
+		data-reveal
+		class="group mt-8 flex overflow-hidden mask-x-from-80% mask-x-to-100% motion-reduce:justify-center motion-reduce:mask-none lg:mt-12">
+		{
+			[0, 1, 2].map((copy) => (
+				<ul
+					class:list={[
+						'flex w-max shrink-0 animate-[slideLeft_40s_linear_infinite] items-center group-hover:[animation-play-state:paused] motion-reduce:w-auto motion-reduce:animate-none motion-reduce:flex-wrap motion-reduce:justify-center',
+						copy > 0 && 'motion-reduce:hidden',
+					]}
+					aria-hidden={copy > 0 ? 'true' : undefined}>
+					{logos.map((logo) => (
+						<li class="shrink-0 px-1">
+							<Image
+								src={logo.src}
+								alt={copy > 0 ? '' : logo.name}
+								widths={[200, 400]}
+								sizes="(min-width: 1024px) 187px, 133px"
+								class="h-10 w-auto lg:h-14"
+							/>
+						</li>
+					))}
+				</ul>
+			))
+		}
+	</div>
+</section>

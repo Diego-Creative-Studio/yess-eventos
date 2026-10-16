@@ -5,6 +5,7 @@ import { Image, getImage } from 'astro:assets'
 import Botao from '@/components/Button.astro'
 import Icon from '@/components/Icon.astro'
 import LightHalo from '@/components/LightHalo.astro'
+import DjHeroVisual from '@/components/sections/servicos/DjHeroVisual.astro'
 
 interface Etapa {
 	titulo: string
@@ -21,6 +22,8 @@ interface Props {
 	painelLed?: boolean
 	/** Feixes de luz de moving head varrendo o hero, com o título aceso. */
 	showDeLuz?: boolean
+	/** Discos e ondas sonoras decorativos para o serviço de DJ. */
+	djMix?: boolean
 	/** Mostra a imagem num videowall 2×2 de TVs que ligam em sequência. */
 	videowall?: boolean
 	/** Diagrama de sinal ligando LED, som, luz e TVs a uma operação central. */
@@ -45,6 +48,7 @@ const {
 	titulo,
 	painelLed = false,
 	showDeLuz = false,
+	djMix = false,
 	videowall = false,
 	mapaSinal = false,
 	boxTruss = false,
@@ -98,6 +102,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 		>
 			{
 				!painelLed &&
+					!djMix &&
 					!showDeLuz &&
 					!videowall &&
 					!mapaSinal &&
@@ -237,6 +242,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 					/>
 				)
 			}
+			{djMix && <DjHeroVisual />}
 			<!-- Grade de pixels por cima da imagem, como se ela passasse no painel. -->
 			{
 				painelLed && (
@@ -1667,6 +1673,7 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 		const poster = hero.querySelector<HTMLElement>('[data-service-poster]')
 		// Camadas sobre a imagem (ex.: mapa de sinal) somem enquanto o vídeo roda e voltam depois.
 		const videoHide = [...hero.querySelectorAll<HTMLElement>('[data-video-hide]')]
+		const djVisual = hero.querySelector<HTMLElement>('[data-dj-visual]')
 		const control = hero.querySelector<HTMLButtonElement>('[data-service-video-control]')
 		const soundControl = hero.querySelector<HTMLElement>('[data-service-sound]')
 		const soundButton = hero.querySelector<HTMLButtonElement>('[data-service-sound-button]')
@@ -1709,6 +1716,10 @@ const tituloComplementar = titulo.replace(/^\s*<br\s*\/?\s*>\s*/i, '')
 
 		const updateControl = (state: 'play' | 'pause' | 'continue') => {
 			const showPause = state === 'pause'
+			if (djVisual) {
+				djVisual.dataset.compact = String(state !== 'play')
+				djVisual.dataset.playing = String(showPause)
+			}
 			soundControl.hidden = !showPause
 			label.textContent =
 				state === 'pause' ? 'Pausar vídeo' : state === 'continue' ? 'Continuar vídeo' : 'Ver vídeo'
