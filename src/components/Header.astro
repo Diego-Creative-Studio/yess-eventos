@@ -350,25 +350,18 @@ const isServicePage = services.some((service) => isCurrent(service.href))
 </header>
 
 <style>
-	[data-header-surface],
-	[data-mobile-brand] {
+	[data-header-surface] {
 		transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 	}
 
-	[data-site-header][data-scrolled='true'] [data-header-surface],
-	[data-site-header][data-scrolled='true'] [data-mobile-brand] {
+	[data-site-header][data-scrolled='true'] [data-header-surface] {
 		background-color: var(--color-surface);
 		border-color: rgb(255 255 255 / 0.16);
 		box-shadow: 0 12px 32px rgb(0 0 0 / 0.18), inset 0 0 0 1px rgb(255 255 255 / 0.06);
 	}
 
-	[data-site-header][data-scrolled='true'] [data-mobile-brand] {
-		border-radius: 9999px;
-	}
-
 	@supports ((backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))) {
-		[data-site-header][data-scrolled='true'] [data-header-surface],
-		[data-site-header][data-scrolled='true'] [data-mobile-brand] {
+		[data-site-header][data-scrolled='true'] [data-header-surface] {
 			background-color: color-mix(in srgb, var(--color-surface) 58%, transparent);
 			-webkit-backdrop-filter: blur(12px) saturate(140%);
 			backdrop-filter: blur(12px) saturate(140%);
@@ -376,8 +369,7 @@ const isServicePage = services.some((service) => isCurrent(service.href))
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		[data-header-surface],
-		[data-mobile-brand] {
+		[data-header-surface] {
 			transition: none;
 		}
 	}
@@ -497,6 +489,7 @@ const isServicePage = services.some((service) => isCurrent(service.href))
 			}
 
 			gsap.to(mobileTrigger, {
+				overwrite: 'auto',
 				autoAlpha: visible ? 1 : 0,
 				y: visible ? 0 : 16,
 				scale: visible ? 1 : 0.94,
@@ -509,7 +502,8 @@ const isServicePage = services.some((service) => isCurrent(service.href))
 			const scrollY = window.scrollY
 			const scrolled = String(scrollY > 24)
 			if (header.dataset.scrolled !== scrolled) header.dataset.scrolled = scrolled
-			setCompactMenu(scrollY > 80 && !mobileOpen)
+			// Keep small scroll reversals from restarting the menu transition.
+			setCompactMenu(!mobileOpen && scrollY > (compactMenuVisible ? 48 : 80))
 		}
 
 		const openMobileMenu = () => {
