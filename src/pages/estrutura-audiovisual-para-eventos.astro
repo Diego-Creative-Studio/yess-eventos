@@ -227,17 +227,17 @@ const schema = {
 								>
 									{categoria.descricao}
 								</p>
-								<ul class="mt-5 space-y-2.5 text-sm text-foreground">
+								<ul class="mt-5 w-full divide-y divide-white/15 text-center text-sm text-foreground md:w-auto md:space-y-2.5 md:divide-y-0 md:text-left">
 									{categoria.itens.map((item) => (
-										<li class="flex items-start justify-center gap-3 md:justify-start">
+										<li class="flex items-start justify-center gap-3 py-2.5 first:pt-0 last:pb-0 md:justify-start md:py-0">
 											<span
 												aria-hidden="true"
 												class:list={[
-													'mt-1.5 size-1.5 shrink-0 rounded-full',
+													'hidden size-1.5 shrink-0 rounded-full md:mt-1.5 md:block',
 													indice === 0 ? 'bg-white' : 'bg-primary',
 												]}
 											/>
-											<span class="text-left">{item}</span>
+											<span>{item}</span>
 										</li>
 									))}
 								</ul>
