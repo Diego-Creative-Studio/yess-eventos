@@ -1,12 +1,21 @@
 ---
 import { Image, getImage } from 'astro:assets'
-import { categoriasGaleria, fotosGaleria } from '@/data/portfolio-galeria'
+import { categoriasGaleria, fotosGaleria, videosGaleria } from '@/data/portfolio-galeria'
 
-// Versão grande de cada foto para a tela cheia.
-const fotos = await Promise.all(
-	fotosGaleria.map(async (foto) => {
-		const grande = await getImage({ src: foto.imagem, width: 1920, format: 'webp', quality: 85 })
-		return { ...foto, grande: grande.src, retrato: foto.imagem.height > foto.imagem.width }
+// Os vídeos usam apenas capas no grid: nenhum arquivo de vídeo é carregado antes do clique.
+const registros = await Promise.all(
+	[
+		...videosGaleria.map((video) => ({ ...video, video: { mp4: video.mp4, webm: video.webm } })),
+		...fotosGaleria.map((foto) => ({ ...foto, video: undefined })),
+	].map(async (registro) => {
+		const grande = registro.video
+			? undefined
+			: await getImage({ src: registro.imagem, width: 1920, format: 'webp', quality: 85 })
+		return {
+			...registro,
+			grande: grande?.src,
+			retrato: registro.imagem.height > registro.imagem.width,
+		}
 	}),
 )
 ---
@@ -19,7 +28,12 @@ const fotos = await Promise.all(
 	<div class="mx-auto w-full max-w-345">
 		<div class="flex flex-col gap-8">
 			<div>
-				<p class="text-sm font-semibold text-primary uppercase">Arquivo / {fotos.length} registros</p>
+				<p class="text-sm font-semibold text-primary uppercase"
+					>Arquivo / {registros.length} registros</p
+				>
+				<p class="mt-1 text-sm text-text-secondary"
+					>{fotosGaleria.length} fotos e {videosGaleria.length} vídeos</p
+				>
 				<h2
 					id="galeria-titulo"
 					data-motion-title
@@ -29,7 +43,11 @@ const fotos = await Promise.all(
 				</h2>
 			</div>
 
-			<div class="flex flex-wrap gap-2" role="group" aria-label="Filtrar fotos por serviço">
+			<div
+				class="flex flex-wrap gap-2"
+				role="group"
+				aria-label="Filtrar fotos e vídeos por serviço"
+			>
 				{
 					categoriasGaleria.map((categoria, indice) => (
 						<button
@@ -48,27 +66,54 @@ const fotos = await Promise.all(
 
 		<ul data-gallery-grid class="gallery-grid mt-10">
 			{
-				fotos.map((foto, indice) => (
+				registros.map((foto, indice) => (
 					<li
 						data-gallery-item
 						data-categories={foto.categorias.join(' ')}
-						class:list={['gallery-item', foto.retrato ? 'gallery-item--tall' : 'gallery-item--wide']}
+						class:list={[
+							'gallery-item',
+							foto.retrato ? 'gallery-item--tall' : 'gallery-item--wide',
+						]}
 					>
 						<button
 							type="button"
 							data-gallery-open={indice}
 							data-full={foto.grande}
+							data-video-mp4={foto.video?.mp4}
+							data-video-webm={foto.video?.webm}
 							data-alt={foto.alt}
-							class="group relative block size-full cursor-zoom-in overflow-hidden rounded-small border border-stroke focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-							aria-label={`Ampliar: ${foto.alt}`}
+							class:list={[
+								'group relative block size-full overflow-hidden rounded-small border border-stroke focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+								foto.video ? 'cursor-pointer' : 'cursor-zoom-in',
+							]}
+							aria-label={`${foto.video ? 'Reproduzir vídeo' : 'Ampliar foto'}: ${foto.alt}`}
 						>
 							<Image
 								src={foto.imagem}
 								alt={foto.alt}
 								widths={[480, 800, 1200]}
-								sizes={foto.retrato ? '(min-width: 1024px) 25vw, 50vw' : '(min-width: 1024px) 50vw, 100vw'}
+								sizes={
+									foto.retrato
+										? '(min-width: 1024px) 25vw, 50vw'
+										: '(min-width: 1024px) 50vw, 100vw'
+								}
 								class="size-full object-cover transition-transform duration-700 group-hover:scale-105"
 							/>
+							{foto.video && (
+								<span
+									aria-hidden="true"
+									class="pointer-events-none absolute inset-0 grid place-items-center bg-black/15"
+								>
+									<span class="grid size-12 place-items-center rounded-full border border-white/60 bg-background/75 text-white">
+										<svg viewBox="0 0 24 24" class="size-5" fill="currentColor">
+											<path d="m9 5 11 7-11 7z" />
+										</svg>
+									</span>
+									<span class="absolute top-3 left-3 rounded-full bg-background/80 px-3 py-1 text-xs font-semibold text-white">
+										Vídeo
+									</span>
+								</span>
+							)}
 							<span class="pointer-events-none absolute inset-x-0 bottom-0 bg-linear-to-t from-background/90 to-transparent p-4 pt-12 text-left text-sm text-foreground opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
 								{foto.alt}
 							</span>
@@ -79,18 +124,34 @@ const fotos = await Promise.all(
 		</ul>
 	</div>
 
-	<!-- Tela cheia: a foto cresce a partir da miniatura (GSAP Flip). -->
+	<!-- Fotos e vídeos compartilham a mesma navegação em tela cheia. -->
 	<div
 		data-lightbox
 		hidden
 		role="dialog"
 		aria-modal="true"
-		aria-label="Foto ampliada"
+		aria-label="Fotos e vídeos dos trabalhos realizados"
 		class="fixed inset-0 z-100 flex items-center justify-center bg-background/95 p-4 backdrop-blur-md md:p-10"
 	>
 		<figure class="relative flex max-h-full w-full max-w-7xl flex-col items-center">
-			<img data-lightbox-img alt="" draggable="false" class="max-h-[78svh] w-auto max-w-full rounded-small object-contain" />
-			<figcaption data-lightbox-caption class="mt-4 text-center text-sm text-text-secondary md:text-base"></figcaption>
+			<img
+				data-lightbox-img
+				alt=""
+				draggable="false"
+				class="max-h-[78svh] w-auto max-w-full rounded-small object-contain"
+			/>
+			<video
+				data-lightbox-video
+				data-lenis-prevent
+				hidden
+				controls
+				playsinline
+				preload="none"
+				aria-label="Vídeo do trabalho realizado"
+				class="max-h-[78svh] w-full rounded-small object-contain"></video>
+			<figcaption
+				data-lightbox-caption
+				class="mt-4 text-center text-sm text-text-secondary md:text-base"></figcaption>
 		</figure>
 		<button
 			type="button"
@@ -98,23 +159,49 @@ const fotos = await Promise.all(
 			aria-label="Fechar"
 			class="absolute top-4 right-4 flex size-12 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-background/70 p-0 text-white hover:border-primary focus-visible:outline-2 focus-visible:outline-primary md:top-6 md:right-6"
 		>
-			<svg aria-hidden="true" viewBox="0 0 24 24" class="block size-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 6 12 12M18 6 6 18" /></svg>
+			<svg
+				aria-hidden="true"
+				viewBox="0 0 24 24"
+				class="block size-5 shrink-0"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"><path d="m6 6 12 12M18 6 6 18"></path></svg
+			>
 		</button>
 		<button
 			type="button"
 			data-lightbox-prev
-			aria-label="Foto anterior"
-			class="absolute top-1/2 left-2 flex size-12 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-background/70 p-0 text-white hover:border-primary focus-visible:outline-2 focus-visible:outline-primary md:left-6"
+			aria-label="Registro anterior"
+			class="absolute bottom-6 left-[calc(50%-3.5rem)] flex size-12 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-background/70 p-0 text-white hover:border-primary focus-visible:outline-2 focus-visible:outline-primary md:top-1/2 md:bottom-auto md:left-6 md:-translate-y-1/2"
 		>
-			<svg aria-hidden="true" viewBox="0 0 24 24" class="block size-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6" /></svg>
+			<svg
+				aria-hidden="true"
+				viewBox="0 0 24 24"
+				class="block size-6 shrink-0"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"><path d="m15 6-6 6 6 6"></path></svg
+			>
 		</button>
 		<button
 			type="button"
 			data-lightbox-next
-			aria-label="Próxima foto"
-			class="absolute top-1/2 right-2 flex size-12 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-background/70 p-0 text-white hover:border-primary focus-visible:outline-2 focus-visible:outline-primary md:right-6"
+			aria-label="Próximo registro"
+			class="absolute right-[calc(50%-3.5rem)] bottom-6 flex size-12 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-background/70 p-0 text-white hover:border-primary focus-visible:outline-2 focus-visible:outline-primary md:top-1/2 md:right-6 md:bottom-auto md:-translate-y-1/2"
 		>
-			<svg aria-hidden="true" viewBox="0 0 24 24" class="block size-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6" /></svg>
+			<svg
+				aria-hidden="true"
+				viewBox="0 0 24 24"
+				class="block size-6 shrink-0"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"><path d="m9 6 6 6-6 6"></path></svg
+			>
 		</button>
 	</div>
 </section>
@@ -180,10 +267,11 @@ const fotos = await Promise.all(
 		const filters = [...section.querySelectorAll<HTMLButtonElement>('[data-gallery-filter]')]
 		const lightbox = section.querySelector<HTMLElement>('[data-lightbox]')
 		const bigImg = section.querySelector<HTMLImageElement>('[data-lightbox-img]')
+		const bigVideo = section.querySelector<HTMLVideoElement>('[data-lightbox-video]')
 		const caption = section.querySelector<HTMLElement>('[data-lightbox-caption]')
-		if (!lightbox || !bigImg || !caption) return
+		if (!lightbox || !bigImg || !bigVideo || !caption) return
 
-		// Quantidade de fotos em cada filtro.
+		// Cada mídia conta uma vez, mesmo quando pertence a mais de um serviço.
 		filters.forEach((button) => {
 			const value = button.dataset.galleryFilter ?? 'todos'
 			const total = items.filter(
@@ -222,7 +310,11 @@ const fotos = await Promise.all(
 					onComplete: refreshLayout,
 					stagger: 0.02,
 					onEnter: (els) =>
-						gsap.fromTo(els, { autoAlpha: 0, scale: 0.85 }, { autoAlpha: 1, scale: 1, duration: 0.5 }),
+						gsap.fromTo(
+							els,
+							{ autoAlpha: 0, scale: 0.85 },
+							{ autoAlpha: 1, scale: 1, duration: 0.5 },
+						),
 					onLeave: (els) => gsap.to(els, { autoAlpha: 0, scale: 0.85, duration: 0.35 }),
 				})
 			}),
@@ -233,18 +325,62 @@ const fotos = await Promise.all(
 		let current = -1
 		let lastFocus: HTMLElement | null = null
 
-		const visibleOpeners = () => openers.filter((o) => !o.closest<HTMLElement>('[data-gallery-item]')?.hidden)
+		const visibleOpeners = () =>
+			openers.filter((o) => !o.closest<HTMLElement>('[data-gallery-item]')?.hidden)
+
+		const stopVideo = () => {
+			bigVideo.pause()
+			bigVideo.replaceChildren()
+			bigVideo.removeAttribute('src')
+			bigVideo.removeAttribute('poster')
+			bigVideo.load()
+			bigVideo.hidden = true
+		}
 
 		const show = (opener: HTMLButtonElement, animate: boolean) => {
 			const thumb = opener.querySelector('img')
+			gsap.killTweensOf([bigImg, bigVideo, lightbox])
+			gsap.set([bigImg, bigVideo], { clearProps: 'transform,opacity,visibility' })
+			stopVideo()
 			current = openers.indexOf(opener)
 			caption.textContent = opener.dataset.alt ?? ''
+			const video = opener.dataset.videoMp4
+			bigImg.hidden = Boolean(video)
+			const single = visibleOpeners().length < 2
+			lightbox
+				.querySelectorAll<HTMLButtonElement>('[data-lightbox-prev], [data-lightbox-next]')
+				.forEach((button) => {
+					button.hidden = single
+				})
+			if (video) {
+				bigImg.removeAttribute('src')
+				bigVideo.poster = thumb?.currentSrc ?? ''
+				bigVideo.setAttribute('aria-label', opener.dataset.alt ?? 'Vídeo do trabalho realizado')
+				for (const [src, type] of [
+					[opener.dataset.videoWebm, 'video/webm'],
+					[video, 'video/mp4'],
+				]) {
+					if (!src) continue
+					const source = document.createElement('source')
+					source.src = src
+					source.type = type ?? ''
+					bigVideo.append(source)
+				}
+				bigVideo.hidden = false
+				lightbox.hidden = false
+				bigVideo.load()
+				// Reprodução solicitada pelo usuário; controles nativos permitem som, volume e tela cheia.
+				void bigVideo.play().catch(() => {
+					/* Os controles continuam disponíveis se o navegador bloquear. */
+				})
+				return
+			}
 			bigImg.alt = opener.dataset.alt ?? ''
 			// Mostra primeiro a miniatura (já carregada) e troca pela versão grande em seguida.
 			bigImg.src = thumb?.currentSrc || opener.dataset.full || ''
 			const full = new Image()
 			full.onload = () => {
-				if (openers[current] === opener) bigImg.src = full.src
+				if (!lightbox.hidden && openers[current] === opener) bigImg.src = full.src
 			}
 			full.src = opener.dataset.full ?? ''
 
@@ -254,7 +390,11 @@ const fotos = await Promise.all(
 				const state = Flip.getState(thumb)
 				lightbox.hidden = false
 				Flip.from(state, { targets: bigImg, duration: 0.6, ease: 'power3.inOut', scale: true })
-				gsap.fromTo(lightbox, { backgroundColor: 'rgb(7 10 15 / 0)' }, { backgroundColor: 'rgb(7 10 15 / 0.95)', duration: 0.4 })
+				gsap.fromTo(
+					lightbox,
+					{ backgroundColor: 'rgb(7 10 15 / 0)' },
+					{ backgroundColor: 'rgb(7 10 15 / 0.95)', duration: 0.4 },
+				)
 				delete thumb.dataset.flipId
 			} else {
 				lightbox.hidden = false
@@ -270,6 +410,9 @@ const fotos = await Promise.all(
 		}
 
 		const close = () => {
+			stopVideo()
+			current = -1
+			gsap.killTweensOf([bigImg, bigVideo, lightbox])
 			lightbox.hidden = true
 			gsap.set(lightbox, { clearProps: 'backgroundColor' })
 			document.documentElement.style.overflow = ''
@@ -283,33 +426,44 @@ const fotos = await Promise.all(
 			const next = list[(pos + dir + list.length) % list.length]
 			if (!next) return
 			show(next, false)
-			if (!reduceMotion) gsap.fromTo(bigImg, { autoAlpha: 0, x: 30 * dir }, { autoAlpha: 1, x: 0, duration: 0.35 })
+			if (!reduceMotion && !next.dataset.videoMp4)
+				gsap.fromTo(bigImg, { autoAlpha: 0, x: 30 * dir }, { autoAlpha: 1, x: 0, duration: 0.35 })
 		}
 
 		let touchStart: { x: number; y: number; id: number } | null = null
 		let lastSwipe = 0
-		lightbox.addEventListener('touchstart', (event) => {
-			if (event.touches.length !== 1 || (event.target as Element).closest('button')) {
+		lightbox.addEventListener(
+			'touchstart',
+			(event) => {
+				if (event.touches.length !== 1 || (event.target as Element).closest('button, video')) {
+					touchStart = null
+					return
+				}
+				const touch = event.touches[0]
+				touchStart = { x: touch.clientX, y: touch.clientY, id: touch.identifier }
+			},
+			{ passive: true },
+		)
+		lightbox.addEventListener(
+			'touchend',
+			(event) => {
+				const start = touchStart
 				touchStart = null
-				return
-			}
-			const touch = event.touches[0]
-			touchStart = { x: touch.clientX, y: touch.clientY, id: touch.identifier }
-		}, { passive: true })
-		lightbox.addEventListener('touchend', (event) => {
-			const start = touchStart
+				if (!start || event.touches.length || lightbox.hidden) return
+				const touch = [...event.changedTouches].find((touch) => touch.identifier === start.id)
+				if (!touch) return
+				const dx = touch.clientX - start.x
+				const dy = touch.clientY - start.y
+				const distance = Math.abs(dx) >= Math.abs(dy) ? dx : dy
+				if (Math.abs(distance) < 60) return
+				lastSwipe = performance.now()
+				step(distance < 0 ? 1 : -1)
+			},
+			{ passive: true },
+		)
+		lightbox.addEventListener('touchcancel', () => {
 			touchStart = null
-			if (!start || event.touches.length || lightbox.hidden) return
-			const touch = [...event.changedTouches].find((touch) => touch.identifier === start.id)
-			if (!touch) return
-			const dx = touch.clientX - start.x
-			const dy = touch.clientY - start.y
-			const distance = Math.abs(dx) >= Math.abs(dy) ? dx : dy
-			if (Math.abs(distance) < 60) return
-			lastSwipe = performance.now()
-			step(distance < 0 ? 1 : -1)
-		}, { passive: true })
-		lightbox.addEventListener('touchcancel', () => { touchStart = null })
+		})
 
 		openers.forEach((opener) => opener.addEventListener('click', () => open(opener)))
 		lightbox.querySelector('[data-lightbox-close]')?.addEventListener('click', close)
@@ -321,9 +475,38 @@ const fotos = await Promise.all(
 		})
 		document.addEventListener('keydown', (event) => {
 			if (lightbox.hidden) return
-			if (event.key === 'Escape') close()
-			if (event.key === 'ArrowRight') step(1)
-			if (event.key === 'ArrowLeft') step(-1)
+			if (event.key === 'Escape') {
+				event.preventDefault()
+				close()
+				return
+			}
+			if (event.key === 'Tab') {
+				const controls = [
+					...lightbox.querySelectorAll<HTMLElement>('button, video[controls]'),
+				].filter((element) => !element.hidden)
+				const first = controls[0]
+				const last = controls.at(-1)
+				if (event.shiftKey && document.activeElement === first) {
+					event.preventDefault()
+					last?.focus()
+				} else if (!event.shiftKey && document.activeElement === last) {
+					event.preventDefault()
+					first?.focus()
+				}
+			}
+			// As setas continuam controlando a posição do vídeo nos controles nativos.
+			if ((event.target as Element).closest('video')) return
+			if (event.key === 'ArrowRight') {
+				event.preventDefault()
+				step(1)
+			}
+			if (event.key === 'ArrowLeft') {
+				event.preventDefault()
+				step(-1)
+			}
+		})
+		document.addEventListener('visibilitychange', () => {
+			if (document.hidden) bigVideo.pause()
 		})
 	})
 </script>
