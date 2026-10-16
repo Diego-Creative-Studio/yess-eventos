@@ -81,7 +81,10 @@ const bastidores = [
 					{
 						capacidades.map((capacidade) => (
 							<li class="flex items-center justify-center gap-3 text-center font-title text-xs leading-5 font-semibold text-white uppercase sm:justify-start sm:text-left sm:text-sm">
-								<span aria-hidden="true" class="hidden size-1.5 shrink-0 rounded-full bg-white sm:block" />
+								<span
+									aria-hidden="true"
+									class="hidden size-1.5 shrink-0 rounded-full bg-white sm:block"
+								/>
 								<span>{capacidade}</span>
 							</li>
 						))
@@ -105,11 +108,11 @@ const bastidores = [
 						<h2
 							class="mt-2.5 max-w-151 text-3xl leading-tight font-semibold tracking-[-0.005em] text-foreground md:text-[40px] md:leading-[50px]"
 						>
-							Fundada em 2012. Presente em cada detalhe.
+							Fundada em 2010. Presente em cada detalhe.
 						</h2>
 						<p class="mt-2.5 max-w-140 text-base leading-7.5 text-muted md:text-lg">
 							A YESS nasceu em São Paulo para tornar a operação audiovisual mais clara, segura e
-							próxima — do primeiro briefing ao encerramento do evento.
+							próxima do primeiro briefing ao encerramento do evento.
 						</p>
 					</div>
 
@@ -117,7 +120,7 @@ const bastidores = [
 						<div>
 							<p
 								class="font-title text-[64px] leading-none font-extrabold tracking-[-0.01em] text-primary md:text-7xl"
-								>2012</p
+								>2010</p
 							>
 							<p
 								class="mt-0.5 max-w-30 font-title text-xs leading-4 font-semibold tracking-[0.02em] text-muted uppercase"
@@ -145,7 +148,11 @@ const bastidores = [
 					</p>
 				</div>
 
-				<div data-motion-image data-motion-parallax class="relative min-h-100 overflow-hidden xl:min-h-0">
+				<div
+					data-motion-image
+					data-motion-parallax
+					class="relative min-h-100 overflow-hidden xl:min-h-0"
+				>
 					<Image
 						src={imagemTrajetoria}
 						alt="Evento produzido pela YESS com estrutura audiovisual completa"
@@ -201,7 +208,11 @@ const bastidores = [
 				<div class="mt-10 grid gap-4 lg:mt-20 lg:grid-cols-3">
 					{
 						bastidores.map((item) => (
-							<article data-motion-image data-motion-parallax class="relative min-h-117.5 overflow-hidden rounded-[20px]">
+							<article
+								data-motion-image
+								data-motion-parallax
+								class="relative min-h-117.5 overflow-hidden rounded-[20px]"
+							>
 								<Image
 									src={item.imagem}
 									alt={item.alt}
