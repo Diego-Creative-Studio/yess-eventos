@@ -1,85 +1,62 @@
 ---
-// images
 import { Image } from 'astro:assets'
 
-const title = 'Algumas das marcas que já nos contrataram'
+import helvetia from '@/assets/parceiros/clube-helvetia.png'
+import apcef from '@/assets/parceiros/apcef-sp.png'
+import mesaAfins from '@/assets/parceiros/mesa-e-afins.png'
+import velocity from '@/assets/parceiros/studio-velocity.png'
+import urbia from '@/assets/parceiros/urbia.png'
+import corinthians from '@/assets/parceiros/corinthians.jpg'
+import acesc from '@/assets/parceiros/acesc.png'
+import rosmarino from '@/assets/parceiros/rosmarino.svg'
 
-/* A ordem é a desta lista, e não a do glob (alfabética): ela é decisão
-comercial, com as marcas mais fortes na frente. Um `file` sem arquivo
-correspondente derruba o build, em vez de a faixa sair com um buraco sem
-aviso. */
 const marcas = [
-	{ file: 'btg', name: 'BTG Pactual' },
-	{ file: 'vivo', name: 'Vivo' },
-	{ file: 'visa', name: 'Visa' },
-	{ file: 'mitsubishi', name: 'Mitsubishi Motors' },
-	{ file: 'redbull', name: 'Red Bull' },
-	{ file: 'anima', name: 'Ânima Educação' },
-	{ file: 'cateno', name: 'Cateno' },
-	{ file: 'eletromidia', name: 'Eletromidia' },
-	{ file: 'bancodobrasil', name: 'Banco do Brasil' },
+	{ nome: 'Clube Helvétia', logo: helvetia },
+	{ nome: 'APCEF/SP', logo: apcef },
+	{ nome: 'Mesa & Afins · Célia Mineiro', logo: mesaAfins },
+	{ nome: 'Studio Velocity', logo: velocity },
+	{ nome: 'Urbia', logo: urbia, escuro: true },
+	{ nome: 'Corinthians', logo: corinthians },
+	{ nome: 'ACESC', logo: acesc },
+	{ nome: 'Rosmarino', logo: rosmarino, escuro: true },
 ]
-const files = import.meta.glob<{ default: ImageMetadata }>('@/assets/palestras/logos/*.png', {
-	eager: true,
-})
-
-const logos = marcas.map(({ file, name }) => {
-	const mod = files[`/src/assets/palestras/logos/logo-${file}.png`]
-	if (!mod) throw new Error(`Marcas: falta logo-${file}.png em src/assets/palestras/logos/`)
-	return { src: mod.default, name }
-})
 ---
 
-<section class="pt-4 pb-12 lg:pt-6 lg:pb-20" aria-labelledby="marcas-titulo">
-	<div class="container mx-auto">
-		<h2
-			id="marcas-titulo"
-			data-reveal
-			class="text-center text-xs font-medium tracking-[0.2em] uppercase sm:text-sm">
-			{title}
+<section
+	id="clientes"
+	data-marcas
+	data-active="false"
+	aria-labelledby="marcas-titulo"
+	class="overflow-hidden bg-background py-10 lg:py-14"
+>
+	<div class="mx-auto max-w-345 px-3 text-center md:px-8 lg:px-0">
+		<p class="text-sm font-semibold text-warm uppercase">Quem já atendemos</p>
+		<h2 id="marcas-titulo" class="mt-2 text-3xl text-foreground lg:text-4xl">
+			Clientes atendidos.
 		</h2>
 	</div>
 
-	{
-		/* Marquee só com CSS. A lista sai do build três vezes, lado a lado, e cada
-		cópia anda a própria largura (o `slideLeft` do global.css): quando a
-		primeira termina de sair, a seguinte ocupa exatamente o lugar dela, e o loop
-		emenda sem salto. Não há JS reposicionando logo a cada quadro, e sem JS a
-		faixa já está completa no HTML.
-
-		Três cópias, e não duas: perto do fim de cada volta, só o que vem depois da
-		primeira cópia cobre a tela. Com duas, uma lista mais estreita que a janela
-		deixaria um vão vazio na direita. Duas listas de ~1700px cobrem até ~3400px.
-
-		O respiro fica em cada logo (padding dos dois lados), e não em `gap` entre
-		eles: com gap, a emenda entre as duas cópias ficaria sem o espaço de um
-		vão e daria um tranco a cada volta.
-
-		As cópias extras são `aria-hidden`: o leitor de tela lê as marcas uma vez só.
-
-		Com `prefers-reduced-motion`, a faixa para e vira uma grade centralizada com
-		uma cópia só, para as marcas escondidas além da borda não sumirem. */
-	}
-	<div
-		data-reveal
-		class="group mt-8 flex overflow-hidden mask-x-from-80% mask-x-to-100% motion-reduce:justify-center motion-reduce:mask-none lg:mt-12">
+	<!-- As cópias mantêm a faixa contínua; leitores de tela leem apenas a primeira. -->
+	<div class="marcas-faixa mt-8 flex overflow-hidden mask-x-from-90% mask-x-to-100%">
 		{
 			[0, 1, 2].map((copy) => (
-				<ul
-					class:list={[
-						'flex w-max shrink-0 animate-[slideLeft_40s_linear_infinite] items-center group-hover:[animation-play-state:paused] motion-reduce:w-auto motion-reduce:animate-none motion-reduce:flex-wrap motion-reduce:justify-center',
-						copy > 0 && 'motion-reduce:hidden',
-					]}
-					aria-hidden={copy > 0 ? 'true' : undefined}>
-					{logos.map((logo) => (
-						<li class="shrink-0 px-1">
-							<Image
-								src={logo.src}
-								alt={copy > 0 ? '' : logo.name}
-								widths={[200, 400]}
-								sizes="(min-width: 1024px) 187px, 133px"
-								class="h-10 w-auto lg:h-14"
-							/>
+				<ul class="marcas-lista flex w-max shrink-0" aria-hidden={copy > 0 ? 'true' : undefined}>
+					{marcas.map((marca) => (
+						<li class="w-40 shrink-0 px-2 lg:w-50 lg:px-3">
+							<div
+								class:list={[
+									'flex h-24 items-center justify-center rounded-small px-4 py-3 lg:h-28',
+									marca.escuro ? 'border border-stroke bg-surface' : 'bg-white',
+								]}
+							>
+								<Image
+									src={marca.logo}
+									alt={copy > 0 ? '' : marca.nome}
+									loading="lazy"
+									class="h-auto max-h-full w-auto max-w-full object-contain"
+								/>
+							</div>
+							<p class="mt-3 text-center text-xs leading-5 text-text-secondary">{marca.nome}</p>
 						</li>
 					))}
 				</ul>
@@ -87,3 +64,64 @@ const logos = marcas.map(({ file, name }) => {
 		}
 	</div>
 </section>
+
+<style>
+	.marcas-lista {
+		animation: marcas-slide 40s linear infinite;
+	}
+	[data-active='false'] .marcas-lista,
+	.marcas-faixa:hover .marcas-lista {
+		animation-play-state: paused;
+	}
+	@keyframes marcas-slide {
+		to {
+			transform: translateX(-100%);
+		}
+	}
+	/* Sem movimento, todas as marcas ficam disponíveis em uma grade estática. */
+	@media (prefers-reduced-motion: reduce) {
+		.marcas-faixa {
+			justify-content: center;
+			mask-image: none;
+		}
+		.marcas-lista {
+			width: auto;
+			flex-wrap: wrap;
+			justify-content: center;
+			gap: 1.5rem 0;
+			animation: none;
+		}
+		.marcas-lista[aria-hidden='true'] {
+			display: none;
+		}
+	}
+	:global(html:not(.js)) .marcas-faixa {
+		justify-content: center;
+		mask-image: none;
+	}
+	:global(html:not(.js)) .marcas-lista {
+		width: auto;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 1.5rem 0;
+		animation: none;
+	}
+	:global(html:not(.js)) .marcas-lista[aria-hidden='true'] {
+		display: none;
+	}
+</style>
+
+<script>
+	const section = document.querySelector<HTMLElement>('[data-marcas]')
+	if (section) {
+		let inView = false
+		const update = () => {
+			section.dataset.active = String(inView && !document.hidden)
+		}
+		new IntersectionObserver(([entry]) => {
+			inView = entry.isIntersecting
+			update()
+		}).observe(section)
+		document.addEventListener('visibilitychange', update)
+	}
+</script>

@@ -61,9 +61,11 @@ const animations = {
 }
 
 const iconName = icon ?? (arrow ? 'arrow' : undefined)
-const iconClass =
-	customIconClass ??
-	(variant === 'alternative' ? 'relative z-10 block size-3 translate-y-px' : 'relative z-10 size-4')
+// A classe personalizada muda o tamanho, sem retirar o ícone de cima do brilho.
+const iconClass = [
+	'relative z-10',
+	customIconClass ?? (variant === 'alternative' ? 'block size-3 translate-y-px' : 'size-4'),
+].join(' ')
 const Tag = href ? 'a' : 'button'
 ---
 
