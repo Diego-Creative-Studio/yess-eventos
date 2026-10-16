@@ -144,6 +144,7 @@ Não é necessário refazer essa implantação do zero. Conferir apenas os resul
 
 ### Clientes atendidos e portfólio
 
+- [ ] **Home — Trabalhos realizados:** adicionar vídeos dos trabalhos na seção `SectionTrabalhos.astro`.
 - [ ] Confirmar se a seção de **clientes atendidos** ainda fará parte da entrega. Os arquivos/seção de logos discutidos anteriormente não foram localizados na estrutura atual consultada; não considerar essa etapa concluída sem conferência.
 - [ ] Se a seção entrar, confirmar as identidades: Clube Esportivo Helvétia, APCEF, Célia Mineiro Decoração, Studio Velocity, Urbia, Clube Corinthians, Officer 2880, ACESC e Restaurante Rosmarino.
 - [ ] Confirmar autorização e versão correta das marcas. Usar “clientes atendidos”, não “parceiros”, se essa for a relação real.
