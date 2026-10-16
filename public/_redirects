@@ -1,0 +1,20 @@
+# URLs antigas: redirects HTTP permanentes para as páginas atuais.
+# Mantém também as versões sem barra final para evitar um salto adicional.
+/locacao-de-equipamentos-para-eventos/ /estrutura-audiovisual-para-eventos/ 301
+/locacao-de-equipamentos-para-eventos /estrutura-audiovisual-para-eventos/ 301
+/locacao/microfones/ /equipamentos/microfones/ 301
+/locacao/microfones /equipamentos/microfones/ 301
+/locacao/caixas-de-som/ /equipamentos/caixas-de-som/ 301
+/locacao/caixas-de-som /equipamentos/caixas-de-som/ 301
+/locacao/moving-heads/ /equipamentos/moving-heads/ 301
+/locacao/moving-heads /equipamentos/moving-heads/ 301
+/locacao/projetores-epson/ /equipamentos/projetores-epson/ 301
+/locacao/projetores-epson /equipamentos/projetores-epson/ 301
+/locacao/tvs/ /equipamentos/tvs/ 301
+/locacao/tvs /equipamentos/tvs/ 301
+/solucoes/painel-de-led/sao-paulo/ /painel-de-led-para-eventos-em-sao-paulo/ 301
+/solucoes/painel-de-led/sao-paulo /painel-de-led-para-eventos-em-sao-paulo/ 301
+/solucoes/painel-de-led/guarulhos/ /painel-de-led-para-eventos-em-guarulhos/ 301
+/solucoes/painel-de-led/guarulhos /painel-de-led-para-eventos-em-guarulhos/ 301
+/solucoes/painel-de-led/zona-sul/ /painel-de-led-para-eventos-na-zona-sul/ 301
+/solucoes/painel-de-led/zona-sul /painel-de-led-para-eventos-na-zona-sul/ 301
