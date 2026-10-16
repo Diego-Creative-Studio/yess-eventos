@@ -23,15 +23,23 @@ import imageOperation from '@/assets/yess/operacao-tecnica-mesa.jpg'
 		<div class="mt-2 grid gap-6 lg:h-130 lg:grid-cols-[minmax(0,650fr)_minmax(0,638fr)]">
 			<span
 				data-motion-image
-				data-motion-parallax
 				class="group relative min-h-96 overflow-hidden rounded-3xl border-2 border-stroke lg:h-130"
 			>
 				<div class="absolute inset-0 lg:inset-auto lg:top-0 lg:-left-34.25 lg:h-130 lg:w-231">
-					<Image
-						src={imageEvent}
-						alt="Evento corporativo de gala com palco, painéis de LED e estrutura de treliça"
-						class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
-					/>
+					<video
+						data-trabalho-video
+						autoplay
+						muted
+						loop
+						playsinline
+						preload="metadata"
+						poster={imageEvent.src}
+						aria-hidden="true"
+						class="size-full object-cover"
+					>
+						<source src="/videos/evento-corporativo-gala.webm" type="video/webm" />
+						<source src="/videos/evento-corporativo-gala.mp4" type="video/mp4" />
+					</video>
 				</div>
 				<span
 					aria-hidden="true"
@@ -49,7 +57,9 @@ import imageOperation from '@/assets/yess/operacao-tecnica-mesa.jpg'
 					data-motion-parallax
 					class="group relative min-h-64 overflow-hidden rounded-3xl border-2 border-stroke lg:min-h-0"
 				>
-					<div class="absolute inset-0 lg:inset-auto lg:-top-16.25 lg:left-0 lg:h-89.75 lg:w-full">
+					<div
+						class="trabalho-pan trabalho-pan--horizontal absolute inset-0 lg:inset-auto lg:-top-16.25 lg:left-0 lg:h-89.75 lg:w-full"
+					>
 						<Image
 							src={imageLed}
 							alt="Palco com um painel de LED panorâmico"
@@ -69,15 +79,23 @@ import imageOperation from '@/assets/yess/operacao-tecnica-mesa.jpg'
 				<div class="grid gap-6 lg:grid-cols-2 lg:gap-4.5">
 					<span
 						data-motion-image
-						data-motion-parallax
 						class="group relative min-h-64 overflow-hidden rounded-3xl border-2 border-stroke lg:min-h-0"
 					>
 						<div class="absolute inset-0 lg:inset-auto lg:top-0 lg:-left-6 lg:h-50.25 lg:w-89.25">
-							<Image
-								src={imageSoundAndLighting}
-								alt="Estrutura de sonorização e iluminação em um evento"
-								class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
-							/>
+							<video
+								data-trabalho-video
+								autoplay
+								muted
+								loop
+								playsinline
+								preload="metadata"
+								poster={imageSoundAndLighting.src}
+								aria-hidden="true"
+								class="size-full object-cover"
+							>
+								<source src="/videos/iluminacao-cenica.webm" type="video/webm" />
+								<source src="/videos/iluminacao-cenica.mp4" type="video/mp4" />
+							</video>
 						</div>
 						<span
 							aria-hidden="true"
@@ -91,19 +109,29 @@ import imageOperation from '@/assets/yess/operacao-tecnica-mesa.jpg'
 						</p>
 					</span>
 
-					<span
+					<a
+						href="/dj-para-eventos-corporativos/"
+						aria-label="Conhecer o serviço de DJ corporativo"
 						data-motion-image
-						data-motion-parallax
-						class="group relative min-h-64 overflow-hidden rounded-3xl border-2 border-stroke lg:min-h-0"
+						class="group relative min-h-64 overflow-hidden rounded-3xl border-2 border-stroke focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary lg:min-h-0"
 					>
 						<div
 							class="absolute inset-0 lg:inset-auto lg:-top-9 lg:-left-5.75 lg:h-64.25 lg:w-118.75"
 						>
-							<Image
-								src={imageOperation}
-								alt="Mesa de operação técnica diante do painel de LED do evento"
-								class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
-							/>
+							<video
+								data-trabalho-video
+								autoplay
+								muted
+								loop
+								playsinline
+								preload="metadata"
+								poster={imageOperation.src}
+								aria-hidden="true"
+								class="size-full object-cover"
+							>
+								<source src="/videos/sonoplastia-e-dj.webm" type="video/webm" />
+								<source src="/videos/sonoplastia-e-dj.mp4" type="video/mp4" />
+							</video>
 						</div>
 						<span
 							aria-hidden="true"
@@ -115,9 +143,36 @@ import imageOperation from '@/assets/yess/operacao-tecnica-mesa.jpg'
 						<p class="absolute bottom-7 left-7 text-foreground lg:text-lg"
 							>Sonoplastia e DJ corporativo</p
 						>
-					</span>
+					</a>
 				</div>
 			</div>
 		</div>
 	</div>
 </section>
+
+<style>
+	@media (prefers-reduced-motion: no-preference) {
+		.trabalho-pan--horizontal {
+			animation: trabalho-pan-horizontal 12s ease-in-out infinite alternate;
+		}
+	}
+
+	@keyframes trabalho-pan-horizontal {
+		from {
+			transform: scale(1.04) translate3d(-1.5%, 0, 0);
+		}
+		to {
+			transform: scale(1.1) translate3d(1.5%, 0, 0);
+		}
+	}
+</style>
+
+<script>
+	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+	if (reducedMotion) {
+		document.querySelectorAll<HTMLVideoElement>('[data-trabalho-video]').forEach((video) => {
+			video.pause()
+			video.currentTime = 0
+		})
+	}
+</script>
