@@ -56,6 +56,7 @@ export const hubNames: Record<string, string> = {
 	'/estruturas-e-cenografia-para-eventos/': 'Estruturas e cenografia',
 	'/projetos-tecnicos-para-eventos/': 'Projetos técnicos e 3D',
 	'/solucoes-corporativas/': 'Soluções corporativas',
+	'/dj-para-eventos-corporativos/': 'DJ corporativo',
 }
 
 export const getService = (slug: string) => {

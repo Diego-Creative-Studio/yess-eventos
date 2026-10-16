@@ -9,6 +9,7 @@ import imagemPainelLed from '@/assets/yess/painel-led-panoramico.jpg'
 import imagemProjetos from '@/assets/painel-led/projeto-painel-corporativo.jpg'
 import imagemSomIluminacao from '@/assets/som-iluminacao/hero-som-iluminacao.jpg'
 import imagemSonoplastia from '@/assets/som-iluminacao/aplicacao-plenarias.jpg'
+import imagemDj from '@/assets/yess/operacao-tecnica-mesa.jpg'
 import imagemSonorizacao from '@/assets/som-iluminacao/entrega-completa.jpg'
 import imagemTvs from '@/assets/yess/tvs-pedestal.jpg'
 
@@ -28,6 +29,8 @@ export interface LandingService {
 	slug: string
 	/** Nome da página, minúsculo depois da primeira palavra, para h1 e texto. */
 	label: string
+	/** Versão curta opcional para a hero, sem mudar o título SEO ou a URL. */
+	heroLabel?: string
 	/** Versão em title case para a tag <title>. */
 	title: string
 	/** Forma curta usada no meio de frases e nos links ("painel de LED"). */
@@ -58,6 +61,39 @@ const everywhere: LocationKind[] = ['capital', 'zona', 'bairro', 'metropole', 'i
 const citiesOnly: LocationKind[] = ['capital', 'zona', 'metropole', 'interior', 'litoral']
 
 export const landingServices: LandingService[] = [
+	{
+		slug: 'dj-para-eventos-corporativos',
+		label: 'DJ para eventos corporativos',
+		heroLabel: 'DJ para eventos',
+		title: 'DJ para Eventos Corporativos',
+		short: 'DJ corporativo',
+		tag: 'DJ corporativo',
+		hub: '/dj-para-eventos-corporativos/',
+		quote: ['dj-corporativo'],
+		scope: everywhere,
+		rental: false,
+		image: imagemDj,
+		imageAlt: 'Área de operação audiovisual em evento corporativo',
+		metaLead: 'repertório, programação e estrutura alinhados no briefing e no orçamento',
+		lead: 'DJ para eventos corporativos, com referências musicais, duração e estrutura alinhadas no briefing. Consulte a disponibilidade para a data e o local do seu evento.',
+		aliases: ['DJ corporativo', 'DJ para empresas'],
+		intro: [
+			'A apresentação musical considera o perfil do público, a proposta da marca e os diferentes momentos da programação. Referências de estilos e restrições de repertório ajudam a orientar esse alinhamento.',
+			'Informe a data, o espaço e o tempo de apresentação desejado. A equipe da YESS confirma a disponibilidade e avalia as conexões e os equipamentos necessários; som, iluminação e demais itens são definidos no orçamento.',
+		],
+		equipment: [
+			'Alinhamento de referências musicais',
+			'Duração e horários definidos no briefing',
+			'Integração com a programação',
+			'Avaliação da estrutura de som',
+			'Equipamentos conforme o orçamento',
+		],
+		events: ['Eventos corporativos', 'Confraternizações', 'Recepções', 'Encerramentos'],
+		faq: {
+			pergunta: 'Posso alinhar o repertório antes do evento?',
+			resposta: 'Sim. Compartilhe suas referências, o perfil do público e as músicas ou estilos que devem ser evitados. Repertório, duração, equipamentos e disponibilidade são alinhados no briefing e no orçamento.',
+		},
+	},
 	{
 		slug: 'painel-de-led-para-eventos',
 		label: 'Painel de LED para eventos',

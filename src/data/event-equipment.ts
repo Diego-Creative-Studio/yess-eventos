@@ -65,7 +65,7 @@ export const eventEquipment = [
 ] as const
 
 /**
- * O que o evento precisa, nas 4 opções pedidas pelo cliente.
+ * Serviços disponíveis para o orçamento do evento.
  * `matches` liga os serviços e equipamentos das páginas à opção que já vem marcada.
  */
 export const quoteServices = [
@@ -93,6 +93,12 @@ export const quoteServices = [
 		hint: 'Projeto técnico, 3D e estrutura',
 		matches: ['projetos', 'estruturas'],
 	},
+	{
+		value: 'dj-corporativo',
+		name: 'DJ corporativo',
+		hint: 'Repertório e apresentação musical',
+		matches: ['dj-para-eventos-corporativos'],
+	},
 ]
 
 /** Lista detalhada, usada só no formulário das páginas de equipamento. */
@@ -104,6 +110,7 @@ export const quoteEquipmentOptions = [
 	{ value: 'estruturas', name: 'Estruturas e cenografia', hint: '', matches: [] as string[] },
 	{ value: 'projetos', name: 'Projetos técnicos e 3D', hint: '', matches: [] as string[] },
 	{ value: 'sonoplastia', name: 'Sonoplastia', hint: '', matches: [] as string[] },
+	{ value: 'dj-corporativo', name: 'DJ corporativo', hint: '', matches: ['dj-para-eventos-corporativos'] },
 	{ value: 'orientacao', name: 'Preciso de orientação / pacote completo', hint: '', matches: [] as string[] },
 ]
 
