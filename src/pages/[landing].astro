@@ -134,7 +134,7 @@ const faqSchema = {
 		</nav>
 
 		<SectionHeroServico
-			tituloDestaque={service.label}
+			tituloDestaque={service.heroLabel ?? service.label}
 			titulo={where}
 			descricao={`${service.lead} Atendimento ${where} e região.`}
 			imagem={service.image}

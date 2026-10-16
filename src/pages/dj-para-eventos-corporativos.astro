@@ -1,0 +1,171 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import Etiqueta from '@/components/Etiqueta.astro'
+import ServiceSchema from '@/components/ServiceSchema.astro'
+import ServiceAreas from '@/components/ServiceAreas.astro'
+import SectionHeroServico from '@/components/sections/servicos/SectionHeroServico.astro'
+import SectionCredibilidadeServico from '@/components/sections/servicos/SectionCredibilidadeServico.astro'
+import SectionEntregaServico from '@/components/sections/servicos/SectionEntregaServico.astro'
+import SectionProcessoServico from '@/components/sections/servicos/SectionProcessoServico.astro'
+import SectionPerguntasServico from '@/components/sections/servicos/SectionPerguntasServico.astro'
+import SectionChamadaServico from '@/components/sections/servicos/SectionChamadaServico.astro'
+import imagemOperacao from '@/assets/yess/operacao-tecnica-mesa.jpg'
+import imagemSom from '@/assets/yess/som-e-luz-show.jpg'
+
+const description =
+	'DJ para eventos corporativos em São Paulo e Guarulhos. Alinhe referências musicais, programação e estrutura de som com a equipe da YESS e peça um orçamento.'
+---
+
+<Layout title="DJ Corporativo para Eventos | YESS" {description}>
+	<main id="conteudo" class="overflow-hidden">
+		<ServiceSchema name="DJ para eventos corporativos" {description} />
+		<SectionHeroServico
+			tituloDestaque="DJ para eventos."
+			titulo='Música no ritmo <br class="hidden xl:block"/>da sua marca.'
+			descricao="A música também faz parte da experiência do evento. Compartilhe o perfil do público, as referências musicais e a programação para alinhar a apresentação do DJ com a equipe da YESS."
+			imagem={imagemOperacao}
+			textoAlternativoImagem="Área de operação audiovisual com mesa de som e computadores em evento corporativo"
+			textoBotao="Solicitar orçamento de DJ"
+			linkBotao="/contato/?service=dj-corporativo#canais"
+			videoMp4="/videos/sonoplastia-e-dj.mp4"
+			videoWebm="/videos/sonoplastia-e-dj.webm"
+		>
+			<Etiqueta
+				slot="etiqueta"
+				texto="DJ para eventos corporativos"
+				corFundo="bg-stroke"
+				corTexto="text-foreground"
+				corBolinha="bg-warm"
+				class="self-center lg:self-start"
+			/>
+		</SectionHeroServico>
+
+		<SectionCredibilidadeServico
+			etiqueta="Música com contexto"
+			titulo="Cada evento tem seu próprio ritmo"
+			itens={[
+				{
+					numero: '01',
+					titulo: 'Perfil do público',
+					descricao: 'Quem participa e qual experiência a marca quer proporcionar.',
+				},
+				{
+					numero: '02',
+					titulo: 'Referências musicais',
+					descricao: 'Estilos desejados e músicas que devem ficar fora da seleção.',
+				},
+				{
+					numero: '03',
+					titulo: 'Programação',
+					descricao: 'Horários, falas e momentos reservados à apresentação musical.',
+				},
+				{
+					numero: '04',
+					titulo: 'Estrutura de som',
+					descricao: 'Equipamentos e conexões definidos conforme o espaço e o escopo.',
+				},
+			]}
+		/>
+
+		<SectionEntregaServico
+			etiqueta="Apresentação e estrutura"
+			titulo="O repertório começa pelo briefing"
+			descricao="Recepção, confraternização ou encerramento têm necessidades diferentes. O alinhamento considera o ambiente, a identidade do evento e a participação do DJ na programação."
+			itens={[
+				{
+					icone: 'calendario',
+					titulo: 'Formato e duração',
+					descricao:
+						'Data, local, horários e tempo de apresentação são alinhados antes da contratação.',
+				},
+				{
+					icone: 'equipe',
+					titulo: 'Público e referências',
+					descricao:
+						'Compartilhe estilos, preferências e restrições para orientar a seleção musical.',
+				},
+				{
+					icone: 'estrutura',
+					titulo: 'Som e iluminação',
+					descricao:
+						'A necessidade de sonorização e luz é avaliada no projeto; os itens incluídos constam no orçamento.',
+				},
+				{
+					icone: 'operacao',
+					titulo: 'Integração com o roteiro',
+					descricao:
+						'Falas, apresentações e intervalos ajudam a definir quando a música entra em cena.',
+				},
+			]}
+			nota="Repertório, duração, equipamentos e disponibilidade são confirmados no briefing e no orçamento."
+			imagem={imagemSom}
+			textoAlternativoImagem="Palco com estrutura de som e iluminação durante evento"
+		/>
+
+		<SectionProcessoServico
+			etiqueta="Como trabalhamos"
+			titulo="Do primeiro contato à apresentação"
+			descricao="Um alinhamento claro organiza a participação musical e sua integração com a estrutura audiovisual do evento."
+			etapas={[
+				{
+					numero: '01',
+					titulo: 'Briefing',
+					descricao: 'Informe data, local, público estimado e formato do evento.',
+				},
+				{
+					numero: '02',
+					titulo: 'Alinhamento musical',
+					descricao: 'Compartilhe referências, estilos e restrições de repertório.',
+				},
+				{
+					numero: '03',
+					titulo: 'Planejamento técnico',
+					descricao: 'Defina horários, conexões e equipamentos necessários com a equipe.',
+				},
+				{
+					numero: '04',
+					titulo: 'Apresentação',
+					descricao: 'A participação do DJ segue a programação e as condições acordadas.',
+				},
+			]}
+		/>
+
+		<SectionPerguntasServico
+			titulo="Dúvidas sobre DJ corporativo"
+			perguntas={[
+				{
+					pergunta: 'Posso enviar referências de músicas e estilos?',
+					resposta:
+						'Sim. Envie suas referências e informe também os estilos ou músicas que devem ser evitados. A seleção e a dinâmica da apresentação são alinhadas no briefing, conforme o público e a proposta do evento.',
+				},
+				{
+					pergunta: 'Som e iluminação estão incluídos?',
+					resposta:
+						'Não considere os equipamentos automaticamente incluídos. A equipe avalia a estrutura disponível no local e as necessidades da apresentação; sonorização, iluminação e demais itens são definidos no orçamento.',
+				},
+				{
+					pergunta: 'DJ e sonoplastia são o mesmo serviço?',
+					resposta:
+						'Não. O DJ conduz a seleção e a apresentação musical. A sonoplastia acompanha o roteiro com trilhas, vinhetas e entradas de áudio. Se o evento precisar dos dois, informe essa necessidade para definir o escopo e a equipe.',
+				},
+				{
+					pergunta: 'Quais informações preciso enviar para pedir um orçamento?',
+					resposta:
+						'Informe data, cidade, espaço, estimativa de público, horários e duração desejada. Inclua o formato do evento, suas referências musicais e os equipamentos já disponíveis no local. A equipe confirma a disponibilidade e as condições de atendimento.',
+				},
+			]}
+		/>
+
+		<SectionChamadaServico
+			titulo="Qual é o ritmo do seu próximo evento?"
+			descricao="Compartilhe a programação e as referências musicais. Vamos alinhar a apresentação e a estrutura necessária para o seu evento."
+			textoBotao="Solicitar orçamento de DJ"
+			linkBotao="/contato/?service=dj-corporativo#canais"
+		/>
+		<ServiceAreas
+			service="dj-para-eventos-corporativos"
+			title="DJ corporativo:"
+			highlight="consulte sua cidade ou região"
+		/>
+	</main>
+</Layout>
