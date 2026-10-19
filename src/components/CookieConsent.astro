@@ -8,7 +8,7 @@ const enabled = privacy.trackingEnabled || import.meta.env.DEV
 		data-cookie-banner
 		hidden
 		aria-labelledby="cookie-banner-title"
-		class="fixed inset-x-3 bottom-24 z-110 mx-auto max-w-345 rounded-3xl border border-stroke bg-surface p-5 text-foreground shadow-xl md:inset-x-8 md:p-6 lg:bottom-5"
+		class="fixed inset-x-3 bottom-24 z-110 mx-auto max-h-[calc(100svh-7rem)] max-w-345 overflow-y-auto rounded-3xl border border-stroke bg-surface p-5 text-foreground shadow-xl md:inset-x-8 md:p-6 lg:bottom-5 lg:max-h-[calc(100svh-2.5rem)]"
 	>
 		<div class="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
 			<div class="max-w-170">
@@ -31,7 +31,7 @@ const enabled = privacy.trackingEnabled || import.meta.env.DEV
 					)
 				}
 			</div>
-			<div class="flex flex-wrap gap-2">
+			<div class="cookie-actions">
 				<button type="button" data-cookie-reject class="cookie-action"
 					>Recusar não necessários</button
 				>
@@ -89,7 +89,7 @@ const enabled = privacy.trackingEnabled || import.meta.env.DEV
 			class="mt-4 inline-block text-sm text-text-secondary underline underline-offset-4"
 			>Ler a política de cookies</a
 		>
-		<div class="mt-5 flex flex-wrap gap-2">
+		<div class="cookie-actions mt-5">
 			<button type="button" data-cookie-reject class="cookie-action">Recusar não necessários</button
 			>
 			<button type="button" data-cookie-save class="cookie-action">Salvar preferências</button>
@@ -100,7 +100,17 @@ const enabled = privacy.trackingEnabled || import.meta.env.DEV
 </div>
 
 <style>
+	.cookie-actions {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0.5rem;
+	}
 	.cookie-action {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		min-width: 0;
 		min-height: 2.75rem;
 		border: 1px solid var(--color-muted);
 		border-radius: 9999px;
@@ -108,7 +118,9 @@ const enabled = privacy.trackingEnabled || import.meta.env.DEV
 		color: var(--color-foreground);
 		background: var(--color-surface-alt);
 		font-size: 0.875rem;
+		line-height: 1.5;
 		font-weight: 600;
+		text-align: center;
 		cursor: pointer;
 	}
 	.cookie-action:hover {
@@ -117,6 +129,15 @@ const enabled = privacy.trackingEnabled || import.meta.env.DEV
 	.cookie-action:focus-visible {
 		outline: 2px solid var(--color-primary);
 		outline-offset: 3px;
+	}
+	@media (min-width: 40rem) {
+		.cookie-actions {
+			display: flex;
+			flex-wrap: wrap;
+		}
+		.cookie-action {
+			width: auto;
+		}
 	}
 </style>
 
