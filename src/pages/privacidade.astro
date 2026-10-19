@@ -46,8 +46,8 @@ const updated = new Date(`${privacy.updatedAt}T12:00:00Z`).toLocaleDateString('p
 				!privacy.approved && (
 					<aside class="mt-6 max-w-4xl rounded-small border border-warm/40 bg-warm/10 p-4 text-sm leading-6 text-text-secondary">
 						<strong class="text-foreground">Rascunho em validação pela YESS.</strong> A
-						identificação da empresa, os critérios de retenção e a configuração das ferramentas de
-						medição ainda precisam de confirmação. Esta versão não é indexável.
+						identificação da empresa e a adoção dos critérios de guarda e exclusão descritos neste
+						texto ainda precisam de confirmação pelos responsáveis. Esta versão não é indexável.
 					</aside>
 				)
 			}
@@ -113,6 +113,13 @@ const updated = new Date(`${privacy.updatedAt}T12:00:00Z`).toLocaleDateString('p
 				</section>
 				<section id="compartilhamento">
 					<h2>3. Serviços utilizados e compartilhamento</h2>
+					<p class="mb-4">
+						Na YESS, o acesso aos pedidos de orçamento e às mensagens de atendimento é restrito aos
+						responsáveis pela gestão e pelo atendimento, para preparar propostas e responder às
+						solicitações. O canal de contato é <a href={`mailto:${privacy.contactEmail}`}
+							>{privacy.contactEmail}</a
+						>.
+					</p>
 					<ul>
 						<li
 							><strong>FormSubmit e e-mail:</strong> o formulário é enviado ao FormSubmit para processamento
@@ -144,6 +151,17 @@ const updated = new Date(`${privacy.updatedAt}T12:00:00Z`).toLocaleDateString('p
 							mensagem, que você revisa e envia no aplicativo.</li
 						>
 					</ul>
+					<p class="mt-4">
+						O Cloudflare Web Analytics mede visitas e desempenho por um script separado do Google
+						Analytics. Segundo a <a
+							href="https://developers.cloudflare.com/web-analytics/about/"
+							target="_blank"
+							rel="noopener noreferrer">documentação da Cloudflare</a
+						>, esse serviço não coleta nem utiliza dados pessoais dos visitantes. Ele não é
+						controlado pelas opções de análise e publicidade do Google neste banner e pode continuar
+						ativo após a recusa. A recusa, portanto, não desativa os serviços de infraestrutura e
+						toda medição técnica do site.
+					</p>
 					<p
 						>Esses fornecedores podem utilizar infraestrutura em outros países. Suas condições de
 						tratamento e eventuais transferências internacionais devem ser consideradas na

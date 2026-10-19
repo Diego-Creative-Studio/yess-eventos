@@ -24,7 +24,9 @@ O código da ponte está em [yess-consent-template.js](gtm/yess-consent-template
 - `approved: false`: política como rascunho, noindex e fora do sitemap.
 - `consentDurationDays: 180`: validade técnica da preferência, não prazo de guarda de leads.
 - Confirmar razão social/CNPJ, destinatário definitivo do formulário, acesso aos dados, retenção, exclusão e fornecedores.
-- Preencher `retentionDescription` com critérios reais aprovados. Validar o texto com a YESS e, idealmente, revisão jurídica.
+- `retentionDescription` contém uma proposta de critério por finalidade: atender/negociar, excluir dados desnecessários após encerrar a finalidade e separar registros de contratação/obrigações aplicáveis. A adoção prática ainda precisa ser confirmada pela YESS. Os 30 dias foram sugeridos por Diego, não confirmados pelos responsáveis; não foram publicados como compromisso nem implementados como exclusão automática.
+- Acesso aos leads informado: responsáveis pela gestão e atendimento da YESS, pelo e-mail de contato. O destinatário definitivo do endpoint FormSubmit ainda precisa de confirmação; o texto não afirma que a alteração de roteamento já ocorreu.
+- Cloudflare Web Analytics explicado separadamente na política, com atribuição das informações ao fornecedor e indicação de que o banner não controla esse beacon.
 - Não mudar as flags apenas para ocultar os avisos. Ativação do banner e configuração do GTM precisam ser coordenadas e testadas.
 
 Página e banner sozinhos não garantem conformidade.
