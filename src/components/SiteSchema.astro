@@ -4,6 +4,9 @@ import site from '@/data/site.json'
 
 const baseURL = new URL('/', Astro.site ?? Astro.url.origin)
 const logoURL = new URL(logoYess.src, baseURL)
+const cnpjDigits = site.cnpj.replace(/\D/g, '')
+const hasCnpj =
+	cnpjDigits.length === 14 && !['00000000000000', '00000000000100'].includes(cnpjDigits)
 
 const schema = {
 	'@context': 'https://schema.org',
@@ -22,7 +25,7 @@ const schema = {
 			'@id': `${baseURL.href}#organization`,
 			name: 'YESS Audiovisual & Eventos',
 			legalName: site.legalName,
-			taxID: site.cnpj,
+			taxID: hasCnpj ? site.cnpj : undefined,
 			alternateName: ['YESS', 'YESS Produções'],
 			url: baseURL.href,
 			logo: {

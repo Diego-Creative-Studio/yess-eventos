@@ -3,6 +3,7 @@ import { defineConfig, fontProviders } from 'astro/config'
 import alpinejs from '@astrojs/alpinejs'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
+import privacy from './src/data/privacy.json'
 
 const site = 'https://yessproducoes.com.br'
 
@@ -52,7 +53,12 @@ export default defineConfig({
 	integrations: [
 		alpinejs(),
 		sitemap({
-			filter: (page) => !/^\/(locacao|solucoes)\//.test(new URL(page).pathname),
+			filter: (page) => {
+				const path = new URL(page).pathname
+				return (
+					!/^\/(locacao|solucoes)\//.test(path) && (privacy.approved || path !== '/privacidade/')
+				)
+			},
 		}),
 	],
 })

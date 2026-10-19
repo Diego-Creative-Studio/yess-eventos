@@ -6,6 +6,10 @@ import Seo from '@/components/Seo.astro'
 import Header from '@/components/Header.astro'
 import SiteSchema from '@/components/SiteSchema.astro'
 import Footer from '@/components/Footer.astro'
+import ConsentHead from '@/components/ConsentHead.astro'
+import ConsentDevTracking from '@/components/ConsentDevTracking.astro'
+import CookieConsent from '@/components/CookieConsent.astro'
+import privacy from '@/data/privacy.json'
 
 type AnimationName = 'fade' | 'fade-up' | 'fade-down' | 'fade-left' | 'fade-right' | 'scale'
 
@@ -42,6 +46,8 @@ const {
 <html lang="pt-BR">
 	<head>
 		<meta charset="UTF-8" />
+		{(privacy.trackingEnabled || import.meta.env.DEV) && <ConsentHead />}
+		{import.meta.env.DEV && <ConsentDevTracking />}
 		<!-- Transição suave entre páginas; fica inline para valer já na chegada da nova página. -->
 		<style is:inline>
 			@view-transition {
@@ -86,6 +92,7 @@ const {
 		<Header class={headerClass} />
 		<slot />
 		<Footer theme={footerTheme} />
+		{(privacy.trackingEnabled || import.meta.env.DEV) && <CookieConsent />}
 		<script>
 			import '@/scripts/smooth-scroll'
 			import '@/scripts/reveal-animations'

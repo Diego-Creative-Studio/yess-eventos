@@ -1,0 +1,327 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import site from '@/data/site.json'
+import privacy from '@/data/privacy.json'
+
+const sections = [
+	['responsavel', 'Quem é responsável'],
+	['dados', 'Dados e finalidades'],
+	['compartilhamento', 'Serviços utilizados'],
+	['retencao', 'Conservação dos dados'],
+	['cookies', 'Cookies e tecnologias semelhantes'],
+	['direitos', 'Seus direitos'],
+	['contato-privacidade', 'Contato e atualizações'],
+]
+const cnpjDigits = site.cnpj.replace(/\D/g, '')
+const hasCnpj =
+	cnpjDigits.length === 14 && !['00000000000000', '00000000000100'].includes(cnpjDigits)
+const updated = new Date(`${privacy.updatedAt}T12:00:00Z`).toLocaleDateString('pt-BR', {
+	timeZone: 'America/Sao_Paulo',
+})
+---
+
+<Layout
+	title="Privacidade e Cookies | YESS Audiovisual & Eventos"
+	description="Saiba como a YESS utiliza os dados de contato, quais serviços participam do atendimento e como exercer seus direitos de privacidade."
+	noindex={!privacy.approved}
+>
+	<main id="conteudo" class="px-3 py-8 md:px-8 lg:px-16 lg:py-12">
+		<article
+			class="mx-auto max-w-345 rounded-3xl border border-stroke bg-background p-6 md:p-10 lg:p-14"
+		>
+			<header class="max-w-4xl">
+				<p class="text-sm font-semibold text-warm uppercase">Transparência</p>
+				<h1 class="mt-3 font-title text-3xl leading-tight font-bold text-foreground md:text-5xl"
+					>Privacidade e cookies</h1
+				>
+				<p class="mt-4 text-sm text-muted"
+					>Última atualização: <time datetime={privacy.updatedAt}>{updated}</time></p
+				>
+				<p class="mt-5 text-lg leading-8 text-text-secondary"
+					>Aqui explicamos como os dados são utilizados no site da {site.siteName}, no pedido de
+					orçamento e no atendimento.</p
+				>
+			</header>
+			{
+				!privacy.approved && (
+					<aside class="mt-6 max-w-4xl rounded-small border border-warm/40 bg-warm/10 p-4 text-sm leading-6 text-text-secondary">
+						<strong class="text-foreground">Rascunho em validação pela YESS.</strong> A
+						identificação da empresa, os critérios de retenção e a configuração das ferramentas de
+						medição ainda precisam de confirmação. Esta versão não é indexável.
+					</aside>
+				)
+			}
+			<nav aria-label="Nesta página" class="mt-8 border-y border-stroke py-5">
+				<ul class="flex flex-wrap gap-x-6 gap-y-3 text-sm text-text-secondary">
+					{
+						sections.map(([id, label]) => (
+							<li>
+								<a href={`#${id}`} class="underline underline-offset-4 hover:text-foreground">
+									{label}
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</nav>
+			<div
+				class="privacy-content mt-10 max-w-4xl space-y-10 text-base leading-8 text-text-secondary"
+			>
+				<section id="responsavel">
+					<h2>1. Quem é responsável</h2>
+					<p
+						>A {site.siteName} é responsável pelas decisões sobre os dados utilizados no orçamento e no
+						atendimento aos interessados em seus serviços.</p
+					>
+					{
+						hasCnpj && (
+							<p>
+								{site.legalName} · CNPJ {site.cnpj}.
+							</p>
+						)
+					}
+					<p
+						>Para dúvidas ou pedidos relacionados a dados pessoais, escreva para <a
+							href={`mailto:${privacy.contactEmail}`}>{privacy.contactEmail}</a
+						>.</p
+					>
+				</section>
+				<section id="dados">
+					<h2>2. Dados coletados e finalidades</h2>
+					<p
+						>No formulário, você informa nome, telefone, e-mail opcional, data, público estimado,
+						local, serviços e detalhes do evento. Os campos obrigatórios permitem entender a
+						solicitação e retornar o contato. Evite incluir dados sensíveis ou informações de outras
+						pessoas que não sejam necessárias ao pedido.</p
+					>
+					<p
+						>Esses dados são utilizados para preparar propostas, esclarecer dúvidas, verificar
+						disponibilidade e dar continuidade ao atendimento. Não são utilizados para campanhas ou
+						mensagens promocionais a partir desse formulário.</p
+					>
+					<p
+						>O atendimento de um orçamento pode envolver procedimentos preliminares relacionados a
+						uma contratação, solicitados por você. Quando houver contratação ou obrigação legal de
+						conservação, serão consideradas as bases legais correspondentes. Para cookies opcionais
+						controlados pelo site, a escolha é feita separadamente.</p
+					>
+					<p
+						>A navegação também pode gerar informações técnicas, como endereço IP, páginas
+						acessadas, navegador e registros de segurança e desempenho, conforme os serviços de
+						infraestrutura e medição descritos abaixo.</p
+					>
+				</section>
+				<section id="compartilhamento">
+					<h2>3. Serviços utilizados e compartilhamento</h2>
+					<ul>
+						<li
+							><strong>FormSubmit e e-mail:</strong> o formulário é enviado ao FormSubmit para processamento
+							e encaminhamento ao destinatário configurado para o atendimento. <a
+								href="https://formsubmit.co/privacy.pdf"
+								target="_blank"
+								rel="noopener noreferrer">Política do FormSubmit</a
+							>.</li
+						>
+						<li
+							><strong>Cloudflare:</strong> participa da entrega, proteção e medição de desempenho do
+							site, podendo processar dados técnicos de acesso. <a
+								href="https://www.cloudflare.com/privacypolicy/"
+								target="_blank"
+								rel="noopener noreferrer">Política da Cloudflare</a
+							>.</li
+						>
+						<li
+							><strong>Google:</strong> as ferramentas de medição e publicidade são descritas na seção
+							de cookies. <a
+								href="https://policies.google.com/privacy?hl=pt-BR"
+								target="_blank"
+								rel="noopener noreferrer">Política do Google</a
+							>.</li
+						>
+						<li
+							><strong>WhatsApp e Instagram:</strong> ao seguir esses links, você acessa serviços externos.
+							No WhatsApp do orçamento, os serviços, data, público e local preenchidos podem compor a
+							mensagem, que você revisa e envia no aplicativo.</li
+						>
+					</ul>
+					<p
+						>Esses fornecedores podem utilizar infraestrutura em outros países. Suas condições de
+						tratamento e eventuais transferências internacionais devem ser consideradas na
+						contratação e configuração dos serviços. Os dados também podem ser disponibilizados
+						quando houver exigência legal ou necessidade de exercício de direitos.</p
+					>
+				</section>
+				<section id="retencao">
+					<h2>4. Conservação e proteção dos dados</h2>
+					{
+						privacy.retentionDescription ? (
+							<p>{privacy.retentionDescription}</p>
+						) : (
+							<p class="rounded-small border border-warm/40 p-4">
+								<strong>Em validação:</strong> a YESS ainda precisa confirmar os prazos ou critérios
+								de guarda dos orçamentos, mensagens e registros de atendimento, incluindo a
+								eliminação das cópias em e-mail e nos serviços utilizados.
+							</p>
+						)
+					}
+					<p
+						>A conservação deve considerar a finalidade do atendimento e as obrigações aplicáveis,
+						sem manter dados desnecessários. Pedidos de eliminação são analisados considerando essas
+						condições e as hipóteses legais de conservação.</p
+					>
+					<p
+						>O site utiliza HTTPS na comunicação. Essa medida não substitui o controle de acesso às
+						contas e aos registros de atendimento, nem representa garantia de segurança absoluta.</p
+					>
+				</section>
+				<section id="cookies">
+					<h2>5. Cookies e tecnologias semelhantes</h2>
+					<p
+						>Cookies são pequenos arquivos armazenados pelo navegador. O site também utiliza
+						armazenamento local e de sessão para algumas preferências e funcionalidades.</p
+					>
+					<ul>
+						<li
+							><strong>Funcionamento e segurança:</strong> serviços de proteção podem utilizar cookies
+							técnicos. No portfólio, a chave de sessão <code>yess-portfolio-intro</code> evita repetir
+							a abertura durante a sessão.</li
+						>
+						<li
+							><strong>Preferências:</strong> quando o gerenciador estiver ativo, a chave local <code
+								>{privacy.consentStorageKey}</code
+							> registra suas escolhas por até {privacy.consentDurationDays} dias. Depois disso, a escolha
+							é solicitada novamente.</li
+						>
+						<li
+							><strong>Análise:</strong> o Google Analytics utiliza identificadores como <code
+								>_ga</code
+							> e <code>_ga_*</code> para medir a navegação. A duração depende da configuração do serviço
+							e pode ser renovada conforme o uso.</li
+						>
+						<li
+							><strong>Publicidade:</strong> recursos do Google podem utilizar identificadores como <code
+								>_gcl_*</code
+							> e armazenamento <code>_gcl_ls</code> para atribuição e públicos de anúncios. Isso é separado
+							do uso dos contatos enviados no formulário.</li
+						>
+					</ul>
+					{
+						privacy.trackingEnabled ? (
+							<p>
+								O gerenciador de tags é entregue pelo gateway da Cloudflare. As preferências são
+								enviadas ao gerenciador para liberar a medição apenas das finalidades autorizadas.
+								Recusar não impede o carregamento técnico do gerenciador, mas deve impedir os
+								eventos de medição das categorias recusadas. Ao revogar uma permissão, a página é
+								recarregada e os identificadores opcionais conhecidos deste domínio são removidos;
+								dados já enviados não são apagados automaticamente dos fornecedores.
+							</p>
+						) : (
+							<p class="rounded-small border border-warm/40 p-4">
+								<strong>Configuração em implantação:</strong> a auditoria de 16/10/2026 identificou
+								medição e chamadas de publicidade do Google inseridas externamente pelo caminho{' '}
+								<code>/metrics/</code>. Essa inserção precisa ser ajustada antes de ativar o novo
+								gerenciador de consentimento. As preferências desta implementação ainda não
+								controlam essa inserção externa.
+							</p>
+						)
+					}
+					{
+						(privacy.trackingEnabled || import.meta.env.DEV) && (
+							<p>
+								<a href="/privacidade/#cookies" data-cookie-settings>
+									Gerenciar preferências de cookies
+								</a>
+								.
+							</p>
+						)
+					}
+					<p
+						>Você também pode bloquear ou remover cookies pelas configurações do navegador. Isso
+						pode afetar funcionalidades e não apaga informações já transmitidas.</p
+					>
+				</section>
+				<section id="direitos">
+					<h2>6. Seus direitos</h2>
+					<p
+						>Nos termos da LGPD, você pode solicitar confirmação e acesso aos dados, correção,
+						informações sobre compartilhamento, anonimização, bloqueio ou eliminação de dados
+						desnecessários ou tratados irregularmente e, quando aplicável, portabilidade, eliminação
+						de dados tratados por consentimento e revogação do consentimento.</p
+					>
+					<p
+						>Também pode pedir informações sobre a possibilidade de não consentir e suas
+						consequências. Há direitos de oposição nas hipóteses legais e de petição à ANPD. Alguns
+						pedidos têm condições ou exceções previstas em lei; pode ser necessário confirmar sua
+						identidade de forma proporcional para proteger os dados.</p
+					>
+					<p
+						>Envie sua solicitação para <a href={`mailto:${privacy.contactEmail}`}
+							>{privacy.contactEmail}</a
+						>, indicando o atendimento a que se refere. Não envie documentos sensíveis sem
+						necessidade ou solicitação específica.</p
+					>
+				</section>
+				<section id="contato-privacidade">
+					<h2>7. Contato e atualizações</h2>
+					<p
+						>O canal de privacidade é <a href={`mailto:${privacy.contactEmail}`}
+							>{privacy.contactEmail}</a
+						>. Este aviso deve acompanhar mudanças nos formulários, fornecedores e ferramentas de
+						medição. A data de atualização fica no início da página.</p
+					>
+					<p
+						>Referências: <a
+							href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709compilado.htm"
+							target="_blank"
+							rel="noopener noreferrer">Lei Geral de Proteção de Dados Pessoais</a
+						> e <a
+							href="https://www.gov.br/anpd/pt-br/centrais-de-conteudo/materiais-educativos-e-publicacoes/guia_orientativo_cookies_e_protecao_de_dados_pessoais"
+							target="_blank"
+							rel="noopener noreferrer">guia de cookies da ANPD</a
+						>.</p
+					>
+				</section>
+			</div>
+		</article>
+	</main>
+</Layout>
+
+<style>
+	.privacy-content section {
+		scroll-margin-top: 8rem;
+	}
+	.privacy-content h2 {
+		margin-bottom: 1rem;
+		color: var(--color-foreground);
+		font-family: var(--font-title);
+		font-size: 1.4rem;
+		font-weight: 600;
+		line-height: 1.4;
+	}
+	.privacy-content p + p {
+		margin-top: 1rem;
+	}
+	.privacy-content ul {
+		list-style: disc;
+		padding-left: 1.3rem;
+	}
+	.privacy-content li + li {
+		margin-top: 1rem;
+	}
+	.privacy-content a {
+		color: var(--color-foreground);
+		text-decoration: underline;
+		text-underline-offset: 4px;
+		overflow-wrap: anywhere;
+	}
+	.privacy-content a:hover {
+		color: var(--color-primary);
+	}
+	.privacy-content strong {
+		color: var(--color-foreground);
+	}
+	.privacy-content code {
+		overflow-wrap: anywhere;
+		font-size: 0.85em;
+	}
+</style>
