@@ -8,6 +8,13 @@
 	"tailwindStylesheet": "./src/styles/global.css",
 	"overrides": [
 		{
+			"files": "docs/gtm/yess-consent-template.js",
+			"options": {
+				"semi": true,
+				"trailingComma": "none"
+			}
+		},
+		{
 			"files": "*.astro",
 			"options": {
 				"parser": "astro"

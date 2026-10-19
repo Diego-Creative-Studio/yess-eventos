@@ -182,6 +182,10 @@ const hasCnpj = cnpjDigits.length === 14 && !['00000000000000', '00000000000100'
 					© {new Date().getFullYear()}{' '}
 					{site.legalName}{hasCnpj ? ` · CNPJ ${site.cnpj}` : ''}. Todos os direitos reservados.
 				</p>
+				<p class="flex flex-wrap justify-center gap-x-4 gap-y-2 text-muted normal-case min-[420px]:justify-start">
+					<a href="/privacidade/" class="inline-flex min-h-11 items-center underline underline-offset-4 hover:text-foreground">Privacidade</a>
+					<a href="/privacidade/#cookies" data-cookie-settings class="inline-flex min-h-11 items-center underline underline-offset-4 hover:text-foreground">Cookies</a>
+				</p>
 				<p class="text-muted normal-case">
 					Desenvolvido por{' '}
 					<a

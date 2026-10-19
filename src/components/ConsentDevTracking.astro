@@ -1,0 +1,35 @@
+---
+import privacy from '@/data/privacy.json'
+---
+
+<!-- Este componente só é renderizado por Layout em import.meta.env.DEV. -->
+<script is:inline define:vars={{ gtmId: privacy.googleTagManagerId }}>
+	// Somente desenvolvimento em loopback, com adesão explícita nesta sessão.
+	if (['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)) {
+		const key = 'yess-gtm-test'
+		const option = new URLSearchParams(location.search).get('gtm_test')
+		let enabled = option === '1'
+		try {
+			if (option === '1') sessionStorage.setItem(key, '1')
+			if (option === '0') sessionStorage.removeItem(key)
+			enabled = option !== '0' && sessionStorage.getItem(key) === '1'
+		} catch {
+			// Sem armazenamento, a opção vale apenas para esta URL.
+		}
+		if (
+			enabled &&
+			/^GTM-[A-Z0-9]+$/.test(gtmId) &&
+			!document.querySelector(
+				'script[data-yess-dev-gtm], script[src*="googletagmanager.com/gtm.js"]',
+			)
+		) {
+			window.dataLayer = window.dataLayer || []
+			window.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' })
+			const script = document.createElement('script')
+			script.async = true
+			script.dataset.yessDevGtm = 'true'
+			script.src = `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(gtmId)}`
+			document.head.append(script)
+		}
+	}
+</script>

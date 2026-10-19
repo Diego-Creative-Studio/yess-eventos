@@ -1,0 +1,125 @@
+---
+import privacy from '@/data/privacy.json'
+const enabled = privacy.trackingEnabled || import.meta.env.DEV
+---
+
+<div data-cookie-consent data-cookie-enabled={String(enabled)}>
+	<section
+		data-cookie-banner
+		hidden
+		aria-labelledby="cookie-banner-title"
+		class="fixed inset-x-3 bottom-24 z-110 mx-auto max-w-345 rounded-3xl border border-stroke bg-surface p-5 text-foreground shadow-xl md:inset-x-8 md:p-6 lg:bottom-5"
+	>
+		<div class="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
+			<div class="max-w-170">
+				<h2 id="cookie-banner-title" class="font-title text-lg font-semibold"
+					>Sua privacidade importa</h2
+				>
+				<p class="mt-2 text-sm leading-6 text-text-secondary">
+					Você pode permitir ou recusar cookies de análise e publicidade. Sua escolha não impede a
+					navegação nem o pedido de orçamento.{' '}
+					<a href="/privacidade/#cookies" class="underline underline-offset-4 hover:text-white"
+						>Saiba mais</a
+					>.
+				</p>
+				{
+					!privacy.trackingEnabled && import.meta.env.DEV && (
+						<p class="mt-2 text-xs text-warm">
+							Prévia local: o GTM só carrega neste computador ao habilitar ?gtm_test=1. Use o modo
+							Visualizar do GTM; essa opção pode enviar eventos reais de teste.
+						</p>
+					)
+				}
+			</div>
+			<div class="flex flex-wrap gap-2">
+				<button type="button" data-cookie-reject class="cookie-action"
+					>Recusar não necessários</button
+				>
+				<button type="button" data-cookie-accept class="cookie-action">Aceitar todos</button>
+				<button type="button" data-cookie-customize class="cookie-action">Preferências</button>
+			</div>
+		</div>
+	</section>
+
+	<dialog
+		data-cookie-dialog
+		data-lenis-prevent
+		aria-labelledby="cookie-dialog-title"
+		class="m-auto max-h-[85svh] w-[calc(100%-1.5rem)] max-w-xl overflow-y-auto rounded-3xl border border-stroke bg-surface p-5 text-foreground shadow-xl backdrop:bg-black/70 md:p-8"
+	>
+		<h2 id="cookie-dialog-title" class="font-title text-2xl font-semibold"
+			>Preferências de cookies</h2
+		>
+		<p class="mt-3 text-sm leading-6 text-text-secondary"
+			>Os opcionais começam desativados. Você pode alterar sua escolha pelo link “Cookies” no
+			rodapé.</p
+		>
+		<div class="mt-5 space-y-3">
+			<div class="rounded-small border border-stroke p-4">
+				<p class="font-semibold"
+					>Necessários <span class="text-sm font-normal text-muted">· sempre ativos</span></p
+				>
+				<p class="mt-1 text-sm leading-6 text-text-secondary"
+					>Segurança, funcionamento e armazenamento da sua escolha. Não dependem de aceitar análise
+					ou publicidade.</p
+				>
+			</div>
+			<label class="flex cursor-pointer items-start gap-3 rounded-small border border-stroke p-4">
+				<input data-cookie-analytics type="checkbox" class="mt-1 size-5 shrink-0 accent-primary" />
+				<span
+					><span class="block font-semibold">Análise de navegação</span><span
+						class="mt-1 block text-sm leading-6 text-text-secondary"
+						>Permite medir acessos e entender o uso do site com o Google Analytics.</span
+					></span
+				>
+			</label>
+			<label class="flex cursor-pointer items-start gap-3 rounded-small border border-stroke p-4">
+				<input data-cookie-marketing type="checkbox" class="mt-1 size-5 shrink-0 accent-primary" />
+				<span
+					><span class="block font-semibold">Publicidade</span><span
+						class="mt-1 block text-sm leading-6 text-text-secondary"
+						>Permite os recursos de medição de anúncios e públicos do Google. Não autoriza mensagens
+						promocionais para os contatos do formulário.</span
+					></span
+				>
+			</label>
+		</div>
+		<a
+			href="/privacidade/#cookies"
+			class="mt-4 inline-block text-sm text-text-secondary underline underline-offset-4"
+			>Ler a política de cookies</a
+		>
+		<div class="mt-5 flex flex-wrap gap-2">
+			<button type="button" data-cookie-reject class="cookie-action">Recusar não necessários</button
+			>
+			<button type="button" data-cookie-save class="cookie-action">Salvar preferências</button>
+			<button type="button" data-cookie-cancel class="cookie-action">Voltar</button>
+		</div>
+	</dialog>
+	<p data-cookie-status role="status" class="sr-only"></p>
+</div>
+
+<style>
+	.cookie-action {
+		min-height: 2.75rem;
+		border: 1px solid var(--color-muted);
+		border-radius: 9999px;
+		padding: 0.65rem 1rem;
+		color: var(--color-foreground);
+		background: var(--color-surface-alt);
+		font-size: 0.875rem;
+		font-weight: 600;
+		cursor: pointer;
+	}
+	.cookie-action:hover {
+		border-color: var(--color-primary);
+	}
+	.cookie-action:focus-visible {
+		outline: 2px solid var(--color-primary);
+		outline-offset: 3px;
+	}
+</style>
+
+<script>
+	import '@/scripts/cookie-consent'
+</script>
