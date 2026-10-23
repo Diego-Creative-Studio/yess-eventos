@@ -69,7 +69,11 @@ const services: Service[] = [
 				class="pointer-events-none absolute -top-23 -left-22 size-50 rounded-full bg-primary/50 blur-3xl"
 			></span>
 			-->
-			<div data-animate="fade-up" data-animate-delay={0.1} class="relative z-10 w-full text-center lg:w-auto lg:text-left">
+			<div
+				data-animate="fade-up"
+				data-animate-delay={0.1}
+				class="relative z-10 w-full text-center lg:w-auto lg:text-left"
+			>
 				<h2 class="text-2xl font-semibold text-foreground"> Estrutura audiovisual para eventos </h2>
 
 				<p class="mt-1.5 text-sm text-muted">
@@ -120,7 +124,7 @@ const services: Service[] = [
 		</div>
 
 		<div class="grid gap-6 lg:grid-cols-12">
-			<!-- Preserva zoom/parallax sem o recorte que pode ocultar a imagem. -->
+			<!-- Zoom/parallax por dimensões e posição, sem clip-path ou transform na imagem. -->
 			<a
 				data-motion-image
 				data-motion-parallax
@@ -131,7 +135,7 @@ const services: Service[] = [
 				<Image
 					src={imageLed}
 					alt="Palco corporativo com painel de LED e telas laterais"
-					class="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
+					class="absolute inset-0 size-full max-w-none object-cover"
 				/>
 				<div
 					class="absolute inset-0 bg-linear-to-t from-background from-20% to-transparent to-45% lg:from-20% lg:to-45%"

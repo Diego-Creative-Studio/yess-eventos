@@ -117,10 +117,20 @@ if (!reduceMotion) {
 		}
 
 		if (image) {
+			// Neste card, evita a composição de uma imagem transformada dentro do recorte arredondado.
+			// O parallax controla top separadamente; a entrada e o hover controlam apenas o zoom.
 			timeline.fromTo(
 				image,
-				{ scale: restScale(frame) + 0.12 },
-				{ scale: restScale(frame), duration: 1.25, ease: 'power3.out' },
+				frame.hasAttribute('data-motion-no-clip')
+					? { width: '124%', height: '124%', left: '-12%' }
+					: { scale: restScale(frame) + 0.12 },
+				{
+					...(frame.hasAttribute('data-motion-no-clip')
+						? { width: '112%', height: '112%', left: '-6%' }
+						: { scale: restScale(frame) }),
+					duration: 1.25,
+					ease: 'power3.out',
+				},
 				0,
 			)
 		}
@@ -132,9 +142,9 @@ if (!reduceMotion) {
 
 		gsap.fromTo(
 			image,
-			{ yPercent: -5 },
+			frame.hasAttribute('data-motion-no-clip') ? { top: '-11%' } : { yPercent: -5 },
 			{
-				yPercent: 5,
+				...(frame.hasAttribute('data-motion-no-clip') ? { top: '-1%' } : { yPercent: 5 }),
 				ease: 'none',
 				scrollTrigger: {
 					trigger: frame,
@@ -156,7 +166,9 @@ if (!reduceMotion) {
 
 			const handleEnter = () => {
 				gsap.to(image, {
-					scale: restScale(frame) + 0.04,
+					...(frame.hasAttribute('data-motion-no-clip')
+						? { width: '116%', height: '116%', left: '-8%' }
+						: { scale: restScale(frame) + 0.04 }),
 					duration: 0.5,
 					ease: 'power3.out',
 					overwrite: 'auto',
@@ -165,7 +177,9 @@ if (!reduceMotion) {
 
 			const handleLeave = () => {
 				gsap.to(image, {
-					scale: restScale(frame),
+					...(frame.hasAttribute('data-motion-no-clip')
+						? { width: '112%', height: '112%', left: '-6%' }
+						: { scale: restScale(frame) }),
 					duration: 0.55,
 					ease: 'power3.out',
 					overwrite: 'auto',

@@ -37,8 +37,8 @@ import imageOperation from '@/assets/yess/operacao-tecnica-mesa.jpg'
 						aria-hidden="true"
 						class="size-full object-cover"
 					>
-						<source src="/videos/evento-corporativo-gala.webm" type="video/webm" />
-						<source src="/videos/evento-corporativo-gala.mp4" type="video/mp4" />
+						<source src="/videos/evento-corporativo-gala-muted.webm" type="video/webm" />
+						<source src="/videos/evento-corporativo-gala-muted.mp4" type="video/mp4" />
 					</video>
 				</div>
 				<span
@@ -93,8 +93,8 @@ import imageOperation from '@/assets/yess/operacao-tecnica-mesa.jpg'
 								aria-hidden="true"
 								class="size-full object-cover"
 							>
-								<source src="/videos/iluminacao-cenica.webm" type="video/webm" />
-								<source src="/videos/iluminacao-cenica.mp4" type="video/mp4" />
+								<source src="/videos/iluminacao-cenica-muted.webm" type="video/webm" />
+								<source src="/videos/iluminacao-cenica-muted.mp4" type="video/mp4" />
 							</video>
 						</div>
 						<span
@@ -129,8 +129,8 @@ import imageOperation from '@/assets/yess/operacao-tecnica-mesa.jpg'
 								aria-hidden="true"
 								class="size-full object-cover"
 							>
-								<source src="/videos/sonoplastia-e-dj.webm" type="video/webm" />
-								<source src="/videos/sonoplastia-e-dj.mp4" type="video/mp4" />
+								<source src="/videos/sonoplastia-e-dj-muted.webm" type="video/webm" />
+								<source src="/videos/sonoplastia-e-dj-muted.mp4" type="video/mp4" />
 							</video>
 						</div>
 						<span
@@ -169,10 +169,14 @@ import imageOperation from '@/assets/yess/operacao-tecnica-mesa.jpg'
 
 <script>
 	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-	if (reducedMotion) {
-		document.querySelectorAll<HTMLVideoElement>('[data-trabalho-video]').forEach((video) => {
+	// Os arquivos destes cards não contêm áudio; mantém também o estado mudo no player.
+	document.querySelectorAll<HTMLVideoElement>('[data-trabalho-video]').forEach((video) => {
+		video.defaultMuted = true
+		video.muted = true
+		video.volume = 0
+		if (reducedMotion) {
 			video.pause()
 			video.currentTime = 0
-		})
-	}
+		}
+	})
 </script>
