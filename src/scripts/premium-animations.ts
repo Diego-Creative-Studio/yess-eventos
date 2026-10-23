@@ -105,11 +105,16 @@ if (!reduceMotion) {
 			scrollTrigger: { trigger: frame, start: 'top 88%', once: true },
 		})
 
-		timeline.fromTo(
-			frame,
-			{ clipPath: 'inset(8% 8% 8% 8% round 1.5rem)' },
-			{ clipPath: 'inset(0% 0% 0% 0% round 1.5rem)', duration: 1.05, ease: 'power3.out' },
-		)
+		if (frame.hasAttribute('data-motion-no-clip')) {
+			// Evita combinar clip-path com o parallax em imagens afetadas por falhas de composição.
+			timeline.fromTo(frame, { opacity: 0 }, { opacity: 1, duration: 1.05, ease: 'power3.out' })
+		} else {
+			timeline.fromTo(
+				frame,
+				{ clipPath: 'inset(8% 8% 8% 8% round 1.5rem)' },
+				{ clipPath: 'inset(0% 0% 0% 0% round 1.5rem)', duration: 1.05, ease: 'power3.out' },
+			)
+		}
 
 		if (image) {
 			timeline.fromTo(
