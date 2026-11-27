@@ -1,5 +1,8 @@
 import privacy from '@/data/privacy.json'
 
+let analyticsAllowed = false
+export const hasAnalyticsConsent = () => analyticsAllowed
+
 type Choice = { analytics: boolean; marketing: boolean }
 type SavedChoice = Choice & { version: 1; updatedAt: number; expiresAt: number }
 const root = document.querySelector<HTMLElement>('[data-cookie-consent]')
@@ -41,6 +44,7 @@ if (root?.dataset.cookieEnabled === 'true') {
 	}
 
 	const apply = (choice: Choice) => {
+		analyticsAllowed = choice.analytics
 		// A ponte do GTM aplica updateConsentState antes de emitir yess_consent_ready.
 		// Nunca carregar outro contêiner: a inserção pertence ao gateway da Cloudflare.
 		window.dataLayer = window.dataLayer || []

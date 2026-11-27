@@ -14,7 +14,8 @@ const whatsappUrl = whatsapp
 	? `https://wa.me/${whatsapp}?text=${encodeURIComponent('Olá! Quero um orçamento para um evento.')}`
 	: '/contato/#canais'
 const cnpjDigits = site.cnpj.replace(/\D/g, '')
-const hasCnpj = cnpjDigits.length === 14 && !['00000000000000', '00000000000100'].includes(cnpjDigits)
+const hasCnpj =
+	cnpjDigits.length === 14 && !['00000000000000', '00000000000100'].includes(cnpjDigits)
 ---
 
 <footer id="contato" class="px-3 pb-24 md:px-8 lg:px-16 lg:pb-0">
@@ -46,8 +47,15 @@ const hasCnpj = cnpjDigits.length === 14 && !['00000000000000', '00000000000100'
 			class="relative z-10 grid gap-10 text-center min-[420px]:grid-cols-2 min-[420px]:text-left xl:flex xl:min-h-52.5 xl:justify-between xl:gap-0"
 		>
 			<div class="flex flex-col items-center gap-3 min-[420px]:items-start xl:w-65">
-				<a href="/" class="rounded-small focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">
-					<Image src={logoYess} alt="YESS Audiovisual e Eventos — início" class="h-16 w-auto max-w-full" />
+				<a
+					href="/"
+					class="rounded-small focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+				>
+					<Image
+						src={logoYess}
+						alt="YESS Audiovisual e Eventos — início"
+						class="h-16 w-auto max-w-full"
+					/>
 				</a>
 				<p class="text-xs leading-4 font-semibold tracking-wide text-primary uppercase">
 					Tecnologia • Operação • Presença
@@ -113,7 +121,8 @@ const hasCnpj = cnpjDigits.length === 14 && !['00000000000000', '00000000000100'
 					href="/dj-para-eventos-corporativos/"
 					class="flex items-center gap-2 text-sm leading-6 text-muted transition-colors hover:text-foreground"
 				>
-					<span aria-hidden="true" class="size-1.5 shrink-0 rounded-full bg-primary"></span>DJ corporativo
+					<span aria-hidden="true" class="size-1.5 shrink-0 rounded-full bg-primary"></span>DJ
+					corporativo
 				</a>
 			</nav>
 
@@ -122,8 +131,12 @@ const hasCnpj = cnpjDigits.length === 14 && !['00000000000000', '00000000000100'
 				class="flex flex-col items-center gap-2.5 min-[420px]:items-start xl:w-55"
 			>
 				<h2 class="text-xl leading-7 font-semibold text-foreground">Empresa</h2>
-				<a href="/portfolio/" class="flex items-center gap-2 text-sm leading-6 text-muted transition-colors hover:text-foreground">
-					<span aria-hidden="true" class="size-1.5 shrink-0 rounded-full bg-primary"></span>Portfólio
+				<a
+					href="/portfolio/"
+					class="flex items-center gap-2 text-sm leading-6 text-muted transition-colors hover:text-foreground"
+				>
+					<span aria-hidden="true" class="size-1.5 shrink-0 rounded-full bg-primary"
+					></span>Portfólio
 				</a>
 				<a
 					href="/sobre/"
@@ -143,6 +156,7 @@ const hasCnpj = cnpjDigits.length === 14 && !['00000000000000', '00000000000100'
 				<h2 class="text-xl leading-7 font-semibold text-foreground">Contato</h2>
 				<a
 					href={whatsappUrl}
+					data-whatsapp-position="rodape"
 					target={whatsapp ? '_blank' : undefined}
 					rel={whatsapp ? 'noopener noreferrer' : undefined}
 					class="inline-flex min-h-10.5 items-center gap-2.5 rounded-small border-2 border-stroke bg-surface-alt px-3 py-2.5 font-title text-sm font-semibold text-foreground transition-colors hover:border-primary"
@@ -182,9 +196,20 @@ const hasCnpj = cnpjDigits.length === 14 && !['00000000000000', '00000000000100'
 					© {new Date().getFullYear()}{' '}
 					{site.legalName}{hasCnpj ? ` · CNPJ ${site.cnpj}` : ''}. Todos os direitos reservados.
 				</p>
-				<p class="flex flex-wrap justify-center gap-x-4 gap-y-2 text-muted normal-case min-[420px]:justify-start">
-					<a href="/privacidade/" class="inline-flex min-h-11 items-center underline underline-offset-4 hover:text-foreground">Privacidade</a>
-					<a href="/privacidade/#cookies" data-cookie-settings class="inline-flex min-h-11 items-center underline underline-offset-4 hover:text-foreground">Cookies</a>
+				<p
+					class="flex flex-wrap justify-center gap-x-4 gap-y-2 text-muted normal-case min-[420px]:justify-start"
+				>
+					<a
+						href="/privacidade/"
+						class="inline-flex min-h-11 items-center underline underline-offset-4 hover:text-foreground"
+						>Privacidade</a
+					>
+					<a
+						href="/privacidade/#cookies"
+						data-cookie-settings
+						class="inline-flex min-h-11 items-center underline underline-offset-4 hover:text-foreground"
+						>Cookies</a
+					>
 				</p>
 				<p class="text-muted normal-case">
 					Desenvolvido por{' '}

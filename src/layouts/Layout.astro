@@ -94,6 +94,7 @@ const {
 		<Footer theme={footerTheme} />
 		{(privacy.trackingEnabled || import.meta.env.DEV) && <CookieConsent />}
 		<script>
+			import '@/scripts/whatsapp-tracking'
 			import '@/scripts/smooth-scroll'
 			import '@/scripts/reveal-animations'
 			import '@/scripts/premium-animations'
