@@ -239,7 +239,7 @@ const labelClass = 'block text-sm font-semibold text-text-secondary'
 				disabled={!endpoint}
 				arrow
 				animation="shine"
-				class="w-full disabled:cursor-not-allowed disabled:opacity-50 md:w-auto"
+				class="w-full cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 md:w-auto"
 			/>
 		</form>
 		{
@@ -276,6 +276,14 @@ const labelClass = 'block text-sm font-semibold text-text-secondary'
 		if (location && fromUrl) location.value = fromUrl.slice(0, 160)
 
 		const boxes = [...form.querySelectorAll<HTMLInputElement>('input[name="services"]')]
+		// O FormSubmit pode manter só o último campo com o mesmo nome.
+		// Consolida as escolhas no POST nativo sem alterar os checkboxes da tela.
+		form.addEventListener('formdata', (event) => {
+			const services = event.formData
+				.getAll('services')
+				.filter((value) => typeof value === 'string')
+			if (services.length) event.formData.set('services', services.join(', '))
+		})
 		const service = params.get('service')
 		if (service)
 			boxes.forEach((box) => {
