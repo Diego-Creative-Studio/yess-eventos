@@ -22,6 +22,11 @@ const selected = new Set(
 const local = [district, city].filter(Boolean).join(', ')
 // Configure a validated form receiver and the confirmed business phone before launch.
 const endpoint = 'https://formsubmit.co/7b0762b6deb6e6a6f8a56ac6d7b19116'
+// Endereço público de recepção, não uma credencial. Validar os dados no Make.
+// No servidor de desenvolvimento, não encaminhar pedidos à automação.
+const leadWebhook = import.meta.env.PROD
+	? 'https://hook.us2.make.com/c1i04swhs1t0vcgdotlvg4w1syry265m'
+	: ''
 // Número com DDI e DDD, só dígitos (ex.: 5511999999999). Edite em src/data/site.json.
 const whatsapp = (import.meta.env.PUBLIC_WHATSAPP_NUMBER || site.whatsapp || '').replace(/\D/g, '')
 // Mensagem já começa com o contexto da página (serviço e local).
@@ -71,6 +76,9 @@ const labelClass = 'block text-sm font-semibold text-text-secondary'
 			data-ready={Boolean(endpoint)}
 			class="relative z-10 mt-8 space-y-6"
 		>
+			{leadWebhook && <input type="hidden" name="_webhook" value={leadWebhook} />}
+			<!-- Somente o caminho: não enviar parâmetros da URL, que podem conter dados pessoais. -->
+			<input type="hidden" name="source_page" value={Astro.url.pathname} />
 			<!-- Armadilha anti-spam: invisível para pessoas; robôs preenchem e o FormSubmit descarta. -->
 			<input
 				type="text"
@@ -204,9 +212,13 @@ const labelClass = 'block text-sm font-semibold text-text-secondary'
 					}
 				</ul>
 				<p class="mt-2 text-muted">
-					Os dados serão utilizados apenas para responder ao seu pedido de orçamento.
-					Saiba como funciona o tratamento na
-					<a href="/privacidade/" class="text-foreground underline underline-offset-4 hover:text-primary">Política de Privacidade</a>.
+					Os dados serão utilizados apenas para responder ao seu pedido de orçamento. Saiba como
+					funciona o tratamento na
+					<a
+						href="/privacidade/"
+						class="text-foreground underline underline-offset-4 hover:text-primary"
+						>Política de Privacidade</a
+					>.
 				</p>
 			</div>
 			{
