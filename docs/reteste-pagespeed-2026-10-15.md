@@ -83,10 +83,12 @@ A validação local incluiu reprodução/som/pausa nas cinco heros de vídeo, la
 
 Resultados completos, horários e links de cada rodada:
 
-- [Rodada 1](../work/pagespeed-pos-melhorias-2026-10-15/resultados.json)
-- [Rodada 2](../work/pagespeed-pos-melhorias-2026-10-15/rodada-2/resultados.json)
-- [Rodada 3](../work/pagespeed-pos-melhorias-2026-10-15/rodada-3/resultados.json)
-- [Detalhes de LCP, imagens, CLS e ARIA](../work/pagespeed-pos-melhorias-2026-10-15/detalhes.json)
+Referências históricas dos arquivos brutos, não distribuídos com o repositório:
+
+- Rodada 1: `work/pagespeed-pos-melhorias-2026-10-15/resultados.json`
+- Rodada 2: `work/pagespeed-pos-melhorias-2026-10-15/rodada-2/resultados.json`
+- Rodada 3: `work/pagespeed-pos-melhorias-2026-10-15/rodada-3/resultados.json`
+- Detalhes de LCP, imagens, CLS e ARIA: `work/pagespeed-pos-melhorias-2026-10-15/detalhes.json`
 - [Baseline anterior](relatorio-pagespeed-2026-10-15.md)
 
 Relatórios oficiais da primeira rodada, com seletor mobile/desktop:

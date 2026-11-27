@@ -8,15 +8,9 @@ import posterIntroducao from '@/assets/yess/hero-evento-iluminacao.jpg'
 import posterDj from '@/assets/portfolio/video-sonoplastia-e-dj.jpg'
 
 /** Fotos reais de eventos da YESS usadas nas seções do portfólio. */
-const arquivos = import.meta.glob<{ default: ImageMetadata }>(
-	[
-		'../assets/portfolio/galeria/*.jpg',
-		'!../assets/portfolio/galeria/03-led-paineis-sequencia.jpg',
-	],
-	{
-		eager: true,
-	},
-)
+const arquivos = import.meta.glob<{ default: ImageMetadata }>('../assets/portfolio/galeria/*.jpg', {
+	eager: true,
+})
 
 export type CategoriaGaleria = 'led' | 'som' | 'luz' | 'tvs' | 'estrutura' | 'dj'
 

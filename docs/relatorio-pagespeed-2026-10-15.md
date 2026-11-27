@@ -188,9 +188,11 @@ Uma verificação HEAD posterior retornou **HTTP 200** com tipos `video/mp4` e `
 
 ## 8. Evidências e dados completos
 
-- [Resultados estruturados: 56 medições](../work/pagespeed-2026-10-15/resultados.json).
-- [Detalhes de LCP, imagens, CLS e scripts](../work/pagespeed-2026-10-15/detalhes.json).
-- [Detalhes adicionais de contraste, CLS local e erros de vídeo](../work/pagespeed-2026-10-15/detalhes-extra.json).
+Os caminhos abaixo são referências históricas dos arquivos brutos, que não são distribuídos com o repositório. Os links públicos dos relatórios permanecem preservados.
+
+- Resultados estruturados: 56 medições — `work/pagespeed-2026-10-15/resultados.json`.
+- Detalhes de LCP, imagens, CLS e scripts: `work/pagespeed-2026-10-15/detalhes.json`.
+- Detalhes adicionais de contraste, CLS local e erros de vídeo: `work/pagespeed-2026-10-15/detalhes-extra.json`.
 - Textos dos relatórios por URL/dispositivo: `work/pagespeed-2026-10-15/*.txt`.
 - Os links nas notas das tabelas abrem os relatórios oficiais exatos desta rodada, não uma nova análise automática.
 

@@ -25,3 +25,6 @@ pnpm-debug.log*
 .claude/
 .playwright-mcp/
 .wrangler/
+.tmp/
+.figwright/snapshots/
+work/

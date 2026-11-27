@@ -55,10 +55,12 @@ Os relatórios continuam apontando aproximadamente 145–146 KiB de JavaScript n
 
 ## Evidências
 
-- [Rodada 1](../work/pagespeed-pos-correcao-lcp-2026-10-15/resultados.json)
-- [Rodada 2](../work/pagespeed-pos-correcao-lcp-2026-10-15/rodada-2/resultados.json)
-- [Rodada 3](../work/pagespeed-pos-correcao-lcp-2026-10-15/rodada-3/resultados.json)
-- [Detalhamento de LCP, imagens, CLS e ARIA](../work/pagespeed-pos-correcao-lcp-2026-10-15/detalhes.json)
+Referências históricas dos arquivos brutos, não distribuídos com o repositório:
+
+- Rodada 1: `work/pagespeed-pos-correcao-lcp-2026-10-15/resultados.json`
+- Rodada 2: `work/pagespeed-pos-correcao-lcp-2026-10-15/rodada-2/resultados.json`
+- Rodada 3: `work/pagespeed-pos-correcao-lcp-2026-10-15/rodada-3/resultados.json`
+- Detalhamento de LCP, imagens, CLS e ARIA: `work/pagespeed-pos-correcao-lcp-2026-10-15/detalhes.json`
 
 Relatórios oficiais da primeira rodada; os JSONs acima contêm os links das três:
 

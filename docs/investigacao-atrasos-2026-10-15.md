@@ -61,10 +61,12 @@ O navegador local confirmou dois arquivos de fonte no lugar dos três vistos nos
 
 ## Dados e próximo passo
 
-- [Comparação controlada local](../work/lcp-investigation-2026-10-15/local-poster-ab.json)
-- [Lighthouse bruto — Portfólio mobile](../work/lcp-investigation-2026-10-15/psi-mobile.json)
-- [Lighthouse bruto — home mobile](../work/lcp-investigation-2026-10-15/psi-home-mobile.json)
-- [Lighthouse bruto — equipamento P2 mobile](../work/lcp-investigation-2026-10-15/psi-equipment-mobile.json)
+Os caminhos abaixo são referências históricas. Arquivos brutos de auditoria não são distribuídos com o repositório; os remanescentes de `work/` foram arquivados fora dele na limpeza de 23/10/2026.
+
+- Comparação controlada local: `work/lcp-investigation-2026-10-15/local-poster-ab.json`
+- Lighthouse bruto — Portfólio mobile: `work/lcp-investigation-2026-10-15/psi-mobile.json`
+- Lighthouse bruto — home mobile: `work/lcp-investigation-2026-10-15/psi-home-mobile.json`
+- Lighthouse bruto — equipamento P2 mobile: `work/lcp-investigation-2026-10-15/psi-equipment-mobile.json`
 - Métricas dos traces públicos: `work/lcp-investigation-2026-10-15/*-normal-metrics.json`.
 - Traces brutos grandes guardados em `C:/Users/diego/AppData/Local/Temp/yess-edge-qa/traces/`, fora do repositório para não inflar o push.
 

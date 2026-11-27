@@ -11,6 +11,11 @@ O webhook só é incluído nos builds de produção; `pnpm dev` não inclui esse
 Prévias de um build de produção incluem o webhook: não enviar testes sem coordenação.
 `source_page` contém somente o caminho da página, sem a query string.
 
+Com JavaScript ativo, o evento `formdata` reúne os serviços selecionados em um
+único campo `services` antes do POST. Exemplo: `Som, Luz, DJ corporativo`.
+Isso evita que o provedor retenha apenas o último checkbox de mesmo nome.
+Sem JavaScript, os campos repetidos continuam dependendo do tratamento do provedor.
+
 ## Make: ajustes obrigatórios antes de publicar
 
 1. Manter o cenário desativado até revisar o mapeamento.
@@ -20,18 +25,19 @@ Prévias de um build de produção incluem o webhook: não enviar testes sem coo
 3. Para Data de recebimento, usar
    `formatDate(now; "DD/MM/YYYY HH:mm:ss"; "America/Sao_Paulo")`.
    Com Raw, essa coluna contém texto formatado, não uma data numérica nativa.
-4. Para Data do evento, usar
-   `formatDate(parseDate(1.form_data.date; "YYYY-MM-DD"); "DD/MM/YYYY")`.
-   Confirmar que `1` é o módulo Webhooks. Com Raw, armazenar como texto.
+4. O envio real do FormSubmit contém `form_data` como texto JSON. Entre Webhooks
+   e Sheets, usar JSON / Parse JSON com `1.form_data` como entrada. Para Data do
+   evento, usar `formatDate(parseDate(3.date; "YYYY-MM-DD"); "DD/MM/YYYY")`.
+   Confirmar que `1` é Webhooks e `3` é Parse JSON. Com Raw, armazenar como texto.
 5. Preservar o telefone como texto. Origem deve ser o valor fixo `Formulário`,
    e o status inicial deve ser o valor fixo `Novo`.
 6. Nome, telefone, e-mail, serviço e cidade recebem, respectivamente,
-   `form_data.name`, `phone`, `email`, `services` e `location`.
+   `3.name`, `3.phone`, `3.email`, `3.services` e `3.location`, vindos do Parse JSON.
 7. Antes do Sheets, filtrar o formato e os limites esperados: nome não vazio
    até 120 caracteres; telefone não vazio até 30; e-mail opcional até 200;
    local não vazio até 160; data válida em YYYY-MM-DD; serviço pertencente às
-   opções do formulário. Validar a estrutura real de múltiplos serviços antes
-   de definir o filtro: o provedor pode representá-los como lista ou texto.
+   opções do formulário. O campo `services` é um texto com os nomes selecionados
+   separados por vírgula; validar cada opção, não apenas o texto completo.
    Não confiar apenas na validação do navegador.
 8. Configurar notificação de falhas do cenário e revisar a retenção do
    histórico do Make e o acesso à planilha com os responsáveis.

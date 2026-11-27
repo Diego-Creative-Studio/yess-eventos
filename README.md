@@ -19,7 +19,9 @@ pnpm format
 pnpm deploy
 ```
 
-Antes do build de produção, copie `.env.example` para `.env` e defina `SITE_URL` com o domínio real.
+O domínio de produção está definido em `astro.config.mjs`. As variáveis opcionais de ambiente estão documentadas em `.env.example`.
+
+Saídas de build (`dist/`), tipos gerados (`.astro/`) e arquivos temporários de auditoria (`work/`) não fazem parte do código-fonte. O build recria as duas primeiras pastas. Relatórios e instruções mantidos ficam em `docs/`.
 
 ## Estrutura
 
